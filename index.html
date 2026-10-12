@@ -263,6 +263,16 @@ select{font:600 16px var(--body);color:var(--ink);border:2.5px solid var(--ink);
 .fld input{font-size:16px}
 .frow>.fld{min-width:0}
 .fld input,.fld select{width:100%;box-sizing:border-box}
+.dkbar{display:flex;gap:8px;justify-content:center}
+.dkbar .btn{min-width:110px}
+#pfStats{grid-template-columns:1fr 1fr}
+.emrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;font-weight:600}
+.emrow .em{color:var(--muted);word-break:break-all}
+.emrow .em.shown{color:var(--ink)}
+.altbox{display:flex;flex-direction:column;gap:8px;background:#eef8ff;border:2.5px solid var(--ink);border-radius:16px;padding:12px}
+.altbox b{font-size:15px}
+.arow .abtns{display:flex;gap:6px;flex:none}
+.hapsw{position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none;margin:0;padding:0;border:0}
 #fxc{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:35}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important;transition-duration:.01s!important}}
 </style>
@@ -297,7 +307,7 @@ select{font:600 16px var(--body);color:var(--ink);border:2.5px solid var(--ink);
         <div class="bar"><i id="xpFill"></i></div>
       </div>
     </div>
-    <div class="arow"><span class="atx" id="acctTx">Playing as a guest</span><button class="btn small white" id="acctBtn" type="button">Sign in</button></div>
+    <div class="arow"><span class="atx" id="acctTx">Playing as a guest</span><span class="abtns"><button class="btn small mint" id="swapBtn" type="button" hidden>Swap</button><button class="btn small white" id="acctBtn" type="button">Sign in</button></span></div>
     <button class="btn pink" id="mResume" type="button">Resume</button>
     <div class="mduo"><button class="btn mint" id="mLb" type="button">Leaderboard</button><button class="btn" id="mGw" type="button">Giveaways<span class="dot" id="gwDot" hidden></span></button></div>
     <div class="mbtns">
@@ -310,7 +320,7 @@ select{font:600 16px var(--body);color:var(--ink);border:2.5px solid var(--ink);
     <div class="gift-row"><span class="streak"><b id="streakN">1</b> day streak</span><button class="btn small" id="giftBtn" type="button">Daily gift</button></div>
     <h3 class="mh">Daily quests</h3>
     <div class="quests" id="quests"></div>
-    <div class="row"><button class="btn small white" id="muteBtn" type="button">Sound: on</button></div>
+    <div class="row"><button class="btn small white" id="muteBtn" type="button">Sound: on</button><button class="btn small white" id="hapBtn" type="button">Haptics: on</button></div>
   </div>
 </div>
 
@@ -375,7 +385,7 @@ select{font:600 16px var(--body);color:var(--ink);border:2.5px solid var(--ink);
       <label class="fld"><span class="lbl">Prize</span><input id="gaPrize" type="text" maxlength="80" placeholder="Gift card, shoutout, merch…"></label>
       <div class="frow">
         <label class="fld"><span class="lbl">Bonus coins</span><input id="gaCoins" type="number" inputmode="numeric" min="0" max="100000" value="0"></label>
-        <label class="fld"><span class="lbl">Game</span><select id="gaGame"><option value="any">Any game</option><option value="drop">Jelly Jar</option><option value="squish">Jelly 2048</option></select></label>
+        <label class="fld"><span class="lbl">Game</span><select id="gaGame"><option value="any">Any game</option><option value="drop">Jelly Jar</option><option value="squish">Jelly 2048</option><option value="doku">Jellydoku</option></select></label>
       </div>
       <div class="frow">
         <label class="fld"><span class="lbl">Min score</span><input id="gaMin" type="number" inputmode="numeric" min="0" value="1000"></label>
@@ -415,7 +425,20 @@ select{font:600 16px var(--body);color:var(--ink);border:2.5px solid var(--ink);
       <p class="lnote">An account saves your coins, styles and best scores so you can play on any device, and puts your name on the leaderboard.</p>
     </div>
     <div id="aIn" hidden>
-      <p class="ainfo">Signed in as <b id="aWho"></b></p>
+      <p class="ainfo">Signed in as <b id="aWhoN"></b></p>
+      <div class="emrow"><span class="em" id="aWho">Email hidden</span><button class="linkbtn" id="aShowEm" type="button">Show email</button></div>
+      <div class="altbox" id="aAlt" hidden>
+        <b>Alt account</b>
+        <span class="lnote" id="aAltTx"></span>
+        <div class="aform" id="aAltForm" hidden>
+          <label class="fld"><span class="lbl">Alt player name (new alts only)</span><input id="aAltName" type="text" maxlength="16" spellcheck="false" autocomplete="off"></label>
+          <label class="fld"><span class="lbl">Alt email</span><input id="aAltEmail" type="email" inputmode="email" autocomplete="off" spellcheck="false"></label>
+          <label class="fld"><span class="lbl">Alt password</span><input id="aAltPass" type="password" autocomplete="new-password"></label>
+          <div class="row"><button class="btn small white" id="aAltIn" type="button">Sign in alt</button><button class="btn small mint" id="aAltNew" type="button">Create alt</button></div>
+        </div>
+        <span class="nmsg" id="aAltMsg"></span>
+        <div class="row"><button class="btn small mint" id="aSwap" type="button">Switch</button><button class="linkbtn" id="aAltOut" type="button">Remove alt</button></div>
+      </div>
       <p class="lnote">Your progress saves to your account automatically. Signing out clears it from this device, but it stays safe in your account.</p>
       <span class="nmsg" id="aMsg2"></span>
       <button class="btn white" id="aSignOut" type="button">Sign out</button>
@@ -563,15 +586,15 @@ function drawHat(c,r,h,k){
 
 // ================================================= prestige: rarity, requirements, titles, frames
 const RAR={c:['Common','#8a83a0'],r:['Rare','#3d7bff'],e:['Epic','#9a5bff'],l:['Legendary','#e89a00'],m:['Mythic','#ff3d7f']};
-const REQ_TXT={lv:v=>'Reach level '+v,bd:v=>'Score '+fmt(v)+' in Jelly Jar',bs:v=>'Score '+fmt(v)+' in Jelly 2048',st:v=>'Get a '+v+'-day streak',rd:v=>'Finish '+v+' rounds',tile:v=>'Make a '+v+' tile',win:()=>'Win a giveaway',early:()=>'Have an account made in 2026'};
+const REQ_TXT={lv:v=>'Reach level '+v,bd:v=>'Score '+fmt(v)+' in Jelly Jar',bs:v=>'Score '+fmt(v)+' in Jelly 2048',st:v=>'Get a '+v+'-day streak',rd:v=>'Finish '+v+' rounds',tile:v=>'Make a '+v+' tile',dl:v=>'Reach level '+v+' in Jellydoku',win:()=>'Win a giveaway',early:()=>'Have an account made in 2026'};
 function reqMet(q){if(!q)return true;for(const k in q){const v=q[k];
   if(k==='lv'&&(P.level||1)<v)return false;if(k==='bd'&&(P.best.drop||0)<v)return false;if(k==='bs'&&(P.best.squish||0)<v)return false;
   if(k==='st'&&Math.max(P.topStreak||0,P.streak||0)<v)return false;if(k==='rd'&&(P.rounds||0)<v)return false;if(k==='tile'&&(P.maxTile||0)<v)return false;
-  if(k==='win'&&!(P.wins>0))return false;if(k==='early'&&!P.early)return false}return true}
+  if(k==='win'&&!(P.wins>0))return false;if(k==='early'&&!P.early)return false;if(k==='dl'&&(P.dokuLv||0)<v)return false}return true}
 const reqText=q=>Object.entries(q||{}).map(([k,v])=>REQ_TXT[k]?REQ_TXT[k](v):'').join(' + ');
 const TITLES=[['none','No title',0],['squishy','Squishy',60],['fan','Jelly Fan',120],['merger','Merge Master',300,'r',{rd:25}],['combo','Combo King',400,'r',{bd:5000}],
   ['wizard','Jar Wizard',900,'e',{bd:15000}],['royal','2048 Royalty',900,'e',{tile:2048}],['unstop','Unstoppable',800,'e',{st:7}],['early','Early Critter',0,'l',{early:1}],
-  ['legend','Legend',3000,'l',{lv:20}],['champ','Champion',0,'m',{win:1}],['god','Jelly God',10000,'m',{lv:30,bd:50000}]];
+  ['legend','Legend',3000,'l',{lv:20}],['champ','Champion',0,'m',{win:1}],['brain','Big Brain',900,'e',{dl:10}],['oracle','Jelly Oracle',4000,'l',{dl:20}],['god','Jelly God',10000,'m',{lv:30,bd:50000}]];
 const FRAMES=[['none','No frame',0],['bubble','Bubble ring',150],['hearts','Heart ring',400,'r',{rd:10}],['stars','Star ring',800,'e',{lv:10}],
   ['gold','Gold ring',2000,'l',{bd:20000}],['rainbow','Rainbow ring',3000,'l',{lv:15}],['flame','Flame ring',6000,'m',{lv:25}]];
 function titleOf(id){const it=TITLES.find(t=>t[0]===id);if(!it||id==='none')return null;return{n:it[1],c:(RAR[it[3]]||RAR.c)[1]}}
@@ -651,8 +674,9 @@ const STYLE={
         jar:{n:'Jar',items:[['glass','Glass jar',0],['bowl','Fishbowl',60],['basket','Basket',80],['box','Cardboard box',80],['pot','Flower pot',120],['crystal','Crystal jar',700,'e',{lv:8}],['golden','Golden jar',2500,'l',{bd:25000}],['cosmic','Cosmic jar',4000,'m',{lv:20}]]},
         wall:{n:'Wallpaper',items:Object.entries(WALLS).map(([id,w])=>[id,w.n,...(WALL_META[id]||[200])])}},
   squish:{set:{n:'Critters',items:setItems()},hat:{n:'Hats',items:HATS},
-          board:{n:'Board',items:Object.entries(BOARDS).map(([id,b])=>[id,b.n,...(BOARD_META[id]||[200])])}}};
-const DEF={drop:{set:'jelly',hat:'none',jar:'glass',wall:'mint'},squish:{set:'jelly',hat:'none',board:'lilac'},prof:{title:'none',frame:'none'}};
+          board:{n:'Board',items:Object.entries(BOARDS).map(([id,b])=>[id,b.n,...(BOARD_META[id]||[200])])}},
+  doku:{set:{n:'Critters',items:setItems()},hat:{n:'Hats',items:HATS},board:{n:'Board',items:Object.entries(BOARDS).map(([id,b])=>[id,b.n,...(BOARD_META[id]||[200])])}}};
+const DEF={drop:{set:'jelly',hat:'none',jar:'glass',wall:'mint'},squish:{set:'jelly',hat:'none',board:'lilac'},doku:{set:'jelly',hat:'none',board:'mint'},prof:{title:'none',frame:'none'}};
 STYLE.prof={title:{n:'Titles',items:TITLES},frame:{n:'Frames',items:FRAMES}};
 
 // ================================================= profile
@@ -661,10 +685,10 @@ const dayNum=s=>{const[y,m,d]=s.split('-').map(Number);return Math.round(new Dat
 let P=store.get('ca_profile',null);
 if(!P||typeof P!=='object'){const old=store.get('ja_profile',null)||{};P={coins:old.coins||0,xp:old.xp||0,level:old.level||1,streak:old.streak||0,lastDay:old.lastDay||'',giftDay:old.giftDay||'',rounds:old.rounds||0,earned:old.earned||0,name:old.name||'',
   best:{drop:(old.best&&old.best.jar)||store.get('jj_best',0),squish:(old.best&&old.best.squish)||0},found:old.found||store.get('jj_found',[0]),quests:null}}
-function norm(){P.best=Object.assign({drop:0,squish:0},P.best||{});P.found=P.found||[0];P.cos=P.cos||{};P.own=P.own||[];P.meter=P.meter||{};P.fresh=P.fresh||[];P.saves=P.saves||{};
+function norm(){P.best=Object.assign({drop:0,squish:0,doku:0},P.best||{});P.found=P.found||[0];P.cos=P.cos||{};P.own=P.own||[];P.meter=P.meter||{};P.fresh=P.fresh||[];P.saves=P.saves||{};
 for(const g in DEF){P.cos[g]=Object.assign({},DEF[g],P.cos[g]||{});for(const k in P.cos[g])if(!STYLE[g][k])delete P.cos[g][k];P.meter[g]=P.meter[g]||0;for(const cat in STYLE[g])for(const it of STYLE[g][cat].items)if(it[2]===0&&!it[4]){const key=g+':'+cat+':'+it[0];if(!P.own.includes(key))P.own.push(key)}}
 if(!GAMESOK(P.last))P.last='drop';
-function GAMESOK(g){return g==='drop'||g==='squish'}
+function GAMESOK(g){return g==='drop'||g==='squish'||g==='doku'}
 if(!P.name)P.name='Critter Pal';
 if(!P.v2){P.v2=1;for(const g in DEF){if(g==='prof')continue;P.cos[g].set='jelly';P.cos[g].wall&&(P.cos[g].wall='mint');}}}
 norm();
@@ -686,6 +710,19 @@ const sfx={drop(){tone(540,.12,'sine',.16,250)},bounce(v){if(time-lastBounce<.05
   discover(){[0,2,4,5,7].forEach((n,i)=>tone(note(n+8),.16,'triangle',.12,0,i*.07))},combo(c){for(let i=0;i<Math.min(c,6);i++)tone(note(12+i*2),.09,'square',.03,0,i*.045)},
   tick(){tone(950,.05,'square',.05)},over(){tone(440,.5,'triangle',.15,120)},pop(i){tone(note(5+i%14),.08,'sine',.1)},ui(){tone(660,.07,'triangle',.12,990)},
   coin(i){tone(note(10+i%10),.06,'square',.035)},thud(){tone(130,.1,'sine',.22,60)},nope(){tone(180,.12,'square',.05,120)}};
+// ================================================= haptics
+const HAP=(()=>{let lab=null,last=0;const canVib=typeof navigator.vibrate==='function'&&!/iP(hone|ad|od)/.test(navigator.userAgent);
+  function setup(){if(lab||!document.body)return;const i=document.createElement('input');i.type='checkbox';i.setAttribute('switch','');i.id='hapSw';i.tabIndex=-1;i.className='hapsw';i.setAttribute('aria-hidden','true');
+    lab=document.createElement('label');lab.htmlFor='hapSw';lab.className='hapsw';lab.setAttribute('aria-hidden','true');document.body.append(i,lab)}
+  const tick=()=>{try{setup();const a=document.activeElement;lab.click();if(a&&a!==document.activeElement&&a.focus)a.focus({preventScroll:true})}catch(e){}};
+  const VIB={tap:[10],double:[12,60,12],success:[14,70,14,70,30],error:[40,60,40],heavy:[30]},TK={tap:[0],double:[0,90],success:[0,90,180],error:[0,80,160],heavy:[0,45]};
+  function go(kind){if(P&&P.hapOff)return;const now=performance.now();if(now-last<40)return;last=now;
+    if(canVib){try{navigator.vibrate(VIB[kind]||VIB.tap)}catch(e){}return}
+    for(const d of TK[kind]||TK.tap){if(!d)tick();else setTimeout(tick,d)}}
+  return{go}})();
+const hap=k=>HAP.go(k||'tap');
+for(const[k,h]of[['drop','tap'],['thud','tap'],['nope','error'],['discover','success'],['over','heavy'],['combo','double'],['ui','tap']]){const f=sfx[k];sfx[k]=function(...a){hap(h);return f.apply(this,a)}}
+{const f=sfx.merge;sfx.merge=function(l,c){hap(l>=6?'heavy':'tap');return f.call(this,l,c)}}
 
 // ================================================= flat effects
 let parts=[],rings=[],texts=[],bigT=null,shake=0,freeze=0,flash=0;
@@ -905,16 +942,202 @@ const Squish=(()=>{
   return{start,update,render,bg,down,up,key,restyle,serialize,restore,state:()=>st};
 })();
 
+// ---- Jellydoku puzzle generator: one jelly per row, column and color region; no two jellies touch (even diagonally); exactly one solution
+const DokuGen=(()=>{
+  function rng(seed){let a=seed>>>0;return()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296}}
+  function shuffle(a,r){for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+  function queens(N,r){const sol=[],used=new Array(N).fill(false);
+    const go=row=>{if(row===N)return true;for(const c of shuffle([...Array(N).keys()],r)){if(used[c])continue;if(row&&Math.abs(c-sol[row-1])<2)continue;used[c]=true;sol[row]=c;if(go(row+1))return true;used[c]=false}return false};
+    return go(0)?sol:null}
+  function grow(N,sol,r,twist){const reg=new Array(N*N).fill(-1),cells=[...Array(N)].map(()=>[]);
+    for(let i=0;i<N;i++){reg[i*N+sol[i]]=i;cells[i].push(i*N+sol[i])}let left=N*N-N;
+    const nb=k=>{const y=Math.floor(k/N),x=k%N,o=[];if(x>0)o.push(k-1);if(x<N-1)o.push(k+1);if(y>0)o.push(k-N);if(y<N-1)o.push(k+N);return o};
+    while(left>0){// pick a region: mostly the smaller ones, sometimes any (twist makes snakier, uneven shapes)
+      const order=[...Array(N).keys()].sort((a,b)=>cells[a].length-cells[b].length+(r()-.5)*twist*N);
+      let done=false;for(const g of order){const fr=[];for(const k of cells[g])for(const q of nb(k))if(reg[q]<0)fr.push(q);if(!fr.length)continue;
+        const q=fr[Math.floor(r()*fr.length)];reg[q]=g;cells[g].push(q);left--;done=true;break}
+      if(!done)break}
+    return reg}
+  // region-first search with "fewest options first" ordering; returns up to `limit` solutions as row->col arrays
+  function solve(N,reg,given,limit){const out=[],cellsOf=[...Array(N)].map(()=>[]);for(let k=0;k<N*N;k++)cellsOf[reg[k]].push(k);
+    const rowU=new Array(N).fill(false),colU=new Array(N).fill(false),regU=new Array(N).fill(false),blk=new Int16Array(N*N),sol=new Array(N).fill(-1);
+    const mark=(k,d)=>{const y=Math.floor(k/N),x=k%N;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const yy=y+dy,xx=x+dx;if(yy>=0&&yy<N&&xx>=0&&xx<N)blk[yy*N+xx]+=d}};
+    const ok=k=>{const y=Math.floor(k/N),x=k%N;return!rowU[y]&&!colU[x]&&!blk[k]};
+    const place=(k,d)=>{const y=Math.floor(k/N),x=k%N,g=reg[k];rowU[y]=colU[x]=regU[g]=d>0;sol[y]=d>0?x:-1;mark(k,d)};
+    for(const row in given){const k=+row*N+given[row];if(!ok(k)||regU[reg[k]])return out;place(k,1)}
+    const go=left=>{if(out.length>=limit)return;if(!left){out.push(sol.slice());return}
+      let bg=-1,bc=null;for(let g=0;g<N;g++){if(regU[g])continue;const c=cellsOf[g].filter(ok);if(!c.length)return;if(!bc||c.length<bc.length){bg=g;bc=c;if(c.length===1)break}}
+      // also prune: every free row and column still needs a spot
+      for(let y=0;y<N;y++)if(!rowU[y]){let any=false;for(let x=0;x<N&&!any;x++)if(ok(y*N+x)&&!regU[reg[y*N+x]])any=true;if(!any)return}
+      for(const k of bc){place(k,1);go(left-1);place(k,-1);if(out.length>=limit)return}};
+    go(N-Object.keys(given).length);return out}
+  function connected(N,reg,g,skip){let start=-1,total=0;for(let k=0;k<N*N;k++)if(reg[k]===g&&k!==skip){total++;if(start<0)start=k}if(!total)return false;
+    const seen=new Set([start]),st=[start];while(st.length){const k=st.pop(),y=Math.floor(k/N),x=k%N;for(const q of[x>0?k-1:-1,x<N-1?k+1:-1,y>0?k-N:-1,y<N-1?k+N:-1])if(q>=0&&q!==skip&&reg[q]===g&&!seen.has(q)){seen.add(q);st.push(q)}}return seen.size===total}
+  // reshape regions until the intended layout is the only solution
+  function repair(N,sol,reg,r,given){const solCell=new Set(sol.map((c,i)=>i*N+c));
+    for(let it=0;it<2000;it++){const s=solve(N,reg,given,2);if(s.length===1)return true;const alt=s.find(x=>x.some((c,i)=>c!==sol[i]));if(!alt)return true;
+      const xs=shuffle([...Array(N).keys()].filter(i=>alt[i]!==sol[i]).map(i=>i*N+alt[i]),r);let moved=false;
+      for(const X of xs){if(solCell.has(X))continue;const g=reg[X],y=Math.floor(X/N),x=X%N;
+        const hs=shuffle([x>0?X-1:-1,x<N-1?X+1:-1,y>0?X-N:-1,y<N-1?X+N:-1].filter(q=>q>=0&&reg[q]!==g).map(q=>reg[q]),r);
+        for(const h of hs){if(!connected(N,reg,g,X))break;reg[X]=h;moved=true;break}if(moved)break}
+      if(!moved){// stuck: nudge a random border cell into a neighbouring region and keep going
+        for(let tries=0;tries<40&&!moved;tries++){const X=Math.floor(r()*N*N);if(solCell.has(X))continue;const g=reg[X],y=Math.floor(X/N),x=X%N;
+          const hs=[x>0?X-1:-1,x<N-1?X+1:-1,y>0?X-N:-1,y<N-1?X+N:-1].filter(q=>q>=0&&reg[q]!==g).map(q=>reg[q]);
+          if(hs.length&&connected(N,reg,g,X)){reg[X]=hs[Math.floor(r()*hs.length)];moved=true}}
+        if(!moved)return false}}
+    return false}
+  function make(N,seed,{twist=1,givens=0}={}){const r=rng(seed);let best=null;
+    for(let a=0;a<60&&!best;a++){const sol=queens(N,r);if(!sol)continue;const reg=grow(N,sol,r,twist);if(repair(N,sol,reg,r,{}))best={N,sol,reg,given:{}}}
+    if(!best){const sol=queens(N,r),reg=grow(N,sol,r,twist);best={N,sol,reg,given:{}};
+      for(let k=0;k<N;k++){const s=solve(N,reg,best.given,2);if(s.length<=1)break;const alt=s.find(x=>x.some((c,i)=>c!==sol[i]));const rows=[...Array(N).keys()].filter(i=>alt[i]!==sol[i]);const row=rows[Math.floor(r()*rows.length)];best.given[row]=sol[row]}}
+    const free=shuffle([...Array(N).keys()].filter(i=>best.given[i]==null),r);for(let i=0;i<givens&&i<free.length;i++)best.given[free[i]]=best.sol[free[i]];
+    return best}
+  return{make,solve}})();
+
+// ================================================= GAME 3: Jellydoku (one jelly per row, column and color; jellies never touch)
+const Doku=(()=>{
+  const BX=14,BY=104,BS=372,SIZES=[5,5,6,6,6,7,7,7,8,8,8,8,9,9,9,9];
+  const sizeFor=l=>SIZES[l-1]||10;
+  let st='done',lvl=1,seed=1,pz=null,nextPz=null,N=5,CS=74,cells=[],lives=3,streak=0,bestStreak=0,tLevel=0,okN=0,badN=0,hints=0,hintsUsed=0,
+      markMode=false,cur=-1,clear=null,levelsDone=0,totOk=0,totBad=0,dn=null,lpT=0,dragVal=null,lastCell=-1,endT=0,lvlStreakPts=0,heartPop=[0,0,0],streakPop=0;
+  // ten clearly different region colours; neighbouring region ids get far-apart hues; each region's jelly matches its colour
+  const DKC=['#ff9a9a','#ffc185','#ffe680','#c6ef8a','#8fe6c4','#8edcf0','#a3c0ff','#c8b0ff','#f2adf5','#ffc2df'],DKJ=[1,2,3,4,5,6,7,8,9,0],ORD=[0,5,2,7,4,9,1,6,3,8];
+  const regCol=g=>DKC[ORD[g%10]];
+  const C=g=>critter(cos('doku').set,DKJ[ORD[g%10]]);
+  const parFor=()=>Math.round(N*N*(2.6-Math.min(1.1,lvl/25)));
+  const gen=l=>DokuGen.make(sizeFor(l),seed*7919+l*104729,{twist:Math.min(2.2,.7+l*.09),givens:l===1?1:0});
+  function setup(p){pz=p;N=p.N;CS=BS/N;cells=[];for(let k=0;k<N*N;k++)cells.push({reg:p.reg[k],j:null,mark:false,wrong:null,wob:0});
+    for(const row in p.given){const k=+row*N+p.given[row];cells[k].j={given:true,pop:1,sq:0,sqv:0,happy:0,blink:rand(1,4),bt:0,hop:0}}
+    tLevel=0;okN=0;badN=0;lives=3;heartPop=[0,0,0];hints=lvl<=5?2:1;hintsUsed=0;lvlStreakPts=0;cur=-1;clear=null;st='play';setMid('Level',lvl);syncBar()}
+  function reset(){st='play';markMode=false;dn=null;dragVal=null}
+  function start(){reset();lvl=1;seed=Math.floor(Math.random()*1e9);streak=0;bestStreak=0;levelsDone=0;totOk=0;totBad=0;nextPz=null;setup(gen(lvl));restyle()}
+  function serialize(){if(st==='clear'&&clear)return{score:score+(clear.added?0:clear.total),lvl:lvl+1,seed,lives:3,streak,bestStreak,t:0,ok:0,bad:0,hints:null,hu:0,ld:levelsDone,to:totOk,tb:totBad,lsp:0,j:[],hj:[],m:[]};if(st!=='play')return null;
+    return{score,lvl,seed,lives,streak,bestStreak,t:Math.round(tLevel),ok:okN,bad:badN,hints,hu:hintsUsed,ld:levelsDone,to:totOk,tb:totBad,lsp:lvlStreakPts,
+      j:cells.map((c,k)=>c.j&&!c.j.given?k:-1).filter(k=>k>=0),hj:cells.map((c,k)=>c.j&&c.j.hint?k:-1).filter(k=>k>=0),m:cells.map((c,k)=>c.mark?k:-1).filter(k=>k>=0)}}
+  function restore(d){reset();lvl=d.lvl||1;seed=d.seed||1;streak=d.streak||0;bestStreak=d.bestStreak||0;levelsDone=d.ld||0;totOk=d.to||0;totBad=d.tb||0;score=shown=d.score||0;scoreEl.textContent=fmt(score);
+    setup(gen(lvl));lives=clamp(d.lives||3,1,3);tLevel=d.t||0;okN=d.ok||0;badN=d.bad||0;hints=d.hints??hints;hintsUsed=d.hu||0;lvlStreakPts=d.lsp||0;
+    for(const k of d.j||[])if(cells[k]&&pz.sol[Math.floor(k/N)]===k%N)cells[k].j={pop:1,sq:0,sqv:0,happy:0,blink:rand(1,4),bt:0,hop:0,hint:(d.hj||[]).includes(k)};
+    for(const k of d.m||[])if(cells[k])cells[k].mark=true;restyle()}
+  function restyle(){const B=BOARDS[cos('doku').board];theme(B.bg,B.hud);
+    gbar(`<div class="dkbar"><button class="btn small white" id="dkMark" type="button">Mark: off</button><button class="btn small mint" id="dkHint" type="button">Hint</button></div><p class="tip">Tap a square to drop a jelly. Hold or drag (or use Mark) to note an X.</p>`);
+    $('dkMark').onclick=()=>{audio();markMode=!markMode;sfx.ui();syncBar()};$('dkHint').onclick=()=>{audio();hint()};syncBar()}
+  function syncBar(){const m=$('dkMark'),h=$('dkHint');if(!m||!h)return;m.textContent='Mark: '+(markMode?'on':'off');m.classList.toggle('pink',markMode);m.classList.toggle('white',!markMode);h.textContent=`Hint (${hints})`;h.disabled=hints<=0||st!=='play'}
+  const rc=k=>[Math.floor(k/N),k%N];
+  function blocked(k){const[y,x]=rc(k),g=cells[k].reg;for(let q=0;q<N*N;q++){if(q===k||!cells[q].j)continue;const[yy,xx]=rc(q);if(yy===y||xx===x||cells[q].reg===g||(Math.abs(yy-y)<=1&&Math.abs(xx-x)<=1))return true}return false}
+  const center=k=>{const[y,x]=rc(k);return{x:BX+x*CS+CS/2,y:BY+y*CS+CS/2}};
+  const placedN=()=>cells.filter(c=>c.j).length;
+  function newJ(extra){return Object.assign({pop:0,sq:0,sqv:-7,happy:1,blink:rand(1,4),bt:0,hop:0},extra||{})}
+  function tap(k){if(st!=='play'||k<0)return;const c=cells[k],q=center(k);
+    if(c.j){c.j.sqv-=5;c.j.happy=.6;sfx.pop(c.reg);return}
+    if(blocked(k)){c.wob=.35;sfx.nope();return}
+    const[y,x]=rc(k);
+    if(pz.sol[y]===x){c.j=newJ();c.mark=false;okN++;totOk++;streak++;if(streak>bestStreak)bestStreak=streak;
+      const mult=1+Math.min(streak,30)*.5,pts=Math.round(10*mult);lvlStreakPts+=pts;addScore(pts,1.15+Math.min(.4,streak*.02));streakPop=1;
+      const cr=C(c.reg);burst(q.x,q.y,cr.c,10+Math.min(streak,20),220+streak*8,.4);ring(q.x,q.y,CS*.55,INK);float(q.x,q.y-CS*.4,'+'+pts,'#fff',16+Math.min(10,streak*.5));
+      sfx.merge(Math.min(10,2+Math.floor(streak/2)),0);
+      for(let i=0;i<N*N;i++)if(i!==k&&!cells[i].j&&blocked(i))cells[i].fade=1;
+      if(streak>=3&&streak%5===0){big('Streak x'+streak+'!','#ffd23f');ring(q.x,q.y,CS*1.6,'#ffd23f');sfx.combo(Math.min(8,streak/5+2));addShake(.15);if(streak%10===0)confAtWorld(q,60)}
+      if(placedN()===N)levelClear()}
+    else{c.wrong={t:0};c.mark=true;badN++;totBad++;const had=streak;streak=0;lives--;heartPop[lives]=1;
+      addShake(.35);flash=.6;sfx.nope();sfx.thud();float(q.x,q.y-CS*.4,had>=3?'Streak lost!':'Oops!','#ff5f6d',18);burst(q.x,q.y,'#ff5f6d',12,260,.2);
+      if(lives<=0)endRun()}
+    syncBar()}
+  function confAtWorld(q,n){const r=cv.getBoundingClientRect();confetti(r.left+offX+q.x*sc,r.top+offY+q.y*sc,n,650)}
+  function hint(){if(st!=='play'||hints<=0){sfx.nope();return}
+    let best=-1,bc=1e9;for(let g=0;g<N;g++){if(cells.some(c=>c.j&&c.reg===g))continue;const cnt=cells.filter((c,k)=>c.reg===g&&!c.j&&!blocked(k)).length;if(cnt<bc){bc=cnt;best=g}}
+    if(best<0)return;const k=cells.findIndex((c,i)=>c.reg===best&&pz.sol[Math.floor(i/N)]===i%N);if(k<0)return;
+    hints--;hintsUsed++;cells[k].j=newJ({hint:true});cells[k].mark=false;const q=center(k);ring(q.x,q.y,CS*.8,'#7cc8ff');burst(q.x,q.y,'#7cc8ff',14,260,.6);float(q.x,q.y-CS*.4,'Hint','#7cc8ff',16);sfx.discover();
+    if(placedN()===N)levelClear();syncBar()}
+  function setMark(k,v){if(k<0||cells[k].j)return;if(cells[k].mark!==v){cells[k].mark=v;cells[k].wob=.12;tone(v?520:380,.04,'triangle',.05);hap('tap')}}
+  function levelClear(){st='clear';levelsDone++;const par=parFor(),acc=okN+badN?okN/(okN+badN):1;
+    const clearPts=100*N+40*(lvl-1),timePts=Math.round(Math.max(0,par-tLevel)/par*80*N),accPts=Math.round(acc*acc*90*N),flaw=badN===0&&hintsUsed===0?Math.round(clearPts*.5):0;
+    const lines=[['Level '+lvl+' clear',clearPts],['Time '+mmss(tLevel)+' (par '+mmss(par)+')',timePts],['Accuracy '+Math.round(acc*100)+'%',accPts]];if(flaw)lines.push(['Flawless!',flaw]);
+    lines.push(['Streak points this level',lvlStreakPts,true]);
+    clear={t:0,lines,total:clearPts+timePts+accPts+flaw,shown:0,added:false,ready:false,flaw};
+    cells.forEach((c,k)=>{if(c.j){c.j.hopD=(Math.floor(k/N)+k%N)*.06;c.j.hop=0}});
+    big(flaw?'FLAWLESS!':'LEVEL CLEAR!',flaw?'#ffd23f':'#5be0a6');sfx.discover();addShake(.25);confAtWorld({x:W/2,y:BY+BS/2},90);
+    setTimeout(()=>{if(st==='clear'&&!nextPz)nextPz=gen(lvl+1)},120);syncBar()}
+  function finishClear(silent){if(!clear)return;if(!clear.added){clear.added=true;addScore(clear.total,1.6)}lvl++;if(!silent)sfx.ui();const p=nextPz||gen(lvl);nextPz=null;setup(p);if(!silent){const q={x:W/2,y:BY+BS/2};ring(q.x,q.y,BS*.6,'#fff')}}
+  function endRun(){st='ending';endT=1.6;sfx.over();big('OUT OF LIVES','#ff6fa8');syncBar()}
+  const mmss=t=>{t=Math.max(0,Math.round(t));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
+  function update(dt){
+    if(st==='play')tLevel+=dt;
+    for(const c of cells){if(c.wob>0)c.wob=Math.max(0,c.wob-dt);if(c.fade>0)c.fade=Math.max(0,c.fade-dt*2.5);
+      if(c.wrong){c.wrong.t+=dt;if(c.wrong.t>.75)c.wrong=null}
+      const j=c.j;if(!j)continue;j.sqv+=(-650*j.sq-12*j.sqv)*dt;j.sq+=j.sqv*dt;if(j.pop<1)j.pop=Math.min(1,j.pop+dt*4.5);if(j.happy>0)j.happy-=dt;j.blink-=dt;if(j.blink<0){j.bt=.13;j.blink=rand(1.5,5)}if(j.bt>0)j.bt-=dt;
+      if(st==='clear'&&clear){const k=clear.t-(j.hopD||0);j.hop=k>0&&k<.5?Math.sin(k/.5*Math.PI):0;if(k>0&&k<dt*1.5){const i=cells.indexOf(c),q=center(i);burst(q.x,q.y,C(c.reg).c,8,200,.5);sfx.pop(c.reg+3)}}}
+    for(let i=0;i<3;i++)heartPop[i]=Math.max(0,heartPop[i]-dt*2);streakPop=Math.max(0,streakPop-dt*3);
+    if(st==='clear'&&clear){clear.t+=dt;const n=Math.floor((clear.t-1.1)/.38)+1;if(n>clear.shown&&n<=clear.lines.length){clear.shown=n;sfx.coin(n*3);hap('tap')}
+      if(clear.t>1.1+clear.lines.length*.38+.3&&!clear.added){clear.added=true;addScore(clear.total,1.6);sfx.discover()}
+      if(clear.added&&clear.t>1.1+clear.lines.length*.38+.6)clear.ready=true;
+      if(clear.ready&&clear.t>9)finishClear(false)}
+    if(st==='ending'){endT-=dt;if(endT<=0){st='done';const acc=totOk+totBad?Math.round(totOk/(totOk+totBad)*100):100;
+      finishRound('doku',{level:lvl,levels:levelsDone,streak:bestStreak},'Out of lives!',[['Level',lvl],['Accuracy',acc+'%'],['Best streak','x'+bestStreak]])}}}
+  function bg(c,ex){const B=BOARDS[cos('doku').board];c.fillStyle=B.bg;c.fillRect(ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(255,255,255,.06)';for(let y=Math.floor(ex.y0/44)*44;y<ex.y1;y+=44)for(let x=Math.floor(ex.x0/44)*44;x<ex.x1;x+=44){circ(c,x+(Math.abs(Math.round(y/44))%2?22:0),y,3.5);c.fill()}}
+  function heart(c,x,y,s,full){heartPath(c,x,y,s);c.fillStyle=full?'#ff5f7e':'rgba(255,255,255,.18)';c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke()}
+  function render(c){const B=BOARDS[cos('doku').board],cs=cos('doku');
+    outlineText(c,`Level ${lvl}  ·  ${N}×${N}`,W/2,46,24,'#fff');
+    const par=parFor(),over=tLevel>par;outlineText(c,mmss(tLevel)+(st==='play'||st==='clear'?'  /  par '+mmss(par):''),W/2,78,17,over?'#ffb3c0':'#d8fff0');
+    rr(c,BX-10,BY-10,BS+20,BS+20,24);c.fillStyle=B.board;c.fill();if(B.fx)boardFX(c,B,BX-10,BY-10,BS+20,BS+20,24);rr(c,BX-10,BY-10,BS+20,BS+20,24);c.lineWidth=4;c.strokeStyle=INK;c.stroke();
+    c.save();rr(c,BX,BY,BS,BS,12);c.clip();
+    for(let k=0;k<N*N;k++){const[y,x]=rc(k),cl=cells[k],px=BX+x*CS,py=BY+y*CS;const wob=cl.wob>0?Math.sin(cl.wob*60)*3*cl.wob/.35:0;
+      c.fillStyle=regCol(cl.reg);c.fillRect(px+wob,py,CS+.5,CS+.5);
+      const bl=!cl.j&&st!=='ending'&&blocked(k);if(bl){c.fillStyle=`rgba(43,35,64,${.13+(cl.fade||0)*.3})`;c.fillRect(px,py,CS+.5,CS+.5);c.fillStyle='rgba(43,35,64,.5)';circ(c,px+CS/2,py+CS/2,Math.max(2,CS*.055));c.fill()}
+      if(cl.mark&&!cl.j&&!bl){c.strokeStyle=INK;c.lineWidth=Math.max(2,CS*.06);c.lineCap='round';const m=CS*.3;c.beginPath();c.moveTo(px+m+wob,py+m);c.lineTo(px+CS-m+wob,py+CS-m);c.moveTo(px+CS-m+wob,py+m);c.lineTo(px+m+wob,py+CS-m);c.stroke()}
+      if(k===cur&&st==='play'){c.strokeStyle='#fff';c.lineWidth=3;c.strokeRect(px+3,py+3,CS-6,CS-6)}}
+    c.strokeStyle='rgba(43,35,64,.22)';c.lineWidth=1.2;c.beginPath();for(let i=1;i<N;i++){c.moveTo(BX+i*CS,BY);c.lineTo(BX+i*CS,BY+BS);c.moveTo(BX,BY+i*CS);c.lineTo(BX+BS,BY+i*CS)}c.stroke();
+    c.strokeStyle=INK;c.lineWidth=Math.max(2.5,CS*.06);c.lineCap='round';c.beginPath();
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++){const g=cells[y*N+x].reg;if(x<N-1&&cells[y*N+x+1].reg!==g){c.moveTo(BX+(x+1)*CS,BY+y*CS);c.lineTo(BX+(x+1)*CS,BY+(y+1)*CS)}if(y<N-1&&cells[(y+1)*N+x].reg!==g){c.moveTo(BX+x*CS,BY+(y+1)*CS);c.lineTo(BX+(x+1)*CS,BY+(y+1)*CS)}}c.stroke();
+    c.restore();rr(c,BX,BY,BS,BS,12);c.lineWidth=3.5;c.strokeStyle=INK;c.stroke();
+    if(st==='ending')for(let y=0;y<N;y++){const k=y*N+pz.sol[y];if(cells[k].j)continue;const q=center(k),cr=C(cells[k].reg);c.globalAlpha=.45;drawAnimal(c,q.x,q.y,CS*.32,cr.k,cr.c,{fx:cr.fx,mood:3});c.globalAlpha=1}
+    for(let k=0;k<N*N;k++){const cl=cells[k],q=center(k);
+      if(cl.wrong){const t=cl.wrong.t,s=t<.45?1:Math.max(0,1-(t-.45)/.3),shk=Math.sin(t*50)*CS*.06*(1-t);if(s>0)drawAnimal(c,q.x+shk,q.y,CS*.34*s,'jelly','#ff5f6d',{mood:1,sq:.15*Math.sin(t*30),sqa:0})}
+      const j=cl.j;if(!j)continue;const cr=C(cl.reg),s=j.pop<1?elastic(j.pop):1,hy=(j.hop||0)*CS*.35;
+      drawAnimal(c,q.x,q.y-hy,CS*.36,cr.k,cr.c,{fx:cr.fx,s,sq:j.sq,sqa:Math.PI/2,mood:j.happy>0||st==='clear'?2:0,blink:j.bt,hat:CS>=46?cs.hat:'none',jig:Math.min(.05,Math.abs(j.sq)*.25)+.006});
+      if(j.given||j.hint){c.save();c.translate(q.x+CS*.32,q.y-CS*.32);if(j.given){star5(c,CS*.11);c.fillStyle='#ffd23f'}else{circ(c,0,0,CS*.09);c.fillStyle='#7cc8ff'}c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.restore()}}
+    drawFX(c);
+    // lives and streak
+    const hy0=BY+BS+44;for(let i=0;i<3;i++){const p=heartPop[i],s=13*(1+p*.6);c.save();c.translate(W/2-110+i*34,hy0);if(p>0)c.rotate(Math.sin(p*20)*.3);heart(c,0,0,s,i<lives);c.restore()}
+    const sp=1+streakPop*.35,sc2=streak>=20?'#ff5fd8':streak>=10?'#ffd23f':streak>=5?'#ff9a3c':'#fff';c.save();c.translate(W/2+70,hy0-2);c.scale(sp,sp);outlineText(c,streak>1?'Streak x'+streak:'Streak',0,0,20,sc2);c.restore();
+    if(streak>=5){for(let i=0;i<3;i++){const a=time*4+i*2.1;c.fillStyle=sc2;c.globalAlpha=.6;circ(c,W/2+70+Math.cos(a)*62,hy0-2+Math.sin(a*1.3)*12,2.5);c.fill()}c.globalAlpha=1}
+    if(st==='clear'&&clear&&clear.t>.9){const a=Math.min(1,(clear.t-.9)/.25),s=elastic(a);c.save();c.translate(W/2,BY+BS/2);c.scale(s,s);
+      const h=86+clear.lines.length*34;rr(c,-170,-h/2,340,h,22);c.fillStyle='#fff';c.fill();c.lineWidth=4;c.strokeStyle=INK;c.stroke();
+      outlineText(c,clear.flaw?'Flawless!':'Level clear!',0,-h/2+30,26,clear.flaw?'#ffd23f':'#5be0a6');
+      c.font=`600 16px ${'Fredoka,sans-serif'}`;c.textBaseline='middle';
+      for(let i=0;i<clear.shown;i++){const[l,v,soft]=clear.lines[i],y=-h/2+70+i*34;c.textAlign='left';c.fillStyle=soft?'#7a6f8f':INK;c.fillText(l,-150,y);c.textAlign='right';c.fillStyle=soft?'#7a6f8f':'#d6336f';c.fillText((soft?'':'+')+fmt(v),150,y)}
+      if(clear.added){c.textAlign='center';outlineText(c,'+'+fmt(clear.total),0,h/2-26,26,'#ffd23f')}
+      c.restore();if(clear.ready)outlineText(c,'Tap for level '+(lvl+1),W/2,BY+BS+12-Math.sin(time*5)*3,18,'#fff')}}
+  function cellAt(p){const x=Math.floor((p.x-BX)/CS),y=Math.floor((p.y-BY)/CS);return x>=0&&y>=0&&x<N&&y<N?y*N+x:-1}
+  function skipClear(){if(!clear)return;const end=1.1+clear.lines.length*.38+.6;if(clear.t<end)clear.t=end;clear.shown=clear.lines.length;if(!clear.added){clear.added=true;addScore(clear.total,1.6);sfx.discover()}clear.ready=true}
+  function down(p){if(st==='clear'){if(clear&&clear.ready)finishClear(false);else skipClear();return}if(st!=='play')return;const k=cellAt(p);if(k<0)return;
+    if(markMode){dragVal=!cells[k].mark;setMark(k,dragVal);lastCell=k;return}
+    dn={k,lp:false};clearTimeout(lpT);lpT=setTimeout(()=>{if(dn&&dn.k===k&&!dn.lp){dn.lp=true;dragVal=!cells[k].mark;setMark(k,dragVal);lastCell=k}},380)}
+  function move(p){if(st!=='play')return;const k=cellAt(p);if(k<0)return;
+    if(dragVal!==null){if(k!==lastCell){setMark(k,dragVal);lastCell=k}return}
+    if(dn&&!dn.lp&&k!==dn.k){clearTimeout(lpT);dn.lp=true;dragVal=!cells[dn.k].mark;setMark(dn.k,dragVal);setMark(k,dragVal);lastCell=k}}
+  function up(p){clearTimeout(lpT);if(dragVal!==null){dragVal=null;dn=null;return}if(dn&&!dn.lp)tap(dn.k);dn=null}
+  function key(k){if(st==='clear'&&(k===' '||k==='Enter')){if(clear&&clear.ready)finishClear(false);else skipClear();return}if(st!=='play')return;
+    const mv={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]}[k];
+    if(mv){if(cur<0)cur=0;else{const[y,x]=rc(cur);cur=clamp(y+mv[0],0,N-1)*N+clamp(x+mv[1],0,N-1)}tone(700,.03,'triangle',.04);return}
+    if(k==='x'||k==='m'){if(cur>=0)setMark(cur,!cells[cur].mark);return}if(k==='h'){hint();return}}
+  function action(){if(st==='play'&&cur>=0)tap(cur)}
+  return{start,update,render,bg,down,move,up,key,action,restyle,serialize,restore,state:()=>st};
+})();
+
 // ================================================= registry, quests
 const GAMES={
   drop:{id:'drop',name:'Jelly Jar',impl:Drop,coins:s=>s.score/120},
-  squish:{id:'squish',name:'Jelly 2048',impl:Squish,coins:s=>s.score/60}};
+  squish:{id:'squish',name:'Jelly 2048',impl:Squish,coins:s=>s.score/60},
+  doku:{id:'doku',name:'Jellydoku',impl:Doku,coins:s=>s.score/90}};
 const QUESTS=[
  {id:'d_score',g:'drop',t:'Score 1,500 in one Jelly Jar round',goal:1500,mode:'max',key:'score',r:50},
  {id:'d_merges',g:'drop',t:'Make 40 merges in Jelly Jar',goal:40,mode:'sum',key:'merges',r:40},
  {id:'d_combo',g:'drop',t:'Hit a x4 combo in Jelly Jar',goal:4,mode:'max',key:'combo',r:60},
  {id:'q_tile',g:'squish',t:'Make a 256 tile in Jelly 2048',goal:256,mode:'max',key:'tile',r:60},
  {id:'q_score',g:'squish',t:'Score 2,000 in one Jelly 2048 round',goal:2000,mode:'max',key:'score',r:50},
+ {id:'k_level',g:'doku',t:'Reach level 5 in one Jellydoku run',goal:5,mode:'max',key:'level',r:60},
+ {id:'k_streak',g:'doku',t:'Hit a x10 streak in Jellydoku',goal:10,mode:'max',key:'streak',r:50},
+ {id:'k_clear',g:'doku',t:'Clear 6 Jellydoku levels',goal:6,mode:'sum',key:'levels',r:50},
  {id:'rounds',g:'*',t:'Finish 3 rounds of anything',goal:3,mode:'sum',key:'round',r:30}];
 const qdef=id=>QUESTS.find(q=>q.id===id);
 function ensureQuests(){const t=today();if(P.quests&&P.quests.day===t&&P.quests.list.every(q=>qdef(q.id)))return;const rnd=seeded(dayNum(t));const pool=QUESTS.slice();for(let i=pool.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}P.quests={day:t,list:pool.slice(0,3).map(q=>({id:q.id,p:0,c:false}))};save()}
@@ -924,7 +1147,7 @@ function questProgress(g,s){ensureQuests();const done=[];for(const q of P.quests
 function itemList(g){const out=[];for(const cat in STYLE[g])for(const it of STYLE[g][cat].items)out.push({cat,id:it[0],n:it[1],p:it[2],r:it[3],q:it[4]});return out}
 function styleCount(g){const all=itemList(g);return[all.filter(i=>owns(g,i.cat,i.id)).length,all.length]}
 function drawItem(c,g,cat,id,S=160){
-  c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,S,S);c.save();c.scale(S/160,S/160);const cs=P.cos[g];const bgc=g==='drop'?WALLS[cs.wall].bg:g==='squish'?BOARDS[cs.board].bg:'#33285a';
+  c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,S,S);c.save();c.scale(S/160,S/160);const cs=P.cos[g];const bgc=g==='drop'?WALLS[cs.wall].bg:g==='prof'?'#33285a':BOARDS[cs.board].bg;
   const fill=col=>{c.fillStyle=col;c.fillRect(0,0,160,160)};
   if(cat==='set'){fill(bgc);for(const[i,x,y,r]of[[2,46,112,24],[6,104,104,34],[0,62,56,17]]){const cr=critter(id,i);drawAnimal(c,x,y,r,cr.k,cr.c,{fx:cr.fx,mood:i===6?2:0})}}
   else if(cat==='hat'){fill(bgc);const cr=critter(cs.set,4);drawAnimal(c,80,98,42,cr.k,cr.c,{fx:cr.fx,hat:id,mood:id==='none'?0:2})}
@@ -976,7 +1199,7 @@ function finishRound(g,s,title,items){
   if(gid!==g)return;delete P.saves[g];
   s.score=score;shown=score;scoreEl.textContent=fmt(score);
   const prev=P.best[g]||0,nb=s.score>prev&&s.score>0;if(nb){P.best[g]=s.score;bestEl.textContent=fmt(s.score)}
-  const coins=Math.max(1,Math.round(GAMES[g].coins(s)));P.coins+=coins;P.earned=(P.earned||0)+coins;P.rounds=(P.rounds||0)+1;if(g==='squish')P.maxTile=Math.max(P.maxTile||0,s.tile||0);
+  const coins=Math.max(1,Math.round(GAMES[g].coins(s)));P.coins+=coins;P.earned=(P.earned||0)+coins;P.rounds=(P.rounds||0)+1;if(g==='doku')P.dokuLv=Math.max(P.dokuLv||0,s.level||0);if(g==='squish')P.maxTile=Math.max(P.maxTile||0,s.tile||0);
   const lv0=P.level,up=addXP(10+Math.round(coins*.6));const qd=questProgress(g,s);
   P.meter[g]=(P.meter[g]||0)+1;let sur=null;if(P.meter[g]>=3){P.meter[g]=0;sur=surprise(g);if(!sur)P.coins+=50}
   lastSurprise=sur?{g,...sur}:null;save();refreshCoins();paused=true;
@@ -1021,10 +1244,16 @@ function renderMenu(){ensureQuests();refreshCoins();
   $('mGames').querySelectorAll('.mg').forEach(b=>b.onclick=()=>{const g=b.dataset.g;if(g===gid){closeMenu();return}saveRun(false);sfx.ui();playGame(g);toast(P.saves[g]?'Welcome back!':'Switched to '+GAMES[g].name,'#7cc8ff')});
   $('quests').innerHTML=P.quests.list.map((q,i)=>{const d=qdef(q.id),done=q.p>=d.goal;return`<div class="quest${q.c?' done':''}"><div class="qmain"><span class="qt">${d.t}</span><div class="bar"><i style="width:${q.p/d.goal*100}%"></i></div><span class="qn">${fmt(q.p)} / ${fmt(d.goal)}</span></div>${q.c?'<span class="qr">Done</span>':done?`<button class="btn small mint claim" data-i="${i}" type="button">Claim ${d.r}</button>`:`<span class="qr"><i class="coin"></i>${d.r}</span>`}</div>`}).join('');
   $('quests').querySelectorAll('.claim').forEach(b=>b.onclick=()=>{audio();const q=P.quests.list[+b.dataset.i],d=qdef(q.id);if(q.c)return;q.c=true;P.coins+=d.r;const lv0=P.level;addXP(20);save();confAt(b,40,550);sfx.discover();if(P.level>lv0)toast('Level up! Level '+P.level,'#ff6fa8');renderMenu();syncDots()});
-  $('muteBtn').textContent='Sound: '+(muted?'off':'on')}
+  $('muteBtn').textContent='Sound: '+(muted?'off':'on');$('hapBtn').textContent='Haptics: '+(P.hapOff?'off':'on')}
 function drawMenuPreview(g,c,t){c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,240,180);const cs=P.cos[g];
   if(g==='drop'){wallpaper(c,cs.wall,0,0,240,180,.7);c.fillStyle=WALLS[cs.wall].table;c.fillRect(0,160,240,20);jarBack(c,cs.jar,50,40,140,118);
     for(const[i,x,ph]of[[2,84,0],[5,124,1.1],[3,164,2.2]]){const cr=critter(cs.set,i),r=RADII[i]*.62,b=Math.abs(Math.sin(t*2.6+ph)),y=156-r-b*44;drawAnimal(c,x,y,r,cr.k,cr.c,{fx:cr.fx,rot:Math.sin(t*2+ph)*.5,mood:b>.6?2:0,hat:i>=3?cs.hat:'none'})}jarFront(c,cs.jar,50,40,140,118,.45)}
+  else if(g==='doku'){const B=BOARDS[cs.board];c.fillStyle=B.bg;c.fillRect(0,0,240,180);const R=[0,0,1,1,1,0,2,2,1,3,0,2,4,3,3,2,2,4,4,3,2,4,4,4,3],S=28,X=50,Y=20;
+    rr(c,X-6,Y-6,S*5+12,S*5+12,14);c.fillStyle=B.board;c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();
+    for(let k=0;k<25;k++){c.fillStyle=['#ff9a9a','#8edcf0','#ffe680','#c8b0ff','#8fe6c4'][R[k]];c.fillRect(X+(k%5)*S,Y+Math.floor(k/5)*S,S+.5,S+.5)}
+    c.strokeStyle=INK;c.lineWidth=2.5;c.beginPath();for(let k=0;k<25;k++){const x=k%5,y=Math.floor(k/5);if(x<4&&R[k+1]!==R[k]){c.moveTo(X+(x+1)*S,Y+y*S);c.lineTo(X+(x+1)*S,Y+(y+1)*S)}if(y<4&&R[k+5]!==R[k]){c.moveTo(X+x*S,Y+(y+1)*S);c.lineTo(X+(x+1)*S,Y+(y+1)*S)}}c.stroke();
+    rr(c,X,Y,S*5,S*5,6);c.lineWidth=3;c.stroke();
+    for(const[k,ph]of[[0,0],[13,1],[21,2]]){const cr=critter(cs.set,[1,6,3,8,5][R[k]]),b=Math.abs(Math.sin(t*2.6+ph));drawAnimal(c,X+(k%5)*S+S/2,Y+Math.floor(k/5)*S+S/2-b*5,S*.36,cr.k,cr.c,{fx:cr.fx,mood:b>.6?2:0})}}
   else{const B=BOARDS[cs.board];c.fillStyle=B.bg;c.fillRect(0,0,240,180);rr(c,36,18,168,144,22);c.fillStyle=B.board;c.fill();c.lineWidth=3.5;c.strokeStyle=INK;c.stroke();
     const k=(t%1.8)/1.8;if(k<.45){const e=Math.pow(k/.45,2);drawTile(c,82+38*e,90,62,8,cs.set,{sq:-.15*e});drawTile(c,158-38*e,90,62,8,cs.set,{sq:-.15*e})}else drawTile(c,120,90,62,16,cs.set,{s:elastic(Math.min(1,(k-.45)/.4)*.9+.1),mood:2,hat:cs.hat})}}
 function drawAvatar(){const c=$('mAv').getContext('2d');c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,120,120);const g=gid||'drop',cs=P.cos[g],cr=critter(cs.set,4),b=Math.abs(Math.sin(time*2.4)),fr=P.cos.prof&&P.cos.prof.frame,hasF=fr&&fr!=='none';
@@ -1034,6 +1263,7 @@ $('mResume').onclick=()=>{sfx.ui();closeMenu()};
 $('mStyle').onclick=()=>openStyle(true);
 $('mSave').onclick=()=>{saveRun(true);sfx.coin(2);const b=$('mSave');b.textContent='Saved!';setTimeout(()=>b.textContent='Save',1400);renderMenu()};
 $('mRestart').onclick=()=>{if(restartArm>time){delete P.saves[gid];save();playGame(gid,true);return}restartArm=time+2;$('mRestart').textContent='Sure?';sfx.nope();setTimeout(()=>{if(restartArm<=time)$('mRestart').textContent='Restart'},2100)};
+$('hapBtn').onclick=()=>{P.hapOff=!P.hapOff;save();$('hapBtn').textContent='Haptics: '+(P.hapOff?'off':'on');if(!P.hapOff)hap('double')};
 $('muteBtn').onclick=()=>{audio();muted=!muted;store.set('jj_mute',muted);if(master)master.gain.value=muted?0:.55;$('muteBtn').textContent='Sound: '+(muted?'off':'on');if(!muted)sfx.ui()};
 $('oAgain').onclick=()=>playGame(gid,true);
 $('oMenu').onclick=()=>{$('over').hidden=true;openMenu()};
@@ -1052,8 +1282,9 @@ const FB_CONFIG={
 const ADMIN_EMAIL='test@gmail.com'; // must match the email in database.rules.json
 const FBU='https://www.gstatic.com/firebasejs/10.12.2/';
 const WEEK=7*864e5;
-var FA=null,FD=null,AUTH=null,RDB=null,ME=null,UID=null,fbDown=false,acctReady=false,myLb=null,pendingName=null,
-    lbBy={drop:[],squish:[]},lbReady=false,lbGame='drop',writing=false,again=false,renaming=false,cloudTimer=0,aMode='in',
+var FAPP=null,AUTH2=null,RDB2=null,MAINU,ALTU,ACTIVE=(()=>{try{return localStorage.getItem('ca_active')==='alt'?'alt':'main'}catch(e){return'main'}})(),emShow=0,emArm=0,
+    FA=null,FD=null,AUTH=null,RDB=null,ME=null,UID=null,fbDown=false,acctReady=false,myLb=null,pendingName=null,
+    lbBy={drop:[],squish:[],doku:[]},lbReady=false,lbGame='drop',writing=false,again=false,renaming=false,cloudTimer=0,aMode='in',
     GAS={},gaReady=false,gaEntries={},gaUnsubs=[],myPrizes={},prizeUnsub=null,pfD=null;
 const KINDS=new Set(['jelly','chick','mouse','hamster','bunny','cat','dog','pig','fox','panda','bear','lion','frog','koala','monkey','penguin','unicorn']);
 const FXS=new Set(['ghost','crystal','neon','holo','galaxy','gold']);
@@ -1061,7 +1292,7 @@ const HAT_IDS=new Set(HATS.map(h=>h[0])),FRAME_IDS=new Set(FRAMES.map(f=>f[0])),
 const cleanName=v=>String(v||'').replace(/[\u0000-\u001f\u007f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,16);
 const nameKey=n=>encodeURIComponent(cleanName(n).toLowerCase()).replace(/\./g,'%2E');
 const okCol=c=>/^#[0-9a-f]{6}$/i.test(c||'')?c:'#9be04a';
-const fref=p=>FD.ref(RDB,p);
+const fref=p=>FD.ref(ACTIVE==='alt'&&RDB2?RDB2:RDB,p);
 const isAdmin=()=>!!(ME&&ME.email&&ME.email.toLowerCase()===ADMIN_EMAIL);
 const histArr=h=>(Array.isArray(h)?h:h&&typeof h==='object'?Object.keys(h).sort().map(k=>h[k]):[]).filter(x=>typeof x==='string').map(cleanName).filter(Boolean).slice(0,3);
 const joinedAt=()=>{const t=ME&&ME.metadata&&Date.parse(ME.metadata.creationTime);return t||Date.now()};
@@ -1069,21 +1300,59 @@ const fmtWait=ms=>{const h=Math.ceil(ms/36e5);return h>=24?Math.ceil(h/24)+' day
 function nameWait(){const t=UID&&acctReady?(myLb&&typeof myLb.nt==='number'?myLb.nt:0):(P.nameT||0);return t?Math.max(0,t+WEEK-Date.now()):0}
 
 function myBody(){const cr=critter(P.cos.drop.set,4),pr=P.cos.prof||{},hat=P.cos.drop.hat;
-  const b={name:myLb&&myLb.name?cleanName(myLb.name):(cleanName(P.name)||'Critter Pal'),drop:Math.floor(P.best.drop||0),squish:Math.floor(P.best.squish||0),k:cr.k,c:cr.c,lv:Math.min(999,P.level||1),
+  const b={name:myLb&&myLb.name?cleanName(myLb.name):(cleanName(P.name)||'Critter Pal'),drop:Math.floor(P.best.drop||0),squish:Math.floor(P.best.squish||0),doku:Math.floor(P.best.doku||0),k:cr.k,c:cr.c,lv:Math.min(999,P.level||1),
     nt:myLb&&typeof myLb.nt==='number'?myLb.nt:0,j:myLb&&typeof myLb.j==='number'?myLb.j:joinedAt()};
-  if(myLb){b.drop=Math.max(b.drop,+myLb.drop||0);b.squish=Math.max(b.squish,+myLb.squish||0)}
+  if(myLb){b.drop=Math.max(b.drop,+myLb.drop||0);b.squish=Math.max(b.squish,+myLb.squish||0);b.doku=Math.max(b.doku,+myLb.doku||0)}
   if(cr.fx)b.fx=cr.fx;if(hat&&hat!=='none')b.h=hat;if(pr.title&&pr.title!=='none')b.tt=pr.title;if(pr.frame&&pr.frame!=='none')b.fr=pr.frame;
   const h=myLb?histArr(myLb.hist):[];if(h.length)b.hist=h;return b}
 const canon=o=>JSON.stringify(Object.keys(o||{}).sort().reduce((a,k)=>(a[k]=k==='hist'?histArr(o[k]):o[k],a),{}));
 
 (async()=>{try{
   const[a,u,d]=await Promise.all([import(FBU+'firebase-app.js'),import(FBU+'firebase-auth.js'),import(FBU+'firebase-database.js')]);
-  const app=a.initializeApp(FB_CONFIG);FA=u;FD=d;AUTH=u.getAuth(app);RDB=d.getDatabase(app);
-  for(const g of['drop','squish'])d.onValue(d.query(fref('lb'),d.orderByChild(g),d.limitToLast(100)),snap=>{const arr=[];snap.forEach(c=>{arr.push(Object.assign({id:c.key},c.val()))});lbBy[g]=arr;lbReady=true;if(!$('lb').hidden)renderLB()},()=>{lbReady=true;if(!$('lb').hidden)renderLB()});
+  const app=a.initializeApp(FB_CONFIG);FAPP=a;FA=u;FD=d;AUTH=u.getAuth(app);RDB=d.getDatabase(app);
+  for(const g of['drop','squish','doku'])d.onValue(d.query(fref('lb'),d.orderByChild(g),d.limitToLast(100)),snap=>{const arr=[];snap.forEach(c=>{arr.push(Object.assign({id:c.key},c.val()))});lbBy[g]=arr;lbReady=true;if(!$('lb').hidden)renderLB()},()=>{lbReady=true;if(!$('lb').hidden)renderLB()});
   d.onValue(fref('giveaways'),s=>{const v=s.val();GAS=v&&typeof v==='object'?v:{};gaReady=true;if(!$('gw').hidden){gwSub();renderGW()}syncDots()},()=>{gaReady=true});
-  u.onAuthStateChanged(AUTH,onUser);
+  u.onAuthStateChanged(AUTH,x=>{MAINU=x;route()});if(ACTIVE==='alt'||store.get('ca_alt',0))initAlt();
 }catch(e){fbDown=true;acctUI()}})();
 
+// ---- account routing: the admin (and only the admin) can keep a second, alt account signed in and swap between them
+const isAdminU=u=>!!(u&&u.email&&u.email.toLowerCase()===ADMIN_EMAIL);
+const canAlt=()=>isAdminU(MAINU);
+function initAlt(){if(AUTH2||!FAPP)return;const app2=FAPP.initializeApp(FB_CONFIG,'alt');AUTH2=FA.getAuth(app2);RDB2=FD.getDatabase(app2);ALTU=undefined;FA.onAuthStateChanged(AUTH2,x=>{ALTU=x;route()})}
+function setActive(a){ACTIVE=a;try{if(a==='alt')localStorage.setItem('ca_active','alt');else localStorage.removeItem('ca_active')}catch(e){}}
+function route(){if(MAINU===undefined)return;
+  if(ACTIVE==='alt'){if(!canAlt()||!AUTH2)setActive('main');else if(ALTU===undefined)return;else if(!ALTU)setActive('main')}
+  if(!canAlt()&&AUTH2&&ALTU){FA.signOut(AUTH2).catch(()=>{});store.set('ca_alt',0)}
+  const u=ACTIVE==='alt'?ALTU:MAINU;if((u&&u.uid)!==(ME&&ME.uid)){if(ME&&u&&P.owner&&P.owner!==u.uid)freshP();onUser(u)}else acctUI()}
+function freshP(){P={coins:0,xp:0,level:1,streak:1,lastDay:today(),giftDay:'',rounds:0,earned:0,name:'Critter Pal',best:{},found:[0],quests:null,v2:1};norm();store.set('ca_profile',P)}
+function dayTick(){const t=today();if(P.lastDay!==t){const diff=P.lastDay?dayNum(t)-dayNum(P.lastDay):99;P.streak=diff===1?(P.streak||0)+1:1;P.lastDay=t}P.topStreak=Math.max(P.topStreak||0,P.streak);ensureQuests()}
+let swapping=false;
+async function swapAccount(){if(!canAlt()||swapping)return;const to=ACTIVE==='alt'?'main':'alt';if(to==='alt'&&!ALTU){openAcct();return}
+  swapping=true;$('swapBtn').disabled=$('aSwap').disabled=true;
+  try{saveRun(false);await pushCloud()}catch(e){}
+  setActive(to);if(to==='alt'){const pn=store.get('ca_altname','');if(pn)pendingName=pn}
+  freshP();ME=null;await onUser(to==='alt'?ALTU:MAINU);dayTick();save();
+  ['menu','over','style','lb','acct','gw','prof'].forEach(id=>$(id).hidden=true);playGame(gid||P.last||'drop');
+  toast('Now playing as '+P.name,to==='alt'?'#b9a3f0':'#7cc8ff');hap('double');swapping=false;$('swapBtn').disabled=$('aSwap').disabled=false;acctUI()}
+$('swapBtn').onclick=swapAccount;$('aSwap').onclick=swapAccount;
+function renderAlt(){const box=$('aAlt'),ok=canAlt()||ACTIVE==='alt';box.hidden=!ok;if(!ok)return;
+  const onAlt=ACTIVE==='alt';$('aAltForm').hidden=onAlt||!!ALTU;$('aSwap').hidden=!onAlt&&!ALTU;$('aAltOut').hidden=onAlt||!ALTU;
+  $('aSwap').textContent=onAlt?'Switch to main':'Switch to alt';
+  $('aAltTx').textContent=onAlt?'You are on your alt. Admin tools are on your main account.':ALTU?'Your alt is signed in and ready. Swap any time without typing a password.':'Sign in or create a second account you can swap to instantly.'}
+async function altAuth(create){const m=$('aAltMsg'),em=$('aAltEmail').value.trim(),pw=$('aAltPass').value,say=(t,b)=>{m.textContent=t;m.className='nmsg'+(b?' bad':'')};
+  if(!canAlt())return;if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))return say('That email does not look right.',1);if(em.toLowerCase()===ADMIN_EMAIL)return say('Use a different email for the alt.',1);if(pw.length<6)return say('Use a password with at least 6 characters.',1);
+  initAlt();say(create?'Creating your alt…':'Signing in your alt…');
+  try{if(create){const v=cleanName($('aAltName').value);if(v.length<2)return say('Pick an alt player name (2+ characters).',1);const s=await FD.get(fref('names/'+nameKey(v)));if(s.exists())return say('That name is taken.',1);store.set('ca_altname',v);await FA.createUserWithEmailAndPassword(AUTH2,em,pw)}
+    else await FA.signInWithEmailAndPassword(AUTH2,em,pw);
+    store.set('ca_alt',1);$('aAltPass').value='';say('Alt ready! Tap Switch to alt.');sfx.discover();setTimeout(renderAlt,300)}
+  catch(e){say(authMsg(e),1)}}
+$('aAltIn').onclick=()=>altAuth(false);$('aAltNew').onclick=()=>altAuth(true);
+$('aAltOut').onclick=async()=>{if(!AUTH2)return;try{await FA.signOut(AUTH2)}catch(e){}store.set('ca_alt',0);store.set('ca_altname','');$('aAltMsg').textContent='Alt removed from this device.';renderAlt();acctUI()};
+// email stays hidden until you tap twice
+function hideEm(){emShow=0;$('aWho').textContent='Email hidden';$('aWho').classList.remove('shown');$('aShowEm').textContent='Show email'}
+$('aShowEm').onclick=()=>{if(!ME)return;if(emShow){hideEm();return}
+  if(Date.now()>emArm){emArm=Date.now()+3000;$('aShowEm').textContent='Tap again to show';sfx.ui();setTimeout(()=>{if(!emShow&&Date.now()>emArm)$('aShowEm').textContent='Show email'},3100);return}
+  emArm=0;emShow=1;$('aWho').textContent=ME.email||'';$('aWho').classList.add('shown');$('aShowEm').textContent='Hide';hap('tap');setTimeout(()=>{if(emShow)hideEm()},15000)};
 async function onUser(user){ME=user;UID=user?user.uid:null;myLb=null;acctReady=false;if(prizeUnsub){try{prizeUnsub()}catch(e){}prizeUnsub=null}myPrizes={};acctUI();if(!user)return;
   try{const[ps,ls]=await Promise.all([FD.get(fref('users/'+user.uid+'/profile')),FD.get(fref('lb/'+user.uid))]);if(ME!==user)return;
     myLb=ls.exists()?ls.val():null;
@@ -1099,9 +1368,9 @@ async function onUser(user){ME=user;UID=user?user.uid:null;myLb=null;acctReady=f
   }catch(e){acctReady=false;toast('Could not load your account','#ff6fa8')}}
 
 // merge a cloud profile with what is on this device: keep the newer one, never lose best scores or unlocks
-function adoptCloud(cp){const L=P,mine=L.owner===UID,localNewer=mine&&(L.t||0)>(cp.t||0);
+function adoptCloud(cp){if(P.owner&&P.owner!==UID){P=cp;norm();return}const L=P,mine=L.owner===UID,localNewer=mine&&(L.t||0)>(cp.t||0);
   const A=localNewer?L:cp,B=localNewer?cp:L;P=A;norm();
-  for(const g of['drop','squish'])P.best[g]=Math.max(P.best[g]||0,(B.best&&B.best[g])||0);
+  for(const g of['drop','squish','doku'])P.best[g]=Math.max(P.best[g]||0,(B.best&&B.best[g])||0);
   P.own=[...new Set([...P.own,...(B.own||[])])];P.found=[...new Set([...P.found,...(B.found||[])])];
   if((B.level||1)>(P.level||1)||((B.level||1)===(P.level||1)&&(B.xp||0)>(P.xp||0))){P.level=B.level;P.xp=B.xp}
   if(!mine)P.coins=Math.max(P.coins||0,B.coins||0);
@@ -1184,7 +1453,7 @@ $('lbSign').onclick=()=>openAcct('in');
 function openProfile(d){if(!d)return;audio();sfx.ui();pfD={k:KINDS.has(d.k)?d.k:'jelly',c:okCol(d.c),fx:FXS.has(d.fx)?d.fx:undefined,h:HAT_IDS.has(d.h)?d.h:'none',fr:FRAME_IDS.has(d.fr)?d.fr:'none'};paused=true;
   $('pfName').textContent=cleanName(d.name)||'Someone';
   const t=titleOf(TITLE_IDS.has(d.tt)?d.tt:'none');$('pfTitle').hidden=!t;if(t){$('pfTitle').textContent=t.n;$('pfTitle').style.background=t.c}
-  const st=$('pfStats');st.textContent='';for(const[k,v]of[['Level',fmt(+d.lv||1)],['Jelly Jar',fmt(+d.drop||0)],['Jelly 2048',fmt(+d.squish||0)]]){const box=document.createElement('div'),a=document.createElement('span'),b=document.createElement('span');a.className='v';a.textContent=v;b.className='k';b.textContent=k;box.append(a,b);st.appendChild(box)}
+  const st=$('pfStats');st.textContent='';for(const[k,v]of[['Level',fmt(+d.lv||1)],['Jelly Jar',fmt(+d.drop||0)],['Jelly 2048',fmt(+d.squish||0)],['Jellydoku',fmt(+d.doku||0)]]){const box=document.createElement('div'),a=document.createElement('span'),b=document.createElement('span');a.className='v';a.textContent=v;b.className='k';b.textContent=k;box.append(a,b);st.appendChild(box)}
   const hl=$('pfHist');hl.textContent='';const h=histArr(d.hist);
   if(d.id==='local'){const s=document.createElement('span');s.className='pfnone';s.textContent='Sign in to keep a name history.';hl.appendChild(s)}
   else if(!h.length){const s=document.createElement('span');s.className='pfnone';s.textContent='No past names';hl.appendChild(s)}
@@ -1201,16 +1470,17 @@ $('mAv').onclick=()=>{if(UID&&acctReady)openProfile(Object.assign(myBody(),{id:U
 // ---- account sheet
 function acctUI(){const signed=!!ME;
   const t=$('acctTx');t.textContent='';
-  if(signed){t.append('Signed in as ');const b=document.createElement('b');b.textContent=acctReady?P.name:(ME.email||'…');t.append(b)}
+  if(signed){t.append('Signed in as ');const b=document.createElement('b');b.textContent=acctReady?P.name:'…';t.append(b);if(ACTIVE==='alt')t.append(' (alt)')}
   else t.textContent=fbDown?'Offline: progress saves on this device':'Guest · sign in to save and rank';
   $('acctBtn').textContent=signed?'Account':'Sign in';$('acctBtn').hidden=fbDown&&!signed;
-  $('aOut').hidden=signed;$('aIn').hidden=!signed;if(signed)$('aWho').textContent=ME.email||'';
+  $('aOut').hidden=signed;$('aIn').hidden=!signed;if(signed){$('aWhoN').textContent=acctReady?P.name:'…';if(!emShow)hideEm()}
+  $('swapBtn').hidden=!(canAlt()&&(ALTU||ACTIVE==='alt'));$('swapBtn').textContent=ACTIVE==='alt'?'Main':'Alt';renderAlt();
   if(!$('lb').hidden)renderLB();if(!$('gw').hidden)renderGW()}
 function setMode(m){aMode=m;$('aTabs').querySelectorAll('.tab').forEach(b=>{const on=b.dataset.m===m;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
   $('aNameF').hidden=m!=='up';$('aGo').textContent=m==='up'?'Create account':'Sign in';$('aPass').setAttribute('autocomplete',m==='up'?'new-password':'current-password');$('aForgot').hidden=m==='up';aSay('')}
 function aSay(t,bad){const m=$('aMsg');m.textContent=t;m.className='nmsg'+(bad?' bad':'')}
 function resetDel(){$('aDel').hidden=true;$('aDelOpen').hidden=false;$('aDelPw').value='';$('aDelOk').checked=false;$('aDelMsg').textContent='';delArm=0;$('aDelGo').textContent='Delete forever';updDel()}
-function openAcct(m){audio();sfx.ui();paused=true;if(m)setMode(m);if(!ME&&!$('aName').value)$('aName').value=P.name==='Critter Pal'?'':P.name;$('aMsg2').textContent='';resetDel();acctUI();$('acct').hidden=false;
+function openAcct(m){audio();sfx.ui();paused=true;hideEm();if(m)setMode(m);if(!ME&&!$('aName').value)$('aName').value=P.name==='Critter Pal'?'':P.name;$('aMsg2').textContent='';resetDel();acctUI();$('acct').hidden=false;
   setTimeout(()=>{const f=ME?$('aSignOut'):(aMode==='up'?$('aName'):$('aEmail'));f.focus({preventScroll:true})},60)}
 function closeAcct(){$('acct').hidden=true;if(!anyOpen())paused=false}
 function authMsg(e){const c=(e&&e.code)||'';return({
@@ -1236,8 +1506,8 @@ $('aForm').addEventListener('submit',async e=>{e.preventDefault();if(!AUTH){aSay
   go.disabled=true;
   try{if(aMode==='up'){const v=cleanName($('aName').value);if(v.length<2){aSay('Pick a player name with at least 2 characters.',1);sfx.nope();return}
       aSay('Checking your name…');const s=await FD.get(fref('names/'+nameKey(v)));if(s.exists()){aSay('That name is taken. Try another!',1);sfx.nope();return}
-      aSay('Creating your account…');pendingName=v;await FA.createUserWithEmailAndPassword(AUTH,em,pw)}
-    else{aSay('Signing in…');await FA.signInWithEmailAndPassword(AUTH,em,pw)}
+      aSay('Creating your account…');pendingName=v;setActive('main');await FA.createUserWithEmailAndPassword(AUTH,em,pw)}
+    else{aSay('Signing in…');setActive('main');await FA.signInWithEmailAndPassword(AUTH,em,pw)}
     $('aPass').value='';aSay('');sfx.discover();
     const wait=Date.now();const iv=setInterval(()=>{if(acctReady||Date.now()-wait>6000){clearInterval(iv);toast(acctReady?'Welcome, '+P.name+'!':'Signed in','#5be0a6');closeAcct()}},120);
   }catch(err){pendingName=null;aSay(authMsg(err),1);sfx.nope()}
@@ -1247,7 +1517,7 @@ $('aForgot').onclick=async()=>{const em=$('aEmail').value.trim();if(!/^[^\s@]+@[
   try{await FA.sendPasswordResetEmail(AUTH,em);aSay('If that email has an account, a reset link is on its way.')}catch(err){aSay(authMsg(err),1)}};
 function wipeLocal(){try{for(const k of['ca_profile','ja_profile','jj_best','jj_found'])localStorage.removeItem(k)}catch(e){}}
 $('aSignOut').onclick=async()=>{const b=$('aSignOut');b.disabled=true;$('aMsg2').textContent='Saving…';
-  try{saveRun(false);await pushCloud();await FA.signOut(AUTH)}catch(e){}
+  try{saveRun(false);await pushCloud();if(ACTIVE==='alt'){await FA.signOut(AUTH2);store.set('ca_alt',0);setActive('main')}else{if(AUTH2)await FA.signOut(AUTH2).catch(()=>{});store.set('ca_alt',0);await FA.signOut(AUTH)}}catch(e){}
   wipeLocal();location.reload()};
 // delete account: open panel -> type password + tick box -> tap twice
 let delArm=0;
@@ -1265,7 +1535,7 @@ $('aDelGo').onclick=async()=>{const b=$('aDelGo'),m=$('aDelMsg');if(!ME||!FA)ret
     if(nm)await FD.remove(fref('names/'+nameKey(nm))).catch(()=>{});
     await FD.remove(fref('prizes/'+uid)).catch(()=>{});
     await FD.remove(fref('lb/'+uid));await FD.remove(fref('users/'+uid));
-    await FA.deleteUser(ME)}
+    await FA.deleteUser(ME);if(ACTIVE==='alt'){store.set('ca_alt',0);setActive('main')}else if(AUTH2){await FA.signOut(AUTH2).catch(()=>{});store.set('ca_alt',0)}}
   catch(e){acctReady=true;m.className='nmsg bad';m.textContent='Could not finish deleting. Try again.';b.textContent='Delete forever';updDel();return}
   wipeLocal();try{sessionStorage.setItem('ca_deleted','1')}catch(e){}location.reload()};
 $('aClose').onclick=closeAcct;$('acctBtn').onclick=()=>openAcct(ME?null:'in');
@@ -1273,7 +1543,7 @@ $('acct').addEventListener('click',e=>{if(e.target.id==='acct')closeAcct()});
 $('acct').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')closeAcct()});
 
 // ---- giveaways
-const GN={any:'any game',drop:'Jelly Jar',squish:'Jelly 2048'};
+const GN={any:'any game',drop:'Jelly Jar',squish:'Jelly 2048',doku:'Jellydoku'};
 const gaLive=ga=>!!ga&&!ga.winner&&Date.now()<(+ga.ends||0);
 function gwNew(){if(!GAS)return false;return Object.entries(GAS).some(([id,g])=>gaLive(g)&&!(P.gwSeen&&P.gwSeen[id]))}
 function fmtLeft(ms){if(ms<=0)return'Ended';const m=Math.floor(ms/6e4),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mm=m%60;return d?`${d}d ${h}h left`:h?`${h}h ${mm}m left`:`${Math.max(1,mm)}m left`}
@@ -1347,7 +1617,7 @@ addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['+','-','=','_','0'].
 // ================================================= daily gift
 let gTaps=0,gAmt=0;
 $('giftBtn').onclick=()=>{if(P.giftDay===today())return;audio();sfx.ui();gTaps=0;gAmt=25+Math.min(P.streak,7)*10+Math.floor(rand(21));const bx=$('gbox');bx.className='boxbtn';$('gAmt').hidden=true;$('gOk').hidden=true;$('gTx').textContent='Tap the box three times to open it.';$('gDay').textContent=`Day ${P.streak} gift`;$('gift').hidden=false;bx.focus({preventScroll:true})};
-$('gbox').onclick=()=>{audio();const bx=$('gbox');if(gTaps>=3)return;gTaps++;if(gTaps<3){bx.classList.remove('wob');void bx.offsetWidth;bx.classList.add('wob');tone(note(6+gTaps*3),.14,'triangle',.15);$('gTx').textContent=gTaps===1?'It wiggled! Again.':'Almost…'}
+$('gbox').onclick=()=>{audio();const bx=$('gbox');if(gTaps>=3)return;gTaps++;if(gTaps<3){bx.classList.remove('wob');void bx.offsetWidth;bx.classList.add('wob');tone(note(6+gTaps*3),.14,'triangle',.15);hap(gTaps===2?'double':'tap');$('gTx').textContent=gTaps===1?'It wiggled! Again.':'Almost…'}
   else{bx.classList.add('open');$('gAmtN').textContent=gAmt;$('gAmt').hidden=false;$('gTx').textContent=P.streak>1?`Your ${P.streak}-day streak made it bigger. See you tomorrow!`:'Come back tomorrow for a streak bonus.';$('gOk').hidden=false;confAt(bx,70,700);sfx.discover()}};
 $('gOk').onclick=()=>{P.coins+=gAmt;P.giftDay=today();save();$('gift').hidden=true;refreshCoins();sfx.coin(3);renderMenu();syncDots()};
 
