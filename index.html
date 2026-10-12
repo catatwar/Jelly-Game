@@ -311,6 +311,17 @@ select{font:600 16px var(--body);color:var(--ink);border:2.5px solid var(--ink);
 .mdbar button{border:2px solid var(--ink);border-radius:8px;background:#fff;padding:3px 9px;font:600 13px var(--body);cursor:pointer}
 textarea{font:500 16px/1.4 var(--body);color:var(--ink);border:2.5px solid var(--ink);border-radius:12px;padding:9px 12px;background:#fff;width:100%;box-sizing:border-box;resize:vertical;-webkit-user-select:text;user-select:text;touch-action:pan-y}
 .cpprev{border:2.5px dashed var(--ink);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;background:#fffdf6}
+#maint{position:fixed;inset:0;z-index:160;background:radial-gradient(circle at 50% 40%,#ffcf8a,#ff8a5b 65%,#c2410c);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;touch-action:none}
+#maint .cdbox canvas{width:150px;height:138px}
+#mtMsg:empty{display:none}#mtMsg{background:rgba(43,35,64,.25);border-radius:12px;padding:6px 12px;max-width:300px}
+.mtsub{font-size:12.5px;opacity:.85;max-width:280px}
+.mtdots{display:flex;gap:8px;margin:6px 0}.mtdots i{width:12px;height:12px;border-radius:50%;background:#fff;border:2.5px solid var(--ink);animation:mtd 1.2s ease-in-out infinite}.mtdots i:nth-child(2){animation-delay:.15s}.mtdots i:nth-child(3){animation-delay:.3s}
+@keyframes mtd{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-9px)}}
+#mtDev{position:fixed;left:50%;top:calc(6px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:170;display:flex;align-items:center;gap:8px;background:#ff8a5b;color:var(--ink);border:3px solid var(--ink);border-radius:16px;padding:5px 6px 5px 12px;font-size:12.5px;font-weight:600;box-shadow:0 4px 0 var(--ink);max-width:calc(100vw - 20px);box-sizing:border-box;line-height:1.2}
+#mtDev span,#mtDev .btn{white-space:nowrap}#mtDev .btn{font-size:14px;padding:5px 10px 6px}
+.cpmaint{display:grid;grid-template-columns:1fr;gap:6px;align-items:center;background:#fff3ea;border:2.5px solid var(--ink);border-radius:14px;padding:8px 10px}
+.cpmaint .lbl{grid-column:1/-1}.cpmaint small{grid-column:1/-1;font-size:11.5px;color:var(--muted);font-weight:600}
+.cpmaint input{min-width:0;font:600 13px var(--body);border:2.5px solid var(--ink);border-radius:10px;padding:6px 8px}
 #cd{position:fixed;inset:0;z-index:150;background:radial-gradient(circle at 50% 40%,#b9a3f0,#6b4fd0 70%,#3f2a99);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
 .cdbox{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:#fff;max-width:360px}
 .cdbox canvas{width:120px;height:120px}
@@ -773,14 +784,21 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     <span class="lbl">Preview</span>
     <div class="cpprev"><b class="nwt sm" id="cpPvT"></b><img id="cpPvImg" class="nwimg" alt="" hidden><div class="rich" id="cpPvB"></div></div>
     <label class="chk"><input type="checkbox" id="cpPop"> Pop up on everyone's screen (shows the post the next time each player is in the game)</label>
-    <label class="chk"><input type="checkbox" id="cpPush" checked> Refresh everyone's game with a 10-second countdown</label>
+    <label class="chk"><input type="checkbox" id="cpPush" checked> Update everyone’s game (refreshes as soon as GitHub has the new files, no countdown)</label>
     <label class="switch" id="cpLaunchRow"><input type="checkbox" id="cpLaunch"><span>End beta and launch the game<small>Every account that exists right now becomes a Beta Tester: exclusive aura cosmetics, a Beta Tester title and 1,000 coins.</small></span></label>
     <button class="btn small danger" id="cpUnlaunch" type="button" hidden>Undo launch (back to beta)</button>
     <span class="nmsg" id="cpMsg"></span>
-    <button class="btn pink" id="cpGo" type="button">Post + refresh everyone</button>
+    <button class="btn pink" id="cpGo" type="button">Post + update everyone</button>
+    <div class="cpmaint"><span class="lbl">Maintenance</span><input id="cpMaintMsg" type="text" maxlength="140" placeholder="Message for players (optional)"><button class="btn small danger" id="cpMaint" type="button">Turn on maintenance</button>
+      <small>Stops everyone’s game on a waiting screen. When you end it, every game refreshes and shows your newest update post.</small></div>
   </div>
 </div>
 
+<div id="maint" hidden>
+  <div class="cdbox"><canvas id="mtC" width="260" height="240"></canvas><div class="lbl">Down for maintenance</div><div class="cdt">We’ll be right back!</div>
+    <div class="cds" id="mtMsg"></div><div class="mtdots"><i></i><i></i><i></i></div><div class="cds mtsub">Your progress is saved. The game refreshes by itself when it’s ready.</div></div>
+</div>
+<div id="mtDev" hidden><span><b>Maintenance ON</b><br>players are waiting</span><button class="btn small mint" id="mtEnd" type="button">End + refresh all</button></div>
 <div id="cd" hidden>
   <div class="cdbox"><canvas id="cdC" width="240" height="240"></canvas><div class="lbl">Update incoming</div><div class="cdt" id="cdTitle"></div>
     <div class="cdn" id="cdN">10</div><div class="cds" id="cdSub">Saving your progress. The game refreshes when the timer ends.</div></div>
@@ -2881,12 +2899,62 @@ const bt=(cls,txt,fn)=>{const b=elx('button','btn small '+cls,txt);b.type='butto
 function socialInit(){const d=FD;
   d.onValue(d.query(d.ref(RDB,'news'),d.orderByChild('t'),d.limitToLast(30)),s=>{const v=s.val();NEWS=v&&typeof v==='object'?v:{};newsReady=true;mailSync();if(!$('mail').hidden)renderMail();
     if(openAfter&&NEWS[openAfter]){const id=openAfter;openAfter=null;setTimeout(()=>openNews(id),1300)}else popCheck()},()=>{newsReady=true});
-  d.onValue(d.ref(RDB,'deploy'),s=>{const v=s.val(),id=v&&typeof v.id==='string'?v.id:null;
+  d.onValue(d.ref(RDB,'maint'),s=>maintApply(s.val()),()=>{});
+  d.onValue(d.ref(RDB,'deploy'),s=>{const v=s.val(),id=v&&typeof v.id==='string'?v.id:null;DEP=v&&typeof v==='object'&&id?{id,t:+v.t||0}:null;setTimeout(()=>updCheck(true),400);
     if(deployId===undefined){deployId=id;const last=store.get('ca_deploy',null);if(id&&last!==id){store.set('ca_deploy',id);if(last!==null&&!openAfter)openAfter=id}
       if(openAfter&&NEWS[openAfter]){const k=openAfter;openAfter=null;setTimeout(()=>openNews(k),1300)}return}
-    if(id&&id!==deployId){deployId=id;startCountdown(id)}},()=>{})}
+    if(id&&id!==deployId){deployId=id}},()=>{})}
 try{const o=localStorage.getItem('ca_openNews');if(o){localStorage.removeItem('ca_openNews');openAfter=o}if(/[?&]v=/.test(location.search))history.replaceState(null,'',location.pathname+location.hash)}catch(e){}
 
+// ---- auto update: only when the developer (test@gmail.com) has pushed it. Compares this copy's code with the live files on GitHub.
+const UPD_URL='https://catatwar.github.io/Jelly-Game/';
+const hashStr=x=>{let h=2166136261;for(let i=0;i<x.length;i++){h^=x.charCodeAt(i);h=Math.imul(h,16777619)}return(h>>>0).toString(36)+x.length.toString(36)};
+const codeOf=doc=>[...doc.querySelectorAll('script:not([src]),style')].map(e=>e.textContent).join('\n');
+const LOCAL_H=hashStr(codeOf(document));
+var DEP=null,updTag='',updBusy=false,updRemote='',refreshing=false;
+async function refreshNow(newsId,label){if(refreshing)return;refreshing=true;try{saveRun(false)}catch(e){}
+  const box=$('cd');box.hidden=false;$('cdTitle').textContent=label||'Updating to the newest version';$('cdN').textContent='';$('cdSub').textContent='Saving your progress…';
+  try{await Promise.race([pushCloud(),new Promise(r=>setTimeout(r,1500))])}catch(e){}
+  try{if(newsId)localStorage.setItem('ca_openNews',newsId)}catch(e){}
+  location.replace(location.pathname+'?v='+Date.now().toString(36)+location.hash)}
+async function updCheck(full){if(updBusy||refreshing||!DEP||location.protocol==='file:')return;if(MAINT&&MAINT.on)return;updBusy=true;
+  try{if(!full&&updRemote){const h=await fetch(UPD_URL,{method:'HEAD',cache:'no-store'});if(!h.ok)return;const tag=(h.headers.get('etag')||'')+'|'+(h.headers.get('last-modified')||'');if(tag===updTag)return}
+    const r=await fetch(UPD_URL,{cache:'no-store'});if(!r.ok)return;const txt=await r.text();updTag=(r.headers.get('etag')||'')+'|'+(r.headers.get('last-modified')||'');
+    const lm=Date.parse(r.headers.get('last-modified')||'')||0,rh=hashStr(codeOf(new DOMParser().parseFromString(txt,'text/html')));updRemote=rh;
+    if(rh===LOCAL_H)return;                                   // already running the newest code
+    if(lm&&lm>DEP.t+10*60000)return;                          // newer files the developer hasn't pushed yet
+    if(!lm&&store.get('ca_dapplied',null)===DEP.id)return;    // no file date: apply each developer push once
+    let tried='';try{tried=sessionStorage.getItem('ca_updTry')||''}catch(e){}if(tried===rh)return;try{sessionStorage.setItem('ca_updTry',rh)}catch(e){}
+    store.set('ca_dapplied',DEP.id);store.set('ca_deploy',DEP.id);refreshNow(DEP.id)}
+  catch(e){}finally{updBusy=false}}
+setInterval(()=>updCheck(false),15000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)updCheck(true)});
+// ---- down for maintenance (developer switch): everyone waits on a cute screen, then refreshes into the newest update notes
+var MAINT=null,maintWas=false,maintArm=0;
+const MT_DEF='';
+function maintUI(){const on=!!(MAINT&&MAINT.on),adm=isAdmin(),show=on&&!adm,el=$('maint');
+  if(show&&el.hidden){try{saveRun(false)}catch(e){}try{closeAllO()}catch(e){}if(SPEC)try{specStop(true)}catch(e){}}
+  el.hidden=!show;if(show){paused=true;$('mtMsg').textContent=MAINT.msg?String(MAINT.msg).slice(0,140):MT_DEF}
+  $('mtDev').hidden=!(on&&adm);if(Date.now()>maintArm){$('cpMaint').textContent=on?'End maintenance + refresh everyone':'Turn on maintenance';$('cpMaint').className='btn small '+(on?'mint':'danger')}}
+function maintApply(v){MAINT=v&&typeof v==='object'?v:null;const on=!!(MAINT&&MAINT.on);maintUI();
+  if(maintWas&&!on){const n=newsList()[0];refreshNow(n&&n.id,'Maintenance is over!')}
+  maintWas=on}
+setInterval(maintUI,1500);
+async function maintSet(on){if(!isAdmin())return;const b=$('cpMaint');
+  if(Date.now()>maintArm){maintArm=Date.now()+3500;b.textContent=on?'Tap again: stop everyone’s game':'Tap again: refresh everyone';setTimeout(()=>{if(Date.now()>maintArm)maintUI()},3600);return}
+  maintArm=0;b.disabled=true;$('mtEnd').disabled=true;
+  try{if(on){const msg=$('cpMaintMsg').value.replace(/\s+/g,' ').trim().slice(0,140),d={on:true,t:FD.serverTimestamp()};if(msg)d.msg=msg;await FD.set(FD.ref(RDB,'maint'),d);toast('Maintenance is on. Players are waiting.','#ff8a5b')}
+    else{await FD.set(FD.ref(RDB,'maint'),{on:false,t:FD.serverTimestamp()});const n=newsList()[0];await FD.set(FD.ref(RDB,'deploy'),{id:n?n.id:'m'+Date.now().toString(36),t:FD.serverTimestamp()});toast('Maintenance over. Refreshing everyone…','#5be0a6');setTimeout(()=>refreshNow(n&&n.id,'Maintenance is over!'),900)}}
+  catch(e){toast('Could not change maintenance. Publish the new database rules first.','#ff6fa8')}
+  b.disabled=false;$('mtEnd').disabled=false}
+$('cpMaint').onclick=()=>maintSet(!(MAINT&&MAINT.on));$('mtEnd').onclick=()=>{if(Date.now()>maintArm){maintArm=Date.now()+3500;$('mtEnd').textContent='Tap again to end';setTimeout(()=>{$('mtEnd').textContent='End + refresh all'},3600);return}maintArm=Date.now()+4000;maintSet(false)};
+$('cpMaintMsg').addEventListener('keydown',e=>e.stopPropagation());
+function drawMaint(){const c=$('mtC').getContext('2d');c.setTransform(2,0,0,2,0,0);c.clearRect(0,0,130,120);const t=time;
+  const gear=(x,y,r,n,a,col)=>{c.save();c.translate(x,y);c.rotate(a);c.beginPath();for(let i=0;i<n*2;i++){const q=i/(n*2)*TAU,rr2=i%2?r*.78:r;c.lineTo(Math.cos(q-.12)*rr2,Math.sin(q-.12)*rr2);c.lineTo(Math.cos(q+.12)*rr2,Math.sin(q+.12)*rr2)}c.closePath();c.fillStyle=col;c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();circ(c,0,0,r*.32);c.fillStyle='#ffcf8a';c.fill();c.stroke();c.restore()};
+  gear(34,40,24,8,t*.8,'#c9b8ff');gear(70,30,16,6,-t*1.2+.3,'#7cc8ff');
+  const k=(t*1.4)%1,b=Math.abs(Math.sin(k*Math.PI)),cr=critter('jelly',5);c.fillStyle='rgba(43,35,64,.25)';ell(c,84,110,20-b*6,4);c.fill();
+  drawAnimal(c,84,92-b*16,20,cr.k,cr.c,{mood:2,sq:k<.08||k>.92?.2:-b*.06,sqa:Math.PI/2,hat:'cap',bn:0});
+  c.save();c.translate(108,64-b*16);c.rotate(-.6+Math.sin(t*6)*.35);c.fillStyle='#d9dce8';c.strokeStyle=INK;c.lineWidth=2.5;rr(c,-3,-2,6,26,3);c.fill();c.stroke();c.beginPath();c.arc(0,-6,8,Math.PI*.15,Math.PI*1.85);c.lineTo(3,-9);c.lineTo(-3,-9);c.closePath();c.fill();c.stroke();c.restore()}
 // ---- forced refresh: 10 second countdown on every open copy of the game
 function startCountdown(id){clearInterval(cdT);let n=10;const box=$('cd');box.hidden=false;$('cdN').textContent=n;
   const setT=()=>{const nw=NEWS[id];$('cdTitle').textContent=nw&&nw.title?String(nw.title).slice(0,80):'A fresh update is here'};setT();
@@ -2991,7 +3059,7 @@ $('nwDel').onclick=async()=>{const b=$('nwDel'),id=b.dataset.id;if(b.textContent
   try{await FD.remove(FD.ref(RDB,'news/'+id));closeNews();toast('Post deleted','#ff6fa8')}catch(e){toast('Could not delete it','#ff6fa8')}};
 // ---- update composer (admin)
 var compEdit=null;
-function compMode(){const ed=!!compEdit;$('cpHead').textContent=ed?'Edit update':'New update';for(const id of['cpPop','cpPush','cpLaunch'])$(id).closest('label').hidden=ed;$('cpUnlaunch').dataset.ed=ed?'1':'';if(ed)$('cpUnlaunch').hidden=true;else betaUI()}
+function compMode(){const ed=!!compEdit;$('cpHead').textContent=ed?'Edit update':'New update';for(const id of['cpPop','cpPush','cpLaunch'])$(id).closest('label').hidden=ed;document.querySelector('.cpmaint').hidden=ed;$('cpUnlaunch').dataset.ed=ed?'1':'';if(ed)$('cpUnlaunch').hidden=true;else betaUI()}
 function openComp(){if(!isAdmin())return;sfx.ui();if(compEdit){compEdit=null;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg=''}$('cpPush').checked=true;$('cpMsg').textContent='';compMode();$('comp').hidden=false;compPrev();setTimeout(()=>$('cpTitle').focus({preventScroll:true}),60)}
 function editNews(id){const n=NEWS[id];if(!isAdmin()||!n)return;sfx.ui();compEdit=id;$('cpTitle').value=String(n.title||'');$('cpBody').value=String(n.body||'');const im=okImg(n.img)?n.img:'';if(im.startsWith('data:')){compImg=im;$('cpImgUrl').value=''}else{compImg='';$('cpImgUrl').value=im}
   $('cpMsg').textContent='';closeNews();compMode();$('comp').hidden=false;paused=true;compPrev();setTimeout(()=>$('cpTitle').focus({preventScroll:true}),60)}
@@ -3000,7 +3068,7 @@ function closeComp(){$('comp').hidden=true;if(!anyOpen())paused=false}
 function compPrev(){const t=$('cpTitle').value.trim(),u=$('cpImgUrl').value.trim(),img=compImg||(okImg(u)?u:'');
   $('cpPvT').textContent=t||'Your title';const im=$('cpPvImg');if(img){im.src=img;im.hidden=false}else im.hidden=true;$('cpPvB').innerHTML=md($('cpBody').value)||'<p class="lnote">Your text shows here.</p>';
   $('cpImgInfo').textContent=compImg?'Uploaded image ('+Math.round(compImg.length/1024)+' KB)':'';$('cpImgClr').hidden=!compImg&&!u;
-  const push=$('cpPush').checked;$('cpGo').textContent=compEdit?'Save changes':push?'Post + refresh everyone':'Post update'}
+  const push=$('cpPush').checked;$('cpGo').textContent=compEdit?'Save changes':push?'Post + update everyone':'Post update'}
 function wrapSel(a,b,ph){const ta=$('cpBody'),s=ta.selectionStart,e=ta.selectionEnd,v=ta.value,sel=v.slice(s,e)||ph;ta.value=v.slice(0,s)+a+sel+b+v.slice(e);ta.focus();ta.selectionStart=s+a.length;ta.selectionEnd=s+a.length+sel.length;compPrev()}
 function prefixLines(fn){const ta=$('cpBody'),v=ta.value;let s=ta.selectionStart,e=ta.selectionEnd;s=v.lastIndexOf('\n',s-1)+1;let ee=v.indexOf('\n',e);if(ee<0)ee=v.length;
   const lines=v.slice(s,ee).split('\n').map((l,i)=>fn(l.replace(/^(\s*([-*•]|\d+[.)]|#{1,3}|>)\s+)/,''),i));ta.value=v.slice(0,s)+lines.join('\n')+v.slice(ee);ta.focus();compPrev()}
@@ -3019,13 +3087,13 @@ $('cpGo').onclick=async()=>{if(!isAdmin())return;const m=$('cpMsg'),bad=t=>{m.te
   if(compEdit){const id=compEdit;$('cpGo').disabled=true;m.className='nmsg';m.textContent='Saving…';
     try{await FD.update(FD.ref(RDB,'news/'+id),{title,body,img:img||null});if(NEWS[id])Object.assign(NEWS[id],{title,body,img:img||undefined});m.textContent='Saved! Everyone sees the new version.';sfx.discover();compEdit=null;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg='';setTimeout(()=>{closeComp();openNews(id)},700)}
     catch(e){bad('Could not save it. Check the database rules are published.')}$('cpGo').disabled=false;return}
-  if(push&&Date.now()>compArm){compArm=Date.now()+3500;$('cpGo').textContent='Tap again: refresh everyone';m.className='nmsg';m.textContent='Every open copy of the game will count down from 10 and reload. Upload your new files to GitHub first!';setTimeout(()=>{if(Date.now()>compArm)compPrev()},3600);return}
+  if(push&&Date.now()>compArm){compArm=Date.now()+3500;$('cpGo').textContent='Tap again: update everyone';m.className='nmsg';m.textContent='Every open copy of the game will refresh to the new version as soon as GitHub has it. Upload your new files to GitHub first!';setTimeout(()=>{if(Date.now()>compArm)compPrev()},3600);return}
   compArm=0;$('cpGo').disabled=true;m.className='nmsg';m.textContent='Posting…';
   const launch=$('cpLaunch').checked&&!launchOn;if(launch&&!push&&Date.now()>lArm){lArm=Date.now()+3500;m.className='nmsg';m.textContent='Launching gives every current account Beta Tester rewards. Tap Post again to confirm.';$('cpGo').disabled=false;return}
   try{if(launch){m.textContent='Launching… giving Beta Tester rewards';const n=await doLaunch();m.textContent='Launched! '+n+' Beta Testers rewarded. Posting…';$('cpLaunch').checked=false}
     const pop=$('cpPop').checked,r=FD.push(FD.ref(RDB,'news')),id=r.key,data={title,body,t:FD.serverTimestamp(),push};if(pop)data.pop=true;if(img)data.img=img;await FD.set(FD.ref(RDB,'news/'+id),data);
     if(push)await FD.set(FD.ref(RDB,'deploy'),{id,t:FD.serverTimestamp()});
-    m.textContent=push?'Posted! Countdown starting for everyone…':data.pop?'Posted! It is popping up on everyone’s screen.':'Posted to everyone’s mailbox.';$('cpPop').checked=false;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg='';compPrev();sfx.discover();if(!push)setTimeout(closeComp,900)}
+    m.textContent=push?'Posted! Everyone updates as soon as GitHub has the new files.':data.pop?'Posted! It is popping up on everyone’s screen.':'Posted to everyone’s mailbox.';$('cpPop').checked=false;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg='';compPrev();sfx.discover();if(!push)setTimeout(closeComp,900)}
   catch(e){bad('Could not post. Check the database rules are published.')}
   $('cpGo').disabled=false};
 
@@ -3540,7 +3608,7 @@ function frame(now){let dt=(now-last)/1000;last=now;if(dt>.1)dt=.1;acc+=dt;BNC=i
   if(G)drawGame();
   if(!$('menu').hidden){for(const p of mPrev)drawMenuPreview(p.g,p.c,time);drawAvatar();drawCapMachine($('capC').getContext('2d'),220,0)}
   if(!$('capo').hidden){if(!$('capoC').hidden)drawCapo();for(const p of capPrev)drawItem(p.c,p.g,p.cat,p.id)}if(!$('capi').hidden)for(const p of capInfoPrev)drawItem(p.c,p.g,p.cat,p.id);if(!$('tut').hidden)drawTut();
-  if(SPEC||(DUEL&&(DUEL.phase==='count'||DUEL.phase==='end'||DUEL.phase==='done')))paused=true;
+  if(SPEC||(DUEL&&(DUEL.phase==='count'||DUEL.phase==='end'||DUEL.phase==='done'))||!$('maint').hidden)paused=true;if(!$('maint').hidden)drawMaint();
   const sp=$('splashC');if(sp)drawSplash(sp,now/1000);
   if(pfD){drawProfileAv();for(const p of slotPrev)if(p.r)drawItem(p.c,p.g,p.cat,p.id,120)}if(!$('pick').hidden)for(const p of sPrevPick)drawItem(p.c,p.g,p.cat,p.id);if(!$('cd').hidden)drawCd();if(!$('beta').hidden)drawBetaCard();if(!$('devg').hidden)drawDevCard();if(!$('who').hidden)drawWho();if(!$('lvp').hidden){drawSpin();for(const p of lvPrev)drawItem(p.c,p.g,p.cat,p.id,96)}if(sPrev.length&&!$('style').hidden)for(const p of sPrev)drawItem(p.c,p.g,p.cat,p.id);
   confUpdate(dt);requestAnimationFrame(frame)}
