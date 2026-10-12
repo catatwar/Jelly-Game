@@ -456,7 +456,16 @@ textarea{font:500 16px/1.4 var(--body);color:var(--ink);border:2.5px solid var(-
 .pfsec{width:100%;display:flex;flex-direction:column;gap:6px}
 .pfsec>.lbl{text-align:center}
 #pickItems .item{cursor:pointer}
-#pick,#capo,#capi,#dinv,#dres{z-index:20}
+#pick,#capo,#capi,#dinv,#dres,#tagi{z-index:20}
+.tagicard{gap:8px;max-width:330px}
+#tagiPill{display:flex;justify-content:center;min-height:30px;align-items:center}#tagiPill>*{transform:scale(1.5);transform-origin:center;margin:8px 0!important}
+#tagiN{margin:2px 0 0;font-family:var(--display);font-size:26px;font-weight:400}
+.tagirar{font:800 11px var(--body);letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;color:#fff;border:2px solid var(--ink)}
+.tagirow{width:100%;text-align:left;background:#f6f0ff;border:2.5px solid var(--ink);border-radius:14px;padding:7px 11px;box-sizing:border-box}
+.tagirow p{margin:2px 0 0;font-size:14px;font-weight:600;line-height:1.35}
+.tagiown{margin:0;font-size:13px;font-weight:700;color:var(--muted)}.tagiown.yes{color:#1f9f6a}
+.pftags>[data-tag],#pfTitle.tapme{cursor:pointer}
+.pftags>[data-tag]:active,#pfTitle.tapme:active{transform:scale(.94)}
 #tut{z-index:18}#tut .card{align-items:center;text-align:center;gap:10px;max-width:360px}
 #tutC{width:300px;height:220px;max-width:100%;border-radius:18px;border:3px solid var(--ink);background:#33285a}
 #tutT{font-family:var(--display);font-size:28px;line-height:1.05}
@@ -823,6 +832,14 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     <div id="specBetRow"><div class="specside"><span style="font-size:12px;font-weight:700">Bet on:</span><button id="specSideA" class="on" type="button"></button><button id="specSideB" type="button"></button></div><div id="specAmts"><button data-a="100" type="button">100</button><button data-a="500" type="button">500</button><button data-a="1000" type="button">1,000</button><button data-a="5000" type="button">5,000</button></div></div>
     <span id="specBetMsg"></span>
   </div>
+</div>
+<div id="tagi" class="overlay" hidden>
+  <div class="card box3 tagicard" role="dialog" aria-label="About this tag"><div id="tagiPill"></div><h3 id="tagiN"></h3><span class="tagirar" id="tagiR" hidden></span>
+    <div class="tagirow"><span class="lbl">What it means</span><p id="tagiWhat"></p></div>
+    <div class="tagirow"><span class="lbl">How to get it</span><p id="tagiHow"></p></div>
+    <div class="tagirow"><span class="lbl">Cost</span><p id="tagiCost"></p></div>
+    <p class="tagiown" id="tagiOwn"></p>
+    <button class="btn white" id="tagiOk" type="button">Got it</button></div>
 </div>
 <div id="pick" class="overlay" hidden>
   <div class="card box3 menu" role="dialog" aria-label="Pick a showcase item">
@@ -2612,7 +2629,7 @@ function ranked(g){return rankRows(lbScope==='friends'?friendRows():(lbBy[g]||[]
 function rankRows(arr,g){return arr.filter(d=>+d[g]>0).map(d=>({id:d.id,name:cleanName(d.name)||'Someone',score:Math.floor(+d[g]),k:KINDS.has(d.k)?d.k:'jelly',c:okCol(d.c),fx:FXS.has(d.fx)?d.fx:undefined,h:HAT_IDS.has(d.h)?d.h:'none',fr:FRAME_IDS.has(d.fr)?d.fr:'none',tt:TITLE_IDS.has(d.tt)?d.tt:'none',raw:d})).sort((a,b)=>b.score-a.score)}
 function myRank(g){if(!UID)return 0;return rankRows(lbBy[g]||[],g).findIndex(d=>d.id===UID)+1}
 function openLB(g){audio();sfx.ui();lbGame=g||gid||'drop';paused=true;$('lbName').value=cleanName(P.name);const w=nameWait();$('lbMsg').textContent=UID&&w>0?'Next name change in '+fmtWait(w)+'.':'';$('lbMsg').className='nmsg';$('lb').hidden=false;renderLB()}
-const anyOpen=()=>!['menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','beta','devg','who','lvp','pick','duel','capo','capi','dinv','dres','tut'].every(id=>$(id).hidden);
+const anyOpen=()=>!['menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','beta','devg','who','lvp','pick','duel','capo','capi','dinv','dres','tut','tagi'].every(id=>$(id).hidden);
 function closeLB(){$('lb').hidden=true;if(!anyOpen())paused=false}
 function renderLB(){
   $('lbTabs').innerHTML=Object.values(GAMES).map(g=>`<button class="tab${g.id===lbGame?' on':''}" data-g="${g.id}" type="button" role="tab" aria-selected="${g.id===lbGame}">${g.name}</button>`).join('');
@@ -2647,9 +2664,9 @@ $('lbSign').onclick=()=>openAcct('in');
 
 // ---- player profile card
 function openProfile(d){if(!d)return;audio();sfx.ui();pfD={k:KINDS.has(d.k)?d.k:'jelly',c:okCol(d.c),fx:FXS.has(d.fx)?d.fx:undefined,h:HAT_IDS.has(d.h)?d.h:'none',fr:FRAME_IDS.has(d.fr)?d.fr:'none',bg:WALLS[d.bg]?d.bg:null,bn:d.bn===true,id:d.id};pfOnUI(d.id);pfSlotsUI(d);pfPlayUI(d);paused=true;
-  $('pfName').textContent=cleanName(d.name)||'Someone';{const T=$('pfTags');T.textContent='';const me=d.id===UID||d.id==='local';for(const tp of tagPills(me&&UID?UID:d.id,me?showTag():d.tg,me?showBn():d.bn===true))T.append(tp)}
+  $('pfName').textContent=cleanName(d.name)||'Someone';{const T=$('pfTags');T.textContent='';const me=d.id===UID||d.id==='local';for(const tp of tagPills(me&&UID?UID:d.id,me?showTag():d.tg,me?showBn():d.bn===true)){tp.setAttribute('role','button');tp.tabIndex=0;tp.onclick=()=>tagInfo(tp.dataset.tag,tp);tp.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tagInfo(tp.dataset.tag,tp)}};T.append(tp)}}
   pfShowUI(d);
-  const t=titleOf(TITLE_IDS.has(d.tt)?d.tt:'none');$('pfTitle').hidden=!t;if(t){$('pfTitle').textContent=t.n;$('pfTitle').style.background=t.d?devTitleBg(t.d):t.x?'linear-gradient(90deg,#0b0a18,#3d7bff,#9a5bff,#2fe39a)':t.c}
+  const t=titleOf(TITLE_IDS.has(d.tt)?d.tt:'none');$('pfTitle').hidden=!t;{const e=$('pfTitle'),tid=TITLE_IDS.has(d.tt)?d.tt:'none';e.classList.toggle('tapme',!!t);e.setAttribute('role','button');e.tabIndex=t?0:-1;e.onclick=()=>titleInfo(tid);e.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();titleInfo(tid)}}}if(t){$('pfTitle').textContent=t.n;$('pfTitle').style.background=t.d?devTitleBg(t.d):t.x?'linear-gradient(90deg,#0b0a18,#3d7bff,#9a5bff,#2fe39a)':t.c}
   const st=$('pfStats');st.textContent='';for(const[k,v]of[['Level',fmt(+d.lv||1)],['Jelly Jar',fmt(+d.drop||0)],['Jelly 2048',fmt(+d.squish||0)],['Jellydoku',fmt(+d.doku||0)],['Jelly Catch',fmt(+d.catch||0)],['Jelly Combo',fmt(+d.combo||0)],['Jelly Memory',fmt(+d.memory||0)]]){const box=document.createElement('div'),a=document.createElement('span'),b=document.createElement('span');a.className='v';a.textContent=v;b.className='k';b.textContent=k;box.append(a,b);st.appendChild(box)}
   if(d.id===UID||d.id==='local'){const lb=st.firstChild;lb.classList.add('pfstat-lv');lb.title='See level rewards';lb.onclick=()=>{closeProfile();openLvp()}}
   const hl=$('pfHist');hl.textContent='';const h=histArr(d.hist);
@@ -3104,11 +3121,29 @@ function giftKeys(id){if(DEVG[id])return DEVG[id][1];if(String(id).startsWith('i
 function giftName(id){if(DEVG[id])return DEVG[id][0];const it=itemByKey(String(id).slice(2));return it?it.n+' · '+(GAMES[it.g]?GAMES[it.g].name:'Profile'):String(id)}
 var contribSet=new Set();
 function myTags(){const t=[];if(UID&&(betaSet.has(UID)||P.beta))t.push('beta');const r=UID&&roleMap[UID];if(r==='dev'||r==='helper')t.push(r);if(UID&&contribSet.has(UID))t.push('contrib');return t}
-function tagPills(uid,tg,bn){const out=[];if(bn===true){const b=document.createElement('span');b.className='bncpill';b.textContent='BOUNCY';b.title='Owns the 1,000,000-coin Bouncier perk';out.push(b)}if(tg==='none')return out;const ok=k=>!tg||tg==='auto'||tg===k;
+function tagPills(uid,tg,bn){const out=[];if(bn===true){const b=document.createElement('span');b.className='bncpill';b.dataset.tag='bouncy';b.textContent='BOUNCY';b.title='Owns the 1,000,000-coin Bouncier perk';out.push(b)}if(tg==='none')return out;const ok=k=>!tg||tg==='auto'||tg===k;
   const r=uid&&roleMap[uid];if((r==='dev'||r==='helper')&&ok(r))out.push(rolePill(uid));
-  if(uid&&contribSet.has(uid)&&ok('contrib')){const cp=document.createElement('span');cp.className='contpill';cp.textContent='CONTRIBUTOR';cp.title='Helped make the game better';out.push(cp)}
-  if(uid&&betaSet.has(uid)&&ok('beta')){const bp=document.createElement('span');bp.className='betapill lbeta';bp.textContent='BETA';out.push(bp)}return out}
-function rolePill(uid){const r=uid&&roleMap[uid];if(r!=='dev'&&r!=='helper')return null;const s=document.createElement('span');s.className=r==='dev'?'devpill':'helppill';s.textContent=r==='dev'?'DEV':'HELPER';s.title=r==='dev'?'Developer':'Helper';return s}
+  if(uid&&contribSet.has(uid)&&ok('contrib')){const cp=document.createElement('span');cp.className='contpill';cp.dataset.tag='contrib';cp.textContent='CONTRIBUTOR';cp.title='Helped make the game better';out.push(cp)}
+  if(uid&&betaSet.has(uid)&&ok('beta')){const bp=document.createElement('span');bp.className='betapill lbeta';bp.dataset.tag='beta';bp.textContent='BETA';out.push(bp)}return out}
+// ---- tap a tag or title on a profile to see what it means, how to get it and what it costs
+function tagiShow(o){$('tagiPill').textContent='';if(o.pill)$('tagiPill').append(o.pill);$('tagiN').textContent=o.n;$('tagiN').hidden=!!(o.pill&&o.pill.textContent===o.n);const R=$('tagiR');R.hidden=!o.rar;if(o.rar){R.textContent=o.rar[0];R.style.background=o.rar[1]}
+  $('tagiWhat').textContent=o.what;$('tagiHow').textContent=o.how;$('tagiCost').textContent=o.cost;const w=$('tagiOwn');w.textContent=o.own==null?'':o.own?'You have this one!':'You don’t have this yet.';w.className='tagiown'+(o.own?' yes':'');
+  $('tagi').hidden=false;sfx.ui();setTimeout(()=>$('tagiOk').focus({preventScroll:true}),60)}
+function tagInfo(k,el){const pill=el?el.cloneNode(true):null;if(pill){pill.removeAttribute('role');pill.removeAttribute('tabindex');pill.onclick=null}const mine=t=>UID&&(t==='dev'||t==='helper'?roleMap[UID]===t:t==='contrib'?contribSet.has(UID):t==='beta'?betaSet.has(UID):false);
+  const bp=(STYLE.prof.perk.items.find(i=>i[0]==='bouncy')||[])[2]||1000000;
+  const I={bouncy:{n:'Bouncy badge',what:'This player owns the Bouncier perk, which makes every squish, wobble and pop in the game springier.',how:'Buy the Bouncier perk in Style → Perks. Once you own it, you can show or hide this badge from your profile’s pencil menu.',cost:fmt(bp)+' coins',own:isBouncy()},
+    dev:{n:'Developer',what:'The person who makes Jelly Critters.',how:'Only the developer has this tag. It can’t be earned or bought.',cost:'Not for sale',own:mine('dev')},
+    helper:{n:'Helper',what:'Someone the developer trusts to help run the game, like testing new things and helping players.',how:'Given by the developer.',cost:'Not for sale',own:mine('helper')},
+    contrib:{n:'Contributor',what:'This player helped make the game better with an idea or bug report that made it into the game.',how:'Send ideas and bug reports from Mailbox → Suggestions. The developer hands this tag out for great ones.',cost:'Free, but you have to earn it',own:mine('contrib')},
+    beta:{n:'Beta Tester',what:'This player had an account before the game officially launched.',how:launchOn?'Only accounts made during the beta got it. It can’t be earned anymore.':'Make an account before the game launches.',cost:launchOn?'No longer available':'Free during the beta',own:mine('beta')}}[k];
+  if(I)tagiShow(Object.assign({pill},I))}
+function titleInfo(id){const it=TITLES.find(t=>t[0]===id);if(!it||id==='none')return;const t=titleOf(id),[,n,p,r,q]=it,pill=document.createElement('span');pill.className='pft';pill.textContent=n;pill.style.background=t.d?devTitleBg(t.d):t.x?'linear-gradient(90deg,#0b0a18,#3d7bff,#9a5bff,#2fe39a)':t.c;
+  const own=P.own.includes('prof:title:'+id),req=q?reqText(q):'',cap=q&&q.cap,lv=q&&q.lvr,role=r==='d',beta=r==='x';
+  const how=role?'Given by the developer only.':beta?(launchOn?'Only Beta Testers got this title. It can’t be earned anymore.':'Play during the beta.'):cap?'Win it from the capsule machine (or buy it with jelly dust in the dust shop).':lv?'A free reward for reaching level '+lv+'.':p?'Buy it in Style → Titles'+(req?' once you meet the requirement: '+req+'.':'.'):req?'Unlock it: '+req+'.':'Free for everyone in Style → Titles.';
+  const cost=role||beta?'Not for sale':cap?fmt(CAP_COST[r]||0)+' jelly dust in the dust shop':lv?'Free':p?fmt(p)+' coins':'Free';
+  tagiShow({pill,n,rar:r&&RAR[r]?RAR[r]:null,what:'A title shown under the player’s name on the leaderboard and their profile.',how,cost,own})}
+$('tagiOk').onclick=()=>{$('tagi').hidden=true};$('tagi').addEventListener('click',e=>{if(e.target.id==='tagi')$('tagi').hidden=true});$('tagi').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')$('tagi').hidden=true});
+function rolePill(uid){const r=uid&&roleMap[uid];if(r!=='dev'&&r!=='helper')return null;const s=document.createElement('span');s.className=r==='dev'?'devpill':'helppill';s.dataset.tag=r;s.textContent=r==='dev'?'DEV':'HELPER';s.title=r==='dev'?'Developer':'Helper';return s}
 function giftUser(user){if(giftUnsub){try{giftUnsub()}catch(e){}giftUnsub=null}myGifts=null;if(!user||!RDB)return;const uid=user.uid;
   giftUnsub=FD.onValue(FD.ref(curDB(),'gifts/'+uid),s=>{if(UID!==uid)return;const v=s.val()||{};myGifts=Object.keys(v).filter(k=>v[k]===true);giftApply()},()=>{})}
 function giftApply(){if(!UID||!acctReady||myGifts===null||!rolesLoaded)return;
@@ -3308,7 +3343,7 @@ for(const id of['capo','capi'])$(id).addEventListener('keydown',e=>{e.stopPropag
 var SKEW=0,DUELS={},DUEL=null,SPEC=null,duMode='drop',watchN=0,liveLast='',dInv={},invSeen={},BETS={},duUnsub=null,duTickI=0,specUnsubs=[],duSent=0;
 const DU_LEN=60000,DU_CD=3500,DU_BET=15000,srvNow=()=>Date.now()+SKEW,duName=()=>cleanName(myLb&&myLb.name||P.name)||'Critter Pal';
 function duNeedAcct(){if(UID&&acctReady&&fbOnline)return true;toast(UID?'You need to be online for 1v1s':'Sign in to play 1v1s','#ff6fa8');if(!UID){closeAllO();openAcct('in')}return false}
-function closeAllO(){for(const id of['menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','lvp','pick','who','duel','capo','capi','dinv','dres'])if($(id))$(id).hidden=true;pfD=null}
+function closeAllO(){for(const id of['menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','lvp','pick','who','duel','capo','capi','dinv','dres','tagi'])if($(id))$(id).hidden=true;pfD=null}
 function duelInit(){FD.onValue(FD.ref(RDB,'.info/serverTimeOffset'),s=>{SKEW=+s.val()||0},()=>{});
   FD.onValue(FD.query(FD.ref(RDB,'duels'),FD.orderByChild('t'),FD.limitToLast(40)),s=>{DUELS=s.val()||{};if(!$('duel').hidden)renderDuel();if(pfD&&pfD.id)pfPlayUI(pfD)},()=>{})}
 function duelUser(user){if(!user)return;const uid=user.uid;
