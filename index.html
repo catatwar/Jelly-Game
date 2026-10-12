@@ -1944,7 +1944,7 @@ const Catch=(()=>{
   function restyle(){const w=WALLS[S().wall]||WALLS.mint;theme(w.bg,w.hud);gbar('Drag to move your jar. Catch jellies, dodge the spiky ones. The lucky critter scores x3!');if(lives!==undefined)hearts()}
   function spawn(){const pr=Math.random(),spiky=t>6&&pr<Math.min(.24,.07+t/350),star=!spiky&&pr<.035+(spiky?0:.0),heart=!spiky&&!star&&lives<3&&Math.random()<.018;
     const top=Math.min(10,3+Math.floor(t/14)),l=Math.min(10,Math.floor(Math.pow(Math.random(),1.5)*(top+1))),type=spiky?'spike':star?'star':heart?'heart':'jelly',r=type==='jelly'?rad(l):17;
-    items.push({x:rand(r+12,W-r-12),y:-r-8,vy:rand(95,135)+t*3.4,vx:rand(-24,24),l,r,type,rot:rand(-.3,.3),av:rand(-1.5,1.5),sq:0,sqv:0,seed:rand(0,9)})}
+    items.push({x:rand(r+12,W-r-12),y:Math.min(-r-8,extent().y0-r-12),vy:rand(95,135)+t*3.4,vx:rand(-24,24),l,r,type,rot:rand(-.3,.3),av:rand(-1.5,1.5),sq:0,sqv:0,seed:rand(0,9)})}
   function onCatch(it){jsqv-=5;
     if(it.type==='spike'){lives--;streak=0;mult=1;addShake(.45);sfx.thud();burst(it.x,it.y,'#6b3fa0',16,260,.1);big('OUCH!','#ff5f6d');hearts();hap('heavy');if(lives<=0)over();return}
     if(it.type==='star'){gold=6;big('GOLD RUSH x2!','#ffd23f');sfx.discover();burst(it.x,it.y,'#ffd23f',22,300,.6);return}
@@ -2061,61 +2061,98 @@ const Combo=(()=>{
   return{start,update,render,bg,down:tap,move(){},up(){},key(){},action(){},restyle,serialize,restore,state:()=>st};
 })();
 
-// ================================================= GAME 6: Jelly Memory (watch the jellies sing, then repeat the pattern; it keeps growing and speeding up). Wears your Jellydoku style.
+// ================================================= GAME 6: Jelly Memory (watch the jellies sing, then repeat the pattern; it keeps growing, shuffling and speeding up). Wears your Jellydoku style.
 const Memory=(()=>{
   const BS=376,BX=12,BY=(H-BS)/2+6,TIER=[1,7,3,9,5,0,8,2,6,4,10];
-  let st='done',phase='pre',round=1,hearts=3,seq=[],pos=0,pt=0,stepI=0,cols=2,rows=2,pads=[],taps=0,bestRound=0,endT=0,idleT=0,msg='',msgT=0,perfect=0;
+  let st='done',phase='pre',round=1,hearts=3,seq=[],pos=0,pt=0,stepI=0,shows=1,cols=2,rows=2,pads=[],taps=0,bestRound=0,endT=0,idleT=0,msg='',msgT=0,perfect=0,clk=0,sub=0,growFrom=null,prevPos=0;
   const S=()=>cos('doku'),C=i=>critter(S().set,i),n=()=>cols*rows;
-  const layout=r=>r<4?[2,2]:r<8?[3,2]:r<13?[3,3]:[4,3];
+  const layout=r=>r<4?[2,2]:r<8?[3,2]:[3,3];
+  const SHUF=r=>r===3||r===6||r===10||r===12||(r>=15&&r%3===0);
   const iv=()=>Math.max(.24,.66-(round-1)*.024);
-  const cell=()=>Math.min(BS/cols,BS/rows),ox=()=>BX+(BS-cell()*cols)/2,oy=()=>BY+(BS-cell()*rows)/2;
-  const pc=k=>({x:ox()+(k%cols+.5)*cell(),y:oy()+(Math.floor(k/cols)+.5)*cell()});
-  const tier=k=>TIER[k%TIER.length];
-  function mkPads(anim){pads=[];for(let k=0;k<n();k++)pads.push({k,lit:0,pop:anim?-(k*.06):1,sq:0,sqv:0,bad:0,blink:rand(1,5),bt:0,seed:rand(9)})}
-  function grid(anim=true){const[c,r]=layout(round);if(c!==cols||r!==rows||!pads.length){cols=c;rows=r;mkPads(anim);return true}return false}
+  const cellOf=(c,r)=>Math.min(BS/c,BS/r);
+  function slotXY(s,c=cols,r=rows){const cl=cellOf(c,r),ox=BX+(BS-cl*c)/2,oy=BY+(BS-cl*r)/2;return{x:ox+(s%c+.5)*cl,y:oy+(Math.floor(s/c)+.5)*cl,s:cl}}
+  const tier=id=>TIER[id%TIER.length];
+  const easeBack=k=>{const c1=1.55,c3=c1+1;return 1+c3*Math.pow(k-1,3)+c1*Math.pow(k-1,2)},easeIO=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+  function mkPad(id,slot,pop=1){const q=slotXY(slot);return{id,slot,x:q.x,y:q.y,sz:q.s,lift:0,tw:null,pop,lit:0,bad:0,sq:0,sqv:0,sqa:Math.PI/2,blink:rand(1,5),bt:0,seed:rand(9)}}
+  // move a pad to a slot: smooth size change, springy overshoot, optional hop, then a little landing wobble
+  function tweenTo(p,slot,{dur=.7,delay=0,arc=0,from=null,ease='back',axis=Math.PI/2,kick=7}={}){const q=slotXY(slot);p.slot=slot;const f=from||{x:p.x,y:p.y,s:p.sz};if(from){p.x=f.x;p.y=f.y;p.sz=f.s}p.tw={fx:f.x,fy:f.y,fs:f.s,tx:q.x,ty:q.y,ts:q.s,t0:clk+delay,dur,arc,ease,axis,kick}}
+  const busy=()=>pads.some(p=>p.tw);
+  const padAt=s=>pads.find(p=>p.slot===s);
+  function build(slots){const[c,r]=layout(round);cols=c;rows=r;pads=[];for(let id=0;id<n();id++)pads.push(mkPad(id,slots&&slots[id]!=null?slots[id]:id,slots?1:-(id*.07)))}
   function hud(){setMid('Hearts','♥'.repeat(Math.max(0,hearts))+'♡'.repeat(Math.max(0,3-hearts)))}
   function say(t,d=1.2){msg=t;msgT=d}
-  function reset(){st='play';round=1;hearts=3;seq=[];taps=0;bestRound=0;perfect=0;cols=0;rows=0;pads=[];grid(true);addSteps(1);toShow(1)}
+  function reset(){st='play';round=1;hearts=3;seq=[];taps=0;bestRound=0;perfect=0;clk=0;build(null);addSteps(1);toShow(1.1)}
   function addSteps(k){for(let i=0;i<k;i++){let x;do{x=Math.floor(rand(n()))}while(seq.length>1&&x===seq[seq.length-1]&&x===seq[seq.length-2]);seq.push(x)}}
-  function toShow(delay=.7){phase='pre';pt=delay;stepI=0;say('Watch…',delay+.4)}
+  function toShow(delay=.7,times=1){phase='pre';pt=delay;stepI=0;shows=times;say(times>1?'Watch closely: twice!':'Watch…',delay+.4)}
   function start(){reset();restyle();hud()}
-  function restyle(){const B=BOARDS[S().board]||BOARDS.mint;theme(B.bg,B.hud);gbar('Watch the jellies light up, then tap them back in the same order.');if(st!=='done')hud()}
-  function flash(k,d){const p=pads[k];if(!p)return;p.lit=d;p.sqv-=3.5;tone(note(4+k*2),Math.min(.4,d+.08),'triangle',.16,0);tone(note(4+k*2)*2,Math.min(.25,d),'sine',.05,0)}
+  function restyle(){const B=BOARDS[S().board]||BOARDS.mint;theme(B.bg,B.hud);gbar('Watch the jellies light up, then tap them back in the same order. Every few rounds they shuffle!');if(st!=='done')hud()}
+  function flash(id,d){const p=pads[id];if(!p)return;p.lit=d;p.sqv-=3.5;p.sqa=Math.PI/2;tone(note(4+id*2),Math.min(.4,d+.08),'triangle',.16,0);tone(note(4+id*2)*2,Math.min(.25,d),'sine',.05,0)}
   function over(){if(st!=='play')return;st='ending';endT=1.3;sfx.over();big('OUT OF HEARTS!','#ff6fa8');
-    if(endKind()==='explode'){endT=endBoom(pads.map(p=>{const q=pc(p.k),cr=C(tier(p.k)),r=cell()*.3;return{x:q.x,y:q.y,r,draw:cx=>drawAnimal(cx,0,0,r,cr.k,cr.c,{fx:cr.fx,mood:3,hat:S().hat})}}));pads=[]}}
-  function tap(p){if(st!=='play'||paused||phase!=='input')return;const cl=cell(),x=Math.floor((p.x-ox())/cl),y=Math.floor((p.y-oy())/cl);if(x<0||y<0||x>=cols||y>=rows)return;const k=y*cols+x,q=pc(k);idleT=0;
-    if(k===seq[pos]){flash(k,.22);pos++;taps++;const pts=5*round;addScore(pts,1.08);burst(q.x,q.y,C(tier(k)).c,6,160,.2);
+    if(endKind()==='explode'){endT=endBoom(pads.map(p=>{const cr=C(tier(p.id)),r=p.sz*.3;return{x:p.x,y:p.y,r,draw:cx=>drawAnimal(cx,0,0,r,cr.k,cr.c,{fx:cr.fx,mood:3,hat:S().hat})}}));pads=[]}}
+  // ---- level-up events
+  function startShuffle(){phase='shuffle';sub=0;pt=.55;big('SHUFFLE!','#ff9ad5');sfx.combo(3);for(const p of pads){p.sqv+=6;p.sqa=Math.PI/2}}
+  function doShuffle(){const sl=pads.map(p=>p.slot);let perm;for(let tries=0;tries<40;tries++){perm=sl.slice();for(let i=perm.length-1;i>0;i--){const j=Math.floor(rand(i+1));[perm[i],perm[j]]=[perm[j],perm[i]]}if(perm.every((s,i)=>s!==sl[i]))break}
+    pads.forEach((p,i)=>tweenTo(p,perm[i],{dur:.82,delay:i*.07,arc:46+rand(0,26),kick:9}));tone(300,.25,'triangle',.08,700)}
+  function startGrow(){phase='grow';sub=0;const[c,r]=layout(round),oc=cols;growFrom={c:cols,r:rows};big('MORE JELLIES!','#7cc8ff');sfx.combo(3);
+    // existing jellies keep their row and column, and ease to the new (smaller) size
+    for(const p of pads){const x=p.slot%oc,y=Math.floor(p.slot/oc);p.slot=y*c+x}cols=c;rows=r;for(const p of pads)tweenTo(p,p.slot,{dur:.6,ease:'io',kick:4});pt=.7}
+  function growSlide(){const ex=extent(),used=new Set(pads.map(p=>p.slot)),fresh=[];for(let s=0;s<n();s++)if(!used.has(s))fresh.push(s);
+    fresh.forEach((s,i)=>{const q=slotXY(s),gc=s%cols>=growFrom.c,p=mkPad(pads.length,s);const from=gc?{x:ex.x1+q.s,y:q.y,s:q.s}:{x:q.x,y:ex.y1+q.s,s:q.s};
+      tweenTo(p,s,{dur:.8,delay:.1+i*.16,from,axis:gc?0:Math.PI/2,kick:11});pads.push(p);setTimeout(()=>{if(st==='play')tone(note(6+i*2),.12,'triangle',.08,0)},(.1+i*.16+.6)*1000)});
+    pads.sort((a,b)=>a.id-b.id)}
+  function tap(p){if(st!=='play'||paused||phase!=='input'||busy())return;const q0=slotXY(0),cl=q0.s,ox=q0.x-cl/2,oy=q0.y-cl/2,x=Math.floor((p.x-ox)/cl),y=Math.floor((p.y-oy)/cl);if(x<0||y<0||x>=cols||y>=rows)return;
+    const pd=padAt(y*cols+x);if(!pd)return;idleT=0;
+    if(pd.id===seq[pos]){flash(pd.id,.22);pos++;taps++;addScore(5*round,1.08);burst(pd.x,pd.y,C(tier(pd.id)).c,6,160,.2);
       if(pos>=seq.length){phase='good';pt=.85;const bonus=round*25*(perfect===0?2:1);addScore(bonus,1.4);float(W/2,BY+BS/2,'+'+bonus,'#ffd23f',30);say(perfect===0?'Perfect!':'Nice!',.85);sfx.discover();bestRound=Math.max(bestRound,round);ring(W/2,BY+BS/2,120,'#ffd23f')}}
-    else{const p0=pads[k];p0.bad=.6;p0.sqv+=9;hearts--;perfect++;hud();sfx.thud();sfx.nope();addShake(.35);float(q.x,q.y-cl*.4,'OOPS','#ff5f6d',22);const want=pads[seq[pos]];if(want)want.lit=.5;
+    else{pd.bad=.6;pd.sqv+=9;hearts--;perfect++;hud();sfx.thud();sfx.nope();addShake(.35);float(pd.x,pd.y-cl*.4,'OOPS','#ff5f6d',22);const want=pads[seq[pos]];if(want)want.lit=.5;
       if(hearts<=0){over();return}phase='bad';pt=1.1;say('Watch again…',1.1)}}
-  function animate(dt){for(const p of pads){if(p.pop<1)p.pop=Math.min(1,p.pop+dt*4);if(p.lit>0)p.lit-=dt;if(p.bad>0)p.bad-=dt;p.sqv+=(-560*SPK*p.sq-12*SPD*p.sqv)*dt;p.sq+=p.sqv*dt;p.blink-=dt;if(p.blink<0){p.bt=.14;p.blink=rand(1.5,5)}if(p.bt>0)p.bt-=dt}if(msgT>0)msgT-=dt}
+  function animate(dt){clk+=dt;
+    for(const p of pads){if(p.pop<1)p.pop=Math.min(1,p.pop+dt*4);if(p.lit>0)p.lit-=dt;if(p.bad>0)p.bad-=dt;p.sqv+=(-560*SPK*p.sq-11*SPD*p.sqv)*dt;p.sq+=p.sqv*dt;p.blink-=dt;if(p.blink<0){p.bt=.14;p.blink=rand(1.5,5)}if(p.bt>0)p.bt-=dt;
+      const w=p.tw;if(!w)continue;const k=(clk-w.t0)/w.dur;if(k<0){p.x=w.fx;p.y=w.fy;p.sz=w.fs;continue}const kk=Math.min(1,k),e=w.ease==='io'?easeIO(kk):easeBack(kk),es=easeIO(Math.min(1,kk*1.3));
+      p.x=w.fx+(w.tx-w.fx)*e;p.y=w.fy+(w.ty-w.fy)*e;p.sz=w.fs+(w.ts-w.fs)*es;p.lift=w.arc*Math.sin(Math.PI*kk);
+      if(k>=1){p.x=w.tx;p.y=w.ty;p.sz=w.ts;p.lift=0;p.tw=null;p.sqa=w.axis;p.sqv+=w.kick}}
+    if(msgT>0)msgT-=dt}
   function update(dt){animate(dt);if(st==='done'||SPEC)return;
     if(st==='ending'){endT-=dt;if(endT<=0){st='done';finishRound('memory',{round:bestRound,taps},'Out of hearts!',[['Best round',bestRound],['Pattern',seq.length+' long'],['Taps',taps]])}return}
     pt-=dt;
     if(phase==='pre'&&pt<=0){phase='show';stepI=0;pt=.1}
-    else if(phase==='show'&&pt<=0){if(stepI<seq.length){flash(seq[stepI],iv()*.68);stepI++;pt=iv()}else{phase='input';pos=0;idleT=0;say('Your turn!',1)}}
+    else if(phase==='show'&&pt<=0){if(stepI<seq.length){flash(seq[stepI],iv()*.68);stepI++;pt=iv()}else if(shows>1){shows--;phase='gap';pt=1;say('Once more…',1)}else{phase='input';pos=0;idleT=0;say('Your turn!',1)}}
+    else if(phase==='gap'&&pt<=0){phase='show';stepI=0;pt=.1}
     else if(phase==='input'){idleT+=dt;if(idleT>Math.max(4,9-round*.25)){idleT=0;hearts--;perfect++;hud();sfx.thud();say('Too slow!',1.1);addShake(.3);const want=pads[seq[pos]];if(want)want.lit=.5;if(hearts<=0){over();return}phase='bad';pt=1.1}}
     else if(phase==='bad'&&pt<=0){toShow(.3)}
-    else if(phase==='good'&&pt<=0){round++;perfect=0;const grew=grid(true);addSteps(round>14?2:1);if(grew){big('MORE JELLIES!','#7cc8ff');sfx.combo(3)}else if(round%5===0){big('FASTER!','#ffd23f');sfx.combo(2)}toShow(grew?1.1:.55)}}
+    else if(phase==='shuffle'){if(sub===0&&pt<=0){sub=1;doShuffle()}else if(sub===1&&!busy()){sub=2;pt=.35}else if(sub===2&&pt<=0)toShow(.5,2)}
+    else if(phase==='grow'){if(sub===0&&pt<=0){sub=1;growSlide()}else if(sub===1&&!busy()){sub=2;addSteps(1);phase='ready';pt=3;say('Get ready!',3)}}
+    else if(phase==='ready'){const n0=Math.ceil(pt+dt),n1=Math.ceil(pt);if(n1!==n0&&n1>0)sfx.tick();if(pt<=0)toShow(.15)}
+    else if(phase==='good'&&pt<=0){round++;perfect=0;const[c,r]=layout(round);
+      if(c!==cols||r!==rows){addSteps(round>14?1:0);startGrow()}
+      else{addSteps(round>14?2:1);if(SHUF(round))startShuffle();else{if(round%5===0){big('FASTER!','#ffd23f');sfx.combo(2)}toShow(.55)}}}}
   function bg(c,ex){const B=BOARDS[S().board]||BOARDS.mint;c.fillStyle=B.bg;c.fillRect(ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(255,255,255,.05)';for(let y=Math.floor(ex.y0/40)*40;y<ex.y1;y+=40)for(let x=Math.floor(ex.x0/40)*40;x<ex.x1;x+=40){c.save();c.translate(x+20,y+20);c.rotate(.785);c.fillRect(-3,-3,6,6);c.restore()}}
-  function render(c){const B=BOARDS[S().board]||BOARDS.mint,cs=S(),cl=cell();
+  function drawPad(c,p,cs){const pp=p.pop<0?0:p.pop<1?elastic(p.pop):1;if(pp<=0)return;const cr=C(tier(p.id)),on=p.lit>0,cl=p.sz,y=p.y-p.lift,q=BNC?softSq(p.sq*1.2,.3):clamp(p.sq,-.3,.3);
+    if(p.lift>2){c.save();c.globalAlpha=.22*Math.min(1,p.lift/30);c.fillStyle='#000';ell(c,p.x,p.y+cl*.36,cl*.32,cl*.07);c.fill();c.restore()}
+    c.save();c.translate(p.x,y);c.scale(pp,pp);c.rotate(p.sqa);c.scale(1-q*.45,1+q*.4);c.rotate(-p.sqa);if(p.tw&&p.lift>0)c.rotate(Math.sin(clk*9+p.seed)*.06*Math.min(1,p.lift/25));
+    rr(c,-cl/2+7,-cl/2+7,cl-14,cl-14,cl*.2);c.fillStyle=on?shadeHex(cr.c,.25):shadeHex(cr.c,-.55);c.globalAlpha=on?1:.6;c.fill();c.globalAlpha=1;
+    if(on){c.save();c.globalAlpha=.5;c.lineWidth=10;c.strokeStyle='#fff';c.stroke();c.restore()}if(p.bad>0){c.fillStyle=`rgba(255,60,80,${p.bad*.8})`;c.fill()}c.lineWidth=3.5;c.strokeStyle=INK;c.stroke();c.restore();
+    const r=cl*.27*pp;drawAnimal(c,p.x,y-(on?r*.18:0),r*(on?1.1:.92),cr.k,cr.c,{fx:cr.fx,sq:p.sq,sqa:p.sqa,seed:p.seed,mood:on||p.lift>4?2:p.bad>0?3:0,blink:on?0:phase==='show'?0:p.bt,hat:cs.hat,jig:on?.05:.01})}
+  function render(c){const B=BOARDS[S().board]||BOARDS.mint,cs=S();
     outlineText(c,'ROUND '+round,W/2,BY-58,26,'#fff');
-    // pattern length dots
     const L=seq.length,dw=Math.min(16,300/Math.max(1,L));for(let i=0;i<L;i++){const x=W/2-(L-1)*dw/2+i*dw,on=phase==='input'?i<pos:phase==='show'?i<stepI:phase==='good';circ(c,x,BY-30,Math.min(5,dw*.35));c.fillStyle=on?'#ffd23f':'rgba(255,255,255,.28)';c.fill()}
     rr(c,BX-12,BY-12,BS+24,BS+24,30);c.fillStyle=B.board;c.fill();if(B.fx)boardFX(c,B,BX-12,BY-12,BS+24,BS+24,30);rr(c,BX-12,BY-12,BS+24,BS+24,30);c.lineWidth=4;c.strokeStyle=INK;c.stroke();if(B.rim){rr(c,BX-9,BY-9,BS+18,BS+18,27);c.lineWidth=3;c.strokeStyle=B.rim;c.stroke()}
-    for(const p of pads){const q=pc(p.k),pp=p.pop<0?0:p.pop<1?elastic(p.pop):1,cr=C(tier(p.k)),on=p.lit>0;if(pp<=0)continue;
-      c.save();c.translate(q.x,q.y);c.scale(pp,pp);rr(c,-cl/2+7,-cl/2+7,cl-14,cl-14,cl*.2);c.fillStyle=on?shadeHex(cr.c,.25):shadeHex(cr.c,-.55);c.globalAlpha=on?1:.55;c.fill();c.globalAlpha=1;
-      if(on){c.save();c.globalAlpha=.5;c.lineWidth=10;c.strokeStyle='#fff';c.stroke();c.restore()}if(p.bad>0){c.fillStyle=`rgba(255,60,80,${p.bad*.8})`;c.fill()}c.lineWidth=3.5;c.strokeStyle=INK;c.stroke();c.restore();
-      const r=cl*.27*pp;drawAnimal(c,q.x,q.y-(on?r*.18:0),r*(on?1.1:.92),cr.k,cr.c,{fx:cr.fx,sq:p.sq,sqa:Math.PI/2,seed:p.seed,mood:on?2:p.bad>0?3:0,blink:on?0:phase==='show'?0:p.bt,hat:cs.hat,jig:on?.05:.01})}
+    for(let s=0;s<n();s++){const q=slotXY(s);rr(c,q.x-q.s/2+9,q.y-q.s/2+9,q.s-18,q.s-18,q.s*.18);c.fillStyle='rgba(0,0,0,.14)';c.fill()}
+    const order=pads.slice().sort((a,b)=>a.lift-b.lift||(a.tw?1:0)-(b.tw?1:0));
+    // jellies sliding in from off the board are drawn on top of everything
+    for(const p of order)drawPad(c,p,cs);
     drawFX(c);
+    if(phase==='ready'&&st==='play'){const k=pt%1,s=1+.3*Math.pow(k,3);c.save();c.translate(W/2,BY+BS/2);c.scale(s,s);c.globalAlpha=.9;outlineText(c,String(Math.max(1,Math.ceil(pt))),0,0,84,'#fff');c.restore()}
     if(msgT>0){c.save();c.globalAlpha=Math.min(1,msgT*3);outlineText(c,msg,W/2,BY+BS+44,24,phase==='input'?'#5be0a6':phase==='bad'?'#ff8a9a':'#fff');c.restore()}
     else if(phase==='input'&&st==='play'){outlineText(c,(seq.length-pos)+' to go',W/2,BY+BS+44,18,'rgba(255,255,255,.85)')}}
-  function serialize(){if(st!=='play')return null;return{score,round,hearts,seq:seq.slice(0,200),pos,phase,taps,bestRound,stepI}}
-  function restore(d){st='play';round=d.round||1;hearts=d.hearts||3;taps=d.taps||0;bestRound=d.bestRound||0;seq=Array.isArray(d.seq)?d.seq.map(x=>x|0):[];if(!SPEC){cols=0;rows=0;pads=[]}grid(false);seq=seq.map(x=>clamp(x,0,n()-1));if(!seq.length)addSteps(1);
-    pos=clamp(d.pos|0,0,seq.length);score=shown=d.score||0;scoreEl.textContent=fmt(score);
-    if(SPEC){const prevI=stepI;phase=d.phase||'input';stepI=d.stepI|0;if(phase==='show'&&stepI>0&&stepI!==prevI){const k=seq[stepI-1];if(pads[k]){pads[k].lit=.3;pads[k].sqv-=6}}if(phase==='input'&&d.pos>0){const k=seq[d.pos-1];if(pads[k]&&pos!==prevPos){pads[k].lit=.22}}prevPos=pos}
-    else toShow(.9);restyle();hud()}
-  let prevPos=0;
+  function serialize(){if(st!=='play')return null;return{score,round,hearts,seq:seq.slice(0,200),pos,phase,taps,bestRound,stepI,cols,rows,sl:pads.map(p=>p.slot)}}
+  function restore(d){st='play';round=d.round||1;hearts=d.hearts||3;taps=d.taps||0;bestRound=d.bestRound||0;seq=Array.isArray(d.seq)?d.seq.map(x=>x|0):[];score=shown=d.score||0;scoreEl.textContent=fmt(score);
+    const[c,r]=d.cols&&d.rows?[clamp(d.cols|0,2,3),clamp(d.rows|0,2,3)]:layout(round),sl=Array.isArray(d.sl)&&d.sl.length===c*r?d.sl.map(x=>clamp(x|0,0,c*r-1)):null;
+    if(!SPEC||c!==cols||r!==rows||pads.length!==c*r){cols=c;rows=r;pads=[];for(let id=0;id<n();id++)pads.push(mkPad(id,sl?sl[id]:id,SPEC?0:1))}
+    else if(sl)pads.forEach((p,i)=>{if(p.slot!==sl[i]&&!p.tw)tweenTo(p,sl[i],{dur:.8,delay:i*.05,arc:50,kick:9})});
+    seq=seq.map(x=>clamp(x,0,n()-1));if(!seq.length)addSteps(1);pos=clamp(d.pos|0,0,seq.length);
+    if(SPEC){const prevI=stepI;phase=d.phase||'input';stepI=d.stepI|0;if(phase==='show'&&stepI>0&&stepI!==prevI){const p=pads[seq[stepI-1]];if(p){p.lit=.3;p.sqv-=6}}if(phase==='input'&&d.pos>0&&pos!==prevPos){const p=pads[seq[d.pos-1]];if(p)p.lit=.22}prevPos=pos}
+    else toShow(.9,SHUF(round)?2:1);restyle();hud()}
   return{start,update,render,bg,down:tap,move(){},up(){},key(){},action(){},restyle,serialize,restore,state:()=>st};
 })();
 
@@ -2268,7 +2305,7 @@ const TUT={drop:['Slide your finger to aim, then let go to drop a jelly.','Two o
   squish:['Swipe (or use the arrow keys) to slide every jelly at once.','Two of the same number squish together and double.','Keep merging until the board fills up. Make 2048 to crown a king!'],
   doku:['Each row, column and color area needs exactly one jelly.','Jellies can never touch, not even corner to corner.','Tap a square to mark ✕. Double-tap to drop a jelly. Wrong jellies cost a heart.'],
   combo:['Jellies pop up on the board. Tap each one before its ring runs out.','Tap fast and keep tapping for a big combo. Missing one costs a heart.','Never tap the spiky ones! Gold jellies are worth x3. It gets faster and the board grows.'],
-  memory:['Watch the jellies light up one by one.','Tap them back in the same order. Each round adds one more.','Mistakes cost a heart. Later rounds are faster and add more jellies!'],
+  memory:['Watch the jellies light up one by one.','Tap them back in the same order. Each round adds one more.','Every few rounds the jellies shuffle (you’ll see the pattern twice) and more jellies join. Mistakes cost a heart.'],
   catch:['Drag left and right to move your jar.','Catch every jelly. Missing one costs a life.','Dodge the spiky ones, grab gold stars for x2, and catch the Lucky critter for x3!']};
 var tutG=null,tutT0=0;
 function tutMaybe(g){P.tut=P.tut||{};if(P.tut[g]||(P.best&&P.best[g]>0)){P.tut[g]=1;return}if(SPEC||(DUEL&&DUEL.phase!=='wait')||gid!==g)return;
