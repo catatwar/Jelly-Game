@@ -1,7 +1,8 @@
 // Jelly Critters offline helper: lets the game open with no internet.
+// Made By Cat At War: offline helper for Jelly Critters.
 // The game page is fetched fresh whenever you're online (so updates arrive right away)
 // and falls back to the saved copy when you're offline.
-const V = 'jelly-critters-v2';
+const V = 'jelly-critters-v3';
 const CORE = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './icon-maskable-512.png'];
 
 self.addEventListener('install', e => {
