@@ -276,6 +276,7 @@ select{font:600 16px var(--body);color:var(--ink);border:2.5px solid var(--ink);
 #pfStats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
 #pfStats div{padding:6px 2px;border-radius:12px}#pfStats .v{font-size:17px}#pfStats .k{font-size:9px;letter-spacing:.05em;text-align:center}
 .pcard{position:relative}
+.sgroup{grid-column:1/-1;margin:4px 2px -2px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 #pfEdit{position:absolute;top:12px;right:12px;z-index:2}
 #pfEdit.on{background:var(--mint)}
 .emrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;font-weight:600}
@@ -612,7 +613,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
       <div class="stat"><span class="lbl">Score</span><span id="score" class="num">0</span></div>
       <div class="stat mid"><span class="lbl" id="midL">Next</span><canvas id="midC" width="100" height="100"></canvas><span id="midT" class="num sm" hidden></span></div>
       <div class="stat right"><span class="lbl">Best</span><span id="best" class="num sm">0</span></div>
-      <div class="hudR"><button class="icon-btn" id="mailBtn" type="button" aria-label="Mailbox"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.5" fill="#fff"/><path d="M3.8 7l8.2 6 8.2-6"/></svg><span class="mcount" id="mailN" hidden>0</span></button><button class="icon-btn" id="styleBtn" type="button" aria-label="Style this game"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6a2 2 0 1 1 2-2M12 6v2l9 7v2H3v-2l9-7"/></svg><span class="dot" id="styleDot" hidden></span></button></div>
+      <div class="hudR"><button class="icon-btn" id="mailBtn" type="button" aria-label="Mailbox"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.5" fill="#fff"/><path d="M3.8 7l8.2 6 8.2-6"/></svg><span class="mcount" id="mailN" hidden>0</span></button><button class="icon-btn" id="styleBtn" type="button" aria-label="Shop"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11a1.6 1.6 0 0 1-1.6 1.4H7.8A1.6 1.6 0 0 1 6.2 19z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg><span class="dot" id="styleDot" hidden></span></button></div>
     </header>
     <main id="stage"><canvas id="game"></canvas></main>
     <div id="chatBar" aria-live="polite"></div>
@@ -633,7 +634,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     </div>
     <div class="arow"><span class="atx" id="acctTx">Playing as a guest</span><span class="abtns"><button class="btn small mint" id="swapBtn" type="button" hidden>Swap</button><button class="btn small white" id="acctBtn" type="button">Sign in</button></span></div>
     <button class="btn pink" id="mResume" type="button">Resume</button>
-    <div class="mgrid"><button class="mic mint" id="mLb" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5.5a2.5 2.5 0 0 0 2.7 3.6M16 6h2.5a2.5 2.5 0 0 1-2.7 3.6M12 13v4M8.5 20h7M10 17h4v3h-4z"/></svg><span>Leaderboard</span></button><button class="mic yel" id="mGw" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M3 10h18M12 10v10"/><path d="M12 10C10.5 6 7 5.5 7 7.8 7 9.5 10 10 12 10c2 0 5-.5 5-2.2C17 5.5 13.5 6 12 10z"/></svg><span>Giveaways</span><span class="dot" id="gwDot" hidden></span></button><button class="mic mint" id="mDuel" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l10 10M4 4h4M4 4v4M20 4L10 14M20 4h-4M20 4v4M8 16l-3.5 3.5M16 16l3.5 3.5M6 13l5 5M18 13l-5 5"/></svg><span>1v1 battles</span></button><button class="mic " id="mFr" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17.2" cy="9" r="2.4"/><path d="M16.5 14.2c2.6.2 4.5 2.2 4.5 4.8"/></svg><span>Friends</span><span class="dot" id="frDot" hidden></span></button><button class="mic " id="mMail" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.8 7l8.2 6 8.2-6"/></svg><span>Mailbox</span></button><button class="mic " id="mStyle" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6a2 2 0 1 1 2-2M12 6v2l9 7v2H3v-2l9-7"/></svg><span>Style</span></button><button class="mic " id="mSave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11l3 3v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg><span>Save</span></button><button class="mic " id="mRestart" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4v4.2h4.2"/></svg><span>Restart</span></button><button class="mic " id="mHow" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.7.3-1 .9-1 1.7"/><path d="M12 17h.01"/></svg><span>How to play</span></button></div>
+    <div class="mgrid"><button class="mic mint" id="mLb" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5.5a2.5 2.5 0 0 0 2.7 3.6M16 6h2.5a2.5 2.5 0 0 1-2.7 3.6M12 13v4M8.5 20h7M10 17h4v3h-4z"/></svg><span>Leaderboard</span></button><button class="mic yel" id="mGw" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M3 10h18M12 10v10"/><path d="M12 10C10.5 6 7 5.5 7 7.8 7 9.5 10 10 12 10c2 0 5-.5 5-2.2C17 5.5 13.5 6 12 10z"/></svg><span>Giveaways</span><span class="dot" id="gwDot" hidden></span></button><button class="mic mint" id="mDuel" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l10 10M4 4h4M4 4v4M20 4L10 14M20 4h-4M20 4v4M8 16l-3.5 3.5M16 16l3.5 3.5M6 13l5 5M18 13l-5 5"/></svg><span>1v1 battles</span></button><button class="mic " id="mFr" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17.2" cy="9" r="2.4"/><path d="M16.5 14.2c2.6.2 4.5 2.2 4.5 4.8"/></svg><span>Friends</span><span class="dot" id="frDot" hidden></span></button><button class="mic " id="mMail" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.8 7l8.2 6 8.2-6"/></svg><span>Mailbox</span></button><button class="mic " id="mStyle" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11a1.6 1.6 0 0 1-1.6 1.4H7.8A1.6 1.6 0 0 1 6.2 19z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg><span>Shop</span></button><button class="mic " id="mSave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11l3 3v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg><span>Save</span></button><button class="mic " id="mRestart" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4v4.2h4.2"/></svg><span>Restart</span></button><button class="mic " id="mHow" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.7.3-1 .9-1 1.7"/><path d="M12 17h.01"/></svg><span>How to play</span></button></div>
     <h3 class="mh">Switch game</h3>
     <div class="mgames" id="mGames"></div>
     <div class="gift-row"><span class="streak"><b id="streakN">1</b> day streak</span><button class="btn small" id="giftBtn" type="button">Daily gift</button></div>
@@ -651,8 +652,8 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
 </div>
 
 <div id="style" class="sheet" hidden>
-  <div class="sheet-card" role="dialog" aria-label="Style">
-    <div class="sheet-h"><h3 id="sTitle">Style</h3><span class="coins"><i class="coin"></i><span class="coinN">0</span></span><button class="btn small white" id="sClose" type="button">Done</button></div>
+  <div class="sheet-card" role="dialog" aria-label="Shop">
+    <div class="sheet-h"><h3 id="sTitle">Shop</h3><span class="coins"><i class="coin"></i><span class="coinN">0</span></span><button class="btn small white" id="sClose" type="button">Done</button></div>
     <div class="meter" id="sMeter"></div>
     <div class="tabs" id="sTabs" role="tablist"></div>
     <div class="items" id="sItems"></div>
@@ -1430,8 +1431,12 @@ const giftReady=()=>!P.giftDay||dayNum(P.giftDay)<dayNum(today());
 let P=store.get('ca_profile',null);
 if(!P||typeof P!=='object'){const old=store.get('ja_profile',null)||{};P={coins:old.coins||0,xp:old.xp||0,level:old.level||1,streak:old.streak||0,lastDay:old.lastDay||'',giftDay:old.giftDay||'',rounds:old.rounds||0,earned:old.earned||0,name:old.name||'',
   best:{drop:(old.best&&old.best.jar)||store.get('jj_best',0),squish:(old.best&&old.best.squish)||0},found:old.found||store.get('jj_found',[0]),quests:null}}
+// which per-game style slots hold each kind of cosmetic (one shared Shop fills all of them)
+var SHARED={set:['drop','squish','doku'],hat:['drop','squish','doku'],jar:['drop'],wall:['drop'],board:['squish','doku']};
 function norm(){P.best=Object.assign({drop:0,squish:0,doku:0,catch:0,combo:0,memory:0},P.best||{});P.found=P.found||[0];P.cos=P.cos||{};P.own=P.own||[];P.meter=P.meter||{};P.fresh=P.fresh||[];P.saves=P.saves||{};
 for(const g in DEF){P.cos[g]=Object.assign({},DEF[g],P.cos[g]||{});for(const k in P.cos[g])if(!STYLE[g][k])delete P.cos[g][k];P.meter[g]=P.meter[g]||0;for(const cat in STYLE[g])for(const it of STYLE[g][cat].items)if(it[2]===0&&!it[4]){const key=g+':'+cat+':'+it[0];if(!P.own.includes(key))P.own.push(key)}}
+{const add=new Set(P.own);for(const k of P.own){const[g,cat,id]=String(k).split(':');if(g!=='prof'&&SHARED[cat])for(const x of SHARED[cat])add.add(x+':'+cat+':'+id)}P.own=[...add]}
+if(!P.v3){P.v3=1;for(const x of['squish','doku']){if(P.cos[x]&&P.cos.drop){P.cos[x].set=P.cos.drop.set;P.cos[x].hat=P.cos.drop.hat}}if(P.cos.doku&&P.cos.squish)P.cos.doku.board=P.cos.squish.board}
 if(!GAMESOK(P.last))P.last='drop';
 function GAMESOK(g){return g==='drop'||g==='squish'||g==='doku'||g==='catch'||g==='combo'||g==='memory'}
 if(!P.name)P.name='Critter Pal';
@@ -1453,7 +1458,8 @@ function lvGrant(silent){if(typeof P.lvClaimed!=='number'){lvInit();return}let c
 function lvInit(){if(typeof P.lvClaimed!=='number'){let sp=0;for(let L=2;L<=(P.level||1);L++){const r=lvReward(L);sp+=r.spins;for(const k of r.items)if(!P.own.includes(k))P.own.push(k)}P.lvClaimed=P.level||1;P.spins=(P.spins||0)+sp;store.set('ca_profile',P);return}
   if(P.lvClaimed<(P.level||1))lvGrant();for(const L in LV_ITEMS)if(+L<=P.lvClaimed)for(const k of lvReward(+L).items)if(!P.own.includes(k))P.own.push(k)}
 function refreshCoins(){document.querySelectorAll('.coinN').forEach(e=>e.textContent=fmt(P.coins))}
-const owns=(g,cat,id)=>P.own.includes(g+':'+cat+':'+id);
+const owns=(g,cat,id)=>g==='prof'||!SHARED[cat]?P.own.includes(g+':'+cat+':'+id):SHARED[cat].some(x=>P.own.includes(x+':'+cat+':'+id));
+const ownKeys=(g,cat,id)=>(g==='prof'||!SHARED[cat]?[g]:SHARED[cat]).map(x=>x+':'+cat+':'+id);
 const cos=g=>P.cos[g];
 
 // ================================================= audio
@@ -1544,6 +1550,8 @@ function jarFront(c,st,x,y,w,h,s=1){
   else if(st==='pot'){c.beginPath();c.moveTo(x,y);c.lineTo(x+14*s,y+h);c.lineTo(x+w-14*s,y+h);c.lineTo(x+w,y);c.stroke();c.fillStyle='#e07a4f';rr(c,x-14*s,y-14*s,w+28*s,26*s,8*s);c.fill();c.stroke();
     for(const fx of[.15,.85]){const px=x+w*fx;c.lineWidth=3*s;c.strokeStyle='#3d9b5a';c.beginPath();c.moveTo(px,y-14*s);c.lineTo(px,y-40*s);c.stroke();c.strokeStyle=INK;for(let i=0;i<5;i++){circ(c,px+Math.cos(i/5*TAU)*7*s,y-44*s+Math.sin(i/5*TAU)*7*s,5*s);c.fillStyle='#fff';c.fill();c.stroke()}circ(c,px,y-44*s,4*s);c.fillStyle='#ffd23f';c.fill();c.stroke()}}
   c.restore()}
+const wallOn=()=>{const w=P.cos.drop&&P.cos.drop.wall;return w&&w!=='mint'&&WALLS[w]?w:null};
+function boardBack(c,ex){const w=wallOn();if(!w)return false;wallpaper(c,w,ex.x0,ex.y0,ex.w,ex.h);return true}
 function drawTile(c,x,y,S,v,set,o={}){
   const li=clamp(Math.round(Math.log2(v))-1,0,10),cr=critter(set,li);c.save();c.translate(x,y);if(BNC&&o.sq)o=Object.assign({},o,{sq:softSq(o.sq*1.3,.3)});if(o.sq){const q=clamp(o.sq,-.3,.3),hz=1+q*.85;c.rotate(o.sqa||0);if(BNC)c.scale(1/hz,hz);else c.scale(1-q,1+q*.85);c.rotate(-(o.sqa||0))}if(o.s!==undefined&&o.s!==1)c.scale(o.s,o.s);
   const tc=cr.fx==='dev'?'#0b0407':cr.fx==='aura'?'#120f24':cr.fx==='neon'?'#1b1633':cr.fx==='galaxy'?shadeHex(cr.c,-.28):cr.fx==='gold'?'#ffe9a0':shadeHex(cr.c,.15);rr(c,-S/2,-S/2,S,S,S*.24);c.fillStyle=tc;c.fill();c.save();c.clip();
@@ -1569,7 +1577,7 @@ function resize(){const r=stage.getBoundingClientRect();cw=r.width;ch=r.height;d
 new ResizeObserver(resize).observe(stage);
 const extent=()=>{const x0=-offX/sc-30,y0=-offY/sc-30,x1=(cw-offX)/sc+30,y1=(ch-offY)/sc+30;return{x0,y0,x1,y1,w:x1-x0,h:y1-y0}};
 
-// ================================================= game end effects (Style → End effects)
+// ================================================= game end effects (Shop → End effects)
 const BOOMG=190;let boom=[],boomT=0;
 const endKind=()=>{const v=P&&P.cos&&P.cos.prof&&P.cos.prof.endfx;return v&&v!=='none'&&P.own.includes('prof:endfx:'+v)?v:'none'};
 // launch every piece of the board up and out of the top; returns how long the show lasts
@@ -1700,7 +1708,7 @@ const Squish=(()=>{
   function serialize(){if(st!=='play')return null;return{score,moves,mergesTot,maxTile,g:grid.map(row=>row.map(t=>t?t.v:0))}}
   function restore(d){reset();moves=d.moves||0;mergesTot=d.mergesTot||0;maxTile=d.maxTile||2;seen=new Set([2,4]);for(let v=8;v<=maxTile;v*=2)seen.add(v);score=shown=d.score||0;scoreEl.textContent=fmt(score);
     (d.g||[]).forEach((row,r)=>row.forEach((v,c)=>{if(v)newTile(r,c,v,(r+c)*.03)}));setMid('Biggest',maxTile);restyle()}
-  function restyle(){const B=BOARDS[cos('squish').board];theme(B.bg,B.hud);gbar('Swipe or use the arrow keys. Twin jellies squish into a bigger one.')}
+  function restyle(){const B=BOARDS[cos('squish').board];theme(wallOn()?WALLS[wallOn()].bg:B.bg,B.hud);gbar('Swipe or use the arrow keys. Twin jellies squish into a bigger one.')}
   function move(d){
     if(st!=='play'||pend.length||paused)return;let moved=false,mergesN=0;
     for(let k=0;k<N;k++){const cells=[];for(let i=0;i<N;i++)cells.push(d===0?[k,i]:d===1?[k,N-1-i]:d===2?[i,k]:[N-1-i,k]);const line=cells.map(([r,c])=>grid[r][c]).filter(Boolean);let pi=0,last=null;
@@ -1720,7 +1728,7 @@ const Squish=(()=>{
       if(dist>3){t.sqa=Math.atan2(dy,dx);t.sq=-Math.min(.2,dist/320);t.sqv=0}else if(t.mv){t.mv=false;t.sqv=6;t.x=q.x;t.y=q.y}else{t.sqv+=(-650*SPK*t.sq-14*SPD*t.sqv)*dt;t.sq+=t.sqv*dt}
       if(t.happy>0)t.happy-=dt;if(t.pop<1)t.pop=Math.min(1,t.pop+dt*4);t.blink-=dt;if(t.blink<0){t.bt=.13;t.blink=rand(1.5,6)}if(t.bt>0)t.bt-=dt}
     if(st==='ending'){endT-=dt;if(endT<=0){st='done';const cr=critter(cos('squish').set,clamp(Math.round(Math.log2(maxTile))-1,0,10));finishRound('squish',{tile:maxTile},'No moves left!',[['Biggest',cr.n.split(' ')[0]],['Merges',mergesTot],['Moves',moves]])}}}
-  function bg(c,ex){const B=BOARDS[cos('squish').board];c.fillStyle=B.bg;c.fillRect(ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(255,255,255,.06)';for(let y=Math.floor(ex.y0/44)*44;y<ex.y1;y+=44)for(let x=Math.floor(ex.x0/44)*44;x<ex.x1;x+=44){circ(c,x+(Math.abs(Math.round(y/44))%2?22:0),y,3.5);c.fill()}}
+  function bg(c,ex){if(boardBack(c,ex))return;const B=BOARDS[cos('squish').board];c.fillStyle=B.bg;c.fillRect(ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(255,255,255,.06)';for(let y=Math.floor(ex.y0/44)*44;y<ex.y1;y+=44)for(let x=Math.floor(ex.x0/44)*44;x<ex.x1;x+=44){circ(c,x+(Math.abs(Math.round(y/44))%2?22:0),y,3.5);c.fill()}}
   function render(c){const B=BOARDS[cos('squish').board],cs=cos('squish');
     rr(c,BX-12,BY-12,BS+24,BS+24,30);c.fillStyle=B.board;c.fill();if(B.fx)boardFX(c,B,BX-12,BY-12,BS+24,BS+24,30);rr(c,BX-12,BY-12,BS+24,BS+24,30);c.lineWidth=4;c.strokeStyle=INK;c.stroke();rr(c,BX-9,BY-9,BS+18,BS+18,27);c.strokeStyle=B.rim||'rgba(255,255,255,.12)';if(B.fx==='neon'){c.globalAlpha=.4;c.lineWidth=9;c.stroke();c.globalAlpha=1}c.lineWidth=B.rim?3:2;c.stroke();
     for(let r=0;r<N;r++)for(let k=0;k<N;k++){const q=pos(r,k);rr(c,q.x-TS/2,q.y-TS/2,TS,TS,TS*.24);c.fillStyle=B.slot;c.fill()}
@@ -1873,7 +1881,7 @@ const Doku=(()=>{
     setup(genNow(lvl));lives=clamp(d.lives||3,1,3);tLevel=d.t||0;okN=d.ok||0;badN=d.bad||0;if(d.hints!=null)hints=d.hints;hintsUsed=d.hu||0;lvlStreakPts=d.lsp||0;
     for(const k of d.j||[])if(cells[k]&&pz.sol[Math.floor(k/N)]===k%N){cells[k].j=mkJ(false);cells[k].j.dy=0;cells[k].j.landed=true}
     for(const v of d.m||[]){const k=v>>2,m=v&3;if(cells[k]&&!cells[k].j)cells[k].mark=m||1}introT=1;restyle()}
-  function restyle(){const B=BOARDS[cos('doku').board];theme(B.bg,B.hud);
+  function restyle(){const B=BOARDS[cos('doku').board];theme(wallOn()?WALLS[wallOn()].bg:B.bg,B.hud);
     gbar(`<div class="dkbar"><button class="btn small white" id="dkUndo" type="button">Undo</button><button class="btn small mint" id="dkHint" type="button">Hint</button></div><p class="tip">Tap a square to mark ✕ · Double-tap to drop a jelly · Drag to mark lots</p>`);
     $('dkUndo').onclick=()=>{audio();undoLast()};$('dkHint').onclick=()=>{audio();giveHint()};syncBar()}
   function syncBar(){const u=$('dkUndo'),h=$('dkHint');if(!u||!h)return;h.textContent=`Hint (${hints})`;h.disabled=hints<=0||st!=='play';u.disabled=!undo.length||st!=='play'}
@@ -1934,7 +1942,7 @@ const Doku=(()=>{
       if(clear.added&&clear.t>1.45+clear.lines.length*.38+.6)clear.ready=true;if(clear.ready&&clear.t>10)finishClear()}
     if(st==='ending'){endT-=dt;if(endT<=0){st='done';const acc=totOk+totBad?Math.round(totOk/(totOk+totBad)*100):100;
       finishRound('doku',{level:lvl,levels:levelsDone,streak:bestStreak},'Out of hearts!',[['Level',lvl],['Accuracy',acc+'%'],['Best streak','x'+bestStreak]])}}}
-  function bg(c,ex){const B=BOARDS[cos('doku').board];c.fillStyle=B.bg;c.fillRect(ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(255,255,255,.05)';for(let y=Math.floor(ex.y0/44)*44;y<ex.y1;y+=44)for(let x=Math.floor(ex.x0/44)*44;x<ex.x1;x+=44){circ(c,x+(Math.abs(Math.round(y/44))%2?22:0),y,3.5);c.fill()}}
+  function bg(c,ex){if(boardBack(c,ex))return;const B=BOARDS[cos('doku').board];c.fillStyle=B.bg;c.fillRect(ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(255,255,255,.05)';for(let y=Math.floor(ex.y0/44)*44;y<ex.y1;y+=44)for(let x=Math.floor(ex.x0/44)*44;x<ex.x1;x+=44){circ(c,x+(Math.abs(Math.round(y/44))%2?22:0),y,3.5);c.fill()}}
   function heart(c,x,y,s,full){c.save();c.translate(x,y);heartPath(c,0,0,s);c.fillStyle=full?'#ff5f7e':'rgba(255,255,255,.16)';c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();if(full){c.fillStyle='rgba(255,255,255,.7)';ell(c,-s*.35,-s*.45,s*.18,s*.11,-.6);c.fill()}c.restore()}
   function wrapText(c,txt,maxW){const words=txt.split(' '),out=[];let line='';for(const w of words){const t=line?line+' '+w:w;if(c.measureText(t).width>maxW&&line){out.push(line);line=w}else line=t}if(line)out.push(line);return out}
   function render(c){const B=BOARDS[cos('doku').board],cs=cos('doku'),ia=elastic(introT);
@@ -2087,7 +2095,7 @@ const Combo=(()=>{
   function hud(){setMid('Hearts','♥'.repeat(Math.max(0,hearts))+'♡'.repeat(Math.max(0,3-hearts)))}
   function reset(){st='play';t=0;hearts=3;combo=0;bestCombo=0;hits=0;misses=0;spawnT=.9;growT=0;lvShown=1;build(3)}
   function start(){reset();restyle();hud()}
-  function restyle(){const B=BOARDS[S().board]||BOARDS.lilac;theme(B.bg,B.hud);gbar('Tap jellies the moment they pop up. Don’t tap the spiky ones! It gets faster…');if(st!=='done')hud()}
+  function restyle(){const B=BOARDS[S().board]||BOARDS.lilac;theme(wallOn()?WALLS[wallOn()].bg:B.bg,B.hud);gbar('Tap jellies the moment they pop up. Don’t tap the spiky ones! It gets faster…');if(st!=='done')hud()}
   const mult=()=>Math.min(10,1+Math.floor(combo/4));
   function spawn(){const idle=cells.filter(c=>c.state===0&&c.pop>=1&&c.hit<=0);if(!idle.length)return;const c=idle[Math.floor(rand(idle.length))],r=Math.random();
     const badP=t>12?Math.min(.3,.08+t/260):0,goldP=.06,heartP=hearts<3?.035:0;
@@ -2117,7 +2125,7 @@ const Combo=(()=>{
     if(lvl()!==lvShown){lvShown=lvl();float(W/2,BY-34,'FASTER!','#ffd23f',22);sfx.combo(2)}
     for(const c of cells){if(c.state===0)continue;c.life-=dt;if(c.life<=0){const q=pos(c.k),was=c.state;c.state=0;c.pop=.5;if(was===1||was===3){loseHeart(q.x,q.y-CELL()*.4,'MISS');if(st!=='play')return}}}
     spawnT-=dt;const cap=Math.min(N*N-2,1+Math.floor(t/11));if(spawnT<=0){if(litCount()<cap)spawn();spawnT=Math.max(.24,.95-t*.0105)*rand(.75,1.15)}}
-  function bg(c,ex){const B=BOARDS[S().board]||BOARDS.lilac;c.fillStyle=B.bg;c.fillRect(ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(255,255,255,.06)';for(let y=Math.floor(ex.y0/44)*44;y<ex.y1;y+=44)for(let x=Math.floor(ex.x0/44)*44;x<ex.x1;x+=44){circ(c,x+(Math.abs(Math.round(y/44))%2?22:0),y,3.5);c.fill()}}
+  function bg(c,ex){if(boardBack(c,ex))return;const B=BOARDS[S().board]||BOARDS.lilac;c.fillStyle=B.bg;c.fillRect(ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(255,255,255,.06)';for(let y=Math.floor(ex.y0/44)*44;y<ex.y1;y+=44)for(let x=Math.floor(ex.x0/44)*44;x<ex.x1;x+=44){circ(c,x+(Math.abs(Math.round(y/44))%2?22:0),y,3.5);c.fill()}}
   function urchin(c,r,ang){c.save();c.rotate(ang);c.beginPath();for(let i=0;i<24;i++){const a=i/24*TAU,q=i%2?r*.8:r*1.22;c.lineTo(Math.cos(a)*q,Math.sin(a)*q)}c.closePath();c.fillStyle='#5a2d8a';c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();c.restore();
     circ(c,0,0,r*.74);c.fillStyle='#7a3fb8';c.fill();c.fillStyle='#fff';for(const d of[-1,1]){c.save();c.translate(d*r*.3,-r*.08);c.rotate(d*.45);c.fillRect(-r*.17,-r*.05,r*.34,r*.11);c.restore()}c.fillStyle=INK;c.fillRect(-r*.22,r*.24,r*.44,r*.07)}
   function render(c){const B=BOARDS[S().board]||BOARDS.lilac,cs=S(),cl=CELL();
@@ -2168,7 +2176,7 @@ const Memory=(()=>{
   function addSteps(k){for(let i=0;i<k;i++){let x;do{x=Math.floor(rand(n()))}while(seq.length>1&&x===seq[seq.length-1]&&x===seq[seq.length-2]);seq.push(x)}}
   function toShow(delay=.7,times=1){phase='pre';pt=delay;stepI=0;shows=times;say(times>1?'Watch closely: twice!':'Watch…',delay+.4)}
   function start(){reset();restyle();hud()}
-  function restyle(){const B=BOARDS[S().board]||BOARDS.mint;theme(B.bg,B.hud);gbar('Watch the jellies light up, then tap them back in the same order. Every few rounds they shuffle!');if(st!=='done')hud()}
+  function restyle(){const B=BOARDS[S().board]||BOARDS.mint;theme(wallOn()?WALLS[wallOn()].bg:B.bg,B.hud);gbar('Watch the jellies light up, then tap them back in the same order. Every few rounds they shuffle!');if(st!=='done')hud()}
   function flash(id,d){const p=pads[id];if(!p)return;p.lit=d;p.sqv-=3.5;p.sqa=Math.PI/2;tone(note(4+id*2),Math.min(.4,d+.08),'triangle',.16,0);tone(note(4+id*2)*2,Math.min(.25,d),'sine',.05,0)}
   function over(){if(st!=='play')return;st='ending';endT=1.3;sfx.over();big('OUT OF HEARTS!','#ff6fa8');
     if(endKind()==='explode'){endT=endBoom(pads.map(p=>{const cr=C(tier(p.id)),r=p.sz*.3;return{x:p.x,y:p.y,r,draw:cx=>drawAnimal(cx,0,0,r,cr.k,cr.c,{fx:cr.fx,mood:3,hat:S().hat})}}));pads=[]}}
@@ -2209,7 +2217,7 @@ const Memory=(()=>{
     else if(phase==='good'&&pt<=0){round++;perfect=0;const[c,r]=layout(round);
       if(c!==cols||r!==rows){addSteps(round>14?1:0);startGrow()}
       else{addSteps(round>14?2:1);if(SHUF(round))startShuffle();else{if(round%5===0){big('FASTER!','#ffd23f');sfx.combo(2)}toShow(.55)}}}}
-  function bg(c,ex){const B=BOARDS[S().board]||BOARDS.mint;c.fillStyle=B.bg;c.fillRect(ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(255,255,255,.05)';for(let y=Math.floor(ex.y0/40)*40;y<ex.y1;y+=40)for(let x=Math.floor(ex.x0/40)*40;x<ex.x1;x+=40){c.save();c.translate(x+20,y+20);c.rotate(.785);c.fillRect(-3,-3,6,6);c.restore()}}
+  function bg(c,ex){if(boardBack(c,ex))return;const B=BOARDS[S().board]||BOARDS.mint;c.fillStyle=B.bg;c.fillRect(ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(255,255,255,.05)';for(let y=Math.floor(ex.y0/40)*40;y<ex.y1;y+=40)for(let x=Math.floor(ex.x0/40)*40;x<ex.x1;x+=40){c.save();c.translate(x+20,y+20);c.rotate(.785);c.fillRect(-3,-3,6,6);c.restore()}}
   function drawPad(c,p,cs){const pp=p.pop<0?0:p.pop<1?elastic(p.pop):1;if(pp<=0)return;const cr=C(tier(p.id)),on=p.lit>0,cl=p.sz,y=p.y-p.lift,q=BNC?softSq(p.sq*1.2,.3):clamp(p.sq,-.3,.3);
     if(p.lift>2){c.save();c.globalAlpha=.22*Math.min(1,p.lift/30);c.fillStyle='#000';ell(c,p.x,p.y+cl*.36,cl*.32,cl*.07);c.fill();c.restore()}
     c.save();c.translate(p.x,y);c.scale(pp,pp);c.rotate(p.sqa);c.scale(1-q*.45,1+q*.4);c.rotate(-p.sqa);if(p.tw&&p.lift>0)c.rotate(Math.sin(clk*9+p.seed)*.06*Math.min(1,p.lift/25));
@@ -2311,30 +2319,32 @@ function drawPerk(c,id){
   c.font=`13px ${FAM}`;c.textAlign='center';c.textBaseline='middle';c.lineWidth=3;c.strokeStyle='#2b1d00';c.strokeText('BOUNCIER',0,1);c.fillStyle=gold(-30,-6,30,6);c.fillText('BOUNCIER',0,1);c.restore();
   // twinkles
   c.fillStyle='#fff6cc';for(let i=0;i<5;i++){const q=(t*.7+i*.2)%1,sz=6*Math.sin(q*Math.PI);if(sz<.4)continue;const a=i*1.7+1,x=80+Math.cos(a)*64,y=74+Math.sin(a)*60;c.save();c.translate(x,y);c.rotate(q*2);c.beginPath();for(let j=0;j<8;j++){const rr2=j%2?sz*.3:sz,aa=j/8*TAU;c.lineTo(Math.cos(aa)*rr2,Math.sin(aa)*rr2)}c.closePath();c.fill();c.restore()}}
-function equip(g,cat,id){P.cos[g][cat]=id;if(cat==='perk'){setTimeout(applyBouncy,0);setTimeout(syncMe,0)}if(g==='prof'||(g==='drop'&&(cat==='set'||cat==='hat')))setTimeout(syncMe,0);P.fresh=P.fresh.filter(f=>f!==g+':'+cat+':'+id);save();if((gid===g||SG(gid)===g)&&G&&G.restyle)G.restyle()}
+function equip(g,cat,id){for(const x of(g!=='prof'&&SHARED[cat]?SHARED[cat]:[g]))if(P.cos[x])P.cos[x][cat]=id;if(cat==='perk'){setTimeout(applyBouncy,0);setTimeout(syncMe,0)}if(g==='prof'||(g==='drop'&&(cat==='set'||cat==='hat')))setTimeout(syncMe,0);P.fresh=P.fresh.filter(f=>!f.endsWith(':'+cat+':'+id));save();if(G&&G.restyle)G.restyle()}
 function surprise(g){const pool=itemList(g).filter(i=>!owns(g,i.cat,i.id)&&!i.r&&!i.q);if(!pool.length)return null;const it=pool[Math.floor(rand(pool.length))];const key=g+':'+it.cat+':'+it.id;P.own.push(key);P.fresh.push(key);return it}
 let sTab=null,styleFromMenu=false;
-function openStyle(fromMenu=false){if(!gid)return;audio();sfx.ui();styleFromMenu=fromMenu;paused=true;const g=SG(gid);sTab=sTab&&(STYLE[g][sTab]||STYLE.prof[sTab])?sTab:Object.keys(STYLE[g])[0];$('sTitle').textContent='Style · '+(SGN[gid]||GAMES[g].name);$('style').hidden=false;renderStyle()}
+function openStyle(fromMenu=false){if(!gid)return;audio();sfx.ui();styleFromMenu=fromMenu;paused=true;sTab=shopCats().some(([k])=>k===sTab)?sTab:'set';$('sTitle').textContent='Shop';$('style').hidden=false;renderStyle()}
 function closeStyle(){$('style').hidden=true;if(!styleFromMenu&&$('menu').hidden&&$('over').hidden)paused=false;syncDots()}
 function meterHTML(g){const m=P.meter[g]||0,left=5-m;return`<span class="pips">${[0,1,2,3,4].map(i=>`<i class="${i<m?'on':''}"></i>`).join('')}</span><span>${left===1?'Next round pays <b>1.5x coins</b>!':`1.5x bonus coins in ${left} rounds`}</span>`}
 let sPrev=[];
-const catG=cat=>STYLE.prof[cat]?'prof':SG(gid);
-function renderStyle(){const g0=SG(gid);if(!g0)return;refreshCoins();
-  $('sMeter').innerHTML=meterHTML(g0);
-  const cats=[...Object.entries(STYLE[g0]),...Object.entries(STYLE.prof)];
+const catG=cat=>STYLE.prof[cat]?'prof':cat==='board'?'squish':'drop';
+const SHOP_CATS=[['set','drop','Critters','Critters show up in every game.'],['hat','drop','Hats','Hats are worn in every game.'],['jar','drop','Jars','Your jar in Jelly Jar and Jelly Catch.'],['wall','drop','Wallpapers','Wallpapers show behind every game. Mint dots lets the board games keep their board’s own colour.'],['board','squish','Boards','Your board in Jelly 2048, Jellydoku, Jelly Combo and Jelly Memory.']];
+const shopCats=()=>[...SHOP_CATS.map(([k,g,n])=>[k,{n}]),...Object.entries(STYLE.prof)];
+function renderStyle(){if(!gid)return;refreshCoins();
+  $('sMeter').innerHTML=meterHTML(gid);
+  const cats=shopCats();
   $('sTabs').innerHTML=cats.map(([k,v])=>`<button class="tab${k===sTab?' on':''}${STYLE.prof[k]?' ptab':''}" role="tab" aria-selected="${k===sTab}" data-k="${k}" type="button">${v.n}</button>`).join('');
   $('sTabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{sfx.ui();sTab=b.dataset.k;renderStyle()});
-  const cat=sTab,g=catG(cat),items=STYLE[g][cat].items.filter(it=>!(cat==='title'&&(it[0]==='dev'||it[0]==='helper'))&&(it[3]!=='d'||owns(g,cat,it[0])));
-  $('sItems').innerHTML=(g==='prof'?`<p class="snote">${cat==='title'?'Titles show under your name on the leaderboard and your profile.':cat==='perk'?'Perks change how the whole game feels. Bouncier makes every squish, wobble and pop springier, and you can show it off on your profile.':cat==='endfx'?'End effects play when a round ends, in every game. Explode sends everything on the board flying up and out of the top.':'Frames ring your critter on the leaderboard and your profile.'}</p>`:'')+items.map(([id,n,p,r,q])=>{const own=owns(g,cat,id),on=P.cos[g][cat]===id,fresh=P.fresh.includes(g+':'+cat+':'+id),ok=reqMet(q);
+  const cat=sTab,g=catG(cat),items=STYLE[g][cat].items.filter(it=>!(cat==='title'&&(it[0]==='dev'||it[0]==='helper'))&&(it[3]!=='d'||owns(g,cat,it[0]))).map((it,i)=>[it,i]).sort((a,b)=>(owns(g,cat,b[0][0])-owns(g,cat,a[0][0]))||a[1]-b[1]).map(x=>x[0]),sc=SHOP_CATS.find(c=>c[0]===cat);
+  $('sItems').innerHTML=(sc?`<p class="snote">${sc[3]}</p>`:'')+(g==='prof'?`<p class="snote">${cat==='title'?'Titles show under your name on the leaderboard and your profile.':cat==='perk'?'Perks change how the whole game feels. Bouncier makes every squish, wobble and pop springier, and you can show it off on your profile.':cat==='endfx'?'End effects play when a round ends, in every game. Explode sends everything on the board flying up and out of the top.':'Frames ring your critter on the leaderboard and your profile.'}</p>`:'')+items.map(([id,n,p,r,q],ix)=>{const own=owns(g,cat,id),hd=ix===0||own!==owns(g,cat,items[ix-1][0])?`<p class="sgroup">${own?'Yours':'Get more'}</p>`:'',on=P.cos[g][cat]===id,fresh=P.fresh.some(f=>f.endsWith(':'+cat+':'+id)),ok=reqMet(q);
     const tag=on?'Wearing':own?'Owned':!ok?'Locked':p?`<i class="coin"></i>${fmt(p)}`:'Free';
-    return`<button class="item${on?' on':''}${own?'':' locked'}${r?' r-'+r:''}" ${r?`style="--rc:${RAR[r][1]}"`:''} data-id="${id}" type="button"><canvas width="160" height="160"></canvas>${r?`<span class="rar">${RAR[r][0]}</span>`:''}<span class="in">${n}</span><span class="tag">${tag}</span>${!own&&q?`<span class="req${ok?' ok':''}">${ok?'Unlocked: ':''}${reqText(q)}</span>`:''}${fresh?'<span class="new">NEW</span>':''}</button>`}).join('');
+    return hd+`<button class="item${on?' on':''}${own?'':' locked'}${r?' r-'+r:''}" ${r?`style="--rc:${RAR[r][1]}"`:''} data-id="${id}" type="button"><canvas width="160" height="160"></canvas>${r?`<span class="rar">${RAR[r][0]}</span>`:''}<span class="in">${n}</span><span class="tag">${tag}</span>${!own&&q?`<span class="req${ok?' ok':''}">${ok?'Unlocked: ':''}${reqText(q)}</span>`:''}${fresh?'<span class="new">NEW</span>':''}</button>`}).join('');
   sPrev=[];
   $('sItems').querySelectorAll('.item').forEach(b=>{const id=b.dataset.id,it=items.find(i=>i[0]===id),cx=b.querySelector('canvas').getContext('2d');drawItem(cx,g,cat,id);if(it[3]||cat==='endfx')sPrev.push({c:cx,g,cat,id});
     b.onclick=()=>{audio();
       if(owns(g,cat,id)){equip(g,cat,id);sfx.pop(4);renderStyle();return}
       if(!reqMet(it[4])){sfx.nope();b.classList.remove('nope');void b.offsetWidth;b.classList.add('nope');toast('To unlock: '+reqText(it[4]),RAR[it[3]||'c'][1]);return}
       if(P.coins<it[2]){sfx.nope();b.classList.remove('nope');void b.offsetWidth;b.classList.add('nope');toast(`${fmt(it[2]-P.coins)} more coins needed`,'#ffd23f');return}
-      P.coins-=it[2];P.own.push(g+':'+cat+':'+id);refreshCoins();equip(g,cat,id);sfx.discover();
+      P.coins-=it[2];P.own.push(...ownKeys(g,cat,id));refreshCoins();equip(g,cat,id);sfx.discover();
       const big2=it[3]==='l'||it[3]==='m'||it[3]==='p';if(it[3]==='p'){setTimeout(()=>confetti(fxW/2,fxH*.3,160,1100),300);addShake(.5);hap('success')}confAt(b,big2?110:40,big2?900:500);if(big2){setTimeout(()=>confAt(b,80,700),250);addShake(.3)}
       toast((it[3]?RAR[it[3]][0]+' unlocked: ':'Unlocked: ')+it[1],it[3]?RAR[it[3]][1]:'#5be0a6');renderStyle()}})}
 $('styleBtn').onclick=()=>openStyle(false);$('sClose').onclick=closeStyle;$('style').addEventListener('click',e=>{if(e.target.id==='style')closeStyle()});
@@ -2367,7 +2377,7 @@ function finishRound(g,s,title,items){
   const cheap=itemList(SG(g)).filter(i=>!owns(SG(g),i.cat,i.id)&&reqMet(i.q)).sort((a,b)=>a.p-b.p)[0];
   let msg='';if(nb)msg=prev?`New record by <b>${fmt(s.score-prev)}</b>!`:'First score on the board. Now beat it.';
   else if(prev-s.score<=prev*.2)msg=`Only <b>${fmt(prev-s.score)}</b> away from your best.`;
-  else if(cheap&&P.coins>=cheap.p)msg=`You can buy <b>${cheap.n}</b> in Style now.`;
+  else if(cheap&&P.coins>=cheap.p)msg=`You can buy <b>${cheap.n}</b> in the Shop now.`;
   else if(cheap)msg=`<b>${fmt(cheap.p-P.coins)}</b> more coins for <b>${cheap.n}</b>.`;
   else msg=`Your best is <b>${fmt(prev)}</b>.`;
   $('oNudge').innerHTML=msg;
@@ -2444,7 +2454,7 @@ function drawTut(){const c=$('tutC').getContext('2d');c.setTransform(2,0,0,2,0,0
     jarBack(c,cs.jar,jx-34,150,68,54);jarFront(c,cs.jar,jx-34,150,68,54,.45);
     for(const d of drops)if(T>d.land&&T<d.land+.7){c.globalAlpha=1-(T-d.land)/.7;outlineText(c,'+'+(10+d.l*12),jxF(d.land),130-(T-d.land)*30,16,'#fff');c.globalAlpha=1}
     tutHand(c,jx,198,0)}}
-function syncDots(){$('styleDot').hidden=!(gid&&P.fresh.some(f=>f.startsWith(SG(gid)+':')));ensureQuests();const gn=gwNew();$('pauseDot').hidden=!(gn||giftReady()||P.quests.list.some(q=>!q.c&&q.p>=qdef(q.id).goal)||dmUnread()>0);$('frDot').hidden=!(dmUnread()>0);$('gwDot').hidden=!gn}
+function syncDots(){$('styleDot').hidden=!(gid&&P.fresh.length>0);ensureQuests();const gn=gwNew();$('pauseDot').hidden=!(gn||giftReady()||P.quests.list.some(q=>!q.c&&q.p>=qdef(q.id).goal)||dmUnread()>0);$('frDot').hidden=!(dmUnread()>0);$('gwDot').hidden=!gn}
 function openMenu(){if(!$('over').hidden)$('over').hidden=true;audio();sfx.ui();paused=true;saveRun(false);restartArm=0;($('mRestart').querySelector('span').textContent='Restart',$('mRestart').classList.remove('armed'));$('menu').hidden=false;renderMenu()}
 function closeMenu(){$('menu').hidden=true;if(G&&G.state()!=='play'){playGame(gid,true);return}paused=false;syncDots()}
 let restartArm=0,mPrev=[];
@@ -2453,7 +2463,7 @@ function renderMenu(){ensureQuests();refreshCoins();
   if(document.activeElement!==$('pname'))$('pname').value=P.name;$('streakN').textContent=P.streak;
   const gb=$('giftBtn'),ready=giftReady();gb.disabled=!ready;gb.classList.toggle('gift-ready',ready);gb.classList.toggle('wait',!ready);gb.textContent=ready?'Daily gift':'Next in '+fmtCd(nextReset());$('rstTx').textContent='New in '+fmtCd(nextReset());
   $('mResume').textContent=G&&G.state()==='play'?'Resume':'New round';
-  $('mGames').innerHTML=Object.values(GAMES).map(g=>{const curG=g.id===gid,sv=P.saves[g.id],cnt=styleCount(SG(g.id));return`<button class="mg${curG?' cur':''}" data-g="${g.id}" type="button"><canvas width="240" height="180"></canvas><span class="badge">${curG?'Playing':sv?'Saved':'New'}</span><span class="gb"><span class="gn">${g.name}</span><span class="gs">Best ${fmt(P.best[g.id]||0)}${sv&&!curG?' · saved '+fmt(sv.score||0):''}</span><span class="gs">Style ${cnt[0]}/${cnt[1]}</span></span></button>`}).join('');
+  $('mGames').innerHTML=Object.values(GAMES).map(g=>{const curG=g.id===gid,sv=P.saves[g.id],cnt=styleCount(SG(g.id));return`<button class="mg${curG?' cur':''}" data-g="${g.id}" type="button"><canvas width="240" height="180"></canvas><span class="badge">${curG?'Playing':sv?'Saved':'New'}</span><span class="gb"><span class="gn">${g.name}</span><span class="gs">Best ${fmt(P.best[g.id]||0)}${sv&&!curG?' · saved '+fmt(sv.score||0):''}</span></span></button>`}).join('');
   mPrev=[...$('mGames').querySelectorAll('.mg')].map(b=>({g:b.dataset.g,c:b.querySelector('canvas').getContext('2d')}));
   $('mGames').querySelectorAll('.mg').forEach(b=>b.onclick=()=>{const g=b.dataset.g;if(g===gid){closeMenu();return}saveRun(false);sfx.ui();playGame(g);toast(P.saves[g]?'Welcome back!':'Switched to '+GAMES[g].name,'#7cc8ff')});
   $('quests').innerHTML=P.quests.list.map((q,i)=>{const d=qdef(q.id),done=q.p>=d.goal;return`<div class="quest${q.c?' done':''}"><div class="qmain"><span class="qt">${d.t}</span><div class="bar"><i style="width:${q.p/d.goal*100}%"></i></div><span class="qn">${fmt(q.p)} / ${fmt(d.goal)}</span></div>${q.c?'<span class="qr">Done</span>':done?`<button class="btn small mint claim" data-i="${i}" type="button">Claim ${d.r}</button>`:`<span class="qr"><i class="coin"></i>${d.r}</span>`}</div>`}).join('');
@@ -3276,7 +3286,7 @@ function tagiShow(o){$('tagiPill').textContent='';if(o.pill)$('tagiPill').append
   $('tagi').hidden=false;sfx.ui();setTimeout(()=>$('tagiOk').focus({preventScroll:true}),60)}
 function tagInfo(k,el){const pill=el?el.cloneNode(true):null;if(pill){pill.removeAttribute('role');pill.removeAttribute('tabindex');pill.onclick=null}const mine=t=>UID&&(t==='dev'||t==='helper'?roleMap[UID]===t:t==='contrib'?contribSet.has(UID):t==='beta'?betaSet.has(UID):false);
   const bp=(STYLE.prof.perk.items.find(i=>i[0]==='bouncy')||[])[2]||1000000;
-  const I={bouncy:{n:'Bouncy badge',what:'This player owns the Bouncier perk, which makes every squish, wobble and pop in the game springier.',how:'Buy the Bouncier perk in Style → Perks. Once you own it, you can show or hide this badge from your profile’s pencil menu.',cost:fmt(bp)+' coins',own:isBouncy()},
+  const I={bouncy:{n:'Bouncy badge',what:'This player owns the Bouncier perk, which makes every squish, wobble and pop in the game springier.',how:'Buy the Bouncier perk in Shop → Perks. Once you own it, you can show or hide this badge from your profile’s pencil menu.',cost:fmt(bp)+' coins',own:isBouncy()},
     dev:{n:'Developer',what:'The person who makes Jelly Critters.',how:'Only the developer has this tag. It can’t be earned or bought.',cost:'Not for sale',own:mine('dev')},
     helper:{n:'Helper',what:'Someone the developer trusts to help run the game, like testing new things and helping players.',how:'Given by the developer.',cost:'Not for sale',own:mine('helper')},
     contrib:{n:'Contributor',what:'This player helped make the game better with an idea or bug report that made it into the game.',how:'Send ideas and bug reports from Mailbox → Suggestions. The developer hands this tag out for great ones.',cost:'Free, but you have to earn it',own:mine('contrib')},
@@ -3284,7 +3294,7 @@ function tagInfo(k,el){const pill=el?el.cloneNode(true):null;if(pill){pill.remov
   if(I)tagiShow(Object.assign({pill},I))}
 function titleInfo(id){const it=TITLES.find(t=>t[0]===id);if(!it||id==='none')return;const t=titleOf(id),[,n,p,r,q]=it,pill=document.createElement('span');pill.className='pft';pill.textContent=n;pill.style.background=t.d?devTitleBg(t.d):t.x?'linear-gradient(90deg,#0b0a18,#3d7bff,#9a5bff,#2fe39a)':t.c;
   const own=P.own.includes('prof:title:'+id),req=q?reqText(q):'',cap=q&&q.cap,lv=q&&q.lvr,role=r==='d',beta=r==='x';
-  const how=role?'Given by the developer only.':beta?(launchOn?'Only Beta Testers got this title. It can’t be earned anymore.':'Play during the beta.'):cap?'Win it from the capsule machine (or buy it with jelly dust in the dust shop).':lv?'A free reward for reaching level '+lv+'.':p?'Buy it in Style → Titles'+(req?' once you meet the requirement: '+req+'.':'.'):req?'Unlock it: '+req+'.':'Free for everyone in Style → Titles.';
+  const how=role?'Given by the developer only.':beta?(launchOn?'Only Beta Testers got this title. It can’t be earned anymore.':'Play during the beta.'):cap?'Win it from the capsule machine (or buy it with jelly dust in the dust shop).':lv?'A free reward for reaching level '+lv+'.':p?'Buy it in Shop → Titles'+(req?' once you meet the requirement: '+req+'.':'.'):req?'Unlock it: '+req+'.':'Free for everyone in Style → Titles.';
   const cost=role||beta?'Not for sale':cap?fmt(CAP_COST[r]||0)+' jelly dust in the dust shop':lv?'Free':p?fmt(p)+' coins':'Free';
   tagiShow({pill,n,rar:r&&RAR[r]?RAR[r]:null,what:'A title shown under the player’s name on the leaderboard and their profile.',how,cost,own})}
 $('tagiOk').onclick=()=>{$('tagi').hidden=true};$('tagi').addEventListener('click',e=>{if(e.target.id==='tagi')$('tagi').hidden=true});$('tagi').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')$('tagi').hidden=true});
@@ -3358,7 +3368,7 @@ function pfShowUI(d){const me=d.id===UID||d.id==='local';$('pfEdit').hidden=!me;
   {const S=SETS[showSet()],ti=showTier();$('psCol').innerHTML=S.list.map((e,i)=>opt(String(i),(i+1)+'. '+e[2],ti===i)).join('')}
   const walls=Object.keys(WALLS).filter(id=>owns('drop','wall',id)),sb=showBg()||'';
   $('psBg').innerHTML=opt('','None',!sb)+walls.map(id=>opt(id,WALLS[id].n,sb===id)).join('');
-  $('psBnF').hidden=!owns('prof','perk','bouncy');$('psBn').value=P.show.bn==='0'?'0':'1';$('psBn').disabled=!isBouncy();$('psBnF').querySelector('.lbl').textContent=isBouncy()?'Prestige':'Prestige (turn on Bouncier in Style first)'}
+  $('psBnF').hidden=!owns('prof','perk','bouncy');$('psBn').value=P.show.bn==='0'?'0':'1';$('psBn').disabled=!isBouncy();$('psBnF').querySelector('.lbl').textContent=isBouncy()?'Prestige':'Prestige (turn on Bouncier in the Shop first)'}
 for(const[id,k]of[['psTag','tg'],['psSkin','sk'],['psCol','ti'],['psBg','bg'],['psBn','bn']])$(id).onchange=()=>{P.show=P.show||{};P.show[k]=k==='ti'?+$(id).value:$(id).value;save();syncMe();sfx.pop(4);
   openProfile(Object.assign(myBody(),UID&&acctReady?{id:UID}:{id:'local',j:0}))};
 // 4-slot showcase: pick owned items to show off on your profile
