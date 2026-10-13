@@ -502,7 +502,9 @@ textarea{font:500 16px/1.4 var(--body);color:var(--ink);border:2.5px solid var(-
 .prsb .prss{font-size:17px;line-height:1;text-shadow:0 1px 0 #fff}.prsb b{font-family:var(--display);font-size:18px;line-height:1}.prsb i{font-style:normal;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
 .prsb:active{transform:scale(.94)}
 @keyframes prsh{to{background-position:-250% 0}}
-.prescard{max-width:420px;gap:10px}
+.prescard{max-width:420px;gap:10px;position:relative}
+#presOk{position:absolute;top:12px;right:12px;z-index:2}
+.prestop{padding-right:46px;box-sizing:border-box}
 #presTabs{align-self:stretch;min-width:0;width:auto}
 .prestop{display:flex;align-items:center;gap:12px;width:100%;text-align:left}.prestx h3{margin:0}.prestx p{margin:2px 0 0;font-weight:700}
 .prsbig{position:relative;width:74px;height:74px;flex:none;display:grid;place-items:center}
@@ -908,13 +910,13 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
 </div>
 <div id="pres" class="overlay" hidden>
   <div class="card box3 prescard" role="dialog" aria-label="Prestige">
+    <button class="icon-btn" id="presOk" type="button" aria-label="Close" title="Close"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="prestop"><div class="prsbig"><span>★</span><b id="presN">0</b></div><div class="prestx"><h3>Prestige</h3><p id="presTok"></p></div></div>
     <div class="presprog"><div class="presbar"><i id="presBar"></i></div><p id="presProg"></p></div>
     <button class="btn" id="presGo" type="button">Prestige</button>
     <p class="presnote" id="presNote"></p>
     <span class="lbl">Unlock forever</span><p class="presnote">Items you unlock here stay yours through every future prestige. Common to Epic items cost 1 token; rarer ones cost more.</p>
     <div class="tabs" id="presTabs"></div><div class="presgrid" id="presGrid"></div>
-    <button class="btn white" id="presOk" type="button">Close</button>
   </div>
 </div>
 <div id="tagi" class="overlay" hidden>
