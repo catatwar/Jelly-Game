@@ -171,6 +171,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-of
 .boxbtn.wob{animation:boxw .35s}
 @keyframes boxw{30%{transform:rotate(-10deg) scale(1.1,.9)}60%{transform:rotate(8deg) scale(.95,1.06)}100%{transform:none}}
 .boxbtn.open .l{transform:translateY(-70px) rotate(-25deg)}
+.gspin{display:flex;align-items:center;gap:8px;padding:6px 16px;border:3px solid #7a5200;border-radius:999px;background:linear-gradient(110deg,#ffe9a0,#ffcf4a 35%,#fff6cc 50%,#e8a900 65%,#ffe9a0);background-size:250% 100%;animation:pop .5s cubic-bezier(.3,1.8,.5,1),prsh 3.2s linear infinite;box-shadow:0 4px 0 #7a5200,0 0 16px rgba(255,207,74,.6);color:#3a2600;font-weight:800}
+.gspin b{font-family:var(--display);font-size:26px;line-height:1}
 .gamt{font-family:var(--display);font-size:42px;display:flex;align-items:center;gap:10px;animation:pop .5s cubic-bezier(.3,1.8,.5,1)}
 .gamt .coin{width:32px;height:32px;border-width:3px}
 #toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));transform:translate(-50%,calc(-100% - 40px));background:#fff;border:3px solid var(--ink);box-shadow:0 4px 0 var(--ink);color:var(--ink);font-weight:600;font-size:15px;padding:8px 16px 8px 10px;border-radius:999px;display:flex;align-items:center;gap:8px;z-index:40;white-space:nowrap;pointer-events:none;transition:transform .45s cubic-bezier(.3,1.7,.5,1);max-width:calc(100vw - 32px)}
@@ -723,6 +725,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     <div class="lbl" id="gDay">Daily gift</div>
     <button class="boxbtn" id="gbox" type="button" aria-label="Open the gift"><span class="b"></span><span class="l"></span></button>
     <div class="gamt" id="gAmt" hidden><i class="coin"></i><span id="gAmtN">0</span></div>
+    <div class="gspin" id="gSpin" hidden><b id="gSpinN">+1</b><span>free capsule spin!</span></div>
     <p class="nudge" id="gTx">Tap the box three times to open it.</p>
     <button class="btn pink" id="gOk" type="button" hidden>Collect</button>
   </div>
@@ -4021,11 +4024,14 @@ addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passiv
 addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&['+','-','=','_','0'].includes(e.key))e.preventDefault()},true);
 
 // ================================================= daily gift
-let gTaps=0,gAmt=0;
-$('giftBtn').onclick=()=>{if(!giftReady())return;audio();sfx.ui();gTaps=0;gAmt=10+Math.min(P.streak,7)*5+Math.floor(rand(11));const bx=$('gbox');bx.className='boxbtn';$('gAmt').hidden=true;$('gOk').hidden=true;$('gTx').textContent='Tap the box three times to open it.';$('gDay').textContent=`Day ${P.streak} gift`;$('gift').hidden=false;bx.focus({preventScroll:true})};
+let gTaps=0,gAmt=0,gSpins=0;
+function giftRoll(){let h=2166136261;for(const ch of today()+'|'+(UID||P.owner||'local')+'|'+(P.streak|0)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}
+  const r=()=>{h=Math.imul(h^(h>>>15),2246822507);h=Math.imul(h^(h>>>13),3266489909);h^=h>>>16;return(h>>>0)/4294967296};
+  const amt=75+Math.min(P.streak|0,14)*20+Math.floor(r()*51),s=r()<.15?(r()<.8?1:r()<.8?2:3):0;return{amt,s}}
+$('giftBtn').onclick=()=>{if(!giftReady())return;audio();sfx.ui();gTaps=0;{const g=giftRoll();gAmt=g.amt;gSpins=g.s}$('gSpin').hidden=true;const bx=$('gbox');bx.className='boxbtn';$('gAmt').hidden=true;$('gOk').hidden=true;$('gTx').textContent='Tap the box three times to open it.';$('gDay').textContent=`Day ${P.streak} gift`;$('gift').hidden=false;bx.focus({preventScroll:true})};
 $('gbox').onclick=()=>{audio();const bx=$('gbox');if(gTaps>=3)return;gTaps++;if(gTaps<3){bx.classList.remove('wob');void bx.offsetWidth;bx.classList.add('wob');tone(note(6+gTaps*3),.14,'triangle',.15);hap(gTaps===2?'double':'tap');$('gTx').textContent=gTaps===1?'It wiggled! Again.':'Almost…'}
-  else{bx.classList.add('open');$('gAmtN').textContent=gAmt;$('gAmt').hidden=false;$('gTx').textContent=P.streak>1?`Your ${P.streak}-day streak made it bigger. Next gift in ${fmtCd(nextReset())}.`:`Come back after 3 am (in ${fmtCd(nextReset())}) for a streak bonus.`;$('gOk').hidden=false;confAt(bx,70,700);sfx.discover()}};
-$('gOk').onclick=()=>{P.coins+=gAmt;P.giftDay=today();save();$('gift').hidden=true;refreshCoins();sfx.coin(3);renderMenu();syncDots()};
+  else{bx.classList.add('open');$('gAmtN').textContent=fmt(gAmt);$('gAmt').hidden=false;if(gSpins){$('gSpinN').textContent='+'+gSpins;$('gSpin').querySelector('span').textContent='free capsule spin'+(gSpins>1?'s!':'!');setTimeout(()=>{$('gSpin').hidden=false;sfx.combo(4);hap('double')},450)}$('gTx').textContent=P.streak>1?`Your ${P.streak}-day streak made it bigger. Next gift in ${fmtCd(nextReset())}.`:`Come back after 3 am (in ${fmtCd(nextReset())}) for a streak bonus.`;$('gOk').hidden=false;confAt(bx,70,700);sfx.discover()}};
+$('gOk').onclick=()=>{if(P.giftDay===today())return;P.coins+=gAmt;if(gSpins)P.spins=(P.spins||0)+gSpins;P.giftDay=today();if(gSpins)toast(`+${gSpins} free spin${gSpins>1?'s':''}! Use ${gSpins>1?'them':'it'} at the capsule machine.`,'#ffcf4a');save();$('gift').hidden=true;refreshCoins();sfx.coin(3);renderMenu();syncDots()};
 
 // ================================================= input & loop
 function toWorld(e){const r=stage.getBoundingClientRect();return{x:(e.clientX-r.left-offX)/sc,y:(e.clientY-r.top-offY)/sc}}
