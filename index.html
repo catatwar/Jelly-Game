@@ -319,7 +319,8 @@ textarea{font:500 16px/1.4 var(--body);color:var(--ink);border:2.5px solid var(-
 .mtdots{display:flex;gap:8px;margin:6px 0}.mtdots i{width:12px;height:12px;border-radius:50%;background:#fff;border:2.5px solid var(--ink);animation:mtd 1.2s ease-in-out infinite}.mtdots i:nth-child(2){animation-delay:.15s}.mtdots i:nth-child(3){animation-delay:.3s}
 @keyframes mtd{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-9px)}}
 #mtDev{position:fixed;left:50%;top:calc(6px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:170;display:flex;align-items:center;gap:8px;background:#ff8a5b;color:var(--ink);border:3px solid var(--ink);border-radius:16px;padding:5px 6px 5px 12px;font-size:12.5px;font-weight:600;box-shadow:0 4px 0 var(--ink);max-width:calc(100vw - 20px);box-sizing:border-box;line-height:1.2}
-#mtDev span,#mtDev .btn{white-space:nowrap}#mtDev .btn{font-size:14px;padding:5px 10px 6px}
+#mtDev span,#mtDev .btn{white-space:nowrap}
+.nmsg.warn{color:#c2410c;font-weight:700}#mtDev .btn{font-size:14px;padding:5px 10px 6px}
 .cpmaint{display:grid;grid-template-columns:1fr;gap:6px;align-items:center;background:#fff3ea;border:2.5px solid var(--ink);border-radius:14px;padding:8px 10px}
 .cpmaint .lbl{grid-column:1/-1}.cpmaint small{grid-column:1/-1;font-size:11.5px;color:var(--muted);font-weight:600}
 .cpmaint input{min-width:0;font:600 13px var(--body);border:2.5px solid var(--ink);border-radius:10px;padding:6px 8px}
@@ -798,7 +799,8 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     <span class="lbl">Preview</span>
     <div class="cpprev"><b class="nwt sm" id="cpPvT"></b><img id="cpPvImg" class="nwimg" alt="" hidden><div class="rich" id="cpPvB"></div></div>
     <label class="chk"><input type="checkbox" id="cpPop"> Pop up on everyone's screen (shows the post the next time each player is in the game)</label>
-    <label class="chk"><input type="checkbox" id="cpPush" checked> Update everyone’s game (refreshes as soon as GitHub has the new files, no countdown)</label>
+    <label class="chk"><input type="checkbox" id="cpPush" checked> Update everyone’s game to the files on GitHub right now (no countdown). Players only update when you post this.</label>
+    <span class="nmsg" id="cpLive"></span>
     <label class="switch" id="cpLaunchRow"><input type="checkbox" id="cpLaunch"><span>End beta and launch the game<small>Every account that exists right now becomes a Beta Tester: exclusive aura cosmetics, a Beta Tester title and 1,000 coins.</small></span></label>
     <button class="btn small danger" id="cpUnlaunch" type="button" hidden>Undo launch (back to beta)</button>
     <span class="nmsg" id="cpMsg"></span>
@@ -1493,7 +1495,7 @@ function burst(x,y,color,n,sp,starP=.25){for(let i=0;i<n;i++){const a=rand(TAU),
 const ring=(x,y,r,color)=>rings.push({x,y,r,color,t:0});
 const float=(x,y,text,color,size=22)=>texts.push({x,y,text:String(text),color,size,t:0});
 const big=(text,color)=>{bigT={text,color,t:0}};
-const addShake=v=>{if(!RM)shake=Math.min(1,shake+v)};
+const addShake=v=>{if(!RM)shake=Math.min(SPEC?.25:1,shake+v*(SPEC?.35:1))};
 function clearFX(){parts=[];rings=[];texts=[];bigT=null;shake=0;freeze=0;flash=0;if(typeof boom!=='undefined'){boom=[];boomT=0}}
 function fxUpdate(dt){shake=Math.max(0,shake-dt*2.6);flash=Math.max(0,flash-dt*3);boomUpdate(dt);
   for(const p of parts){p.t+=dt;p.vy+=900*dt;p.vx*=1-dt*1.5;p.x+=p.vx*dt;p.y+=p.vy*dt;p.rot+=dt*5}parts=parts.filter(p=>p.t<p.life);if(parts.length>500)parts.splice(0,parts.length-500);
@@ -2958,7 +2960,7 @@ function socialInit(){const d=FD;
   d.onValue(d.query(d.ref(RDB,'news'),d.orderByChild('t'),d.limitToLast(30)),s=>{const v=s.val();NEWS=v&&typeof v==='object'?v:{};newsReady=true;mailSync();if(!$('mail').hidden)renderMail();
     if(openAfter&&NEWS[openAfter]){const id=openAfter;openAfter=null;setTimeout(()=>openNews(id),1300)}else popCheck()},()=>{newsReady=true});
   d.onValue(d.ref(RDB,'maint'),s=>maintApply(s.val()),()=>{});
-  d.onValue(d.ref(RDB,'deploy'),s=>{const v=s.val(),id=v&&typeof v.id==='string'?v.id:null;DEP=v&&typeof v==='object'&&id?{id,t:+v.t||0}:null;setTimeout(()=>updCheck(true),400);
+  d.onValue(d.ref(RDB,'deploy'),s=>{const v=s.val(),id=v&&typeof v.id==='string'?v.id:null;DEP=v&&typeof v==='object'&&id?{id,t:+v.t||0,h:typeof v.h==='string'?v.h:''}:null;setTimeout(()=>updCheck(true),400);
     if(deployId===undefined){deployId=id;const last=store.get('ca_deploy',null);if(id&&last!==id){store.set('ca_deploy',id);if(last!==null&&!openAfter)openAfter=id}
       if(openAfter&&NEWS[openAfter]){const k=openAfter;openAfter=null;setTimeout(()=>openNews(k),1300)}return}
     if(id&&id!==deployId){deployId=id}},()=>{})}
@@ -2970,6 +2972,8 @@ const hashStr=x=>{let h=2166136261;for(let i=0;i<x.length;i++){h^=x.charCodeAt(i
 const codeOf=doc=>[...doc.querySelectorAll('script:not([src]),style')].map(e=>e.textContent).join('\n');
 const LOCAL_H=hashStr(codeOf(document));
 var DEP=null,updTag='',updBusy=false,updRemote='',refreshing=false;
+// fingerprint of the files that are live on GitHub right now
+async function liveFiles(){try{const r=await fetch(UPD_URL,{cache:'no-store'});if(!r.ok)return null;const txt=await r.text();return{h:hashStr(codeOf(new DOMParser().parseFromString(txt,'text/html'))),lm:Date.parse(r.headers.get('last-modified')||'')||0}}catch(e){return null}}
 async function refreshNow(newsId,label){if(refreshing)return;refreshing=true;try{saveRun(false)}catch(e){}
   const box=$('cd');box.hidden=false;$('cdTitle').textContent=label||'Updating to the newest version';$('cdN').textContent='';$('cdSub').textContent='Saving your progress…';
   try{await Promise.race([pushCloud(),new Promise(r=>setTimeout(r,1500))])}catch(e){}
@@ -2979,9 +2983,8 @@ async function updCheck(full){if(updBusy||refreshing||!DEP||location.protocol===
   try{if(!full&&updRemote){const h=await fetch(UPD_URL,{method:'HEAD',cache:'no-store'});if(!h.ok)return;const tag=(h.headers.get('etag')||'')+'|'+(h.headers.get('last-modified')||'');if(tag===updTag)return}
     const r=await fetch(UPD_URL,{cache:'no-store'});if(!r.ok)return;const txt=await r.text();updTag=(r.headers.get('etag')||'')+'|'+(r.headers.get('last-modified')||'');
     const lm=Date.parse(r.headers.get('last-modified')||'')||0,rh=hashStr(codeOf(new DOMParser().parseFromString(txt,'text/html')));updRemote=rh;
-    if(rh===LOCAL_H)return;                                   // already running the newest code
-    if(lm&&lm>DEP.t+10*60000)return;                          // newer files the developer hasn't pushed yet
-    if(!lm&&store.get('ca_dapplied',null)===DEP.id)return;    // no file date: apply each developer push once
+    if(rh===LOCAL_H)return;          // already running the newest code
+    if(!DEP.h||rh!==DEP.h)return;    // files the developer hasn't pushed yet: keep waiting
     let tried='';try{tried=sessionStorage.getItem('ca_updTry')||''}catch(e){}if(tried===rh)return;try{sessionStorage.setItem('ca_updTry',rh)}catch(e){}
     store.set('ca_dapplied',DEP.id);store.set('ca_deploy',DEP.id);refreshNow(DEP.id)}
   catch(e){}finally{updBusy=false}}
@@ -3002,7 +3005,7 @@ async function maintSet(on){if(!isAdmin())return;const b=$('cpMaint');
   if(Date.now()>maintArm){maintArm=Date.now()+3500;b.textContent=on?'Tap again: stop everyone’s game':'Tap again: refresh everyone';setTimeout(()=>{if(Date.now()>maintArm)maintUI()},3600);return}
   maintArm=0;b.disabled=true;$('mtEnd').disabled=true;
   try{if(on){const msg=$('cpMaintMsg').value.replace(/\s+/g,' ').trim().slice(0,140),d={on:true,t:FD.serverTimestamp()};if(msg)d.msg=msg;await FD.set(FD.ref(RDB,'maint'),d);toast('Maintenance is on. Players are waiting.','#ff8a5b')}
-    else{await FD.set(FD.ref(RDB,'maint'),{on:false,t:FD.serverTimestamp()});const n=newsList()[0];await FD.set(FD.ref(RDB,'deploy'),{id:n?n.id:'m'+Date.now().toString(36),t:FD.serverTimestamp()});toast('Maintenance over. Refreshing everyone…','#5be0a6');setTimeout(()=>refreshNow(n&&n.id,'Maintenance is over!'),900)}}
+    else{const lf=await liveFiles();await FD.set(FD.ref(RDB,'maint'),{on:false,t:FD.serverTimestamp()});const n=newsList()[0],dd={id:n?n.id:'m'+Date.now().toString(36),t:FD.serverTimestamp()};if(lf)dd.h=lf.h;await FD.set(FD.ref(RDB,'deploy'),dd);toast('Maintenance over. Refreshing everyone…','#5be0a6');setTimeout(()=>refreshNow(n&&n.id,'Maintenance is over!'),900)}}
   catch(e){toast('Could not change maintenance. Publish the new database rules first.','#ff6fa8')}
   b.disabled=false;$('mtEnd').disabled=false}
 $('cpMaint').onclick=()=>maintSet(!(MAINT&&MAINT.on));$('mtEnd').onclick=()=>{if(Date.now()>maintArm){maintArm=Date.now()+3500;$('mtEnd').textContent='Tap again to end';setTimeout(()=>{$('mtEnd').textContent='End + refresh all'},3600);return}maintArm=Date.now()+4000;maintSet(false)};
@@ -3116,9 +3119,12 @@ function closeNews(){$('news').hidden=true;if(!anyOpen())paused=false}
 $('nwDel').onclick=async()=>{const b=$('nwDel'),id=b.dataset.id;if(b.textContent!=='Tap again to delete'){b.textContent='Tap again to delete';setTimeout(()=>{b.textContent='Delete post'},2500);return}
   try{await FD.remove(FD.ref(RDB,'news/'+id));closeNews();toast('Post deleted','#ff6fa8')}catch(e){toast('Could not delete it','#ff6fa8')}};
 // ---- update composer (admin)
-var compEdit=null;
+var compEdit=null,sameArm=0;
+async function cpLiveInfo(){const e=$('cpLive');if(!e||$('comp').hidden)return;const lf=await liveFiles();if(!lf){e.textContent='Couldn’t reach GitHub to check the live files.';return}
+  const ago=lf.lm?agoTxt(Date.now()-lf.lm)+' ago':'at an unknown time',st=DEP&&DEP.h===lf.h?'already pushed to players':lf.h===LOCAL_H?'the same as this open game':'not pushed to players yet';e.textContent='Live files on GitHub: uploaded '+ago+', '+st+'.';e.className='nmsg'+(st.startsWith('not')?' warn':'')}
+setInterval(cpLiveInfo,10000);
 function compMode(){const ed=!!compEdit;$('cpHead').textContent=ed?'Edit update':'New update';for(const id of['cpPop','cpPush','cpLaunch'])$(id).closest('label').hidden=ed;document.querySelector('.cpmaint').hidden=ed;$('cpUnlaunch').dataset.ed=ed?'1':'';if(ed)$('cpUnlaunch').hidden=true;else betaUI()}
-function openComp(){if(!isAdmin())return;sfx.ui();if(compEdit){compEdit=null;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg=''}$('cpPush').checked=true;$('cpMsg').textContent='';compMode();$('comp').hidden=false;compPrev();setTimeout(()=>$('cpTitle').focus({preventScroll:true}),60)}
+function openComp(){if(!isAdmin())return;sfx.ui();setTimeout(cpLiveInfo,100);if(compEdit){compEdit=null;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg=''}$('cpPush').checked=true;$('cpMsg').textContent='';compMode();$('comp').hidden=false;compPrev();setTimeout(()=>$('cpTitle').focus({preventScroll:true}),60)}
 function editNews(id){const n=NEWS[id];if(!isAdmin()||!n)return;sfx.ui();compEdit=id;$('cpTitle').value=String(n.title||'');$('cpBody').value=String(n.body||'');const im=okImg(n.img)?n.img:'';if(im.startsWith('data:')){compImg=im;$('cpImgUrl').value=''}else{compImg='';$('cpImgUrl').value=im}
   $('cpMsg').textContent='';closeNews();compMode();$('comp').hidden=false;paused=true;compPrev();setTimeout(()=>$('cpTitle').focus({preventScroll:true}),60)}
 $('nwEdit').onclick=()=>editNews($('nwEdit').dataset.id);
@@ -3146,12 +3152,15 @@ $('cpGo').onclick=async()=>{if(!isAdmin())return;const m=$('cpMsg'),bad=t=>{m.te
     try{await FD.update(FD.ref(RDB,'news/'+id),{title,body,img:img||null});if(NEWS[id])Object.assign(NEWS[id],{title,body,img:img||undefined});m.textContent='Saved! Everyone sees the new version.';sfx.discover();compEdit=null;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg='';setTimeout(()=>{closeComp();openNews(id)},700)}
     catch(e){bad('Could not save it. Check the database rules are published.')}$('cpGo').disabled=false;return}
   if(push&&Date.now()>compArm){compArm=Date.now()+3500;$('cpGo').textContent='Tap again: update everyone';m.className='nmsg';m.textContent='Every open copy of the game will refresh to the new version as soon as GitHub has it. Upload your new files to GitHub first!';setTimeout(()=>{if(Date.now()>compArm)compPrev()},3600);return}
-  compArm=0;$('cpGo').disabled=true;m.className='nmsg';m.textContent='Posting…';
+  compArm=0;$('cpGo').disabled=true;m.className='nmsg';m.textContent=push?'Checking the files on GitHub…':'Posting…';let pushH='';
+  if(push){const lf=await liveFiles();if(!lf){$('cpGo').disabled=false;return bad('Could not reach GitHub to check the files. Try again in a moment.')}pushH=lf.h;
+    if(DEP&&DEP.h===lf.h&&Date.now()>sameArm){sameArm=Date.now()+6000;$('cpGo').disabled=false;m.className='nmsg bad';m.textContent='GitHub still has the same files as your last update. If you just uploaded, wait a minute for GitHub to finish, then post. Tap Post again to send it anyway.';return}
+    sameArm=0;m.textContent='Posting…'}
   const launch=$('cpLaunch').checked&&!launchOn;if(launch&&!push&&Date.now()>lArm){lArm=Date.now()+3500;m.className='nmsg';m.textContent='Launching gives every current account Beta Tester rewards. Tap Post again to confirm.';$('cpGo').disabled=false;return}
   try{if(launch){m.textContent='Launching… giving Beta Tester rewards';const n=await doLaunch();m.textContent='Launched! '+n+' Beta Testers rewarded. Posting…';$('cpLaunch').checked=false}
     const pop=$('cpPop').checked,r=FD.push(FD.ref(RDB,'news')),id=r.key,data={title,body,t:FD.serverTimestamp(),push};if(pop)data.pop=true;if(img)data.img=img;await FD.set(FD.ref(RDB,'news/'+id),data);
-    if(push)await FD.set(FD.ref(RDB,'deploy'),{id,t:FD.serverTimestamp()});
-    m.textContent=push?'Posted! Everyone updates as soon as GitHub has the new files.':data.pop?'Posted! It is popping up on everyone’s screen.':'Posted to everyone’s mailbox.';$('cpPop').checked=false;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg='';compPrev();sfx.discover();if(!push)setTimeout(closeComp,900)}
+    if(push)await FD.set(FD.ref(RDB,'deploy'),{id,t:FD.serverTimestamp(),h:pushH});
+    m.textContent=push?'Posted! Everyone is updating to these files now.':data.pop?'Posted! It is popping up on everyone’s screen.':'Posted to everyone’s mailbox.';$('cpPop').checked=false;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg='';compPrev();sfx.discover();if(!push)setTimeout(closeComp,900)}
   catch(e){bad('Could not post. Check the database rules are published.')}
   $('cpGo').disabled=false};
 
@@ -3566,9 +3575,10 @@ $('dresOk').onclick=()=>duExit(false);$('dresAgain').onclick=()=>duExit(true);
 document.querySelectorAll('#dhBet button').forEach(b=>b.onclick=()=>{if(DUEL)betPlace(DUEL.id,DUEL.me,+b.dataset.a,DUEL.rec)});
 // ---- invites
 function duInvCheck(){const now=srvNow(),list=Object.entries(dInv).filter(([id,v])=>v&&now-(+v.t||0)<60000&&!invSeen[id]).sort((a,b)=>(+b[1].t)-(+a[1].t));if(!list.length||DUEL||!$('dinv').hidden)return;
-  const[id,v]=list[0];invSeen[id]=1;$('dinvT').textContent=`${cleanName(v.name)||'Someone'} challenges you!`;$('dinvS').textContent=`1 minute of ${(GAMES[v.g]||{}).name||'Jelly Jar'}. Highest score wins.`;$('dinv').dataset.id=id;$('dinv').hidden=false;sfx.discover();hap('success')}
-$('dinvYes').onclick=async()=>{const id=$('dinv').dataset.id;$('dinv').hidden=true;if(!duNeedAcct())return;try{await FD.remove(fref('duelInv/'+UID+'/'+id));await duJoin(id)}catch(e){toast('That challenge expired','#ff6fa8')}};
-$('dinvNo').onclick=async()=>{const id=$('dinv').dataset.id;$('dinv').hidden=true;try{await FD.remove(fref('duelInv/'+UID+'/'+id));await FD.update(fref('duels/'+id),{st:'cancel'})}catch(e){}if(!anyOpen())paused=false};
+  const[id,v]=list[0];invSeen[id]=1;$('dinvT').textContent=`${cleanName(v.name)||'Someone'} challenges you!`;$('dinvS').textContent=`1 minute of ${(GAMES[v.g]||{}).name||'Jelly Jar'}. Highest score wins.`+(G&&G.state()==='play'&&!SPEC?' Your game is paused and saved, and comes back after the 1v1.':'');$('dinv').dataset.id=id;$('dinv').hidden=false;invWas=paused;paused=true;try{saveRun(false)}catch(e){}clearTimeout(invT);invT=setTimeout(()=>{if(!$('dinv').hidden&&$('dinv').dataset.id===id){$('dinv').hidden=true;if(!anyOpen()&&!invWas)paused=false;toast('Challenge missed','#ff6fa8')}},Math.max(1000,60000-(now-(+v.t||0))));sfx.discover();hap('success')}
+var invWas=false,invT=0;
+$('dinvYes').onclick=async()=>{const id=$('dinv').dataset.id;$('dinv').hidden=true;clearTimeout(invT);if(!duNeedAcct()){if(!anyOpen()&&!invWas)paused=false;return}try{await FD.remove(fref('duelInv/'+UID+'/'+id));await duJoin(id)}catch(e){toast('That challenge expired','#ff6fa8');if(!anyOpen()&&!invWas)paused=false}};
+$('dinvNo').onclick=async()=>{const id=$('dinv').dataset.id;$('dinv').hidden=true;clearTimeout(invT);if(!anyOpen()&&!invWas)paused=false;try{await FD.remove(fref('duelInv/'+UID+'/'+id));await FD.update(fref('duels/'+id),{st:'cancel'})}catch(e){}if(!anyOpen())paused=false};
 // ---- live streaming of your board (only while someone is watching)
 setInterval(()=>{if(!UID||!acctReady||!fbOnline||SPEC||!G||watchN<1)return;let snap=null;try{snap=G.serialize()}catch(e){}const body={g:gid,s:Math.floor(score),snap:snap?JSON.stringify(snap).slice(0,30000):'',d:DUEL&&DUEL.id||''},str=JSON.stringify(body);if(str===liveLast)return;liveLast=str;body.t=FD.serverTimestamp();FD.set(fref('live/'+UID),body).catch(()=>{})},250);
 // ---- spectator comments (chat/<room>): spectators type, the player and every watcher see them for 10 seconds
@@ -3689,7 +3699,7 @@ function drawGame(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cw,ch);c
   const ex=extent();G.bg(ctx,ex);G.render(ctx,ex);boomDraw(ctx);drawBig(ctx);if(flash>0){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle=`rgba(255,255,255,${flash*.4})`;ctx.fillRect(0,0,cw,ch)}}
 let last=performance.now(),acc=0;
 function frame(now){let dt=(now-last)/1000;last=now;if(dt>.1)dt=.1;acc+=dt;BNC=isBouncy()?1:0;SPK=BNC?1.2:1;SPD=BNC?.6:1;
-  while(acc>=1/60){acc-=1/60;time+=1/60;if(SPEC&&G)try{G.update(1/60)}catch(e){}if(G&&!paused){if(freeze>0){freeze-=1/60;fxUpdate(1/60*.15)}else{G.update(1/60);fxUpdate(1/60)}}
+  while(acc>=1/60){acc-=1/60;time+=1/60;if(SPEC&&G){try{G.update(1/60)}catch(e){}fxUpdate(1/60)}else if(G&&!paused){if(freeze>0){freeze-=1/60;fxUpdate(1/60*.15)}else{G.update(1/60);fxUpdate(1/60)}}
     else if(G&&!$('over').hidden)fxUpdate(1/60);
     if(shown<score){shown+=Math.max(1,Math.ceil((score-shown)*.15));if(shown>score)shown=score;scoreEl.textContent=fmt(shown)}else if(shown>score){shown=score;scoreEl.textContent=fmt(shown)}}
   if(G)drawGame();
