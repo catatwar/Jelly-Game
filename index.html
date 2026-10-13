@@ -1824,7 +1824,7 @@ const Drop=(()=>{
   const mk=(x,y,l,vx=0,vy=0)=>{const r=RADII[l];return{id:++BID,x,y,px:x-vx*HS,py:y-vy*HS,l,r,m:r*r,age:0,sq:0,sqv:0,sqa:0,pop:1,blink:rand(1,4),bt:0,dead:false,happy:0,ang:rand(-.25,.25),av:0,seed:rand(6.28)}};
   const rad=b=>b.pop<1?b.r*(.8+.2*b.pop):b.r;
   const clampAim=(x,l)=>clamp(x,RADII[l]+2,W-RADII[l]-2);
-  function drawNext(){const c=midCtx;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,100,100);const cr=C(next),r=Math.min(30,cr.r*1.2);drawAnimal(c,50,55,r,cr.k,cr.c,{fx:cr.fx,});bumpEl(midC,1)}
+  function drawNext(){const c=midCtx;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,100,100);const cr=C(next),r=Math.min(30,cr.r*1.2);drawAnimal(c,50,55,r,cr.k,cr.c,{fx:cr.fx,hat:cos('drop').hat});bumpEl(midC,1)}
   function ladder(){const el=$('ladder');if(!el)return;el.innerHTML=RADII.map((_,i)=>`<canvas width="52" height="52" class="${P.found.includes(i)?'':'off'}" title="${P.found.includes(i)?C(i).n:'Not found yet'}"></canvas>`).join('');
     el.querySelectorAll('canvas').forEach((cn,i)=>{const c=cn.getContext('2d'),cr=C(i);drawAnimal(c,26,29,17,cr.k,cr.c,{fx:cr.fx,crown:i===10,mood:i<=maxLv&&P.found.includes(i)?2:0})})}
   function reset(){balls=[];born=[];st='play';combo=0;comboT=0;overT=0;endQ=[];aimX=aimT=W/2;dropCD=.25;holdT=0}
@@ -1835,7 +1835,7 @@ const Drop=(()=>{
   function restyle(){const w=WALLS[cos('drop').wall];theme(w.bg,w.hud);gbar(`<div class="ladder" id="ladder"></div><p class="tip">Two of a kind squish into a bigger jelly.</p>`);ladder();drawNext()}
   function drop(){if(st!=='play'||dropCD>0||paused)return;const b=mk(clampAim(aimX,cur),HOLDY,cur,0,140);b.sqv=-6;b.sqa=Math.PI/2;b.av=rand(-1.5,1.5);balls.push(b);if(b.l>maxLv)maxLv=b.l;const was=cur;cur=next;next=randLevel(cur,was);dropCD=DROP_CD;holdT=0;sfx.drop();drawNext()}
   function endGame(){st='ending';endT=0;sfx.over();addShake(.5);endQ=balls.slice().sort((a,b)=>(a.y-a.r)-(b.y-b.r));
-    if(endKind()!=='none'){const cs=cos('drop');endT=endBoom(balls.map(b=>{const cr=C(b.l);return{x:b.x,y:b.y,r:b.r,rot:b.ang,draw:c=>drawAnimal(c,0,0,b.r,cr.k,cr.c,{fx:cr.fx,mood:3,crown:b.l===10,hat:b.l>=3?cs.hat:'none'})}}));balls=[];endQ=[]}}
+    if(endKind()!=='none'){const cs=cos('drop');endT=endBoom(balls.map(b=>{const cr=C(b.l);return{x:b.x,y:b.y,r:b.r,rot:b.ang,draw:c=>drawAnimal(c,0,0,b.r,cr.k,cr.c,{fx:cr.fx,mood:3,crown:b.l===10,hat:cs.hat})}}));balls=[];endQ=[]}}
   function merge(a,b){
     a.dead=b.dead=true;const x=(a.x*a.m+b.x*b.m)/(a.m+b.m),y=(a.y*a.m+b.y*b.m)/(a.m+b.m);
     if(a.l===10){burst(x,y,'#ffd23f',50,700,.6);ring(x,y,160,'#ffd23f');addScore(5000,1.8);big('JACKPOT!','#ffd23f');float(x,y-40,'+5000','#ffd23f',32);if(!RM)freeze=.15;sfx.discover();sfx.combo(6);addShake(.8);return}
@@ -1887,7 +1887,7 @@ const Drop=(()=>{
     const cs=cos('drop');jarBack(c,cs.jar,0,0,W,H+4);
     const pulse=overT>0?(.6+.4*Math.sin(time*18)):near?.75:.35;
     c.save();c.setLineDash([14,10]);c.lineDashOffset=-time*30;c.lineCap='round';c.globalAlpha=pulse;c.strokeStyle='#ff5f6d';c.lineWidth=overT>0?5:3.5;c.beginPath();c.moveTo(10,DANGER);c.lineTo(W-10,DANGER);c.stroke();c.restore();
-    const hx=clampAim(aimX,cur),hatFor=l=>l>=3?cs.hat:'none';
+    const hx=clampAim(aimX,cur),hatFor=l=>cs.hat;
     if(st==='play'){c.fillStyle=LT;for(let y=HOLDY+RADII[cur]+14;y<H-6;y+=18){c.globalAlpha=dropCD>0?.08:.25;circ(c,hx,y+((time*40)%18),2.6);c.fill()}c.globalAlpha=1;
       if(dropCD<=0){const cr=C(cur);drawAnimal(c,hx,HOLDY+Math.sin(time*5)*3,cr.r,cr.k,cr.c,{fx:cr.fx,jig:.02,s:elastic(Math.min(1,holdT*3.2)),rot:Math.sin(time*3)*.12,look:Math.PI/2,lookD:.6,crown:cur===10,hat:cs.hat,mood:near?3:0})}
       else if(!SPEC){const r=RADII[cur],k=clamp(1-dropCD/DROP_CD,0,1);c.beginPath();c.arc(hx,HOLDY,r*.55,0,TAU);c.lineWidth=3;c.strokeStyle='rgba(255,248,238,.18)';c.stroke();c.beginPath();c.arc(hx,HOLDY,r*.55,-Math.PI/2,-Math.PI/2+TAU*k);c.lineWidth=3;c.lineCap='round';c.strokeStyle='rgba(255,248,238,.75)';c.stroke();c.lineCap='butt'}}
@@ -1946,7 +1946,7 @@ const Squish=(()=>{
       let bonus=0;if(mergesN>=2){bonus=Math.round(gained*(mergesN-1)*.25);big(mergesN===2?'Double!':mergesN===3?'Triple!':'Mega squish!','#ff6fa8');sfx.combo(mergesN+1)}
       if(gained)addScore(gained+bonus,1.15+Math.min(.5,mergesN*.1+Math.log2(gained)*.02))}});
     pend.push({t:.14,fn:()=>{spawn(0);if(!canMove()){st='ending';endT=1;sfx.over();addShake(.3);big('NO MOVES!','#ff6fa8');
-      if(endKind()!=='none'){const cs=cos('squish');endT=endBoom(tiles.map(t=>({x:t.x,y:t.y,r:TS/2,draw:c=>drawTile(c,0,0,TS,t.v,cs.set,{mood:3,hat:t.v>=16?cs.hat:'none'})})));tiles=[]}}}})}
+      if(endKind()!=='none'){const cs=cos('squish');endT=endBoom(tiles.map(t=>({x:t.x,y:t.y,r:TS/2,draw:c=>drawTile(c,0,0,TS,t.v,cs.set,{mood:3,hat:cs.hat})})));tiles=[]}}}})}
   function update(dt){for(const q of pend)q.t-=dt;while(pend.length&&pend[0].t<=0)pend.shift().fn();
     for(const t of tiles){const q=pos(t.r,t.c),dx=q.x-t.x,dy=q.y-t.y,dist=Math.hypot(dx,dy);t.x+=dx*Math.min(1,dt*22);t.y+=dy*Math.min(1,dt*22);
       if(dist>3){t.sqa=Math.atan2(dy,dx);t.sq=-Math.min(.2,dist/320);t.sqv=0}else if(t.mv){t.mv=false;t.sqv=6;t.x=q.x;t.y=q.y}else{t.sqv+=(-650*SPK*t.sq-14*SPD*t.sqv)*dt;t.sq+=t.sqv*dt}
@@ -1957,7 +1957,7 @@ const Squish=(()=>{
     rr(c,BX-12,BY-12,BS+24,BS+24,30);c.fillStyle=B.board;c.fill();if(B.fx)boardFX(c,B,BX-12,BY-12,BS+24,BS+24,30);rr(c,BX-12,BY-12,BS+24,BS+24,30);c.lineWidth=4;c.strokeStyle=INK;c.stroke();rr(c,BX-9,BY-9,BS+18,BS+18,27);c.strokeStyle=B.rim||'rgba(255,255,255,.12)';if(B.fx==='neon'){c.globalAlpha=.4;c.lineWidth=9;c.stroke();c.globalAlpha=1}c.lineWidth=B.rim?3:2;c.stroke();
     for(let r=0;r<N;r++)for(let k=0;k<N;k++){const q=pos(r,k);rr(c,q.x-TS/2,q.y-TS/2,TS,TS,TS*.24);c.fillStyle=B.slot;c.fill()}
     const order=tiles.slice().sort((a,b)=>(b.dying?1:0)-(a.dying?1:0));
-    for(const t of order){const s=t.pop<0?0:t.pop<1?elastic(t.pop):1;if(s<=0)continue;drawTile(c,t.x,t.y,TS,t.v,cs.set,{jig:Math.min(.06,Math.abs(t.sq)*.3)+.006,s,sq:t.sq,sqa:t.sqa,blink:t.bt,mood:t.happy>0?2:st==='ending'?3:0,hat:t.v>=16?cs.hat:'none'})}
+    for(const t of order){const s=t.pop<0?0:t.pop<1?elastic(t.pop):1;if(s<=0)continue;drawTile(c,t.x,t.y,TS,t.v,cs.set,{jig:Math.min(.06,Math.abs(t.sq)*.3)+.006,s,sq:t.sq,sqa:t.sqa,blink:t.bt,mood:t.happy>0?2:st==='ending'?3:0,hat:cs.hat})}
     drawFX(c);outlineText(c,'Make 2048 to crown a king',W/2,BY+BS+44,16,'#fff')}
   function down(p){dn=p}
   function up(p){if(!dn)return;const dx=p.x-dn.x,dy=p.y-dn.y;dn=null;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;move(Math.abs(dx)>Math.abs(dy)?(dx<0?0:1):(dy<0?2:3))}
@@ -2159,7 +2159,7 @@ const Doku=(()=>{
   function skipClear(){if(!clear)return;const end=1.45+clear.lines.length*.38+.6;if(clear.t<end)clear.t=end;clear.shown=clear.lines.length;if(!clear.added){clear.added=true;addScore(clear.total,1.6);sfx.discover()}clear.ready=true}
   function finishClear(){if(!clear)return;if(!clear.added){clear.added=true;addScore(clear.total,1.6)}lvl++;sfx.ui();setup(levelFor(lvl))}
   function endRun(){st='ending';endT=1.8;sfx.over();big('OUT OF HEARTS','#ff6fa8');hint=null;syncBar();
-    if(endKind()!=='none'){const cs=cos('doku'),ps=[];cells.forEach((cl,k)=>{if(!cl.j)return;const q=center(k),cr=C(cl.reg),r=CS*.36;ps.push({x:q.x,y:q.y,r,draw:c=>drawAnimal(c,0,0,r,cr.k,cr.c,{fx:cr.fx,mood:3,hat:CS>=46?cs.hat:'none'})});cl.j=null});if(ps.length)endT=Math.max(endT,endBoom(ps))}}
+    if(endKind()!=='none'){const cs=cos('doku'),ps=[];cells.forEach((cl,k)=>{if(!cl.j)return;const q=center(k),cr=C(cl.reg),r=CS*.36;ps.push({x:q.x,y:q.y,r,draw:c=>drawAnimal(c,0,0,r,cr.k,cr.c,{fx:cr.fx,mood:3,hat:cs.hat})});cl.j=null});if(ps.length)endT=Math.max(endT,endBoom(ps))}}
   const mmss=t=>{t=Math.max(0,Math.round(t));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};
   function update(dt){if(st==='play')tLevel+=dt;introT=Math.min(1,introT+dt*2.2);
     for(let g=0;g<N;g++)regFl[g]=Math.max(0,regFl[g]-dt*2.2);
@@ -2209,7 +2209,7 @@ const Doku=(()=>{
       if(cl.wrong){const t=cl.wrong.t,s=t<.5?1:Math.max(0,1-(t-.5)/.3),shk=Math.sin(t*50)*CS*.06*(1-t);if(s>0)drawAnimal(c,q.x+shk,q.y,CS*.34*s,'jelly','#ff5f6d',{mood:1,sq:.15*Math.sin(t*30)})}
       const j=cl.j;if(!j)continue;const cr=C(cl.reg),hy=(j.hop||0)*CS*.35;
       if(j.dy<0){c.fillStyle='rgba(43,35,64,.18)';ell(c,q.x,q.y+CS*.28,CS*.22*(1+j.dy/(CS*2.2)),CS*.06,0);c.fill()}
-      drawAnimal(c,q.x,q.y-hy+j.dy,CS*.36,cr.k,cr.c,{fx:cr.fx,sq:j.landed?j.sq:-.12,sqa:Math.PI/2,mood:j.happy>0||st==='clear'?2:0,blink:j.bt,hat:CS>=46?cs.hat:'none',jig:Math.min(.05,Math.abs(j.sq)*.25)+.006});
+      drawAnimal(c,q.x,q.y-hy+j.dy,CS*.36,cr.k,cr.c,{fx:cr.fx,sq:j.landed?j.sq:-.12,sqa:Math.PI/2,mood:j.happy>0||st==='clear'?2:0,blink:j.bt,hat:cs.hat,jig:Math.min(.05,Math.abs(j.sq)*.25)+.006});
       if(j.given){c.save();c.translate(q.x+CS*.33,q.y-CS*.33);star5(c,CS*.1);c.fillStyle='#ffd23f';c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.restore()}}
     c.restore();
     drawFX(c);
@@ -2270,7 +2270,7 @@ const Catch=(()=>{
     if(streak>0&&streak%6===0&&mult>1)big('STREAK x'+mult+'!','#5be0a6');stack.push({l:it.l,s:0});if(stack.length>7)stack.shift()}
   function onMiss(it){lives--;streak=0;mult=1;float(it.x,H-30,'MISS','#ff5f6d',20);sfx.thud();addShake(.2);hearts();if(lives<=0)over()}
   function over(){if(st!=='play')return;st='ending';endT=1.3;sfx.over();big('OUT OF LIVES!','#ff6fa8');
-    if(endKind()!=='none'){const cs=S(),ps=items.filter(i=>!i.done).map(it=>({x:it.x,y:it.y,r:it.r,draw:c=>{const q=Object.assign({},it,{x:0,y:0});if(it.type==='spike')drawSpike(c,q);else if(it.type==='star')drawStar(c,q);else if(it.type==='heart')drawHeart(c,q);else{const cr=C(it.l);drawAnimal(c,0,0,it.r,cr.k,cr.c,{fx:cr.fx,mood:3,hat:it.l>=3?cs.hat:'none'})}}})),stk=stack.slice();
+    if(endKind()!=='none'){const cs=S(),ps=items.filter(i=>!i.done).map(it=>({x:it.x,y:it.y,r:it.r,draw:c=>{const q=Object.assign({},it,{x:0,y:0});if(it.type==='spike')drawSpike(c,q);else if(it.type==='star')drawStar(c,q);else if(it.type==='heart')drawHeart(c,q);else{const cr=C(it.l);drawAnimal(c,0,0,it.r,cr.k,cr.c,{fx:cr.fx,mood:3,hat:cs.hat})}}})),stk=stack.slice();
       ps.push({x:jx,y:JY,r:JW/2,draw:c=>{jarBack(c,cs.jar,-JW/2,-JH/2,JW,JH);stk.forEach((s,i)=>{const cr=C(s.l),r=Math.min(15,9+s.l*.7);drawAnimal(c,-JW*.28+(i%4)*JW*.19,JH*.28-Math.floor(i/4)*16,r,cr.k,cr.c,{fx:cr.fx,mood:3})});jarFront(c,cs.jar,-JW/2,-JH/2,JW,JH,.45)}});
       endT=endBoom(ps);items=[];stack=[];jarGone=true}}
   function update(dt){if(st==='done')return;
@@ -2293,7 +2293,7 @@ const Catch=(()=>{
   function drawHeart(c,it){c.save();c.translate(it.x,it.y);const s=1+.08*Math.sin(time*8);c.scale(s,s);heartPath(c,0,it.r*.1,it.r*1.1);c.fillStyle='#ff4f8f';c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();c.restore()}
   function render(c){const cs=S();
     for(const it of items){if(it.type==='spike')drawSpike(c,it);else if(it.type==='star')drawStar(c,it);else if(it.type==='heart')drawHeart(c,it);
-      else{const cr=C(it.l),near=it.y>JY-170&&Math.abs(it.x-jx)<JW*.7;drawAnimal(c,it.x,it.y,it.r,cr.k,cr.c,{fx:cr.fx,rot:it.rot,sq:it.sq,sqa:Math.PI/2,seed:it.seed,mood:near?2:it.y>H-120?3:0,hat:it.l>=3?cs.hat:'none',crown:it.l===10,jig:.02,look:Math.atan2(JY-it.y,jx-it.x),lookD:.6})}}
+      else{const cr=C(it.l),near=it.y>JY-170&&Math.abs(it.x-jx)<JW*.7;drawAnimal(c,it.x,it.y,it.r,cr.k,cr.c,{fx:cr.fx,rot:it.rot,sq:it.sq,sqa:Math.PI/2,seed:it.seed,mood:near?2:it.y>H-120?3:0,hat:cs.hat,crown:it.l===10,jig:.02,look:Math.atan2(JY-it.y,jx-it.x),lookD:.6})}}
     if(!jarGone){c.save();c.translate(jx,JY);const sx=1-jsq*.25,sy=1+jsq*.3;c.scale(sx,sy);if(gold>0){c.globalAlpha=.35+.2*Math.sin(time*10);c.fillStyle='#ffd23f';ell(c,0,0,JW*.75,JH*.7);c.fill();c.globalAlpha=1}
     jarBack(c,cs.jar,-JW/2,-JH/2,JW,JH);stack.forEach((s,i)=>{const cr=C(s.l),r=Math.min(15,9+s.l*.7),x=-JW*.28+(i%4)*JW*.19,y=JH*.28-Math.floor(i/4)*16;drawAnimal(c,x,y-(1-s.s)*30,r*Math.max(.3,s.s),cr.k,cr.c,{fx:cr.fx,mood:2,rot:(i-3)*.15})});jarFront(c,cs.jar,-JW/2,-JH/2,JW,JH,.45);c.restore()}
     drawFX(c);
@@ -2336,7 +2336,7 @@ const Combo=(()=>{
   function litCount(){return cells.filter(c=>c.state>0).length}
   function loseHeart(x,y,txt){hearts--;combo=0;misses++;float(x,y,txt,'#ff5f6d',22);sfx.thud();addShake(.3);hap('heavy');hud();if(hearts<=0)over()}
   function over(){if(st!=='play')return;st='ending';endT=1.2;sfx.over();big('OUT OF HEARTS!','#ff6fa8');
-    if(endKind()!=='none'){endT=endBoom(cells.map(c=>{const q=pos(c.k),cr=C(c.lv),r=CELL()*.3;return{x:q.x,y:q.y,r,draw:cx=>drawAnimal(cx,0,0,r,cr.k,cr.c,{fx:cr.fx,mood:3,hat:c.lv>=3?S().hat:'none'})}}));cells=[]}}
+    if(endKind()!=='none'){endT=endBoom(cells.map(c=>{const q=pos(c.k),cr=C(c.lv),r=CELL()*.3;return{x:q.x,y:q.y,r,draw:cx=>drawAnimal(cx,0,0,r,cr.k,cr.c,{fx:cr.fx,mood:3,hat:S().hat})}}));cells=[]}}
   function tap(p){if(st!=='play'||paused)return;const cl=CELL(),cx=Math.floor((p.x-BX)/cl),cy=Math.floor((p.y-BY)/cl);if(cx<0||cy<0||cx>=N||cy>=N)return;const c=cells[cy*N+cx],q=pos(c.k);if(!c||c.pop<1&&c.state===0)return;
     c.sqv+=8;c.sqa=Math.PI/2;
     if(c.state===0){if(combo>0)float(q.x,q.y-cl*.35,'Combo lost','#ffb3c7',16);combo=0;c.bad=.35;sfx.nope();addShake(.06);return}
@@ -2374,7 +2374,7 @@ const Combo=(()=>{
       if(k.state===2){c.save();c.translate(q.x,q.y-lift);c.scale(pp,pp);urchin(c,r*.9,time*1.5+k.seed);c.restore()}
       else if(k.state===4){c.save();c.translate(q.x,q.y-lift);const s=pp*(1+.08*Math.sin(time*9));c.scale(s,s);heartPath(c,0,r*.1,r*1.05);c.fillStyle='#ff4f8f';c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();c.restore()}
       else{const cr=C(k.lv);if(k.state===3){c.save();c.globalAlpha=.45+.25*Math.sin(time*10);circ(c,q.x,q.y-lift,r*1.25);c.fillStyle='#ffd23f';c.fill();c.restore()}
-        drawAnimal(c,q.x,q.y-lift,r*pp,cr.k,cr.c,{fx:k.state===3?'gold':cr.fx,sq:k.sq,sqa:Math.PI/2,seed:k.seed,mood:f<.3?3:2,jig:.03,hat:k.lv>=3?cs.hat:'none',crown:k.lv===10,blink:k.bt})}}
+        drawAnimal(c,q.x,q.y-lift,r*pp,cr.k,cr.c,{fx:k.state===3?'gold':cr.fx,sq:k.sq,sqa:Math.PI/2,seed:k.seed,mood:f<.3?3:2,jig:.03,hat:cs.hat,crown:k.lv===10,blink:k.bt})}}
     drawFX(c);
     if(growT>0){c.save();c.globalAlpha=Math.min(1,growT*2);outlineText(c,N+' × '+N,W/2,BY+BS/2,64,'#fff');c.restore()}}
   function serialize(){if(st!=='play')return null;return{score,t:+t.toFixed(1),hearts,combo,bestCombo,hits,N,c:cells.map(k=>[k.lv,k.state,+k.life.toFixed(2),+k.tot.toFixed(2)])}}
@@ -2719,7 +2719,7 @@ function menuMemory(c,t){const cs=P.cos.doku,B=BOARDS[cs.board]||BOARDS.mint,T=[
   for(let i=0;i<SEQ.length;i++){circ(c,120-(SEQ.length-1)*7+i*14,160,4.5);c.fillStyle=i<ph?'#ffd23f':'rgba(255,255,255,.3)';c.fill()}}
 function drawMenuPreview(g,c,t){c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,240,180);if(g==='catch'){menuCatch(c,t);return}if(g==='combo'){menuCombo(c,t);return}if(g==='memory'){menuMemory(c,t);return}const cs=P.cos[g];
   if(g==='drop'){wallpaper(c,cs.wall,0,0,240,180,.7);c.fillStyle=WALLS[cs.wall].table;c.fillRect(0,160,240,20);jarBack(c,cs.jar,50,40,140,118);
-    for(const[i,x,ph]of[[2,84,0],[5,124,1.1],[3,164,2.2]]){const cr=critter(cs.set,i),r=RADII[i]*.62,b=Math.abs(Math.sin(t*2.6+ph)),y=156-r-b*44;drawAnimal(c,x,y,r,cr.k,cr.c,{fx:cr.fx,rot:Math.sin(t*2+ph)*.5,mood:b>.6?2:0,hat:i>=3?cs.hat:'none'})}jarFront(c,cs.jar,50,40,140,118,.45)}
+    for(const[i,x,ph]of[[2,84,0],[5,124,1.1],[3,164,2.2]]){const cr=critter(cs.set,i),r=RADII[i]*.62,b=Math.abs(Math.sin(t*2.6+ph)),y=156-r-b*44;drawAnimal(c,x,y,r,cr.k,cr.c,{fx:cr.fx,rot:Math.sin(t*2+ph)*.5,mood:b>.6?2:0,hat:cs.hat})}jarFront(c,cs.jar,50,40,140,118,.45)}
   else if(g==='doku'){const B=BOARDS[cs.board];c.fillStyle=B.bg;c.fillRect(0,0,240,180);const R=[0,0,1,1,1,0,2,2,1,3,0,2,4,3,3,2,2,4,4,3,2,4,4,4,3],S=28,X=50,Y=20;
     rr(c,X-6,Y-6,S*5+12,S*5+12,14);c.fillStyle=B.board;c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();
     for(let k=0;k<25;k++){c.fillStyle=['#ff9a9a','#8edcf0','#ffe680','#c8b0ff','#8fe6c4'][R[k]];c.fillRect(X+(k%5)*S,Y+Math.floor(k/5)*S,S+.5,S+.5)}
@@ -2897,7 +2897,7 @@ async function onUser(user){if(UID&&FD&&fbOnline&&acctReady&&(!user||user.uid!==
 function adoptCloud(cp){if(P.owner&&P.owner!==UID){P=cp;norm();return}const L=P,mine=L.owner===UID,localNewer=mine&&(L.t||0)>(cp.t||0);
   const A=localNewer?L:cp,B=localNewer?cp:L;P=A;norm();
   for(const g of['drop','squish','doku','catch','combo','memory'])P.best[g]=Math.max(P.best[g]||0,(B.best&&B.best[g])||0);
-  {const pa=A.prest|0,pb=B.prest|0;if(pa===pb){P.own=[...new Set([...P.own,...(B.own||[])])];P.perma=[...new Set([...(P.perma||[]),...(B.perma||[])])]}else if(pb>pa){P.own=[...(B.own||[])];P.prest=pb;P.ptok=B.ptok|0;P.perma=[...(B.perma||[])]}}P.found=[...new Set([...P.found,...(B.found||[])])];
+  {const pa=A.prest|0,pb=B.prest|0;if(pa===pb){P.own=[...new Set([...P.own,...(B.own||[])])];P.perma=[...new Set([...(P.perma||[]),...(B.perma||[])])]}else if(pb>pa){P.own=[...(B.own||[])];P.coins=B.coins|0;P.prest=pb;P.ptok=B.ptok|0;P.perma=[...(B.perma||[])]}}P.found=[...new Set([...P.found,...(B.found||[])])];
   if((B.level||1)>(P.level||1)||((B.level||1)===(P.level||1)&&(B.xp||0)>(P.xp||0))){P.level=B.level;P.xp=B.xp}
   if(!mine)P.coins=Math.max(P.coins||0,B.coins||0);
   for(const k of['maxTile','topStreak','wins','rounds'])P[k]=Math.max(P[k]||0,B[k]||0);
@@ -2997,6 +2997,9 @@ const PRES_COST={c:1,r:1,e:1,l:2,m:3,u:4,p:5};
 function presKeep(it){const[,,p,r,q]=it;if(it[0]==='none')return true;if(p===0&&!q)return true;if(r==='d'||r==='x'||r==='v')return true;if(q&&(q.dev||q.beta||q.lvr||q.win||q.early))return true;return false}
 function presItems(){const seen=new Set(),out=[];for(const g in STYLE)for(const cat in STYLE[g]){if(cat==='perk')continue;for(const it of STYLE[g][cat].items){if(presKeep(it))continue;const t=cat+':'+it[0];if(seen.has(t))continue;seen.add(t);out.push({g,cat,id:it[0],n:it[1],r:it[3]||'',cost:PRES_COST[it[3]]||1})}}return out}
 const isPerma=(cat,id)=>(P.perma||[]).includes(cat+':'+id);
+function devGiven(){const s=new Set(),add=k=>{const[,cat,id]=String(k).split(':');if(cat&&id)s.add(cat+':'+id)};
+  for(const k of P.gk||[])add(k);for(const k of P.gall||[])add(k);if(Array.isArray(myGifts))for(const id of myGifts)for(const k of giftKeys(id))add(k);
+  const role=UID&&roleMap[UID];if(ROLE_T[role])for(const k of ROLE_T[role][1])add(k);return s}
 function presState(){const L=presItems();let have=0;for(const x of L)if(owns(x.g,x.cat,x.id))have++;return{L,have,all:L.length}}
 var presTab='all',presSel='';
 function openPres(){sfx.ui();presTab='all';presSel='';$('pres').hidden=false;paused=true;renderPres()}
@@ -3005,31 +3008,31 @@ function renderPres(){const S=presState(),n=P.prest|0,tk=P.ptok|0,done=S.have>=S
   $('presN').textContent=n;$('presTok').textContent=`${n?'Prestige '+n:'Not prestiged yet'} · ${tk} unlock token${tk===1?'':'s'}`;
   $('presBar').style.width=(S.all?Math.round(S.have/S.all*100):0)+'%';$('presProg').textContent=done?'You collected everything! You can prestige now.':`Collected ${fmt(S.have)} / ${fmt(S.all)} items. Collect them all to prestige.`;
   const go=$('presGo');go.disabled=!done;go.classList.remove('arm');go.textContent=done?'Prestige now':'Collect everything first';
-  $('presNote').textContent='Prestiging clears the cosmetics you bought or won so you can collect them all again. You get +1 prestige and 1 unlock token. You keep your coins, level, scores, perks, level rewards, developer-given and beta items, and everything you unlocked forever.';
+  $('presNote').textContent='Prestiging clears the cosmetics you bought or won and resets your coins to 0, so you can collect them all again. You get +1 prestige and 1 unlock token. You keep your level, scores, perks, level rewards, developer-given and beta items, and everything you unlocked forever.';
   const cats=[...new Set(S.L.map(x=>x.cat))],T=$('presTabs');T.textContent='';
   for(const c of['all',...cats]){const b=document.createElement('button');b.type='button';b.className='tab'+(c===presTab?' on':'');b.textContent=c==='all'?'All':(CATL[c]||c);b.onclick=()=>{presTab=c;presSel='';sfx.ui();renderPres()};T.append(b)}
   const Gd=$('presGrid');Gd.textContent='';const list=S.L.filter(x=>presTab==='all'||x.cat===presTab).sort((a,b)=>(isPerma(b.cat,b.id)-isPerma(a.cat,a.id))||(a.cost-b.cost));
   const R=Math.round(110*Math.max(2,devicePixelRatio||1));
-  for(const x of list){const pm=isPerma(x.cat,x.id),k=x.cat+':'+x.id,b=document.createElement('button');b.type='button';b.className='item'+(x.r?' r-'+x.r:'')+(pm?' perma':'')+(presSel===k?' sel':'');if(x.r&&RAR[x.r])b.style.setProperty('--rc',RAR[x.r][1]);
+  const dv=devGiven();for(const x of list){const k=x.cat+':'+x.id,dg=dv.has(k),pm=isPerma(x.cat,x.id)||dg,b=document.createElement('button');b.type='button';b.className='item'+(x.r?' r-'+x.r:'')+(pm?' perma':'')+(presSel===k?' sel':'');if(x.r&&RAR[x.r])b.style.setProperty('--rc',RAR[x.r][1]);
     const cv=document.createElement('canvas');cv.width=cv.height=R;try{drawItem(cv.getContext('2d'),x.g,x.cat,x.id,R)}catch(e){}
-    const nm=document.createElement('span');nm.textContent=x.n;const pc=document.createElement('span');pc.className='pc';pc.textContent=pm?'Forever ✓':presSel===k?'Tap to confirm':x.cost+' token'+(x.cost>1?'s':'');b.append(cv,nm,pc);
+    const nm=document.createElement('span');nm.textContent=x.n;const pc=document.createElement('span');pc.className='pc';pc.textContent=dg?'Dev gift ✓':pm?'Forever ✓':presSel===k?'Tap to confirm':x.cost+' token'+(x.cost>1?'s':'');b.append(cv,nm,pc);
     b.onclick=()=>presBuy(x);Gd.append(b)}}
-function presBuy(x){const k=x.cat+':'+x.id;if(isPerma(x.cat,x.id)){itemInfo(x.g+':'+x.cat+':'+x.id);return}
+function presBuy(x){const k=x.cat+':'+x.id;if(isPerma(x.cat,x.id)||devGiven().has(k)){itemInfo(x.g+':'+x.cat+':'+x.id);return}
   if((P.ptok|0)<x.cost){sfx.nope();toast((P.ptok|0)?`That needs ${x.cost} tokens`:'Prestige to earn unlock tokens','#ffd23f');return}
   if(presSel!==k){presSel=k;sfx.ui();renderPres();return}
   P.ptok=(P.ptok|0)-x.cost;P.perma=[...new Set([...(P.perma||[]),k])];const keys=x.cat!=='perk'&&x.g!=='prof'&&SHARED[x.cat]?SHARED[x.cat].map(g=>g+':'+x.cat+':'+x.id):[x.g+':'+x.cat+':'+x.id];P.own=[...new Set([...P.own,...keys])];
   presSel='';save();sfx.discover();hap('success');toast(x.n+' is yours forever!','#ffcf4a');renderPres()}
 function doPrestige(){const S=presState();if(S.have<S.all)return;
-  const drop=new Set(S.L.filter(x=>!isPerma(x.cat,x.id)).map(x=>x.cat+':'+x.id));
+  const dv=devGiven(),drop=new Set(S.L.filter(x=>!isPerma(x.cat,x.id)&&!dv.has(x.cat+':'+x.id)).map(x=>x.cat+':'+x.id));
   P.own=P.own.filter(k=>{const[g,cat,id]=String(k).split(':');return!drop.has(cat+':'+id)});
   for(const g in P.cos)for(const cat in P.cos[g]){const id=P.cos[g][cat];if(id&&id!=='none'&&!owns(g,cat,id))P.cos[g][cat]=(DEF[g]&&DEF[g][cat])||'none'}
   if(P.show&&Array.isArray(P.show.sc))P.show.sc=P.show.sc.map(k=>k&&P.own.includes(k)?k:'');
-  P.prest=(P.prest|0)+1;P.ptok=(P.ptok|0)+1;P.presT=Date.now();norm();save();applyBouncy&&applyBouncy();if(G&&G.restyle)try{G.restyle()}catch(e){}syncMe();
+  P.prest=(P.prest|0)+1;P.ptok=(P.ptok|0)+1;P.presT=Date.now();P.coins=0;norm();save();refreshCoins();applyBouncy&&applyBouncy();if(G&&G.restyle)try{G.restyle()}catch(e){}syncMe();
   sfx.discover();hap('success');big('PRESTIGE '+P.prest+'!','#ffcf4a');try{confetti(W/2,H/3,90)}catch(e){}toast('Prestige '+P.prest+'! You got an unlock token.','#ffcf4a');renderPres()}
 $('presGo').onclick=()=>{const b=$('presGo');if(b.disabled)return;if(!b.classList.contains('arm')){b.classList.add('arm');b.textContent='Tap again to prestige';sfx.ui();setTimeout(()=>{if(b.classList.contains('arm'))renderPres()},4000);return}doPrestige()};
 $('presOk').onclick=closePres;$('pres').addEventListener('click',e=>{if(e.target.id==='pres')closePres()});$('pres').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')closePres()});
 function presBadge(d){const b=$('pfPres'),me=d.id===UID||d.id==='local',n=me?(P.prest|0):(+d.pr|0);b.hidden=!me&&n<1;if(b.hidden)return;$('pfPresN').textContent=n;b.classList.toggle('zero',n<1);
-  b.onclick=()=>{if(me){closeProfile();openPres()}else tagiShow({pill:null,n:'Prestige '+n,what:'This player collected every cosmetic in the game'+(n>1?' '+n+' times':'')+', then reset them to collect them all again.',how:'Own every item you can buy or win (developer and beta items don’t count), then open your prestige star on your profile and press Prestige.',cost:'Free, but you have to collect everything',own:(P.prest|0)>0?null:false})}}
+  b.onclick=()=>{if(me){closeProfile();openPres()}else tagiShow({pill:null,n:'Prestige '+n,what:'This player collected every cosmetic in the game'+(n>1?' '+n+' times':'')+', then reset their cosmetics and coins to collect them all again.',how:'Own every item you can buy or win (developer and beta items don’t count), then open your prestige star on your profile and press Prestige.',cost:'Free, but you have to collect everything',own:(P.prest|0)>0?null:false})}}
 function closeProfile(){$('prof').hidden=true;pfD=null;pfEditing=false;if(!anyOpen())paused=false}
 $('pfEdit').onclick=()=>{pfEditing=!pfEditing;sfx.ui();openProfile(Object.assign(myBody(),UID&&acctReady?{id:UID}:{id:'local',j:0}));if(pfEditing)setTimeout(()=>{const e=$('pfShow');if(e&&e.scrollIntoView)e.scrollIntoView({block:'nearest',behavior:'smooth'})},80)};
 function drawProfileAv(){const c=$('pfAv').getContext('2d'),d=pfD;c.setTransform(2,0,0,2,0,0);c.clearRect(0,0,120,120);if(d.bg){c.save();rr(c,2,2,116,116,26);c.clip();wallpaper(c,d.bg,2,2,116,116,.45);c.restore();rr(c,2,2,116,116,26);c.lineWidth=3;c.strokeStyle=INK;c.stroke()}const b=Math.abs(Math.sin(time*2.2)),hasF=d.fr!=='none';
@@ -3602,7 +3605,7 @@ function giftUser(user){if(giftUnsub){try{giftUnsub()}catch(e){}giftUnsub=null}m
   giftUnsub=FD.onValue(FD.ref(curDB(),'gifts/'+uid),s=>{if(UID!==uid)return;const v=s.val()||{};myGifts=Object.keys(v).filter(k=>v[k]===true);giftApply()},()=>{})}
 function giftApply(){if(!UID||!acctReady||myGifts===null||!rolesLoaded)return;
   const role=roleMap[UID],want=new Set();for(const id of myGifts)for(const k of giftKeys(id))want.add(k);if(ROLE_T[role])for(const k of ROLE_T[role][1])want.add(k);
-  P.gk=Array.isArray(P.gk)?P.gk:[];const added=[],gone=[];
+  P.gk=Array.isArray(P.gk)?P.gk:[];{const ga=[...want].sort();if(JSON.stringify(ga)!==JSON.stringify(P.gall||[])){P.gall=ga;save()}}const added=[],gone=[];
   for(const k of want)if(!P.own.includes(k)){P.own.push(k);P.gk.push(k);if(!P.fresh.includes(k))P.fresh.push(k);added.push(k)}
   for(const k of P.gk.slice())if(!want.has(k)){P.gk=P.gk.filter(x=>x!==k);P.own=P.own.filter(x=>x!==k);P.fresh=P.fresh.filter(x=>x!==k);gone.push(k);const[g,cat,id]=k.split(':');if(P.cos[g]&&P.cos[g][cat]===id)P.cos[g][cat]=DEF[g][cat]}
   if(!added.length&&!gone.length)return;save();
