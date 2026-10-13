@@ -467,7 +467,20 @@ textarea{font:500 16px/1.4 var(--body);color:var(--ink);border:2.5px solid var(-
 .pfsec{width:100%;display:flex;flex-direction:column;gap:6px}
 .pfsec>.lbl{text-align:center}
 #pickItems .item{cursor:pointer}
-#pick,#capo,#capi,#dinv,#dres,#tagi{z-index:20}
+#pick,#capo,#capi,#dinv,#dres,#tagi,#dm{z-index:20}
+.dmcard{gap:10px;max-width:400px}
+.dmtop{align-items:center;gap:8px}.dmtop .mtitle{flex:1;font-size:24px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#dmAv{width:44px;height:44px;flex:none}
+#dmList{display:flex;flex-direction:column;gap:6px;height:min(52vh,420px);overflow-y:auto;background:#f6f0ff;border:2.5px solid var(--ink);border-radius:16px;padding:10px;box-sizing:border-box;overscroll-behavior:contain}
+.dmb{max-width:78%;padding:7px 11px 6px;border:2.5px solid var(--ink);border-radius:16px 16px 16px 5px;background:#fff;font-size:14.5px;font-weight:600;line-height:1.3;align-self:flex-start;overflow-wrap:anywhere;animation:cmIn .3s cubic-bezier(.3,1.5,.5,1)}
+.dmb.me{align-self:flex-end;background:var(--mint);border-radius:16px 16px 5px 16px}
+.dmb small{display:block;font-size:10.5px;font-weight:700;color:var(--muted);margin-top:2px}.dmb.me small{color:#1d5c46;text-align:right}
+.dmday{align-self:center;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin:4px 0}
+.dmform{display:flex;gap:6px}.dmform input{flex:1;min-width:0;font:600 15px var(--body);border:2.5px solid var(--ink);border-radius:12px;padding:8px 10px;color:var(--ink)}
+.frchat{position:relative;flex:none;width:44px;height:44px;border-radius:14px;border:3px solid var(--ink);background:var(--mint);box-shadow:0 3px 0 var(--ink);display:grid;place-items:center;cursor:pointer;padding:0;margin-left:6px}
+.frchat:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+.frchat .mcount{position:absolute;top:-8px;right:-8px}
+.lrow.fr{align-items:center}
 .tagicard{gap:8px;max-width:330px}
 #tagiPill{display:flex;justify-content:center;min-height:30px;align-items:center}#tagiPill>*{transform:scale(1.5);transform-origin:center;margin:8px 0!important}
 #tagiN{margin:2px 0 0;font-family:var(--display);font-size:26px;font-weight:400}
@@ -620,7 +633,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     </div>
     <div class="arow"><span class="atx" id="acctTx">Playing as a guest</span><span class="abtns"><button class="btn small mint" id="swapBtn" type="button" hidden>Swap</button><button class="btn small white" id="acctBtn" type="button">Sign in</button></span></div>
     <button class="btn pink" id="mResume" type="button">Resume</button>
-    <div class="mgrid"><button class="mic mint" id="mLb" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5.5a2.5 2.5 0 0 0 2.7 3.6M16 6h2.5a2.5 2.5 0 0 1-2.7 3.6M12 13v4M8.5 20h7M10 17h4v3h-4z"/></svg><span>Leaderboard</span></button><button class="mic yel" id="mGw" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M3 10h18M12 10v10"/><path d="M12 10C10.5 6 7 5.5 7 7.8 7 9.5 10 10 12 10c2 0 5-.5 5-2.2C17 5.5 13.5 6 12 10z"/></svg><span>Giveaways</span><span class="dot" id="gwDot" hidden></span></button><button class="mic mint" id="mDuel" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l10 10M4 4h4M4 4v4M20 4L10 14M20 4h-4M20 4v4M8 16l-3.5 3.5M16 16l3.5 3.5M6 13l5 5M18 13l-5 5"/></svg><span>1v1 battles</span></button><button class="mic " id="mFr" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17.2" cy="9" r="2.4"/><path d="M16.5 14.2c2.6.2 4.5 2.2 4.5 4.8"/></svg><span>Friends</span></button><button class="mic " id="mMail" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.8 7l8.2 6 8.2-6"/></svg><span>Mailbox</span></button><button class="mic " id="mStyle" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6a2 2 0 1 1 2-2M12 6v2l9 7v2H3v-2l9-7"/></svg><span>Style</span></button><button class="mic " id="mSave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11l3 3v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg><span>Save</span></button><button class="mic " id="mRestart" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4v4.2h4.2"/></svg><span>Restart</span></button><button class="mic " id="mHow" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.7.3-1 .9-1 1.7"/><path d="M12 17h.01"/></svg><span>How to play</span></button></div>
+    <div class="mgrid"><button class="mic mint" id="mLb" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5.5a2.5 2.5 0 0 0 2.7 3.6M16 6h2.5a2.5 2.5 0 0 1-2.7 3.6M12 13v4M8.5 20h7M10 17h4v3h-4z"/></svg><span>Leaderboard</span></button><button class="mic yel" id="mGw" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M3 10h18M12 10v10"/><path d="M12 10C10.5 6 7 5.5 7 7.8 7 9.5 10 10 12 10c2 0 5-.5 5-2.2C17 5.5 13.5 6 12 10z"/></svg><span>Giveaways</span><span class="dot" id="gwDot" hidden></span></button><button class="mic mint" id="mDuel" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l10 10M4 4h4M4 4v4M20 4L10 14M20 4h-4M20 4v4M8 16l-3.5 3.5M16 16l3.5 3.5M6 13l5 5M18 13l-5 5"/></svg><span>1v1 battles</span></button><button class="mic " id="mFr" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17.2" cy="9" r="2.4"/><path d="M16.5 14.2c2.6.2 4.5 2.2 4.5 4.8"/></svg><span>Friends</span><span class="dot" id="frDot" hidden></span></button><button class="mic " id="mMail" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.8 7l8.2 6 8.2-6"/></svg><span>Mailbox</span></button><button class="mic " id="mStyle" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6a2 2 0 1 1 2-2M12 6v2l9 7v2H3v-2l9-7"/></svg><span>Style</span></button><button class="mic " id="mSave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11l3 3v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg><span>Save</span></button><button class="mic " id="mRestart" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4v4.2h4.2"/></svg><span>Restart</span></button><button class="mic " id="mHow" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.7.3-1 .9-1 1.7"/><path d="M12 17h.01"/></svg><span>How to play</span></button></div>
     <h3 class="mh">Switch game</h3>
     <div class="mgames" id="mGames"></div>
     <div class="gift-row"><span class="streak"><b id="streakN">1</b> day streak</span><button class="btn small" id="giftBtn" type="button">Daily gift</button></div>
@@ -858,6 +871,14 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     <div class="tagirow"><span class="lbl">Cost</span><p id="tagiCost"></p></div>
     <p class="tagiown" id="tagiOwn"></p>
     <button class="btn white" id="tagiOk" type="button">Got it</button></div>
+</div>
+<div id="dm" class="overlay" hidden>
+  <div class="card box3 menu dmcard" role="dialog" aria-label="Messages">
+    <div class="mtop dmtop"><canvas id="dmAv" width="88" height="88"></canvas><span class="mtitle" id="dmName">Friend</span><button class="btn small white" id="dmClose" type="button">Done</button></div>
+    <div id="dmList" aria-live="polite"></div>
+    <div class="dmform"><input id="dmIn" type="text" maxlength="300" placeholder="Message your friend…" autocomplete="off" enterkeyhint="send"><button class="btn small mint" id="dmSend" type="button">Send</button></div>
+    <span class="nmsg" id="dmMsg"></span>
+  </div>
 </div>
 <div id="pick" class="overlay" hidden>
   <div class="card box3 menu" role="dialog" aria-label="Pick a showcase item">
@@ -1544,7 +1565,7 @@ function setMidCanvas(label){$('midL').textContent=label;midC.hidden=false;$('mi
 function gbar(html){$('gbar').innerHTML=html.startsWith('<')?html:`<p class="tip">${html}</p>`}
 function theme(bg,hud){$('playView').style.setProperty('--gbg',bg);$('playView').style.setProperty('--hud',hud);document.body.style.background=bg}
 let dpr=1,sc=1,offX=0,offY=0,cw=0,ch=0;
-function resize(){const r=stage.getBoundingClientRect();cw=r.width;ch=r.height;dpr=Math.min(2,devicePixelRatio||1);cv.width=Math.max(1,Math.round(cw*dpr));cv.height=Math.max(1,Math.round(ch*dpr));sc=Math.min(cw/(W+44),ch/(H+30));offX=(cw-W*sc)/2;offY=(ch-H*sc)/2+4*sc}
+function resize(){const r=stage.getBoundingClientRect();cw=r.width;ch=r.height;dpr=Math.min(2,devicePixelRatio||1);const w=Math.max(1,Math.round(cw*dpr)),h=Math.max(1,Math.round(ch*dpr));if(cv.width!==w)cv.width=w;if(cv.height!==h)cv.height=h;sc=Math.min(cw/(W+44),ch/(H+30));offX=(cw-W*sc)/2;offY=(ch-H*sc)/2+4*sc;if(G)try{drawGame()}catch(e){}}
 new ResizeObserver(resize).observe(stage);
 const extent=()=>{const x0=-offX/sc-30,y0=-offY/sc-30,x1=(cw-offX)/sc+30,y1=(ch-offY)/sc+30;return{x0,y0,x1,y1,w:x1-x0,h:y1-y0}};
 
@@ -1588,7 +1609,7 @@ const Drop=(()=>{
     el.querySelectorAll('canvas').forEach((cn,i)=>{const c=cn.getContext('2d'),cr=C(i);drawAnimal(c,26,29,17,cr.k,cr.c,{fx:cr.fx,crown:i===10,mood:i<=maxLv&&P.found.includes(i)?2:0})})}
   function reset(){balls=[];born=[];st='play';combo=0;comboT=0;overT=0;endQ=[];aimX=aimT=W/2;dropCD=.25;holdT=0}
   function start(){reset();cur=randLevel()%3;next=randLevel();bestCombo=0;merges=0;maxLv=0;setMidCanvas('Next');restyle()}
-  function serialize(){if(st!=='play')return null;return{score,cur,next,merges,bestCombo,maxLv,balls:balls.map(b=>[Math.round(b.x),Math.round(b.y),b.l,+b.ang.toFixed(2)])}}
+  function serialize(){if(st!=='play')return null;return{score,cur,next,merges,bestCombo,maxLv,ax:Math.round(aimX),balls:balls.map(b=>[Math.round(b.x),Math.round(b.y),b.l,+b.ang.toFixed(2)])}}
   function restore(d){reset();cur=d.cur||0;next=d.next||1;merges=d.merges||0;bestCombo=d.bestCombo||0;maxLv=d.maxLv||0;score=shown=d.score||0;scoreEl.textContent=fmt(score);
     balls=(d.balls||[]).map(([x,y,l,a])=>{const b=mk(x,y,l);b.age=2;b.ang=a||0;return b});setMidCanvas('Next');restyle()}
   function restyle(){const w=WALLS[cos('drop').wall];theme(w.bg,w.hud);gbar(`<div class="ladder" id="ladder"></div><p class="tip">Two of a kind squish into a bigger jelly.</p>`);ladder();drawNext()}
@@ -1608,7 +1629,7 @@ const Drop=(()=>{
     if(l>=7&&!RM)freeze=Math.max(freeze,.04);
     sfx.merge(l,combo);if(l===4||l===10)sfx.meow();if(combo>=3){big(WORDS[Math.min(combo,WORDS.length-1)],'#ff6fa8');sfx.combo(combo)}
     if(l>maxLv)maxLv=l;
-    if(!P.found.includes(l)){P.found.push(l);save();toast('New jelly: '+cr.n,cr.c);sfx.discover();big('NEW: '+cr.n.toUpperCase()+'!','#ffd23f');ladder()}
+    if(!SPEC&&!P.found.includes(l)){P.found.push(l);save();toast('New jelly: '+cr.n,cr.c);sfx.discover();big('NEW: '+cr.n.toUpperCase()+'!','#ffd23f');ladder()}
   }
   function hit(b,sp,ang){const amt=Math.min(.22,(sp-240)/2800);if(amt<=0)return;if(amt>Math.abs(b.sq)*.8)b.sqa=ang;b.sqv=Math.min(12,b.sqv+amt*30);if(sp>520)sfx.bounce(Math.min(.09,(sp-500)/6000))}
   function roll(b,nx,ny,k){const vx=(b.x-b.px)/HS,vy=(b.y-b.py)/HS;b.av+=((nx*vy-ny*vx)/b.r-b.av)*k}
@@ -1636,7 +1657,7 @@ const Drop=(()=>{
     for(const b of balls){b.age+=dt;if(b.happy>0)b.happy-=dt;b.sqv+=(-720*SPK*b.sq-10*SPD*b.sqv)*dt;b.sq+=b.sqv*dt;if(b.pop<1)b.pop=Math.min(1,b.pop+dt*4.5);b.blink-=dt;if(b.blink<0){b.bt=.13;b.blink=rand(1.5,5)}if(b.bt>0)b.bt-=dt}
     if(comboT>0){comboT-=dt;if(comboT<=0)combo=0}
     let top=1e9;for(const b of balls){if(b.age<.8)continue;const spd=Math.hypot(b.x-b.px,b.y-b.py)/HS;if(spd<320)top=Math.min(top,b.y-b.r)}near=top<DANGER+60;
-    if(st==='play'){if(top<DANGER){overT+=dt;tickT-=dt;if(tickT<=0){sfx.tick();tickT=.4}if(overT>1.6)endGame()}else{overT=Math.max(0,overT-dt*1.5);tickT=0}}
+    if(st==='play'){if(top<DANGER){overT+=dt;tickT-=dt;if(tickT<=0){sfx.tick();tickT=.4}if(overT>1.6&&!SPEC)endGame()}else{overT=Math.max(0,overT-dt*1.5);tickT=0}}
     if(st==='ending'){endT-=dt;if(endT<=0){const b=endQ.shift();if(b){b.dead=true;burst(b.x,b.y,C(b.l).c,8,260,.3);sfx.pop(balls.length);addShake(.06);endT=Math.max(.035,.1-balls.length*.002);balls=balls.filter(x=>!x.dead)}
       else{st='done';const cr=C(maxLv);setTimeout(()=>finishRound('drop',{merges,combo:bestCombo},"Jar's full!",[['Biggest',cr.n.split(' ')[0]],['Merges',merges],['Top combo','x'+bestCombo]]),350)}}}
   }
@@ -1656,7 +1677,13 @@ const Drop=(()=>{
   }
   function move(p){aimT=p.x}
   function up(p){if(st!=='play')return;aimT=p.x;aimX=clampAim(p.x,cur);drop()}
-  return{start,update,render,bg,down:move,move,up,action:drop,restyle,serialize,restore,state:()=>st};
+  function specSync(d){if(st!=='play'){restore(d);return}cur=d.cur||0;next=d.next||1;merges=d.merges||0;bestCombo=d.bestCombo||0;maxLv=d.maxLv||0;if(d.ax!=null)aimT=d.ax;dropCD=0;holdT=Math.max(holdT,1);
+    const pool=balls.slice(),out=[];
+    for(const[x,y,l,a]of d.balls||[]){let best=null,bd=110*110;for(const b of pool){if(b.l!==l)continue;const q=(b.x-x)**2+(b.y-y)**2;if(q<bd){bd=q;best=b}}
+      if(best){pool.splice(pool.indexOf(best),1);const dx=(x-best.x)*.55,dy=(y-best.y)*.55;best.x+=dx;best.px+=dx;best.y+=dy;best.py+=dy;out.push(best)}
+      else{const nb=mk(x,y,l);nb.age=1;nb.ang=a||0;if(y>HOLDY+170){nb.pop=0;nb.happy=1;burst(x,y,C(l).c,8+l*2,200,.3)}out.push(nb)}}
+    balls=out;drawNext()}
+  return{start,update,render,bg,down:move,move,up,action:drop,restyle,serialize,restore,specSync,state:()=>st};
 })();
 
 // ================================================= GAME 2: Jelly 2048
@@ -1703,7 +1730,16 @@ const Squish=(()=>{
   function down(p){dn=p}
   function up(p){if(!dn)return;const dx=p.x-dn.x,dy=p.y-dn.y;dn=null;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;move(Math.abs(dx)>Math.abs(dy)?(dx<0?0:1):(dy<0?2:3))}
   function key(k){const m={ArrowLeft:0,a:0,ArrowRight:1,d:1,ArrowUp:2,w:2,ArrowDown:3,s:3}[k];if(m!==undefined)move(m)}
-  return{start,update,render,bg,down,up,key,restyle,serialize,restore,state:()=>st};
+  function specSync(d){if(st!=='play'||!d.g){restore(d);return}moves=d.moves||0;mergesTot=d.mergesTot||0;if((d.maxTile||2)!==maxTile){maxTile=d.maxTile||2;setMid('Biggest',maxTile)}
+    const old=tiles.filter(t=>!t.dying),used=new Set(),G2=emptyGrid(),todo=[],set=cos('squish').set,dying=[];
+    for(let r=0;r<N;r++)for(let c=0;c<N;c++){const v=(d.g[r]||[])[c]|0;if(!v)continue;const t=old.find(t=>!used.has(t)&&t.r===r&&t.c===c&&t.v===v);if(t){used.add(t);G2[r][c]=t}else todo.push([r,c,v])}
+    for(const[r,c,v]of todo){const near=t=>Math.abs(t.r-r)+Math.abs(t.c-c),cand=old.filter(t=>!used.has(t)&&(t.r===r||t.c===c)&&(t.v===v||t.v*2===v)).sort((a,b)=>(a.v===v?0:1)-(b.v===v?0:1)||near(a)-near(b)),t=cand[0];
+      if(t){used.add(t);if(t.v!==v){const p=old.find(o=>!used.has(o)&&o.v===t.v&&(o.r===r||o.c===c));if(p){used.add(p);p.r=r;p.c=c;p.dying=true;p.mv=true;dying.push(p)}
+          t.v=v;t.pop=0;t.happy=1;const q=pos(r,c),li=clamp(Math.round(Math.log2(v))-1,0,10),cr=critter(set,li);burst(q.x,q.y,cr.c,8+li*2,200+li*25,.4);ring(q.x,q.y,TS*.6,INK);sfx.merge(li,0)}
+        t.r=r;t.c=c;t.mv=true;G2[r][c]=t}
+      else{const q=pos(r,c);G2[r][c]={v,r,c,x:q.x,y:q.y,pop:0,sq:0,sqv:0,sqa:0,dying:false,mg:false,mv:false,blink:rand(1,5),bt:0,happy:0}}}
+    grid=G2;const keep=[];for(const row of G2)for(const t of row)if(t)keep.push(t);tiles=dying.concat(keep);if(dying.length)pend.push({t:.12,fn:()=>{tiles=tiles.filter(t=>!t.dying)}})}
+  return{start,update,render,bg,down,up,key,restyle,serialize,restore,specSync,state:()=>st};
 })();
 
 function dokuLib(){
@@ -1965,7 +2001,11 @@ const Doku=(()=>{
     if((k===' '||k==='x')&&cur>=0){const g=[];setMark(cur,cells[cur].mark?0:1,g);if(g.length)undo.push(g);syncBar();return}
     if(k==='Enter'&&cur>=0){tryPlace(cur);return}if(k==='z'||k==='u'){undoLast();return}if(k==='h')giveHint()}
   function action(){}
-  return{start,update,render,bg,down,move,up,key,action,restyle,serialize,restore,state:()=>st};
+  function specSync(d){if(st!=='play'||d.lvl!==lvl||d.seed!==seed||!pz){restore(d);return}
+    streak=d.streak||0;bestStreak=d.bestStreak||0;lives=clamp(d.lives||3,1,3);tLevel=d.t||tLevel;okN=d.ok||0;badN=d.bad||0;
+    const js=new Set(d.j||[]),ms=new Map();for(const v of d.m||[])ms.set(v>>2,(v&3)||1);
+    cells.forEach((c,k)=>{if(c.j&&c.j.given)return;if(js.has(k)){if(!c.j){c.j=mkJ(false);c.mark=0}}else if(c.j)c.j=null;if(!c.j)c.mark=ms.get(k)||0});try{syncBar()}catch(e){}}
+  return{start,update,render,bg,down,move,up,key,action,restyle,serialize,restore,specSync,state:()=>st};
 })();
 
 // ================================================= GAME 4: Jelly Catch (uses your Jelly Jar style: critters, hat, jar and wallpaper)
@@ -1995,6 +2035,7 @@ const Catch=(()=>{
       endT=endBoom(ps);items=[];stack=[];jarGone=true}}
   function update(dt){if(st==='done')return;
     for(const s of stack)s.s=Math.min(1,s.s+dt*4);jsqv+=(-420*SPK*jsq-14*SPD*jsqv)*dt;jsq+=jsqv*dt;
+    if(SPEC){jx+=(jt-jx)*Math.min(1,dt*12);for(const it of items){it.vy+=30*dt;it.y+=it.vy*dt;it.rot+=it.av*dt*.3;it.sqv+=(-500*it.sq-12*it.sqv)*dt;it.sq+=it.sqv*dt}if(gold>0)gold-=dt;return}
     if(st==='ending'){endT-=dt;for(const it of items){it.vy+=500*dt;it.y+=it.vy*dt}if(endT<=0){st='done';finishRound('catch',{caught,streak:bestStreak},'Out of lives!',[['Caught',caught],['Best streak','x'+bestStreak],['Time',Math.round(t)+'s']])}return}
     t+=dt;if(gold>0)gold-=dt;
     if(keys.ArrowLeft||keys.a)jt-=560*dt;if(keys.ArrowRight||keys.d)jt+=560*dt;jt=clamp(jt,JW/2+4,W-JW/2-4);jx+=(jt-jx)*Math.min(1,dt*18);
@@ -2024,7 +2065,14 @@ const Catch=(()=>{
   function serialize(){if(st!=='play')return null;return{score,lives,streak,bestStreak,caught,t:+t.toFixed(1),jx:Math.round(jx),target,gold:+gold.toFixed(1),it:items.map(i=>[Math.round(i.x),Math.round(i.y),i.l,({jelly:'j',spike:'x',star:'t',heart:'h'})[i.type],Math.round(i.vy)])}}
   function restore(d){reset();lives=d.lives||3;streak=d.streak||0;bestStreak=d.bestStreak||0;caught=d.caught||0;t=d.t||0;jx=jt=d.jx||W/2;target=d.target||0;gold=d.gold||0;score=shown=d.score||0;scoreEl.textContent=fmt(score);mult=Math.min(8,1+Math.floor(streak/6));
     const TY={j:'jelly',x:'spike',t:'star',h:'heart'};items=(d.it||[]).map(a=>{const type=TY[a[3]]||'jelly',l=a[2]||0;return{x:a[0],y:a[1],l,type,r:type==='jelly'?rad(l):17,vy:a[4]||120,vx:0,rot:0,av:0,sq:0,sqv:0,seed:l}});restyle();hearts()}
-  return{start,update,render,bg,down,move,up,key(){},action(){},restyle,serialize,restore,state:()=>st};
+  function specSync(d){if(st!=='play'){restore(d);return}lives=d.lives||lives;streak=d.streak||0;bestStreak=d.bestStreak||0;caught=d.caught||0;t=d.t||t;target=d.target||0;gold=d.gold||0;mult=Math.min(8,1+Math.floor(streak/6));if(d.jx!=null)jt=d.jx;hearts();
+    const TY={j:'jelly',x:'spike',t:'star',h:'heart'},pool=items.slice(),out=[];
+    for(const a of d.it||[]){const type=TY[a[3]]||'jelly',l=a[2]||0;let best=null,bd=120*120;for(const it of pool){if(it.type!==type||it.l!==l)continue;const q=(it.x-a[0])**2+(it.y-a[1])**2;if(q<bd){bd=q;best=it}}
+      if(best){pool.splice(pool.indexOf(best),1);best.x+=(a[0]-best.x)*.6;best.y+=(a[1]-best.y)*.6;best.vy=a[4]||best.vy;out.push(best)}
+      else out.push({x:a[0],y:a[1],l,type,r:type==='jelly'?rad(l):17,vy:a[4]||120,vx:0,rot:0,av:rand(-1.5,1.5),sq:0,sqv:0,seed:rand(0,9)})}
+    for(const it of pool)if(it.y>JY-JH*.8&&Math.abs(it.x-jx)<JW*.7){jsqv-=4;burst(it.x,JY-JH/2,it.type==='jelly'?C(it.l).c:'#ffd23f',8,180,.3);if(it.type==='jelly'){stack.push({l:it.l,s:0});if(stack.length>7)stack.shift()}}
+    items=out}
+  return{start,update,render,bg,down,move,up,key(){},action(){},restyle,serialize,restore,specSync,state:()=>st};
 })();
 
 // ================================================= GAME 5: Jelly Combo (tap the jellies that pop up; it keeps getting faster). Wears your Jelly 2048 style.
@@ -2062,7 +2110,7 @@ const Combo=(()=>{
     if(combo>0&&combo%8===0){big('COMBO x'+combo+'!','#5be0a6');sfx.combo(Math.min(6,combo/4))}
     c.state=0;c.hit=.4}
   function animate(dt){for(const c of cells){if(c.pop<1)c.pop=Math.min(1,c.pop+dt*4);c.sqv+=(-560*SPK*c.sq-13*SPD*c.sqv)*dt;c.sq+=c.sqv*dt;if(c.hit>0)c.hit-=dt;if(c.bad>0)c.bad-=dt;c.blink-=dt;if(c.blink<0){c.bt=.14;c.blink=rand(1.5,5)}if(c.bt>0)c.bt-=dt}}
-  function update(dt){animate(dt);if(st==='done'||SPEC)return;
+  function update(dt){animate(dt);if(SPEC){for(const c of cells)if(c.state>0)c.life=Math.max(0,c.life-dt);return}if(st==='done')return;
     if(st==='ending'){endT-=dt;if(endT<=0){st='done';finishRound('combo',{hits,combo:bestCombo,level:lvl()},'Out of hearts!',[['Hits',hits],['Best combo','x'+bestCombo],['Level',lvl()]])}return}
     t+=dt;if(growT>0)growT-=dt;
     const want=sizeFor(t);if(want!==N){build(want);growT=1.2;big('BIGGER BOARD!','#7cc8ff');sfx.discover();spawnT=.9;return}
@@ -2396,7 +2444,7 @@ function drawTut(){const c=$('tutC').getContext('2d');c.setTransform(2,0,0,2,0,0
     jarBack(c,cs.jar,jx-34,150,68,54);jarFront(c,cs.jar,jx-34,150,68,54,.45);
     for(const d of drops)if(T>d.land&&T<d.land+.7){c.globalAlpha=1-(T-d.land)/.7;outlineText(c,'+'+(10+d.l*12),jxF(d.land),130-(T-d.land)*30,16,'#fff');c.globalAlpha=1}
     tutHand(c,jx,198,0)}}
-function syncDots(){$('styleDot').hidden=!(gid&&P.fresh.some(f=>f.startsWith(SG(gid)+':')));ensureQuests();const gn=gwNew();$('pauseDot').hidden=!(gn||giftReady()||P.quests.list.some(q=>!q.c&&q.p>=qdef(q.id).goal));$('gwDot').hidden=!gn}
+function syncDots(){$('styleDot').hidden=!(gid&&P.fresh.some(f=>f.startsWith(SG(gid)+':')));ensureQuests();const gn=gwNew();$('pauseDot').hidden=!(gn||giftReady()||P.quests.list.some(q=>!q.c&&q.p>=qdef(q.id).goal)||dmUnread()>0);$('frDot').hidden=!(dmUnread()>0);$('gwDot').hidden=!gn}
 function openMenu(){if(!$('over').hidden)$('over').hidden=true;audio();sfx.ui();paused=true;saveRun(false);restartArm=0;($('mRestart').querySelector('span').textContent='Restart',$('mRestart').classList.remove('armed'));$('menu').hidden=false;renderMenu()}
 function closeMenu(){$('menu').hidden=true;if(G&&G.state()!=='play'){playGame(gid,true);return}paused=false;syncDots()}
 let restartArm=0,mPrev=[];
@@ -2647,7 +2695,7 @@ function ranked(g){return rankRows(lbScope==='friends'?friendRows():(lbBy[g]||[]
 function rankRows(arr,g){return arr.filter(d=>+d[g]>0).map(d=>({id:d.id,name:cleanName(d.name)||'Someone',score:Math.floor(+d[g]),k:KINDS.has(d.k)?d.k:'jelly',c:okCol(d.c),fx:FXS.has(d.fx)?d.fx:undefined,h:HAT_IDS.has(d.h)?d.h:'none',fr:FRAME_IDS.has(d.fr)?d.fr:'none',tt:TITLE_IDS.has(d.tt)?d.tt:'none',raw:d})).sort((a,b)=>b.score-a.score)}
 function myRank(g){if(!UID)return 0;return rankRows(lbBy[g]||[],g).findIndex(d=>d.id===UID)+1}
 function openLB(g){audio();sfx.ui();lbGame=g||gid||'drop';paused=true;$('lbName').value=cleanName(P.name);const w=nameWait();$('lbMsg').textContent=UID&&w>0?'Next name change in '+fmtWait(w)+'.':'';$('lbMsg').className='nmsg';$('lb').hidden=false;renderLB()}
-const anyOpen=()=>!['menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','beta','devg','who','lvp','pick','duel','capo','capi','dinv','dres','tut','tagi'].every(id=>$(id).hidden);
+const anyOpen=()=>!['menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','beta','devg','who','lvp','pick','duel','capo','capi','dinv','dres','tut','tagi','dm'].every(id=>$(id).hidden);
 function closeLB(){$('lb').hidden=true;if(!anyOpen())paused=false}
 function renderLB(){
   $('lbTabs').innerHTML=Object.values(GAMES).map(g=>`<button class="tab${g.id===lbGame?' on':''}" data-g="${g.id}" type="button" role="tab" aria-selected="${g.id===lbGame}">${g.name}</button>`).join('');
@@ -3098,13 +3146,13 @@ $('cpGo').onclick=async()=>{if(!isAdmin())return;const m=$('cpMsg'),bad=t=>{m.te
   $('cpGo').disabled=false};
 
 // ---- friends
-function socialUser(user){if(!user){giftUser(null);if(sugUnsub){try{sugUnsub()}catch(e){}sugUnsub=null;sugAll={};sugLoaded=false}}socUnsubs.forEach(f=>{try{f()}catch(e){}});socUnsubs=[];myFriends=new Set();freqIn={};frLb={};frOf={};mailSync();if(!user||!RDB)return;
+function socialUser(user){if(!user){giftUser(null);if(sugUnsub){try{sugUnsub()}catch(e){}sugUnsub=null;sugAll={};sugLoaded=false}}socUnsubs.forEach(f=>{try{f()}catch(e){}});socUnsubs=[];myFriends=new Set();try{dmSync();if(dmOpen)closeDM()}catch(e){}freqIn={};frLb={};frOf={};mailSync();if(!user||!RDB)return;
   const db=curDB(),uid=user.uid;
   betaSync();giftUser(user);sugWatch();duelUser(user);
   socUnsubs.push(FD.onValue(FD.ref(db,'friends/'+uid),s=>{const v=s.val()||{},next=new Set(Object.keys(v).filter(k=>v[k]===true));
     for(const f of next)if(!myFriends.has(f))loadFriend(f);
     const added=[...next].filter(f=>!myFriends.has(f)),hadAny=socUnsubs.ready;myFriends=next;for(const f of Object.keys(frLb))if(!next.has(f))delete frLb[f];
-    if(hadAny)for(const f of added)setTimeout(()=>{const n=frLb[f]&&frLb[f].name;if(n)toast(n+' is now your friend!','#5be0a6')},600);socUnsubs.ready=true;
+    if(hadAny)for(const f of added)setTimeout(()=>{const n=frLb[f]&&frLb[f].name;if(n)toast(n+' is now your friend!','#5be0a6')},600);socUnsubs.ready=true;dmSync();if(dmOpen&&!next.has(dmOpen))closeDM();
     renderFriendsIfOpen()},()=>{}));
   socUnsubs.push(FD.onValue(FD.ref(db,'freq/'+uid),s=>{const v=s.val();const prev=Object.keys(freqIn).length;freqIn=v&&typeof v==='object'?v:{};mailSync();
     if(Object.keys(freqIn).length>prev&&socUnsubs.ready2)sfx.pop(8);socUnsubs.ready2=true;if(!$('mail').hidden)renderMail();renderFriendsIfOpen()},()=>{}))}
@@ -3124,6 +3172,35 @@ async function removeFriend(f){try{await FD.update(FD.ref(curDB()),{[`friends/${
 async function socialWipe(uid){try{const u={};for(const f of myFriends)u[`friends/${f}/${uid}`]=null;u[`friends/${uid}`]=null;u[`freq/${uid}`]=null;await FD.update(FD.ref(curDB()),u)}catch(e){}}
 function openFriends(){audio();sfx.ui();paused=true;$('fr').hidden=false;$('frMsg').textContent='';renderFriends();for(const f of myFriends)loadFriend(f)}
 function closeFriends(){$('fr').hidden=true;if(!anyOpen())paused=false}
+// ---- direct messages (friends only): dm/<uidA_uidB>, newest 60 shown
+var dmWatch={},dmLast={},dmOpen=null,dmUnsub=null,dmMsgs=[],dmSendT=0,dmReady={};
+const dmPair=f=>[UID,f].sort().join('_');
+function dmUnreadWith(f){const L=dmLast[f];if(!L||L.u===UID)return 0;P.dmSeen=P.dmSeen||{};return(+L.t||0)>(+P.dmSeen[dmPair(f)]||0)?(L.n||1):0}
+function dmUnread(){if(!UID)return 0;let n=0;for(const f of myFriends)n+=dmUnreadWith(f);return n}
+function dmSync(){for(const f in dmWatch)if(!myFriends.has(f)||!UID){try{dmWatch[f]()}catch(e){}delete dmWatch[f];delete dmLast[f]}
+  if(!UID)return;for(const f of myFriends){if(dmWatch[f])continue;const k=dmPair(f);
+    dmWatch[f]=FD.onValue(FD.query(fref('dm/'+k),FD.orderByChild('t'),FD.limitToLast(10)),s=>{const v=s.val()||{},arr=Object.values(v).filter(x=>x&&typeof x.m==='string').sort((a,b)=>(+a.t||0)-(+b.t||0)),last=arr[arr.length-1];
+      const seen=+((P.dmSeen||{})[k])||0,unread=arr.filter(x=>x.u!==UID&&(+x.t||0)>seen).length,prev=dmLast[f];dmLast[f]=last?{t:+last.t||0,u:last.u,n:unread}:null;
+      if(dmReady[f]&&last&&last.u!==UID&&(!prev||(+last.t||0)>prev.t)&&dmOpen!==f&&!badText(last.m)){const nm=frLb[f]&&cleanName(frLb[f].name)||'A friend';toast(nm+': '+String(last.m).slice(0,60),'#5be0a6');sfx.pop(9)}
+      dmReady[f]=true;renderFriendsIfOpen();syncDots()},()=>{})}}
+function dmDay(t){const d=new Date(t),n=new Date();if(d.toDateString()===n.toDateString())return'Today';const y=new Date(n-864e5);if(d.toDateString()===y.toDateString())return'Yesterday';return d.toLocaleDateString(undefined,{month:'short',day:'numeric'})}
+function dmRender(){const L=$('dmList'),atBottom=L.scrollHeight-L.scrollTop-L.clientHeight<40;L.textContent='';
+  if(!dmMsgs.length)L.append(elx('p','lgap','No messages yet. Say hi!'));let day='';
+  for(const x of dmMsgs){const dd=dmDay(+x.t||Date.now());if(dd!==day){day=dd;L.append(elx('span','dmday',dd))}const b=elx('div','dmb'+(x.u===UID?' me':''),badText(x.m)?'(message hidden)':String(x.m).slice(0,300));
+    b.append(elx('small',null,new Date(+x.t||Date.now()).toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'})));L.append(b)}
+  if(atBottom||L.dataset.first!=='0'){L.scrollTop=L.scrollHeight;L.dataset.first='0'}}
+function dmSeenNow(){if(!dmOpen)return;const last=dmMsgs[dmMsgs.length-1];if(!last)return;P.dmSeen=P.dmSeen||{};const k=dmPair(dmOpen);if((+last.t||0)>(+P.dmSeen[k]||0)){P.dmSeen[k]=+last.t||0;save();if(dmLast[dmOpen])dmLast[dmOpen].n=0;renderFriendsIfOpen();syncDots()}}
+function openDM(f){if(!UID||!myFriends.has(f))return;audio();sfx.ui();dmOpen=f;dmMsgs=[];const d=frLb[f]||{};$('dmName').textContent=cleanName(d.name)||'Friend';$('dmMsg').textContent='';$('dmList').dataset.first='1';
+  {const c=$('dmAv').getContext('2d');c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,88,88);drawAnimal(c,44,48,28,KINDS.has(d.k)?d.k:'jelly',okCol(d.c),{fx:FXS.has(d.fx)?d.fx:undefined,hat:HAT_IDS.has(d.h)?d.h:'none',mood:2})}
+  if(dmUnsub)try{dmUnsub()}catch(e){}dmUnsub=FD.onValue(FD.query(fref('dm/'+dmPair(f)),FD.orderByChild('t'),FD.limitToLast(60)),s=>{if(dmOpen!==f)return;const v=s.val()||{};dmMsgs=Object.values(v).filter(x=>x&&typeof x.m==='string').sort((a,b)=>(+a.t||0)-(+b.t||0));dmRender();dmSeenNow()},()=>{$('dmMsg').textContent='Could not load messages. Publish the new database rules.';$('dmMsg').className='nmsg bad'});
+  dmRender();$('dm').hidden=false;paused=true;setTimeout(()=>$('dmIn').focus({preventScroll:true}),80)}
+function closeDM(){$('dm').hidden=true;dmOpen=null;if(dmUnsub)try{dmUnsub()}catch(e){}dmUnsub=null;if(!anyOpen())paused=false}
+async function dmSend(){const f=dmOpen,inp=$('dmIn'),txt=inp.value.replace(/\s+/g,' ').trim().slice(0,300),m=$('dmMsg');if(!f||!txt)return;
+  if(!myFriends.has(f)){m.textContent='You can only message friends.';m.className='nmsg bad';return}
+  if(badText(txt)){sfx.nope();m.textContent='Keep it friendly!';m.className='nmsg bad';return}if(Date.now()-dmSendT<900){return}
+  dmSendT=Date.now();inp.value='';m.textContent='';try{await FD.set(FD.push(fref('dm/'+dmPair(f))),{u:UID,to:f,m:txt,t:FD.serverTimestamp()});sfx.pop(5)}catch(e){inp.value=txt;m.textContent='Could not send. Try again.';m.className='nmsg bad'}}
+$('dmSend').onclick=dmSend;$('dmIn').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();dmSend()}});$('dmClose').onclick=closeDM;
+$('dm').addEventListener('click',e=>{if(e.target.id==='dm')closeDM()});$('dm').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')closeDM()});
 function renderFriendsIfOpen(){if(!$('fr').hidden)renderFriends();if(!$('lb').hidden&&lbScope==='friends')renderLB()}
 function friendRow(d,extra){const row=elx('div','lrow fr');row.setAttribute('role','button');row.tabIndex=0;const cn=elx('canvas');cn.width=76;cn.height=76;
   const nm=elx('span','ln');const nn=elx('span','lnn',cleanName(d.name)||'Someone');for(const tp of tagPills(d.id,d.tg,d.bn))nn.append(tp);nm.append(nn);const t=titleOf(TITLE_IDS.has(d.tt)?d.tt:'none');if(t){const tl=elx('span','lt'+(t.d?' t'+t.d:''),t.n);tl.style.color=t.c;nm.append(tl)}
@@ -3136,7 +3213,7 @@ function renderFriends(){const signed=!!(UID&&acctReady);$('frAdd').hidden=!sign
   if(!signed){L.append(elx('p','lgap','Sign in to add friends and see mutual friends.'));return}
   if(!myFriends.size)L.append(elx('p','lgap','No friends yet. Add someone by their player name, or tap a player on the leaderboard.'));
   for(const f of myFriends){const d=frLb[f];if(!d){L.append(elx('p','lgap','Loading…'));continue}const mu=mutualWith(f,frOf[f]);
-    const ex=elx('span','fmu',mu.length?mu.length+' mutual':'');L.append(friendRow(d,ex))}}
+    const ex=elx('span','fmx'),mm=elx('span','fmu',mu.length?mu.length+' mutual':''),cb=elx('button','frchat');cb.type='button';cb.setAttribute('aria-label','Message '+(cleanName(d.name)||'friend'));cb.innerHTML='<svg viewBox="0 0 24 24" width="24" height="24" fill="#fff" stroke="#2b2340" stroke-width="2.3" stroke-linejoin="round"><path d="M4 5.5h16a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 3.5V17.5H4A1.5 1.5 0 0 1 2.5 16V7A1.5 1.5 0 0 1 4 5.5z"/></svg>';const un=dmUnreadWith(f);if(un){const b=elx('span','mcount',un>9?'9+':String(un));cb.append(b)}cb.onclick=e=>{e.stopPropagation();openDM(f)};ex.append(mm,cb);L.append(friendRow(d,ex))}}
 $('frGo').onclick=async()=>{const ok=await sendFriend($('frName').value,$('frMsg'));if(ok)$('frName').value=''};
 $('frName').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')$('frGo').click()});
 $('frSign').onclick=()=>openAcct('in');
@@ -3411,7 +3488,7 @@ for(const id of['capo','capi'])$(id).addEventListener('keydown',e=>{e.stopPropag
 var SKEW=0,DUELS={},DUEL=null,SPEC=null,duMode='drop',watchN=0,liveLast='',dInv={},invSeen={},BETS={},duUnsub=null,duTickI=0,specUnsubs=[],duSent=0;
 const DU_LEN=60000,DU_CD=3500,DU_BET=15000,srvNow=()=>Date.now()+SKEW,duName=()=>cleanName(myLb&&myLb.name||P.name)||'Critter Pal';
 function duNeedAcct(){if(UID&&acctReady&&fbOnline)return true;toast(UID?'You need to be online for 1v1s':'Sign in to play 1v1s','#ff6fa8');if(!UID){closeAllO();openAcct('in')}return false}
-function closeAllO(){for(const id of['menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','lvp','pick','who','duel','capo','capi','dinv','dres','tagi'])if($(id))$(id).hidden=true;pfD=null}
+function closeAllO(){for(const id of['menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','lvp','pick','who','duel','capo','capi','dinv','dres','tagi','dm'])if($(id))$(id).hidden=true;pfD=null}
 function duelInit(){FD.onValue(FD.ref(RDB,'.info/serverTimeOffset'),s=>{SKEW=+s.val()||0},()=>{});
   FD.onValue(FD.query(FD.ref(RDB,'duels'),FD.orderByChild('t'),FD.limitToLast(40)),s=>{DUELS=s.val()||{};if(!$('duel').hidden)renderDuel();if(pfD&&pfD.id)pfPlayUI(pfD)},()=>{})}
 function duelUser(user){if(!user)return;const uid=user.uid;
@@ -3483,7 +3560,7 @@ function duInvCheck(){const now=srvNow(),list=Object.entries(dInv).filter(([id,v
 $('dinvYes').onclick=async()=>{const id=$('dinv').dataset.id;$('dinv').hidden=true;if(!duNeedAcct())return;try{await FD.remove(fref('duelInv/'+UID+'/'+id));await duJoin(id)}catch(e){toast('That challenge expired','#ff6fa8')}};
 $('dinvNo').onclick=async()=>{const id=$('dinv').dataset.id;$('dinv').hidden=true;try{await FD.remove(fref('duelInv/'+UID+'/'+id));await FD.update(fref('duels/'+id),{st:'cancel'})}catch(e){}if(!anyOpen())paused=false};
 // ---- live streaming of your board (only while someone is watching)
-setInterval(()=>{if(!UID||!acctReady||!fbOnline||SPEC||!G||watchN<1)return;let snap=null;try{snap=G.serialize()}catch(e){}const body={g:gid,s:Math.floor(score),snap:snap?JSON.stringify(snap).slice(0,30000):'',d:DUEL&&DUEL.id||''},str=JSON.stringify(body);if(str===liveLast)return;liveLast=str;body.t=FD.serverTimestamp();FD.set(fref('live/'+UID),body).catch(()=>{})},450);
+setInterval(()=>{if(!UID||!acctReady||!fbOnline||SPEC||!G||watchN<1)return;let snap=null;try{snap=G.serialize()}catch(e){}const body={g:gid,s:Math.floor(score),snap:snap?JSON.stringify(snap).slice(0,30000):'',d:DUEL&&DUEL.id||''},str=JSON.stringify(body);if(str===liveLast)return;liveLast=str;body.t=FD.serverTimestamp();FD.set(fref('live/'+UID),body).catch(()=>{})},250);
 // ---- spectator comments (chat/<room>): spectators type, the player and every watcher see them for 10 seconds
 var chatRoom=null,chatUnsub=null,chatMsgs=[],chatHide=0,chatLast=0;
 function chatKey(){if(!UID||!acctReady||!FD||!RDB)return null;if(SPEC)return SPEC.d?'d'+SPEC.d:SPEC.watchU||null;if(DUEL&&DUEL.phase!=='wait'&&DUEL.id)return'd'+DUEL.id;return UID}
@@ -3507,7 +3584,7 @@ function specWatch(uid){const S=SPEC;if(S.watchU&&S.watchU!==uid){FD.remove(fref
   S.watchU=uid;S.g=null;const w=fref('watch/'+uid+'/'+UID);FD.set(w,true).catch(()=>{});try{FD.onDisconnect(w).remove()}catch(e){}
   S.liveUnsub=FD.onValue(fref('live/'+uid),s=>{if(!SPEC||SPEC.watchU!==uid)return;specApply(s.val())},()=>{})}
 function specApply(v){const S=SPEC;S.live=v;if(v&&v.g&&GAMES[v.g]){if(S.g!==v.g){S.g=v.g;gid=v.g;G=GAMES[v.g].impl;clearFX();resize();try{if(G.restyle)G.restyle()}catch(e){}}
-    if(v.snap){try{G.restore(JSON.parse(v.snap))}catch(e){}}score=shown=+v.s||0;scoreEl.textContent=fmt(score);paused=true}specUI()}
+    if(v.snap&&v.snap!==S.lastSnap){S.lastSnap=v.snap;try{const d=JSON.parse(v.snap);if(G.specSync&&S.synced===v.g)G.specSync(d);else{G.restore(d);S.synced=v.g}}catch(e){}}score=shown=+v.s||0;scoreEl.textContent=fmt(score);paused=true}specUI()}
 function specUI(){const S=SPEC;if(!S)return;const v=S.live,r=S.rec,now=srvNow(),nm=S.watchU===(r&&r.b)?cleanName(r.bn):S.watchU===(r&&r.a)?cleanName(r.an):S.name;
   $('specT').textContent=`Watching ${nm}`+(v&&v.g&&GAMES[v.g]?' · '+GAMES[v.g].name:'');$('specW').hidden=!!(v&&v.snap);$('specW').textContent=v&&v.g?'Loading their board…':'Waiting for them to play…';
   const D=$('specDuel');D.hidden=!r;if(!r)return;const a=+r.sa||0,b=+r.sb||0,t0=(+r.start||0)-SKEW,goAt=t0+DU_CD,endAt=goAt+DU_LEN,nowL=Date.now();
@@ -3602,7 +3679,7 @@ function drawGame(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cw,ch);c
   const ex=extent();G.bg(ctx,ex);G.render(ctx,ex);boomDraw(ctx);drawBig(ctx);if(flash>0){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle=`rgba(255,255,255,${flash*.4})`;ctx.fillRect(0,0,cw,ch)}}
 let last=performance.now(),acc=0;
 function frame(now){let dt=(now-last)/1000;last=now;if(dt>.1)dt=.1;acc+=dt;BNC=isBouncy()?1:0;SPK=BNC?1.2:1;SPD=BNC?.6:1;
-  while(acc>=1/60){acc-=1/60;time+=1/60;if(SPEC&&G&&(gid==='squish'||gid==='combo'||gid==='memory'))try{G.update(1/60)}catch(e){}if(G&&!paused){if(freeze>0){freeze-=1/60;fxUpdate(1/60*.15)}else{G.update(1/60);fxUpdate(1/60)}}
+  while(acc>=1/60){acc-=1/60;time+=1/60;if(SPEC&&G)try{G.update(1/60)}catch(e){}if(G&&!paused){if(freeze>0){freeze-=1/60;fxUpdate(1/60*.15)}else{G.update(1/60);fxUpdate(1/60)}}
     else if(G&&!$('over').hidden)fxUpdate(1/60);
     if(shown<score){shown+=Math.max(1,Math.ceil((score-shown)*.15));if(shown>score)shown=score;scoreEl.textContent=fmt(shown)}else if(shown>score){shown=score;scoreEl.textContent=fmt(shown)}}
   if(G)drawGame();
