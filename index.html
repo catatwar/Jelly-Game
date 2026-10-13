@@ -62,8 +62,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-of
 .stat{display:flex;flex-direction:column;gap:1px;min-width:0}
 .stat.right{align-items:flex-end}.stat.mid{align-items:center}
 .lbl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;opacity:.7}
-.num{font-family:var(--display);font-size:34px;line-height:1;font-variant-numeric:tabular-nums;display:inline-block;transform-origin:left center}
-.num.sm{font-size:22px;transform-origin:center}
+.num{font-family:var(--display);font-size:30px;white-space:nowrap;line-height:1;font-variant-numeric:tabular-nums;display:inline-block;transform-origin:left center}
+.num.sm{font-size:20px;transform-origin:center}
 .stat.right .num{transform-origin:right center}
 .num.bump{animation:bump .4s cubic-bezier(.3,1.8,.5,1)}
 #midC{width:46px;height:46px;border-radius:50%;background:#fff;border:3px solid var(--ink)}
@@ -76,7 +76,9 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--sky);outline-of
 .ladder{display:flex;align-items:center;gap:3px;background:#fff;border:3px solid var(--ink);border-radius:999px;padding:3px 8px;max-width:100%;box-sizing:border-box;overflow-x:auto}
 .ladder canvas{width:26px;height:26px;flex:none}
 .ladder canvas.off{opacity:.25}
-@media (max-height:640px){.num{font-size:28px}#gbar .tip{display:none}}
+#hud .stat .lbl{white-space:nowrap;overflow:hidden;max-width:100%}
+@media (max-width:350px){#hud{gap:5px}#hud .stat .lbl{font-size:10px;letter-spacing:.05em}}
+@media (max-height:640px){.num{font-size:26px}#gbar .tip{display:none}}
 
 /* ---------- overlays */
 .overlay{position:fixed;inset:0;display:flex;justify-content:center;align-items:flex-start;background:rgba(43,35,64,.5);z-index:10;padding:16px;box-sizing:border-box;overflow:auto}
@@ -452,6 +454,10 @@ textarea{font:500 16px/1.4 var(--body);color:var(--ink);border:2.5px solid var(-
 .sugform textarea{min-height:96px}
 .sugmeta{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--muted)}
 .sugbad textarea{border-color:#d6335f;box-shadow:0 0 0 3px rgba(214,51,95,.2)}
+.frshare{display:flex;gap:8px;width:100%;flex-wrap:wrap}.frshare .btn{flex:1 1 140px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:15px;padding:8px 10px}.frshare svg{width:18px;height:18px;flex:none}
+.sugvote{display:inline-flex;align-items:center;gap:4px;border:2.5px solid var(--ink);border-radius:999px;background:#fff;padding:2px 10px 2px 8px;font:800 13px var(--body);color:var(--ink);cursor:pointer;box-shadow:0 2px 0 var(--ink)}
+.sugvote.on{background:#ffd23f}.sugvote[disabled]{opacity:.55;cursor:default;box-shadow:none}.sugvote b{font-size:14px;line-height:1}
+.sugc .sfoot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .sugc{border:2.5px solid var(--ink);border-radius:14px;background:#fff;padding:10px 12px;display:flex;flex-direction:column;gap:6px;text-align:left}
 .sugc .sh{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:600;color:var(--muted)}
 .sugc .sh b{color:var(--ink);font-size:14px}
@@ -587,6 +593,11 @@ textarea{font:500 16px/1.4 var(--body);color:var(--ink);border:2.5px solid var(-
 @keyframes cmIn{from{transform:translateY(8px) scale(.9);opacity:0}to{transform:none;opacity:1}}
 .specChat{display:flex;gap:6px}.specChat input{flex:1;min-width:0;font:600 14px var(--body);border:2.5px solid var(--ink);border-radius:12px;padding:6px 10px;color:var(--ink);background:#fff}
 #spec{position:fixed;left:0;right:0;bottom:0;z-index:9;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:#fff;border-top:3px solid var(--ink);display:flex;flex-direction:column;gap:6px}
+.spgrab{width:46px;height:5px;border-radius:9px;background:#cfc6e4;margin:-4px auto 2px;flex:none}
+#spec{touch-action:none;transition:transform .32s cubic-bezier(.3,1.3,.5,1)}#spec.drag{transition:none}#spec.down{transform:translateY(calc(100% + 12px))!important;pointer-events:none}
+#spec input,#spec button{touch-action:manipulation}
+#specKb{position:fixed;right:14px;bottom:calc(26px + env(safe-area-inset-bottom,0px));z-index:12;width:54px;height:54px;border-radius:18px;border:3px solid var(--ink);background:#fff;box-shadow:0 4px 0 var(--ink);display:grid;place-items:center;cursor:pointer;animation:pop .4s cubic-bezier(.3,1.8,.5,1)}
+#specKb[hidden]{display:none}#specKb svg{width:30px;height:30px}#specKb:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
 .spech{display:flex;align-items:center;justify-content:space-between;gap:8px;font-weight:700}
 #specW{font-size:13px;color:var(--muted);font-weight:600}
 #specDuel{display:flex;flex-direction:column;gap:6px}
@@ -793,7 +804,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     </div>
     <div id="mSug" hidden style="flex-direction:column;gap:10px">
       <div class="sugform" id="sugForm">
-        <p class="lnote" style="margin:0">Got an idea, found a bug, or want a new cosmetic? Tell the developer! Only the developer can read suggestions. Keep it kind: slurs and hateful messages are blocked.</p>
+        <p class="lnote" style="margin:0">Got an idea, found a bug, or want a new cosmetic? Tell the developer! Everyone can see suggestions and upvote the ones they like, and the most-liked ones rise to the top. Keep it kind: slurs and hateful messages are blocked.</p>
         <label class="fld"><span class="lbl">Type</span><select id="sugCat"><option value="idea">Game idea</option><option value="style">Cosmetic idea</option><option value="bug">Bug report</option><option value="other">Something else</option></select></label>
         <label class="fld"><span class="lbl">Your suggestion</span><textarea id="sugTx" maxlength="500" rows="4" placeholder="I think it would be fun if…"></textarea></label>
         <div class="sugmeta"><span class="nmsg" id="sugMsg"></span><span id="sugCnt">0/500</span></div>
@@ -812,6 +823,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     <div class="namebox" id="frAdd"><label class="lbl" for="frName">Add a friend by player name</label>
       <div class="nrow"><input id="frName" type="text" maxlength="16" spellcheck="false" autocomplete="off" placeholder="Player name"><button class="btn small mint" id="frGo" type="button">Send</button></div>
       <span class="nmsg" id="frMsg"></span></div>
+    <div class="frshare"><button class="btn small" id="frInv" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg><span>Send an invite link</span></button><button class="btn small white" id="frSite" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Share the game</span></button></div>
     <button class="btn pink" id="frSign" type="button" hidden>Sign in to add friends</button>
     <div id="frReq" class="mlist"></div>
     <h3 class="mh" id="frCount">Your friends</h3>
@@ -903,6 +915,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
 <div id="dcount" hidden>3</div>
 <div id="specShield" hidden></div>
 <div id="spec" hidden>
+  <div class="spgrab" aria-hidden="true"></div>
   <div class="spech"><span id="specT">Watching</span><button class="btn small white" id="specStop" type="button">Stop watching</button></div>
   <div id="specLog" aria-live="polite"></div>
   <div class="specChat"><input id="specMsg" type="text" maxlength="80" placeholder="Say something to everyone…" autocomplete="off" enterkeyhint="send"><button class="btn small mint" id="specSend" type="button">Send</button></div>
@@ -914,6 +927,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     <span id="specBetMsg"></span>
   </div>
 </div>
+<button id="specKb" type="button" aria-label="Show the chat and spectate panel" title="Show chat" hidden><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6 10h.01M9.5 10h.01M13 10h.01M16.5 10h.01M6.5 14h11"/></svg></button>
 <div id="pres" class="overlay" hidden>
   <div class="card box3 prescard" role="dialog" aria-label="Prestige">
     <button class="icon-btn" id="presOk" type="button" aria-label="Close" title="Close"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -1594,23 +1608,44 @@ const ENDFX2={
     step(p,t,dt,B){if(t<p.d)return true;const k=Math.min(1,(t-p.d)/1.9);p.ang+=dt*(1.5+9*k*k);p.dist=p.d0*Math.pow(1-k,1.6);p.x=B.cx+Math.cos(p.ang)*p.dist;p.y=B.cy+Math.sin(p.ang)*p.dist;p.s=Math.max(.02,1-k*k);p.rot+=dt*6*k;return k<1},
     bg(c,B,t){const k=Math.min(1,t/.5)*Math.max(0,Math.min(1,(2.6-t)/.4));if(k<=0)return;c.save();c.translate(B.cx,B.cy);c.globalAlpha=k;c.rotate(t*2.5);for(let i=0;i<4;i++){c.rotate(Math.PI/2);c.beginPath();c.arc(0,0,(60+i*14)*B.k,0,Math.PI*.9);c.lineWidth=(8-i)*B.k;c.strokeStyle=['#ff3df0','#9a5bff','#ff9a3c','#7cc8ff'][i];c.stroke()}
       const g=c.createRadialGradient(0,0,0,0,0,58*B.k);g.addColorStop(0,'#000');g.addColorStop(.7,'#0a0414');g.addColorStop(1,'rgba(10,4,20,0)');c.fillStyle=g;circ(c,0,0,58*B.k);c.fill();c.restore()}}};
-STYLE.prof.endfx.items.push(['confetti','Confetti pop',8000,'r'],['melt','Melt',12000,'e'],['balloons','Balloons',25000,'l'],['fireworks','Fireworks',60000,'m'],['blackhole','Black hole',250000,'u']);
+// alien abduction: a UFO swoops in, beams every jelly up, and zooms off
+function ufoAt(t,B){const base=B.ufoY!=null?B.ufoY:B.cy-228*B.k;let x,y,tilt;
+  if(t<.6){const e=1-Math.pow(1-t/.6,3);x=B.left-70*B.k+(B.cx-(B.left-70*B.k))*e;y=base-(1-e)*40*B.k;tilt=-.28*(1-e)}
+  else{x=B.cx+Math.sin(t*1.7)*12*B.k;y=base+Math.sin(t*2.6)*4*B.k;tilt=Math.sin(t*1.7)*.06}
+  if(t>3.15){const q=(t-3.15)/.45;x+=q*q*(B.right-B.left)*1.3;y-=q*90*B.k;tilt=.3*Math.min(1,q)}return{x,y,tilt}}
+ENDFX2.alien={n:'Alien abduction',dur:()=>3.6,
+  init(ps,B){const n=ps.length;ps.sort((a,b)=>Math.abs(a.x-B.cx)-Math.abs(b.x-B.cx)).forEach((p,i)=>{p.d=.75+i*Math.min(.07,1.25/Math.max(1,n))+Math.random()*.08;p.ph=Math.random()*6})},
+  step(p,t,dt,B,fx){if(t<p.d){if(t>.6)p.x=p.x0+Math.sin(t*34+p.ph)*1.4*B.k;return true}
+    const U=ufoAt(t,B),k=t-p.d,q=Math.min(1,Math.pow(k/1.05,1.5));p.x=p.x0+(U.x-p.x0)*q*q+Math.sin(k*5+p.ph)*6*B.k*(1-q);p.y=p.y0+(U.y+10*B.k-p.y0)*q;p.s=Math.max(.05,1-.92*q);p.rot+=dt*(1.5+q*5);
+    if(q>=1){fx(U.x,U.y+12*B.k,'#8dffc0',5,110);return false}return true},
+  bg(c,B,t){const a=Math.min(1,Math.max(0,(t-.5)/.25))*Math.min(1,Math.max(0,(3.15-t)/.2));if(a<=0)return;const U=ufoAt(t,B),u=B.k<1?.55:1,top=U.y+10*u,bot=B.y1,w0=16*u,w1=Math.max(60*B.k,(B.right-B.left)*.34);
+    c.save();c.globalAlpha=a*(.85+.15*Math.sin(t*23));const g=c.createLinearGradient(0,top,0,bot);g.addColorStop(0,'rgba(170,255,205,.55)');g.addColorStop(1,'rgba(120,255,180,.08)');c.fillStyle=g;c.beginPath();c.moveTo(U.x-w0,top);c.lineTo(U.x+w0,top);c.lineTo(U.x+w1,bot);c.lineTo(U.x-w1,bot);c.closePath();c.fill();
+    c.globalAlpha=a*.5;c.strokeStyle='rgba(220,255,235,.7)';c.lineWidth=2*u;for(let i=0;i<4;i++){const yy=top+((t*120*u+i*(bot-top)/4)%(bot-top)),f=(yy-top)/(bot-top),hw=w0+(w1-w0)*f;c.beginPath();c.ellipse(U.x,yy,hw,hw*.12,0,0,TAU);c.stroke()}c.restore()},
+  fg(c,B,t){const U=ufoAt(t,B),u=B.k<1?.55:1;if(t>3.6)return;c.save();c.translate(U.x,U.y);c.rotate(U.tilt);c.scale(u,u);
+    c.beginPath();c.ellipse(0,-5,22,21,0,Math.PI,0);c.closePath();c.fillStyle='rgba(175,232,255,.92)';c.fill();
+    c.fillStyle='#7ee08a';circ(c,0,-11,8.5);c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.fillStyle=INK;ell(c,-3.2,-12,2,3,.3);c.fill();ell(c,3.2,-12,2,3,-.3);c.fill();
+    c.beginPath();c.moveTo(-3,-19);c.lineTo(-6,-25);c.moveTo(3,-19);c.lineTo(6,-25);c.stroke();c.fillStyle='#ffd23f';circ(c,-6,-26,2);c.fill();circ(c,6,-26,2);c.fill();
+    c.beginPath();c.ellipse(0,-5,22,21,0,Math.PI,0);c.lineWidth=3;c.strokeStyle=INK;c.stroke();c.fillStyle='rgba(255,255,255,.55)';ell(c,-9,-15,4,6,-.5);c.fill();
+    ell(c,0,2,48,13);c.fillStyle='#cfc8e4';c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();ell(c,0,-1,40,5);c.fillStyle='rgba(255,255,255,.5)';c.fill();
+    for(let i=0;i<6;i++){const x=-35+i*14,on=(i+Math.floor(t*8))%3;c.fillStyle=['#ffd23f','#ff6fa8','#7cc8ff'][on];circ(c,x,5,3.3);c.fill();c.lineWidth=1.5;c.strokeStyle=INK;c.stroke()}
+    const glow=t>.5&&t<3.15;ell(c,0,13,13,4);c.fillStyle=glow?'#a8ffcc':'#8a83a0';c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.restore()}};
+STYLE.prof.endfx.items.push(['alien','Alien abduction',120000,'m'],['confetti','Confetti pop',8000,'r'],['melt','Melt',12000,'e'],['balloons','Balloons',25000,'l'],['fireworks','Fireworks',60000,'m'],['blackhole','Black hole',250000,'u']);
 const FX_COLS=['#ff5f6d','#ffd23f','#5be0a6','#7cc8ff','#b46bff','#ff9ad5','#ff9a3c'];
 let fx2=null;  // {k,ps,t,B}
 function fx2Bounds(){const ex=extent();return{left:ex.x0,right:ex.x1,top:ex.y0,y1:H,cx:W/2,cy:H*.48,k:1}}
 function endFx2(list,K){const B=fx2Bounds(),def=ENDFX2[K],ps=list.map(p=>({x:p.x,y:p.y,x0:p.x,y0:p.y,r:p.r||20,rot:p.rot||0,s:1,draw:p.draw}));def.init(ps,B);fx2={k:K,ps,t:0,B};sfx.discover();return def.dur(ps)}
 const fx2Burst=(x,y,col,n,sp)=>{for(let i=0;i<n;i++)burst(x,y,col||FX_COLS[i%FX_COLS.length],1,sp,.4)};
 function fx2Update(dt){if(!fx2)return;fx2.t+=dt;const def=ENDFX2[fx2.k];fx2.ps=fx2.ps.filter(p=>def.step(p,fx2.t,dt,fx2.B,fx2Burst));if(fx2.t>6)fx2=null}
-function fx2Draw(c){if(!fx2)return;const def=ENDFX2[fx2.k];if(def.bg)def.bg(c,fx2.B,fx2.t);for(const p of fx2.ps){c.save();c.translate(p.x,p.y);c.globalAlpha=p.a==null?1:p.a;if(def.pre)def.pre(c,p,fx2.B);c.rotate(p.rot||0);c.scale((p.sx||1)*p.s,(p.sy||1)*p.s);if(p.sy&&p.sy<1)c.translate(0,p.r*(1-p.sy));p.draw(c);c.restore()}c.globalAlpha=1}
+function fx2Draw(c){if(!fx2)return;const def=ENDFX2[fx2.k];if(def.bg)def.bg(c,fx2.B,fx2.t);for(const p of fx2.ps){c.save();c.translate(p.x,p.y);c.globalAlpha=p.a==null?1:p.a;if(def.pre)def.pre(c,p,fx2.B);c.rotate(p.rot||0);c.scale((p.sx||1)*p.s,(p.sy||1)*p.s);if(p.sy&&p.sy<1)c.translate(0,p.r*(1-p.sy));p.draw(c);c.restore()}c.globalAlpha=1;if(def.fg)def.fg(c,fx2.B,fx2.t)}
 // shop previews for the new end effects: a tiny box of jellies doing the effect on a loop
 const fx2Prev={};
 function drawEndFx2(c,id){const def=ENDFX2[id],per=def.dur([])+1,loop=Math.floor(time/per),t=time%per;let P0=fx2Prev[id];
-  if(!P0||P0.loop!==loop){const set=P.cos.drop.set,J=[[3,52,126,13],[6,84,118,20],[1,110,128,11],[4,66,98,14],[8,100,92,15]];const B={left:26,right:134,top:0,y1:140,cx:80,cy:96,k:.3};
+  if(!P0||P0.loop!==loop){const set=P.cos.drop.set,J=[[3,52,126,13],[6,84,118,20],[1,110,128,11],[4,66,98,14],[8,100,92,15]];const B={left:26,right:134,top:0,y1:140,cx:80,cy:96,k:.3,ufoY:64};
     const ps=J.map(([i,x,y,r])=>{const cr=critter(set,i);return{x,y,x0:x,y0:y,r,rot:0,s:1,draw:cx=>drawAnimal(cx,0,0,r,cr.k,cr.c,{fx:cr.fx,mood:3,bn:0})}});def.init(ps,B);P0=fx2Prev[id]={loop,ps,B,last:0,parts:[]}}
   const dt=Math.max(0,Math.min(.05,t-P0.last));P0.last=t;const fx=(x,y,col,n,sp)=>{for(let i=0;i<Math.min(n,10);i++){const a=rand(TAU),v=sp*.3*rand(.3,1);P0.parts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-20,t:0,c:col||FX_COLS[i%7]})}};
   P0.ps=P0.ps.filter(p=>def.step(p,t,dt,P0.B,fx));for(const q of P0.parts){q.t+=dt;q.vy+=200*dt;q.x+=q.vx*dt;q.y+=q.vy*dt}P0.parts=P0.parts.filter(q=>q.t<.7);
   c.fillStyle='#33285a';c.fillRect(0,0,160,160);rr(c,26,58,108,86,16);c.fillStyle='rgba(255,255,255,.1)';c.fill();c.lineWidth=3.5;c.strokeStyle='#fff8ee';c.beginPath();c.moveTo(26,58);c.lineTo(26,130);c.arcTo(26,144,40,144,14);c.lineTo(120,144);c.arcTo(134,144,134,130,14);c.lineTo(134,58);c.stroke();
-  if(def.bg)def.bg(c,P0.B,t);for(const p of P0.ps){c.save();c.translate(p.x,p.y);c.globalAlpha=p.a==null?1:p.a;if(def.pre)def.pre(c,p,P0.B);c.rotate(p.rot||0);c.scale((p.sx||1)*p.s,(p.sy||1)*p.s);p.draw(c);c.restore()}c.globalAlpha=1;
+  if(def.bg)def.bg(c,P0.B,t);for(const p of P0.ps){c.save();c.translate(p.x,p.y);c.globalAlpha=p.a==null?1:p.a;if(def.pre)def.pre(c,p,P0.B);c.rotate(p.rot||0);c.scale((p.sx||1)*p.s,(p.sy||1)*p.s);p.draw(c);c.restore()}c.globalAlpha=1;if(def.fg)def.fg(c,P0.B,t);
   for(const q of P0.parts){c.globalAlpha=1-q.t/.7;c.fillStyle=q.c;c.fillRect(q.x-2,q.y-2,4,4)}c.globalAlpha=1;outlineText(c,def.n.toUpperCase(),80,30,def.n.length>9?15:18,'#fff')}
 // ---- DM emotes (buy them in Shop → Emotes, send them from the smiley button in a chat)
 const EMOTES=[['wave','Wave',0],['love','Love',1500],['lol','LOL',1500],['cry','Cry',1500],['angry','Grr',2000],['cool','Cool',2500,'r'],['party','Party',3000,'r'],['sleepy','Sleepy',2000],['wow','Wow',2500,'r'],['gg','GG',5000,'e'],['fire','On fire',8000,'e'],['dance','Dance',12000,'e'],['rainbow','Rainbow',60000,'m'],['king','Jelly King',200000,'u']];
@@ -1664,7 +1699,7 @@ const xpNeed=l=>50+l*40;
 function addXP(n){P.xp+=n;let up=0;while(P.xp>=xpNeed(P.level)){P.xp-=xpNeed(P.level);P.level++;up++}if(up)lvGrant();return up}
 // level rewards: coins every level (x3 every 5th), 5 free spins every 10 levels, cosmetics at 25 / 50 / 75 / 100
 const LV_ITEMS={25:[['prof','frame','laurel'],['prof','title','lv25']],50:[['*','set','starlit'],['*','hat','laurel'],['prof','title','lv50']],75:[['prof','frame','comet']],100:[['*','set','celest'],['*','hat','cent'],['prof','frame','cent'],['prof','title','lv100']]};
-function lvReward(L){const coins=(25+L*4)*(L%5===0?2:1)+(L===50?5000:L===100?25000:0),spins=L%10===0?5:0,items=[];
+function lvReward(L){const coins=(60+L*8)*(L%5===0?2:1)+(L===50?5000:L===100?25000:0),spins=L%10===0?5:0,items=[];
   for(const[g,cat,id]of LV_ITEMS[L]||[]){if(g==='*')for(const gg of['drop','squish','doku'])items.push(gg+':'+cat+':'+id);else items.push(g+':'+cat+':'+id)}return{coins,spins,items}}
 function itemName(g,cat,id){const gg=g==='*'?'drop':g,it=STYLE[gg]&&STYLE[gg][cat]&&STYLE[gg][cat].items.find(i=>i[0]===id);const n=it?it[1]:id;return cat==='title'?'“'+n+'” title':n}
 function lvGrant(silent){if(typeof P.lvClaimed!=='number'){lvInit();return}let co=0,sp=0,top=0;const its=[];
@@ -1792,6 +1827,10 @@ function setMidCanvas(label){$('midL').textContent=label;midC.hidden=false;$('mi
 function gbar(html){$('gbar').innerHTML=html.startsWith('<')?html:`<p class="tip">${html}</p>`}
 function theme(bg,hud){$('playView').style.setProperty('--gbg',bg);$('playView').style.setProperty('--hud',hud);document.body.style.background=bg}
 let dpr=1,sc=1,offX=0,offY=0,cw=0,ch=0;
+function fitNum(el,force){if(!el||!el.parentElement)return;const t=el.textContent;if(!force&&el._ft===t)return;el._ft=t;el.style.fontSize='';const box=el.parentElement,w=box.clientWidth-2,tw=el.scrollWidth;if(w>0&&tw>w){const base=parseFloat(getComputedStyle(el).fontSize)||30;el.style.fontSize=Math.max(11,Math.floor(base*w/tw))+'px'}}
+const fitAll=f=>{for(const id of['score','best','midT'])fitNum(document.getElementById(id),f)};
+for(const id of['score','best','midT']){const el=document.getElementById(id);if(el)new MutationObserver(()=>fitNum(el)).observe(el,{childList:true,characterData:true,subtree:true})}
+addEventListener('resize',()=>fitAll(true));setTimeout(()=>fitAll(true),300);
 function resize(){const r=stage.getBoundingClientRect();cw=r.width;ch=r.height;dpr=Math.min(2,devicePixelRatio||1);const w=Math.max(1,Math.round(cw*dpr)),h=Math.max(1,Math.round(ch*dpr));if(cv.width!==w)cv.width=w;if(cv.height!==h)cv.height=h;sc=Math.min(cw/(W+44),ch/(H+30));offX=(cw-W*sc)/2;offY=(ch-H*sc)/2+4*sc;if(G)try{drawGame()}catch(e){}}
 new ResizeObserver(resize).observe(stage);
 const extent=()=>{const x0=-offX/sc-30,y0=-offY/sc-30,x1=(cw-offX)/sc+30,y1=(ch-offY)/sc+30;return{x0,y0,x1,y1,w:x1-x0,h:y1-y0}};
@@ -2490,12 +2529,12 @@ const Memory=(()=>{
 
 // ================================================= registry, quests
 const GAMES={
-  drop:{id:'drop',name:'Jelly Jar',impl:Drop,coins:s=>s.score/220},
-  squish:{id:'squish',name:'Jelly 2048',impl:Squish,coins:s=>s.score/95},
-  doku:{id:'doku',name:'Jellydoku',impl:Doku,coins:s=>s.score/170},
-  catch:{id:'catch',name:'Jelly Catch',impl:Catch,coins:s=>s.score/380},
-  combo:{id:'combo',name:'Jelly Combo',impl:Combo,coins:s=>s.score/420},
-  memory:{id:'memory',name:'Jelly Memory',impl:Memory,coins:s=>s.score/100}};
+  drop:{id:'drop',name:'Jelly Jar',impl:Drop,coins:s=>s.score/140},
+  squish:{id:'squish',name:'Jelly 2048',impl:Squish,coins:s=>s.score/60},
+  doku:{id:'doku',name:'Jellydoku',impl:Doku,coins:s=>s.score/110},
+  catch:{id:'catch',name:'Jelly Catch',impl:Catch,coins:s=>s.score/240},
+  combo:{id:'combo',name:'Jelly Combo',impl:Combo,coins:s=>s.score/270},
+  memory:{id:'memory',name:'Jelly Memory',impl:Memory,coins:s=>s.score/65}};
 // Jelly Catch wears your Jelly Jar style, Jelly Combo your Jelly 2048 style, Jelly Memory your Jellydoku style
 const SG=g=>g==='catch'?'drop':g==='combo'?'squish':g==='memory'?'doku':g;
 const SGN={catch:'Jelly Jar + Catch',combo:'Jelly 2048 + Combo',memory:'Jellydoku + Memory'};
@@ -2516,6 +2555,7 @@ const QUESTS=[
  {id:'k_streak',g:'doku',t:'Hit a x10 streak in Jellydoku',goal:10,mode:'max',key:'streak',r:50},
  {id:'k_clear',g:'doku',t:'Clear 6 Jellydoku levels',goal:6,mode:'sum',key:'levels',r:50},
  {id:'rounds',g:'*',t:'Finish 3 rounds of anything',goal:3,mode:'sum',key:'round',r:30}];
+for(const q of QUESTS)q.r*=2;
 for(const q of QUESTS)q.r=Math.max(10,Math.round(q.r*.5/5)*5);
 const qdef=id=>QUESTS.find(q=>q.id===id);
 function ensureQuests(){const t=today();if(P.quests&&P.quests.day&&dayNum(P.quests.day)>dayNum(t)&&P.quests.list&&P.quests.list.every(q=>qdef(q.id)))return;if(P.quests&&P.quests.day===t&&P.quests.list.every(q=>qdef(q.id)))return;const rnd=seeded(dayNum(t));const pool=QUESTS.slice();for(let i=pool.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}P.quests={day:t,list:pool.slice(0,3).map(q=>({id:q.id,p:0,c:false}))};save()}
@@ -2573,12 +2613,12 @@ let sPrev=[];
 const catG=cat=>STYLE.prof[cat]?'prof':cat==='board'?'squish':'drop';
 const SHOP_CATS=[['set','drop','Critters','Critters show up in every game.'],['hat','drop','Hats','Hats are worn in every game.'],['jar','drop','Jars','Your jar in Jelly Jar and Jelly Catch.'],['wall','drop','Wallpapers','Wallpapers show behind every game. Mint dots lets the board games keep their board’s own colour.'],['board','squish','Boards','Your board in Jelly 2048, Jellydoku, Jelly Combo and Jelly Memory.']];
 const shopCats=()=>[...SHOP_CATS.map(([k,g,n])=>[k,{n}]),...Object.entries(STYLE.prof)];
-function renderStyle(){if(!gid)return;refreshCoins();
+function renderStyle(){if(!gid)return;refreshCoins();if(!renderStyle._g){renderStyle._g=1;try{giftApply()}catch(e){}renderStyle._g=0}
   $('sMeter').innerHTML=meterHTML(gid);
   const cats=shopCats();
   $('sTabs').innerHTML=cats.map(([k,v])=>`<button class="tab${k===sTab?' on':''}${STYLE.prof[k]?' ptab':''}" role="tab" aria-selected="${k===sTab}" data-k="${k}" type="button">${v.n}</button>`).join('');
   $('sTabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{sfx.ui();sTab=b.dataset.k;renderStyle()});
-  const cat=sTab,g=catG(cat),items=STYLE[g][cat].items.filter(it=>!(cat==='title'&&(it[0]==='dev'||it[0]==='helper'))&&(it[3]!=='d'||owns(g,cat,it[0]))).map((it,i)=>[it,i]).sort((a,b)=>(owns(g,cat,b[0][0])-owns(g,cat,a[0][0]))||a[1]-b[1]).map(x=>x[0]),sc=SHOP_CATS.find(c=>c[0]===cat);
+  const cat=sTab,g=catG(cat),items=STYLE[g][cat].items.filter(it=>owns(g,cat,it[0])||(!(cat==='title'&&(it[0]==='dev'||it[0]==='helper'))&&it[3]!=='d'&&!(it[4]&&it[4].dev))).map((it,i)=>[it,i]).sort((a,b)=>(owns(g,cat,b[0][0])-owns(g,cat,a[0][0]))||a[1]-b[1]).map(x=>x[0]),sc=SHOP_CATS.find(c=>c[0]===cat);
   $('sItems').innerHTML=(sc?`<p class="snote">${sc[3]}</p>`:'')+(g==='prof'?`<p class="snote">${cat==='title'?'Titles show under your name on the leaderboard and your profile.':cat==='perk'?'Perks change how the whole game feels. Bouncier makes every squish, wobble and pop springier, and you can show it off on your profile.':cat==='emote'?'Emotes are animated stickers for your DMs. Open a chat with a friend and tap the smiley to send one.':cat==='endfx'?'End effects play when a round ends, in every game. Explode sends everything on the board flying up and out of the top.':'Frames ring your critter on the leaderboard and your profile.'}</p>`:'')+items.map(([id,n,p,r,q],ix)=>{const own=owns(g,cat,id),hd=ix===0||own!==owns(g,cat,items[ix-1][0])?`<p class="sgroup">${own?'Yours':'Get more'}</p>`:'',on=cat!=='emote'&&P.cos[g][cat]===id,fresh=P.fresh.some(f=>f.endsWith(':'+cat+':'+id)),ok=reqMet(q);
     const tag=on?'Wearing':own?'Owned':!ok?'Locked':p?`<i class="coin"></i>${fmt(p)}`:'Free';
     return hd+`<button class="item${on?' on':''}${own?'':' locked'}${r?' r-'+r:''}" ${r?`style="--rc:${RAR[r][1]}"`:''} data-id="${id}" type="button"><canvas width="160" height="160"></canvas>${r?`<span class="rar">${RAR[r][0]}</span>`:''}<span class="in">${n}</span><span class="tag">${tag}</span>${!own&&q?`<span class="req${ok?' ok':''}">${ok?'Unlocked: ':''}${reqText(q)}</span>`:''}${fresh?'<span class="new">NEW</span>':''}</button>`}).join('');
@@ -2609,7 +2649,7 @@ function finishRound(g,s,title,items){
   s.score=score;shown=score;scoreEl.textContent=fmt(score);
   const prev=P.best[g]||0,nb=s.score>prev&&s.score>0;if(nb){P.best[g]=s.score;bestEl.textContent=fmt(s.score)}
   P.meter[g]=(P.meter[g]||0)+1;const bonusR=P.meter[g]>=5;if(bonusR)P.meter[g]=0;const baseC=Math.max(1,Math.round(GAMES[g].coins(s))),coins=bonusR?Math.round(baseC*1.5):baseC;P.coins+=coins;P.earned=(P.earned||0)+coins;P.rounds=(P.rounds||0)+1;if(g==='doku')P.dokuLv=Math.max(P.dokuLv||0,s.level||0);if(g==='squish')P.maxTile=Math.max(P.maxTile||0,s.tile||0);
-  const lv0=P.level,up=addXP(10+Math.round(coins*1.5));const qd=questProgress(g,s);
+  const lv0=P.level,up=addXP(10+Math.round(coins*1.0));const qd=questProgress(g,s);
   let sur=null;
   lastSurprise=sur?{g,...sur}:null;save();refreshCoins();paused=true;
   $('oGame').textContent=GAMES[g].name;$('oTitle').textContent=title;$('oScore').textContent=fmt(s.score);$('oBest').hidden=!nb;
@@ -3352,7 +3392,7 @@ function renderMail(){renderReqs($('mailReq'));const L=$('mailList');L.textConte
     if(!seen[n.id])row.append(elx('span','mdot'));row.onclick=()=>openNews(n.id);L.append(row)}
   $('mailCompose').hidden=!isAdmin()}
 // ---- suggestions: players send, only the developer reads
-var mTab='upd',sugAll={},sugUnsub=null,sugLoaded=false;
+var mTab='upd',sugAll={},sugUnsub=null,sugLoaded=false,sugVotes={},sugVUnsub=null;
 const CW_C='Znqr Ol Png Ng Jne';
 const r13=x=>x.replace(/[a-z]/g,c=>String.fromCharCode((c.charCodeAt(0)-84)%26+97));
 const BAD_SUB='avttre,avttn,avtte,avtthu,snttbg,ergneq,genaal,jrgonpx,gbjryurnq,enturnq,xvyylbhefrys,xvyyhefrys,xvylbhefrys,urvyuvgyre,phag'.split(',').map(r13),BAD_TOK='juber,fyhg,ovgpu,pbpxfhpxre,zbatbybvq'.split(',').map(r13),BAD_WORD=new Set('snt,sntf,fcvp,fcvpf,xvxr,xvxrf,puvax,puvaxf,tbbx,tbbxf,pbba,pbbaf,cnxv,cnxvf,qlxr,qlxrf,ornare,ornaref,xlf,gneq,gneqf,fcnm,zvqtrg,zvqtrgf,anmv,anmvf'.split(',').map(r13));
@@ -3366,7 +3406,8 @@ function badText(x){const n=normTxt(x);if(BAD_SUBQ.some(w=>squash(n).includes(w)
     for(const v of new Set([t,t.replace(/(.)\1{2,}/g,'$1'),t.replace(/(.)\1{2,}/g,'$1$1'),q])){const st=v.replace(/(ing|es|ed|er|s|y)$/,'');for(const w of st.length>=4?[v,st]:[v])if(BAD_WORD.has(w))return true}}
   return false}
 function sugUnseen(){if(!isAdmin()||!sugLoaded)return 0;const seen=P.sugSeen||0;return Object.values(sugAll).filter(x=>x&&+x.t>seen).length}
-function sugWatch(){if(sugUnsub){try{sugUnsub()}catch(e){}sugUnsub=null}sugAll={};sugLoaded=false;if(!isAdmin()||!FD)return;
+function sugWatch(){if(sugUnsub){try{sugUnsub()}catch(e){}sugUnsub=null}if(sugVUnsub){try{sugVUnsub()}catch(e){}sugVUnsub=null}sugAll={};sugVotes={};sugLoaded=false;if(!FD||!UID||!acctReady)return;
+  sugVUnsub=FD.onValue(fref('sugvote'),s=>{sugVotes=s.val()||{};if(!$('mail').hidden&&mTab==='sug')renderSug()},()=>{});
   sugUnsub=FD.onValue(FD.query(fref('suggest'),FD.orderByChild('t'),FD.limitToLast(150)),s=>{sugAll=s.val()||{};sugLoaded=true;mailSync();if(!$('mail').hidden&&mTab==='sug')renderSug()},()=>{sugLoaded=true})}
 function mailTab(t){mTab=t;$('mTabs').querySelectorAll('.tab').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
   $('mUpd').style.display=t==='upd'?'contents':'none';$('mSug').hidden=t!=='sug';$('mSug').style.display=t==='sug'?'flex':'none';if(t==='upd')renderMail();else renderSug()}
@@ -3376,19 +3417,24 @@ function sugCheck(){const v=$('sugTx').value,bad=v.trim()&&badText(v),m=$('sugMs
 $('sugTx').addEventListener('input',sugCheck);$('sugTx').addEventListener('keydown',e=>e.stopPropagation());
 $('sugSign').onclick=()=>{closeMail();openAcct('in')};
 function renderSug(){const signed=!!(UID&&acctReady),adm=isAdmin(),el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-  $('sugForm').hidden=!signed||adm;$('sugSign').hidden=signed;$('sugAdmin').hidden=!adm;$('sugAdmin').style.display=adm?'flex':'none';
+  $('sugForm').hidden=!signed||adm;$('sugSign').hidden=signed;$('sugAdmin').hidden=!signed;$('sugAdmin').style.display=signed?'flex':'none';
   const CAT={idea:'Game idea',style:'Cosmetic',bug:'Bug',other:'Other'},mine=$('sugMine');mine.textContent='';
   const my=(Array.isArray(P.sugSent)?P.sugSent:[]).filter(x=>x&&x.u===UID);
   if(signed&&!adm&&my.length){mine.append(el('h3','mh','You sent'));for(const x of my.slice(0,5)){const c=el('div','sugc'),h=el('div','sh');h.append(el('span','sugcat '+x.c,CAT[x.c]||'Other'),fmtDay(x.t));c.append(h,el('div','sx',x.x));mine.append(c)}}
-  if(!adm)return;const L=$('sugList');L.textContent='';const seen=P.sugSeen||0,arr=Object.entries(sugAll).filter(([,x])=>x&&typeof x==='object').map(([id,x])=>Object.assign({id},x)).sort((a,b)=>(+b.t||0)-(+a.t||0));
-  $('sugAdmH').textContent=`Player suggestions (${arr.length})`;
+  if(!signed)return;const L=$('sugList');L.textContent='';const seen=adm?(P.sugSeen||0):Infinity,vc=id=>Object.values(sugVotes[id]||{}).filter(v=>v===true).length,arr=Object.entries(sugAll).filter(([,x])=>x&&typeof x==='object').map(([id,x])=>Object.assign({id,v:vc(id)},x)).sort((a,b)=>(b.v-a.v)||((+b.t||0)-(+a.t||0)));
+  $('sugAdmH').textContent=`${adm?'Player suggestions':'Everyone’s suggestions'} (${arr.length})`;
   if(!sugLoaded)L.append(el('p','lgap','Loading…'));else if(!arr.length)L.append(el('p','lgap','No suggestions yet.'));
   for(const x of arr){const c=el('div','sugc'+(+x.t>seen?' new':'')),h=el('div','sh');h.append(el('b',null,cleanName(x.name)||'Someone'));{for(const tp of tagPills(x.uid,'auto'))h.append(tp)}h.append(el('span','sugcat '+(CAT[x.cat]?x.cat:'other'),CAT[x.cat]||'Other'),fmtDay(+x.t||0));
-    c.append(h,el('div','sx',String(x.x||'').slice(0,500)));const a=el('div','suga');
+    c.append(h,el('div','sx',String(x.x||'').slice(0,500)));
+    {const f=el('div','sfoot'),own=x.uid===UID,mineV=!!(sugVotes[x.id]&&sugVotes[x.id][UID]===true),vb=el('button','sugvote'+(mineV?' on':''));vb.type='button';vb.append(el('b',null,'▲'),el('span',null,String(x.v)));
+      vb.title=own?'You can’t upvote your own suggestion':mineV?'Remove your upvote':'Upvote';if(own)vb.disabled=true;
+      vb.onclick=async()=>{if(own)return;vb.disabled=true;try{const r=fref('sugvote/'+x.id+'/'+UID);if(mineV)await FD.remove(r);else{await FD.set(r,true);sfx.pop(5)}}catch(e){toast('Could not save your vote','#ff6fa8')}vb.disabled=false};
+      f.append(vb,el('span','gwr',own?'Yours':x.v===1?'1 upvote':x.v+' upvotes'));c.append(f)}
+    if(!adm){L.append(c);continue}const a=el('div','suga');
     if(!contribSet.has(x.uid)){const g=el('button','btn small mint','Give Contributor tag');g.type='button';g.onclick=async()=>{g.disabled=true;try{await FD.set(fref('contrib/'+x.uid),true);toast((cleanName(x.name)||'They')+' is now a Contributor!','#ffb547');confAt(g,40,500)}catch(e){toast('Could not give the tag','#ff6fa8');g.disabled=false}};a.append(g)}
     else a.append(el('span','gwr','Contributor ✓'));
-    let arm=0;const d=el('button','btn small danger','Delete');d.type='button';d.onclick=async()=>{if(Date.now()>arm){arm=Date.now()+2500;d.textContent='Sure?';setTimeout(()=>{d.textContent='Delete'},2600);return}try{await FD.remove(fref('suggest/'+x.id))}catch(e){toast('Could not delete it','#ff6fa8')}};a.append(d);c.append(a);L.append(c)}
-  if(arr.length){const top=Math.max(...arr.map(x=>+x.t||0));if(top>(P.sugSeen||0)){P.sugSeen=top;save();mailSync()}}}
+    let arm=0;const d=el('button','btn small danger','Delete');d.type='button';d.onclick=async()=>{if(Date.now()>arm){arm=Date.now()+2500;d.textContent='Sure?';setTimeout(()=>{d.textContent='Delete'},2600);return}try{await FD.remove(fref('suggest/'+x.id));FD.remove(fref('sugvote/'+x.id)).catch(()=>{})}catch(e){toast('Could not delete it','#ff6fa8')}};a.append(d);c.append(a);L.append(c)}
+  if(adm&&arr.length){const top=Math.max(...arr.map(x=>+x.t||0));if(top>(P.sugSeen||0)){P.sugSeen=top;save();mailSync()}}}
 $('sugGo').onclick=async()=>{if(!UID||!acctReady)return openAcct('in');const m=$('sugMsg'),say=(t,bad)=>{m.textContent=t;m.className='nmsg'+(bad?' bad':'');m.dataset.k=''};
   const x=$('sugTx').value.replace(/[\u0000-\u0008\u000b-\u001f\u007f]/g,'').replace(/\n{3,}/g,'\n\n').trim().slice(0,500),cat=$('sugCat').value;
   if(x.length<5)return say('Write a little more (at least 5 characters).',1);if(!sugCheck())return sfx.nope();
@@ -3458,7 +3504,7 @@ $('cpGo').onclick=async()=>{if(!isAdmin())return;const m=$('cpMsg'),bad=t=>{m.te
   $('cpGo').disabled=false};
 
 // ---- friends
-function socialUser(user){if(!user){giftUser(null);if(sugUnsub){try{sugUnsub()}catch(e){}sugUnsub=null;sugAll={};sugLoaded=false}}socUnsubs.forEach(f=>{try{f()}catch(e){}});socUnsubs=[];myFriends=new Set();try{dmSync();if(dmOpen)closeDM()}catch(e){}freqIn={};frLb={};frOf={};mailSync();if(!user||!RDB)return;
+function socialUser(user){if(!user){giftUser(null);if(sugUnsub){try{sugUnsub()}catch(e){}sugUnsub=null;sugAll={};sugLoaded=false}if(sugVUnsub){try{sugVUnsub()}catch(e){}sugVUnsub=null;sugVotes={}}}socUnsubs.forEach(f=>{try{f()}catch(e){}});socUnsubs=[];myFriends=new Set();try{dmSync();if(dmOpen)closeDM()}catch(e){}freqIn={};frLb={};frOf={};mailSync();if(!user||!RDB)return;
   const db=curDB(),uid=user.uid;
   betaSync();giftUser(user);sugWatch();duelUser(user);
   socUnsubs.push(FD.onValue(FD.ref(db,'friends/'+uid),s=>{const v=s.val()||{},next=new Set(Object.keys(v).filter(k=>v[k]===true));
@@ -3536,6 +3582,21 @@ function renderFriends(){const signed=!!(UID&&acctReady);$('frAdd').hidden=!sign
   if(!myFriends.size)L.append(elx('p','lgap','No friends yet. Add someone by their player name, or tap a player on the leaderboard.'));
   for(const f of myFriends){const d=frLb[f];if(!d){L.append(elx('p','lgap','Loading…'));continue}const mu=mutualWith(f,frOf[f]);
     const ex=elx('span','fmx'),mm=elx('span','fmu',mu.length?mu.length+' mutual':''),cb=elx('button','frchat');cb.type='button';cb.setAttribute('aria-label','Message '+(cleanName(d.name)||'friend'));cb.innerHTML='<svg viewBox="0 0 24 24" width="24" height="24" fill="#fff" stroke="#2b2340" stroke-width="2.3" stroke-linejoin="round"><path d="M4 5.5h16a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 3.5V17.5H4A1.5 1.5 0 0 1 2.5 16V7A1.5 1.5 0 0 1 4 5.5z"/></svg>';const un=dmUnreadWith(f);if(un){const b=elx('span','mcount',un>9?'9+':String(un));cb.append(b)}cb.onclick=e=>{e.stopPropagation();openDM(f)};ex.append(mm,cb);L.append(friendRow(d,ex))}}
+// ---- invite links + sharing the game
+const SITE_URL='https://catatwar.github.io/Jelly-Game/';
+const siteUrl=()=>/^https?:$/.test(location.protocol)&&!/localhost|127\.0\.0\.1/.test(location.host)?location.origin+location.pathname:SITE_URL;
+async function shareOut(title,text,url){const full=text+' '+url;
+  try{if(navigator.share){await navigator.share({title,text,url});return'shared'}}catch(e){if(e&&e.name==='AbortError')return'cancel'}
+  let copied=false;try{await navigator.clipboard.writeText(full);copied=true}catch(e){}
+  try{const ios=/iP(hone|ad|od)/.test(navigator.userAgent);location.href='sms:'+(ios?'&':'?')+'body='+encodeURIComponent(full)}catch(e){}
+  toast(copied?'Link copied! Paste it in a message.':'Opening your messages…','#5be0a6');return'fallback'}
+$('frInv').onclick=async()=>{audio();sfx.ui();const nm=UID&&acctReady?duName():'';const url=siteUrl()+(nm?'?add='+encodeURIComponent(nm):'');
+  await shareOut('Jelly Critters',nm?`Play Jelly Critters with me! Tap the link to add me (${nm}) as a friend.`:'Play Jelly Critters with me!',url)};
+$('frSite').onclick=async()=>{audio();sfx.ui();await shareOut('Jelly Critters','Jelly Critters: squishy little puzzle games. Save it to your home screen or bookmarks!',siteUrl())};
+var pendAdd='';try{const q=new URLSearchParams(location.search).get('add');if(q){pendAdd=cleanName(q).slice(0,16);store.set('ca_padd',pendAdd);history.replaceState(null,'',location.pathname+location.hash)}else pendAdd=store.get('ca_padd','')||''}catch(e){}
+var pendAddT=0;setInterval(()=>{if(!pendAdd||$('splash'))return;if(!(UID&&acctReady)){if(Date.now()-pendAddT>60000){pendAddT=Date.now();toast('Sign in to add '+pendAdd+' as a friend','#7cc8ff')}return}
+  const nm=pendAdd;pendAdd='';store.set('ca_padd','');if(cleanName(nm).toLowerCase()===String(duName()).toLowerCase())return;
+  closeAllO();openFriends();$('frName').value=nm;$('frMsg').className='nmsg';$('frMsg').textContent='Tap Send to add '+nm+' as a friend.';setTimeout(()=>{try{$('frGo').focus({preventScroll:true})}catch(e){}},100)},1200);
 $('frGo').onclick=async()=>{const ok=await sendFriend($('frName').value,$('frMsg'));if(ok)$('frName').value=''};
 $('frName').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')$('frGo').click()});
 $('frSign').onclick=()=>openAcct('in');
@@ -3880,7 +3941,7 @@ function duLocalEnd(){const d=DUEL;if(!d||(d.phase!=='live'&&d.phase!=='count'))
   if(GAMES[d.g]&&d.final>(P.best[d.g]||0)){P.best[d.g]=d.final;bestEl.textContent=fmt(d.final);save();setTimeout(syncMe,0);setTimeout(()=>toast('New best in '+GAMES[d.g].name+': '+fmt(d.final)+'!','#ffd23f'),400)}$('dhBet').hidden=true;$('dhT').textContent='0:00';$('dhMsg').textContent='Time! Waiting for '+d.oppN+'…';
   FD.update(fref('duels/'+d.id),{[d.me==='a'?'sa':'sb']:d.final,[d.me==='a'?'fa':'fb']:true}).catch(()=>{});sfx.discover()}
 function duResult(){const d=DUEL;if(!d||d.phase==='done')return;d.phase='done';const v=d.rec||{},op=+(d.me==='a'?v.sb:v.sa)||0,me=d.final||0,res=me>op?'w':me<op?'l':'t';
-  const R=P.duel=P.duel||{w:0,l:0,t:0};R[res]=(R[res]||0)+1;const co=res==='w'?50:res==='t'?25:10;P.coins+=co;addXP(res==='w'?30:10);save();refreshCoins();
+  const R=P.duel=P.duel||{w:0,l:0,t:0};R[res]=(R[res]||0)+1;const co=res==='w'?150:res==='t'?75:25;P.coins+=co;addXP(res==='w'?30:10);save();refreshCoins();
   if(d.me==='a')FD.update(fref('duels/'+d.id),{st:'done'}).catch(()=>{});
   $('dresT').textContent=res==='w'?'You win!':res==='l'?'So close!':'It’s a tie!';$('dresS').textContent=`You ${fmt(me)}  ·  ${d.oppN} ${fmt(op)}`;$('dresR').textContent=`+${co} coins`+(res==='l'?' for playing':'');$('dresB').textContent='';
   $('dhud').hidden=true;$('dres').hidden=false;if(res==='w'){confetti(fxW/2,fxH*.3,140,1000);hap('success')}else sfx.ui();
@@ -3907,7 +3968,7 @@ function chatSync(){const k=chatKey();if(k===chatRoom)return;if(chatUnsub){try{c
   try{chatUnsub=FD.onChildAdded(FD.query(fref('chat/'+k),FD.orderByChild('t'),FD.startAt(srvNow()-12000)),s=>{const v=s.val();if(!v||typeof v.m!=='string'||chatRoom!==k)return;if(srvNow()-(+v.t||0)>12000)return;if(badText(v.m))return;
     chatMsgs.push({n:cleanName(v.n)||'Someone',m:String(v.m).slice(0,80),me:v.u===UID,id:s.key});chatMsgs=chatMsgs.slice(-2);chatDraw(true)},()=>{})}catch(e){}}
 function chatDraw(fresh){const html=chatMsgs.map(x=>`<div class="cm${x.me?' me':''}"><b>${esc(x.n)}</b>${esc(x.m)}</div>`).join(''),on=chatMsgs.length>0;
-  for(const id of['chatBar','specLog']){const el=$(id);const show=on&&(id==='specLog'?!!SPEC:!SPEC);if(el.innerHTML!==html)el.innerHTML=show?html:'';el.classList.toggle('on',show)}
+  for(const id of['chatBar','specLog']){const el=$(id);const show=on&&(id==='specLog'?!!SPEC&&!specDown:!SPEC||specDown);if(el.innerHTML!==html)el.innerHTML=show?html:'';el.classList.toggle('on',show)}
   if(fresh){clearTimeout(chatHide);chatHide=setTimeout(()=>{chatMsgs=[];chatDraw()},10000);if(!SPEC)sfx.pop(3)}}
 async function chatSend(){const inp=$('specMsg'),txt=inp.value.replace(/\s+/g,' ').trim().slice(0,80);if(!txt||!SPEC)return;const k=chatKey();if(!k)return;
   if(badText(txt)){sfx.nope();toast('Keep it friendly!','#ff6fa8');return}if(Date.now()-chatLast<2500){sfx.nope();toast('Slow down a little','#ffd23f');return}
@@ -3916,7 +3977,7 @@ $('specSend').onclick=chatSend;$('specMsg').addEventListener('keydown',e=>{e.sto
 setInterval(chatSync,800);
 // ---- spectating
 function specStart(uid,name,duelId){if(!duNeedAcct())return;if(DUEL&&DUEL.phase!=='done')return toast('Finish your 1v1 first','#ff6fa8');if(uid===UID)return;if(SPEC)specStop(true);
-  closeAllO();saveRun(false);const mine=VIEW||gid;VIEW=mine;SPEC={uid,name:name||'Player',d:duelId||'',prev:mine,g:null,rec:null,q:[],offs:[]};paused=true;$('spec').hidden=false;$('specShield').hidden=false;specWatch(uid);
+  closeAllO();saveRun(false);const mine=VIEW||gid;VIEW=mine;SPEC={uid,name:name||'Player',d:duelId||'',prev:mine,g:null,rec:null,q:[],offs:[]};paused=true;$('spec').hidden=false;specPanel(false);$('specShield').hidden=false;specWatch(uid);
   if(duelId){specUnsubs.push(FD.onValue(fref('duels/'+duelId),s=>{if(!SPEC)return;SPEC.rec=s.val();specUI()},()=>{}));specUnsubs.push(FD.onValue(fref('bets/'+duelId),s=>{BETS=s.val()||{};specUI()},()=>{}))}
   specUI();sfx.ui();presenceSet(!document.hidden)}
 function specWatch(uid){const S=SPEC;if(S.watchU&&S.watchU!==uid){FD.remove(fref('watch/'+S.watchU+'/'+UID)).catch(()=>{});if(S.liveUnsub)try{S.liveUnsub()}catch(e){}}
@@ -3960,7 +4021,16 @@ function specFinish(){const S=SPEC;if(!S||S.fin)return;if(S.q&&S.q.length){const
 $('sresOk').onclick=()=>{const p=$('sres').dataset.prev;$('sres').hidden=true;playGame(p&&GAMES[p]?p:(P.last||'drop'))};
 $('sresAgain').onclick=()=>{const e=$('sres');e.hidden=true;VIEW=e.dataset.prev||VIEW;specStart(e.dataset.uid,e.dataset.name,'');if(SPEC){SPEC.prev=e.dataset.prev||SPEC.prev;SPEC.skipF=e.dataset.f||'';SPEC.wait=1;specUI()}};
 function specStop(quiet){const S=SPEC;if(!S)return;SPEC=null;for(const f of specUnsubs)try{f()}catch(e){}specUnsubs=[];if(S.liveUnsub)try{S.liveUnsub()}catch(e){}if(S.watchU)FD.remove(fref('watch/'+S.watchU+'/'+UID)).catch(()=>{});BETS={};
-  $('spec').hidden=true;$('specShield').hidden=true;if(!quiet){playGame(S.prev&&GAMES[S.prev]?S.prev:(P.last||'drop'))}presenceSet(!document.hidden)}
+  $('spec').hidden=true;specDown=false;$('spec').classList.remove('down');$('specKb').hidden=true;$('specShield').hidden=true;if(!quiet){playGame(S.prev&&GAMES[S.prev]?S.prev:(P.last||'drop'))}presenceSet(!document.hidden)}
+// spectate panel: drag it down to tuck it away; the keyboard button brings it back
+var specDown=false;
+function specPanel(down,focus){const e=$('spec');specDown=!!down;e.classList.remove('drag');e.style.transform='';e.classList.toggle('down',specDown);$('specKb').hidden=!specDown||e.hidden;chatDraw(false);if(!specDown&&focus)setTimeout(()=>{try{$('specMsg').focus({preventScroll:true})}catch(x){}},120)}
+(()=>{const e=$('spec');let y0=0,t0=0,dy=0,id=null;
+  e.addEventListener('pointerdown',ev=>{if(ev.target.closest('input,button,select,textarea'))return;id=ev.pointerId;y0=ev.clientY;t0=performance.now();dy=0;e.classList.add('drag');try{e.setPointerCapture(id)}catch(x){}});
+  e.addEventListener('pointermove',ev=>{if(ev.pointerId!==id)return;dy=Math.max(0,ev.clientY-y0);const up=Math.min(0,ev.clientY-y0);e.style.transform=`translateY(${dy>0?dy:up*.15}px)`});
+  const end=ev=>{if(ev.pointerId!==id)return;id=null;const v=dy/Math.max(1,performance.now()-t0);if(dy>e.offsetHeight*.3||(v>.5&&dy>24)){specPanel(true);sfx.ui()}else specPanel(false)};
+  e.addEventListener('pointerup',end);e.addEventListener('pointercancel',end)})();
+$('specKb').onclick=()=>{audio();sfx.ui();specPanel(false,true)};
 $('specStop').onclick=()=>specStop(false);$('specA').onclick=()=>{if(SPEC&&SPEC.rec&&SPEC.rec.a)specWatch(SPEC.rec.a)};$('specB').onclick=()=>{if(SPEC&&SPEC.rec&&SPEC.rec.b)specWatch(SPEC.rec.b)};
 var specSide='a';$('specSideA').onclick=()=>{specSide='a';$('specSideA').classList.add('on');$('specSideB').classList.remove('on')};$('specSideB').onclick=()=>{specSide='b';$('specSideB').classList.add('on');$('specSideA').classList.remove('on')};
 document.querySelectorAll('#specAmts button').forEach(b=>b.onclick=()=>{if(SPEC&&SPEC.d)betPlace(SPEC.d,specSide,+b.dataset.a,SPEC.rec)});
