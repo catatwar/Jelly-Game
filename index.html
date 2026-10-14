@@ -2820,7 +2820,7 @@ const Slice=(()=>{
     const pts=SPEC?spPts:trail;if(pts.length>1){c.save();c.lineCap='round';c.lineJoin='round';for(const[w,col]of[[18,'rgba(124,200,255,.25)'],[9,'rgba(255,255,255,.85)']]){for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],k=Math.max(0,Math.min(a.a,b.a));c.globalAlpha=k;c.lineWidth=w*(.3+.7*i/pts.length)*k+1;c.strokeStyle=col;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke()}}c.restore();c.globalAlpha=1}
     if(sp>1.05){c.fillStyle='rgba(255,255,255,.85)';c.font=`13px ${FAM}`;c.textAlign='right';c.textBaseline='top';c.fillText('SPEED x'+sp.toFixed(1),W-12,10)}
     if(frenzy>0)outlineText(c,'FRENZY x2',W/2,26,20,'#ffd23f');else if(frost>0)outlineText(c,'FROZEN',W/2,26,20,'#9ff0ff')}
-  function down(p){pressed=true;lastP={x:p.x,y:p.y};trail.push({x:p.x,y:p.y,a:1});swipeN=0;if(st!=='play'||SPEC)return;
+  function down(p){if(st!=='play'||SPEC){pressed=false;lastP=null;return}pressed=true;lastP={x:p.x,y:p.y};trail.push({x:p.x,y:p.y,a:1});swipeN=0;
     // tapping works too: slices the jelly under your finger (a jelly wins over a bomb that overlaps it)
     let best=null,bd=1e9,bomb=null,bb=1e9;for(const it of items){if(it.dead)continue;const d=Math.hypot(p.x-it.x,p.y-it.y);if(d>hitR(it,true))continue;if(it.type==='spike'){if(d<bb){bb=d;bomb=it}}else if(d<bd){bd=d;best=it}}
     const hit=best||bomb;if(hit){const ang=rand(-2.4,-.7);trail.push({x:p.x+Math.cos(ang)*30,y:p.y+Math.sin(ang)*30,a:1});sliceIt(hit,ang)}}
@@ -3063,7 +3063,7 @@ function drawTut(){const c=$('tutC').getContext('2d');c.setTransform(2,0,0,2,0,0
     tutHand(c,jx,198,0)}}
 function syncDots(){$('styleDot').hidden=!(gid&&P.fresh.length>0);$('mStyleDot').hidden=!(P.fresh.length>0);ensureQuests();const gn=gwNew();$('pauseDot').hidden=!(gn||giftReady()||P.quests.list.some(q=>!q.c&&q.p>=qdef(q.id).goal)||dmUnread()>0);$('frDot').hidden=!(dmUnread()>0);$('gwDot').hidden=!gn}
 function openMenu(){setTimeout(()=>{try{hsrShow()}catch(e){}},450);if(!$('over').hidden)$('over').hidden=true;audio();sfx.ui();paused=true;saveRun(false);restartArm=0;($('mRestart').querySelector('span').textContent='Restart',$('mRestart').classList.remove('armed'));$('menu').hidden=false;renderMenu();try{syncDots();mailSync()}catch(e){}}
-function closeMenu(){$('menu').hidden=true;if(G&&G.state()!=='play'){playGame(gid,true);return}paused=false;syncDots()}
+function closeMenu(){$('menu').hidden=true;if(G&&G.state()!=='play'){if(G.state()==='ending'){paused=false;syncDots();return}playGame(gid,true);return}paused=false;syncDots()}
 let restartArm=0,mPrev=[];
 function renderMenu(){ensureQuests();refreshCoins();try{achRowUI();evBanner();$('mEvDev').hidden=!isAdmin()}catch(e){}
   $('lvlN').textContent=P.level;$('xpFill').style.width=(P.xp/xpNeed(P.level)*100)+'%';$('xpTx').textContent=`${P.xp} / ${xpNeed(P.level)} XP`;
@@ -4905,6 +4905,8 @@ function frame(now){let dt=(now-last)/1000;last=now;if(dt>.1)dt=.1;acc+=dt;BNC=i
   {const quiet=!anyOpen()&&$('gift').hidden&&$('cd').hidden&&$('maint').hidden&&$('rot').hidden&&!$('splash')&&$('rk').hidden;
     if(DUEL&&DUEL.phase==='done'&&!DUEL.rk&&$('dres').hidden&&quiet){$('dres').hidden=false}
     if(!SPEC&&!(DUEL&&DUEL.phase==='count')&&!$('specShield').hidden)$('specShield').hidden=true;
+    // a finished round with nothing on screen (e.g. a menu closed by tapping outside it) goes back to its results card
+    if(quiet&&lastFin&&lastFin.g===gid&&!SPEC&&!DUEL&&!VIEW&&!RK&&G&&G.state&&G.state()==='done'){$('over').hidden=false;paused=true}
     if(paused&&quiet&&!SPEC&&!DUEL&&!RK&&!VIEW&&G&&G.state&&G.state()==='play'){frame.stuck=(frame.stuck||0)+1;if(frame.stuck>45){paused=false;frame.stuck=0}}else frame.stuck=0}if(!$('maint').hidden)drawMaint();
   const sp=$('splashC');if(sp)drawSplash(sp,now/1000);
   if(pfD){drawProfileAv();for(const p of slotPrev)if(p.r)drawItem(p.c,p.g,p.cat,p.id,p.S||120)}if(!$('pick').hidden)for(const p of sPrevPick)drawItem(p.c,p.g,p.cat,p.id);if(!$('cd').hidden)drawCd();if(!$('beta').hidden)drawBetaCard();if(!$('devg').hidden)drawDevCard();if(!$('who').hidden)drawWho();if(!$('lvp').hidden){drawSpin();for(const p of lvPrev)drawItem(p.c,p.g,p.cat,p.id,96)}if(sPrev.length&&!$('style').hidden)for(const p of sPrev)drawItem(p.c,p.g,p.cat,p.id);
