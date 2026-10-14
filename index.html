@@ -516,6 +516,7 @@ body.cbon>*:not(#playView):not(#fxc):not(script):not(svg){filter:var(--cbf)}body
 .hsrcard{max-width:340px}.hsrcard h3{margin:0;font-family:var(--display);font-size:24px}.hsrcard p{margin:0;font-size:14px}.hsrcard ol{margin:0;padding-left:22px;text-align:left;font-size:14px;line-height:1.5;font-weight:600}#hsrC{width:96px;height:96px}
 .ntccard{max-width:360px;text-align:left}.ntccard h3{margin:0;font-family:var(--display);font-size:24px}
 .dulim{margin-top:-4px}#duQuick{margin-top:-4px}
+.gwgone{margin-top:6px;opacity:.85}.gwmine{border-color:#ffd23f}.gwpz{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(43,35,64,.18)}.gwpz .gwcode{margin-top:4px}
 .sugc{border:2.5px solid var(--ink);border-radius:14px;background:#fff;padding:10px 12px;display:flex;flex-direction:column;gap:6px;text-align:left}
 .sugc .sh{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:600;color:var(--muted)}
 .sugc .sh b{color:var(--ink);font-size:14px}
@@ -607,7 +608,7 @@ body.cbon>*:not(#playView):not(#fxc):not(script):not(svg){filter:var(--cbf)}body
 .mic span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .mic.mint{background:var(--mint)}.mic.yel{background:var(--yellow)}
 .mic:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
-.mic .dot{position:absolute;top:-6px;right:-6px}
+.mic .dot{position:absolute;top:-6px;right:-6px}.mic .mcount{position:absolute;top:-8px;right:-8px}
 .mic.armed{background:#ff6f8a;color:#fff}
 #mResume{padding-block:8px 9px}#duel{z-index:15}
 .capbox{display:grid;grid-template-columns:110px 1fr;gap:6px 10px;align-items:center;background:linear-gradient(135deg,#ffe3f0,#e9dcff 60%,#d6f5ff);border:2.5px solid var(--ink);border-radius:18px;padding:10px 12px;box-shadow:0 4px 0 var(--ink)}
@@ -747,7 +748,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     </div>
     <div class="arow"><span class="atx" id="acctTx">Playing as a guest</span><span class="abtns"><button class="btn small mint" id="swapBtn" type="button" hidden>Swap</button><button class="btn small white" id="acctBtn" type="button">Sign in</button></span></div>
     <button class="btn pink" id="mResume" type="button">Resume</button>
-    <div class="mgrid"><button class="mic mint" id="mLb" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5.5a2.5 2.5 0 0 0 2.7 3.6M16 6h2.5a2.5 2.5 0 0 1-2.7 3.6M12 13v4M8.5 20h7M10 17h4v3h-4z"/></svg><span>Leaderboard</span></button><button class="mic yel" id="mGw" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M3 10h18M12 10v10"/><path d="M12 10C10.5 6 7 5.5 7 7.8 7 9.5 10 10 12 10c2 0 5-.5 5-2.2C17 5.5 13.5 6 12 10z"/></svg><span>Giveaways</span><span class="dot" id="gwDot" hidden></span></button><button class="mic mint" id="mDuel" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l10 10M4 4h4M4 4v4M20 4L10 14M20 4h-4M20 4v4M8 16l-3.5 3.5M16 16l3.5 3.5M6 13l5 5M18 13l-5 5"/></svg><span>1v1 battles</span></button><button class="mic " id="mFr" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17.2" cy="9" r="2.4"/><path d="M16.5 14.2c2.6.2 4.5 2.2 4.5 4.8"/></svg><span>Friends</span><span class="dot" id="frDot" hidden></span></button><button class="mic " id="mMail" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.8 7l8.2 6 8.2-6"/></svg><span>Mailbox</span></button><button class="mic " id="mStyle" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11a1.6 1.6 0 0 1-1.6 1.4H7.8A1.6 1.6 0 0 1 6.2 19z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg><span>Shop</span></button><button class="mic " id="mSave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11l3 3v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg><span>Save</span></button><button class="mic " id="mRestart" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4v4.2h4.2"/></svg><span>Restart</span></button><button class="mic " id="mHow" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.7.3-1 .9-1 1.7"/><path d="M12 17h.01"/></svg><span>How to play</span></button></div>
+    <div class="mgrid"><button class="mic mint" id="mLb" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5.5a2.5 2.5 0 0 0 2.7 3.6M16 6h2.5a2.5 2.5 0 0 1-2.7 3.6M12 13v4M8.5 20h7M10 17h4v3h-4z"/></svg><span>Leaderboard</span></button><button class="mic yel" id="mGw" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M3 10h18M12 10v10"/><path d="M12 10C10.5 6 7 5.5 7 7.8 7 9.5 10 10 12 10c2 0 5-.5 5-2.2C17 5.5 13.5 6 12 10z"/></svg><span>Giveaways</span><span class="dot" id="gwDot" hidden></span></button><button class="mic mint" id="mDuel" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l10 10M4 4h4M4 4v4M20 4L10 14M20 4h-4M20 4v4M8 16l-3.5 3.5M16 16l3.5 3.5M6 13l5 5M18 13l-5 5"/></svg><span>1v1 battles</span></button><button class="mic " id="mFr" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17.2" cy="9" r="2.4"/><path d="M16.5 14.2c2.6.2 4.5 2.2 4.5 4.8"/></svg><span>Friends</span><span class="dot" id="frDot" hidden></span></button><button class="mic " id="mMail" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.8 7l8.2 6 8.2-6"/></svg><span>Mailbox</span><span class="mcount" id="mMailN" hidden>0</span></button><button class="mic " id="mStyle" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11a1.6 1.6 0 0 1-1.6 1.4H7.8A1.6 1.6 0 0 1 6.2 19z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg><span>Shop</span><span class="dot" id="mStyleDot" hidden></span></button><button class="mic " id="mSave" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11l3 3v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg><span>Save</span></button><button class="mic " id="mRestart" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4 4v4.2h4.2"/></svg><span>Restart</span></button><button class="mic " id="mHow" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 1 1 3.4 2.4c-.7.3-1 .9-1 1.7"/><path d="M12 17h.01"/></svg><span>How to play</span></button></div>
     <button class="btn gmbtn" id="mGm" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="7" width="19" height="11" rx="5.5"/><path d="M7.5 10.5v4M5.5 12.5h4"/><circle cx="15.5" cy="11.5" r="1.1" fill="currentColor"/><circle cx="17.8" cy="13.8" r="1.1" fill="currentColor"/></svg>Game Mode</button>
     <button class="btn setbtn" id="mSet" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button>
     <div class="mgames" id="mGames" hidden></div>
@@ -2762,7 +2763,7 @@ const Slice=(()=>{
   function spawnWave(){wave++;const n=Math.min(7,1+Math.floor(Math.random()*(1.6+t/22))),bombP=t<8?0:Math.min(.3,.08+t/320);let bombs=0;
     const pattern=Math.random()<.25&&n>=3?'fan':'rand';
     for(let i=0;i<n;i++){const x=pattern==='fan'?W*.2+i*(W*.6/(n-1||1)):rand(50,W-50),dx=(W/2-x)*rand(.18,.45)+rand(-30,30);
-      let type='jelly';const q=Math.random();if(bombs<2&&q<bombP){type='spike';bombs++}else if(q>.985&&lives<3)type='heart';else if(q>.972)type='star';else if(q>.96)type='ice';
+      let type='jelly';const q=Math.random();if(bombs<2&&q<bombP&&n>1){type='spike';bombs++}else if(bombs<2&&q<bombP*.5){type='spike';bombs++}else if(q>.985&&lives<3)type='heart';else if(q>.972)type='star';else if(q>.96)type='ice';
       const l=Math.min(10,Math.floor(Math.pow(Math.random(),1.7)*Math.min(11,4+t/18)));pend.push({at:t+i*rand(.06,.17)/sp,type,l,x,dx})}
     sfx.drop()}
   function sliceIt(it,ang){it.dead=1;const cr=C(it.l),col=it.type==='jelly'?cr.c:it.type==='star'?'#ffd23f':it.type==='heart'?'#ff4f8f':it.type==='ice'?'#9ff0ff':'#6b3fa0';
@@ -2777,13 +2778,19 @@ const Slice=(()=>{
     sfx.merge(Math.min(10,it.l+swipeN-1),0)}
   function over(){if(st!=='play')return;st='ending';endT=1.2;sfx.over();big('OUT OF LIVES!','#ff6fa8');
     if(endKind()!=='none'){const cs=S(),ps=items.filter(i=>!i.dead&&i.y<H+20).map(it=>({x:it.x,y:it.y,r:it.r,draw:c=>drawItem2(c,Object.assign({},it,{x:0,y:0}),cs)}));endT=endBoom(ps);items=[]}}
-  function segHit(ax,ay,bx,by,it){const dx=bx-ax,dy=by-ay,L=dx*dx+dy*dy;if(L<9)return false;let k=((it.x-ax)*dx+(it.y-ay)*dy)/L;k=clamp(k,0,1);const px=ax+dx*k,py=ay+dy*k;return(px-it.x)**2+(py-it.y)**2<(it.r*.95)**2}
+  function segHit(ax,ay,bx,by,it){const dx=bx-ax,dy=by-ay,L=dx*dx+dy*dy;if(L<9)return false;let k=((it.x-ax)*dx+(it.y-ay)*dy)/L;k=clamp(k,0,1);const px=ax+dx*k,py=ay+dy*k;return(px-it.x)**2+(py-it.y)**2<hitR(it)**2}
+  // generous on jellies, a little forgiving on bombs
+  const hitR=(it,tap)=>it.type==='spike'?it.r*(tap?.8:.88):it.r*(tap?1.22:1.15)+(tap?14:10);
   function update(dt){if(st==='done')return;if(missFlash>0)missFlash-=dt;
     for(const p of trail)p.a-=dt*5.5;trail=trail.filter(p=>p.a>0);for(const s of stains)s.a-=dt*.14;stains=stains.filter(s=>s.a>0);
     const g=dt*(frost>0?.45:1)*sp;
     for(const h of halves){h.t+=dt;h.vy+=GRAV*1.3*g;h.x+=h.vx*g;h.y+=h.vy*g;h.rot+=h.av*g}halves=halves.filter(h=>h.t<2.5&&h.y<H+120);
     if(st==='ending'){endT-=dt;if(endT<=0){st='done';finishRound('slice',{sliced,combo:bestCombo},'Out of lives!',[['Sliced',sliced],['Best combo','x'+bestCombo],['Time',Math.round(t)+'s']])}return}
     for(const it of items){it.vy+=GRAV*g;it.x+=it.vx*g;it.y+=it.vy*g;it.rot+=it.av*g*.5;if(it.x<it.r)it.vx=Math.abs(it.vx);if(it.x>W-it.r)it.vx=-Math.abs(it.vx)}
+    // bombs never ride inside a jelly: nudge any overlapping pair apart so each can be sliced on its own
+    for(const s of items){if(s.dead||s.type!=='spike')continue;for(const j of items){if(j===s||j.dead||j.type==='spike')continue;let dx=s.x-j.x,dy=s.y-j.y,d=Math.hypot(dx,dy);const min=s.r*1.3+j.r+18;if(d>=min)continue;
+      if(d<.01){dx=s.x<W/2?1:-1;dy=0;d=1}const nx=dx/d,ny=dy/d,push=(min-d);s.x+=nx*push*.3;s.y+=ny*push*.15;j.x-=nx*push*.2;s.vx=clamp(s.vx+nx*push*.9,-260,260);j.vx=clamp(j.vx-nx*push*.5,-260,260);
+      s.x=clamp(s.x,s.r,W-s.r);j.x=clamp(j.x,j.r,W-j.r)}}
     if(SPEC){items=items.filter(it=>!it.dead&&!(it.vy>0&&it.y>H+it.r+40));return}
     t+=dt;sp=speedAt(t);if(pend.length){const due=pend.filter(q=>q.at<=t);if(due.length){pend=pend.filter(q=>q.at>t);for(const q of due)toss(q.type,q.l,q.x,q.dx)}}if(frenzy>0)frenzy-=dt;if(frost>0)frost-=dt;
     if(comboT>0){comboT-=dt;if(comboT<=0){if(combo>=3){const b=combo*combo*5;addScore(b,1.5);big(`COMBO x${combo}! +${b}`,'#5be0a6');sfx.combo(combo);hap('success')}bestCombo=Math.max(bestCombo,combo);combo=0}}
@@ -2806,13 +2813,17 @@ const Slice=(()=>{
     for(const h of halves){const cr=C(h.it.l),r=h.it.r;c.save();c.translate(h.x,h.y);c.rotate(h.rot);c.globalAlpha=Math.max(0,1-h.t/2.2);c.save();c.rotate(h.ang-h.rot);c.beginPath();c.rect(-r*1.6,h.side>0?0:-r*1.6,r*3.2,r*1.6);c.restore();c.save();c.clip();
       if(h.it.type==='jelly')drawAnimal(c,0,0,r,cr.k,cr.c,{fx:cr.fx,mood:1,hat:cs.hat,crown:h.it.l===10,bn:0});else drawItem2(c,Object.assign({},h.it,{x:0,y:0}),cs);c.restore();
       c.save();c.rotate(h.ang-h.rot);c.fillStyle=shadeHex(h.it.type==='jelly'?cr.c:'#ffd23f',.35);c.globalAlpha*=.9;ell(c,0,0,r*.95,r*.14);c.fill();c.restore();c.restore()}
-    for(const it of items)drawItem2(c,it,cs);
-    drawFX(c);
+    // bombs are always drawn on top of jellies so you can see them
+    for(const it of items)if(it.type!=='spike')drawItem2(c,it,cs);
+    drawFX(c);for(const it of items)if(it.type==='spike')drawItem2(c,it,cs);
     // the blade: a glowing tapered ribbon
     const pts=SPEC?spPts:trail;if(pts.length>1){c.save();c.lineCap='round';c.lineJoin='round';for(const[w,col]of[[18,'rgba(124,200,255,.25)'],[9,'rgba(255,255,255,.85)']]){for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],k=Math.max(0,Math.min(a.a,b.a));c.globalAlpha=k;c.lineWidth=w*(.3+.7*i/pts.length)*k+1;c.strokeStyle=col;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke()}}c.restore();c.globalAlpha=1}
     if(sp>1.05){c.fillStyle='rgba(255,255,255,.85)';c.font=`13px ${FAM}`;c.textAlign='right';c.textBaseline='top';c.fillText('SPEED x'+sp.toFixed(1),W-12,10)}
     if(frenzy>0)outlineText(c,'FRENZY x2',W/2,26,20,'#ffd23f');else if(frost>0)outlineText(c,'FROZEN',W/2,26,20,'#9ff0ff')}
-  function down(p){pressed=true;lastP={x:p.x,y:p.y};trail.push({x:p.x,y:p.y,a:1});swipeN=0}
+  function down(p){pressed=true;lastP={x:p.x,y:p.y};trail.push({x:p.x,y:p.y,a:1});swipeN=0;if(st!=='play'||SPEC)return;
+    // tapping works too: slices the jelly under your finger (a jelly wins over a bomb that overlaps it)
+    let best=null,bd=1e9,bomb=null,bb=1e9;for(const it of items){if(it.dead)continue;const d=Math.hypot(p.x-it.x,p.y-it.y);if(d>hitR(it,true))continue;if(it.type==='spike'){if(d<bb){bb=d;bomb=it}}else if(d<bd){bd=d;best=it}}
+    const hit=best||bomb;if(hit){const ang=rand(-2.4,-.7);trail.push({x:p.x+Math.cos(ang)*30,y:p.y+Math.sin(ang)*30,a:1});sliceIt(hit,ang)}}
   function move(p){if(!pressed||st!=='play')return;const a=lastP||p;trail.push({x:p.x,y:p.y,a:1});if(trail.length>14)trail.shift();
     const ang=Math.atan2(p.y-a.y,p.x-a.x);for(const it of items)if(!it.dead&&segHit(a.x,a.y,p.x,p.y,it)){sliceIt(it,ang);if(st!=='play')break}
     if(Math.hypot(p.x-a.x,p.y-a.y)>26&&Math.random()<.25)tone(rand(900,1300),.05,'sine',.02,rand(400,600));lastP={x:p.x,y:p.y}}
@@ -2920,12 +2931,14 @@ let sPrev=[];
 const catG=cat=>STYLE.prof[cat]?'prof':cat==='board'?'squish':'drop';
 const SHOP_CATS=[['set','drop','Critters','Critters show up in every game.'],['hat','drop','Hats','Hats are worn in every game.'],['jar','drop','Jars','Your jar in Jelly Jar and Jelly Catch.'],['wall','drop','Wallpapers','Wallpapers show behind every game. Mint dots lets the board games keep their board’s own colour.'],['board','squish','Boards','Your board in Jelly 2048, Jellydoku, Jelly Combo and Jelly Memory.']];
 const shopCats=()=>[...SHOP_CATS.map(([k,g,n])=>[k,{n}]),...Object.entries(STYLE.prof)];
+// shop order inside each group: Common → Rare → Epic → Legendary → Mythic → Divine, then the special ones; cheaper first within a rarity
+const RAR_ORDER=['c','r','e','l','m','u','v','x','p','d'],rarRank=r=>{if(!r)return -1;const i=RAR_ORDER.indexOf(r);return i<0?0:i};
 function renderStyle(){if(!gid)return;refreshCoins();if(!renderStyle._g){renderStyle._g=1;try{giftApply()}catch(e){}renderStyle._g=0}
   $('sMeter').innerHTML=meterHTML(gid);
   const cats=shopCats();
   $('sTabs').innerHTML=cats.map(([k,v])=>`<button class="tab${k===sTab?' on':''}${STYLE.prof[k]?' ptab':''}" role="tab" aria-selected="${k===sTab}" data-k="${k}" type="button">${v.n}</button>`).join('');
   $('sTabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{sfx.ui();sTab=b.dataset.k;renderStyle()});
-  const cat=sTab,g=catG(cat),items=STYLE[g][cat].items.filter(it=>owns(g,cat,it[0])||(!(cat==='title'&&(it[0]==='dev'||it[0]==='helper'))&&it[3]!=='d'&&!(it[4]&&it[4].dev)&&!(it[4]&&it[4].bp&&evKey()!==it[4].bp)&&!(it[4]&&it[4].ev&&evKey()!==it[4].ev))).map((it,i)=>[it,i]).sort((a,b)=>(owns(g,cat,b[0][0])-owns(g,cat,a[0][0]))||a[1]-b[1]).map(x=>x[0]),sc=SHOP_CATS.find(c=>c[0]===cat);
+  const cat=sTab,g=catG(cat),items=STYLE[g][cat].items.filter(it=>owns(g,cat,it[0])||(!(cat==='title'&&(it[0]==='dev'||it[0]==='helper'))&&it[3]!=='d'&&!(it[4]&&it[4].dev)&&!(it[4]&&it[4].bp&&evKey()!==it[4].bp)&&!(it[4]&&it[4].ev&&evKey()!==it[4].ev))).map((it,i)=>[it,i]).sort((a,b)=>(owns(g,cat,b[0][0])-owns(g,cat,a[0][0]))||((a[0][0]==='none')?-1:(b[0][0]==='none')?1:0)||(rarRank(a[0][3])-rarRank(b[0][3]))||((a[0][4]&&a[0][4].cap?1:0)-(b[0][4]&&b[0][4].cap?1:0))||((+a[0][2]||0)-(+b[0][2]||0))||a[1]-b[1]).map(x=>x[0]),sc=SHOP_CATS.find(c=>c[0]===cat);
   $('sItems').innerHTML=(sc?`<p class="snote">${sc[3]}</p>`:'')+(g==='prof'?`<p class="snote">${cat==='title'?'Titles show under your name on the leaderboard and your profile.':cat==='perk'?'Perks change how the whole game feels. Bouncier makes every squish, wobble and pop springier, and you can show it off on your profile.':cat==='emote'?'Emotes are animated stickers for your DMs. Open a chat with a friend and tap the smiley to send one.':cat==='endfx'?'End effects play when a round ends, in every game. Explode sends everything on the board flying up and out of the top.':'Frames ring your critter on the leaderboard and your profile.'}</p>`:'')+items.map(([id,n,p,r,q],ix)=>{const own=owns(g,cat,id),hd=ix===0||own!==owns(g,cat,items[ix-1][0])?`<p class="sgroup">${own?'Yours':'Get more'}</p>`:'',on=cat!=='emote'&&P.cos[g][cat]===id,fresh=P.fresh.some(f=>f.endsWith(':'+cat+':'+id)),ok=reqMet(q);
     const tag=on?'Wearing':own?'Owned':!ok?'Locked':p?`<i class="coin"></i>${fmt(p)}`:'Free';
     return hd+`<button class="item${on?' on':''}${own?'':' locked'}${r?' r-'+r:''}" ${r?`style="--rc:${RAR[r][1]}"`:''} data-id="${id}" type="button"><canvas width="160" height="160"></canvas>${r?`<span class="rar">${RAR[r][0]}</span>`:''}<span class="in">${n}</span><span class="tag">${tag}</span>${!own&&q?`<span class="req${ok?' ok':''}">${ok?'Unlocked: ':''}${reqText(q)}</span>`:''}${fresh?'<span class="new">NEW</span>':''}</button>`}).join('');
@@ -2965,8 +2978,8 @@ function finishRound(g,s,title,items){
   $('oSurprise').hidden=!sur;if(sur){$('oSurN').textContent=sur.n+' · '+STYLE[g][sur.cat].n;drawItem($('oSurC').getContext('2d'),g,sur.cat,sur.id,140);$('oSurEq').textContent='Wear it';$('oSurEq').disabled=false}
   const chips=[];let delay=.4;const chip=(cls,tx)=>{chips.push(`<span class="chip ${cls}" style="animation-delay:${delay}s">${tx}</span>`);delay+=.12};
   if(bonusR)chip('gw','Bonus round! 1.5x coins (+'+fmt(coins-baseC)+')');if(up)chip('lv','Level '+P.level+'!');for(const d of qd)chip('','Quest done! Claim it in the menu');$('oChips').innerHTML=chips.join('');
-  if(UID&&acctReady){syncMe();setTimeout(()=>{const rk=myRank(g);if(rk){const el=document.createElement('span');el.className='chip lv';el.textContent='#'+rk+' on the leaderboard';$('oChips').appendChild(el)}},900);
-    gaRound(g,s.score).then(n=>{if(n){const el=document.createElement('span');el.className='chip gw';el.textContent='+'+n+' giveaway ticket'+(n>1?'s':'');$('oChips').appendChild(el);sfx.coin(5)}})}
+  if(UID&&acctReady){syncMe();setTimeout(()=>{const rk=myRank(g);if(rk){const el=document.createElement('span');el.className='chip lv';el.textContent='#'+rk+' on the leaderboard';$('oChips').appendChild(el)}},900)}
+  scoreSubmit(g,s.score).then(n=>{if(n>0){const el=document.createElement('span');el.className='chip gw';el.textContent='+'+n+' giveaway ticket'+(n>1?'s':'');$('oChips').appendChild(el);sfx.coin(5)}else if(n<0){const el=document.createElement('span');el.className='chip';el.textContent='Saved for giveaways: counts when you are back online';$('oChips').appendChild(el)}});
   const cheap=itemList(SG(g)).filter(i=>!owns(SG(g),i.cat,i.id)&&reqMet(i.q)).sort((a,b)=>a.p-b.p)[0];
   let msg='';if(nb)msg=prev?`New record by <b>${fmt(s.score-prev)}</b>!`:'First score on the board. Now beat it.';
   else if(prev-s.score<=prev*.2)msg=`Only <b>${fmt(prev-s.score)}</b> away from your best.`;
@@ -3048,8 +3061,8 @@ function drawTut(){const c=$('tutC').getContext('2d');c.setTransform(2,0,0,2,0,0
     jarBack(c,cs.jar,jx-34,150,68,54);jarFront(c,cs.jar,jx-34,150,68,54,.45);
     for(const d of drops)if(T>d.land&&T<d.land+.7){c.globalAlpha=1-(T-d.land)/.7;outlineText(c,'+'+(10+d.l*12),jxF(d.land),130-(T-d.land)*30,16,'#fff');c.globalAlpha=1}
     tutHand(c,jx,198,0)}}
-function syncDots(){$('styleDot').hidden=!(gid&&P.fresh.length>0);ensureQuests();const gn=gwNew();$('pauseDot').hidden=!(gn||giftReady()||P.quests.list.some(q=>!q.c&&q.p>=qdef(q.id).goal)||dmUnread()>0);$('frDot').hidden=!(dmUnread()>0);$('gwDot').hidden=!gn}
-function openMenu(){setTimeout(()=>{try{hsrShow()}catch(e){}},450);if(!$('over').hidden)$('over').hidden=true;audio();sfx.ui();paused=true;saveRun(false);restartArm=0;($('mRestart').querySelector('span').textContent='Restart',$('mRestart').classList.remove('armed'));$('menu').hidden=false;renderMenu()}
+function syncDots(){$('styleDot').hidden=!(gid&&P.fresh.length>0);$('mStyleDot').hidden=!(P.fresh.length>0);ensureQuests();const gn=gwNew();$('pauseDot').hidden=!(gn||giftReady()||P.quests.list.some(q=>!q.c&&q.p>=qdef(q.id).goal)||dmUnread()>0);$('frDot').hidden=!(dmUnread()>0);$('gwDot').hidden=!gn}
+function openMenu(){setTimeout(()=>{try{hsrShow()}catch(e){}},450);if(!$('over').hidden)$('over').hidden=true;audio();sfx.ui();paused=true;saveRun(false);restartArm=0;($('mRestart').querySelector('span').textContent='Restart',$('mRestart').classList.remove('armed'));$('menu').hidden=false;renderMenu();try{syncDots();mailSync()}catch(e){}}
 function closeMenu(){$('menu').hidden=true;if(G&&G.state()!=='play'){playGame(gid,true);return}paused=false;syncDots()}
 let restartArm=0,mPrev=[];
 function renderMenu(){ensureQuests();refreshCoins();try{achRowUI();evBanner();$('mEvDev').hidden=!isAdmin()}catch(e){}
@@ -3173,7 +3186,7 @@ async function fbInit(){if(FD||fbTrying)return;fbTrying=true;try{
   const app=a.getApps().length?a.getApp():a.initializeApp(FB_CONFIG);FAPP=a;FA=u;FD=d;AUTH=u.getAuth(app);RDB=d.getDatabase(app);
   for(const g of['drop','squish','doku','catch','combo','memory','slice'])d.onValue(d.query(fref('lb'),d.orderByChild(g),d.limitToLast(100)),snap=>{const arr=[];snap.forEach(c=>{arr.push(Object.assign({id:c.key},c.val()))});lbBy[g]=arr;lbReady=true;if(!$('lb').hidden)renderLB()},()=>{lbReady=true;if(!$('lb').hidden)renderLB()});
   socialInit();betaInit();duelInit();rkInit();evInit();noticeInit();
-  d.onValue(fref('giveaways'),s=>{const v=s.val();GAS=v&&typeof v==='object'?v:{};gaReady=true;if(!$('gw').hidden){gwSub();renderGW()}syncDots()},()=>{gaReady=true});
+  d.onValue(fref('giveaways'),s=>{const v=s.val();GAS=v&&typeof v==='object'?v:{};gaReady=true;if(!$('gw').hidden){gwSub();renderGW()}syncDots();setTimeout(gaAuto,2000);setTimeout(gaFlush,1200)},()=>{gaReady=true});
   u.onAuthStateChanged(AUTH,x=>{MAINU=x;route()});if(ACTIVE==='alt'||store.get('ca_alt',0))initAlt();
   fbDown=false;acctUI();
   d.onValue(d.ref(RDB,'.info/connected'),s=>{const on=s.val()===true,prev=fbOnline;fbOnline=on;
@@ -3196,7 +3209,23 @@ async function pullCloud(){if(!UID||!acctReady||syncing)return;try{const ps=awai
   const t=cp.t;adoptCloud(cp);P.t=Math.max(P.t||0,t);store.set('ca_profile',P);refreshAll();if(G&&G.restyle)G.restyle();if(!$('style').hidden)renderStyle()}catch(e){}}
 function cloudWatch(uid){if(cloudUnsub){try{cloudUnsub()}catch(e){}cloudUnsub=null}if(!uid||!FD)return;
   cloudUnsub=FD.onValue(fref('users/'+uid+'/t'),s=>{const t=+s.val()||0;if(!t||t===lastPush||UID!==uid)return;if(t>(P.t||0)+1500)pullCloud()},()=>{})}
-async function gaFlush(){const q=Array.isArray(P.gaQ)?P.gaQ:[];if(!q.length||!UID||!acctReady||!fbOnline)return;P.gaQ=[];save();let n=0;for(const e of q)n+=await gaRound(e.g,e.s);if(n)toast('+'+n+' giveaway ticket'+(n>1?'s':'')+' from rounds you played offline','#ffd23f')}
+// Every finished round goes through here. Each "sink" (giveaways now, tournaments later) gets the round; if it can't be sent
+// right now (offline, account still loading, a failed write) the round waits in P.gaQ with the time it was played and is sent later.
+const GA_GRACE=15*6e4,SCORE_Q_MAX=40,SCORE_Q_AGE=3*864e5;
+const SCORE_SINKS={ga:{ready:()=>gaReady,send:(e)=>gaSend(e)}};
+const scoreCan=()=>!!(UID&&acctReady&&fbOnline&&RDB);
+function scoreQ(){P.gaQ=(Array.isArray(P.gaQ)?P.gaQ:[]).filter(e=>e&&typeof e==='object'&&GAMES[e.g]);return P.gaQ}
+async function scoreSubmit(g,score){const e={g,s:Math.floor(+score||0),t:srvNow(),done:[]};if(!(UID||pendUser||ME))return 0;
+  if(!scoreCan()){scoreQ().push(e);P.gaQ=P.gaQ.slice(-SCORE_Q_MAX);save();return -1}
+  const r=await scoreRun(e);if(!r.ok){scoreQ().push(e);P.gaQ=P.gaQ.slice(-SCORE_Q_MAX);save()}return r.got}
+async function scoreRun(e){let got=0,ok=true;e.done=Array.isArray(e.done)?e.done:[];for(const[k,S]of Object.entries(SCORE_SINKS)){if(e.done.includes(k))continue;if(!S.ready()){ok=false;continue}
+  try{const r=await S.send(e);if(r&&r.ok){e.done.push(k);got+=r.got||0}else ok=false}catch(x){ok=false}}return{ok,got}}
+let scoreBusy=false;
+async function gaFlush(){if(scoreBusy||!scoreCan())return;const q=scoreQ();if(!q.length)return;scoreBusy=true;let n=0;
+  try{const now=srvNow(),keep=[];for(const e of q.slice()){if(now-(+e.t||now)>SCORE_Q_AGE)continue;const r=await scoreRun(e);n+=r.got;if(!r.ok)keep.push(e)}
+    P.gaQ=keep;save()}finally{scoreBusy=false}
+  if(n)toast('+'+n+' giveaway ticket'+(n>1?'s':'')+' from rounds you played offline','#ffd23f')}
+setInterval(()=>{if(Array.isArray(P.gaQ)&&P.gaQ.length)gaFlush()},20000);
 
 // ---- account routing: the admin (and only the admin) can keep a second, alt account signed in and swap between them
 const isAdminU=u=>!!(u&&u.email&&u.email.toLowerCase()===ADMIN_EMAIL);
@@ -3247,13 +3276,13 @@ async function onUser(user){if(UID&&FD&&fbOnline&&acctReady&&(!user||user.uid!==
       for(let i=0;i<6&&!ok;i++){const v=i?cleanName(base.slice(0,12)+' '+Math.floor(rand(10,999))):base;if(await claimName(v)){P.name=v;ok=true}}}
     pendingName=null;acctReady=true;save();pushCloud();await syncMe();refreshAll();acctUI();socialUser(user);cloudWatch(user.uid);presenceSet(!document.hidden);
     prizeUnsub=FD.onValue(fref('prizes/'+user.uid),s=>{const v=s.val();myPrizes=v&&typeof v==='object'?v:{};P.gotPrize=P.gotPrize||{};let n=0;
-      for(const[id,pz]of Object.entries(myPrizes)){if(P.gotPrize[id])continue;if(pz&&pz.dev===true){P.gotPrize[id]=1;const cc=clamp(Math.floor(+pz.coins||0),0,1e9);P.coins+=cc;n++;toast('The developer sent you '+fmt(cc)+' coins!','#ffd23f');continue}P.gotPrize[id]=1;const rk=+pz.rank||0;if(!rk||rk===1)P.wins=(P.wins||0)+1;P.coins+=clamp(Math.floor(+pz.coins||0),0,100000);n++;toast((rk?'You placed #'+rk+' in '+String(pz.title||'a giveaway').slice(0,24)+'!':'You won a giveaway: '+String(pz.title||'').slice(0,28)+'!')+(+pz.coins>0?' +'+fmt(clamp(Math.floor(+pz.coins),0,100000))+' coins':'')+(pz.code?' · your code is in Giveaways':''),'#ffd23f');if(0)toast(rk?'You placed #'+rk+' in '+String(pz.title||'a giveaway').slice(0,24)+'!':'You won a giveaway: '+String(pz.title||'').slice(0,28)+'!','#ffd23f')}
+      for(const[id,pz]of Object.entries(myPrizes)){if(P.gotPrize[id])continue;if(pz&&pz.dev===true){P.gotPrize[id]=1;const cc=clamp(Math.floor(+pz.coins||0),0,1e9);P.coins+=cc;n++;toast(pz.sug?'Your idea was accepted! +'+fmt(cc)+' coins':'The developer sent you '+fmt(cc)+' coins!','#ffd23f');continue}P.gotPrize[id]=1;const rk=+pz.rank||0;if(!rk||rk===1)P.wins=(P.wins||0)+1;P.coins+=clamp(Math.floor(+pz.coins||0),0,100000);n++;toast((rk?'You placed #'+rk+' in '+String(pz.title||'a giveaway').slice(0,24)+'!':'You won a giveaway: '+String(pz.title||'').slice(0,28)+'!')+(+pz.coins>0?' +'+fmt(clamp(Math.floor(+pz.coins),0,100000))+' coins':'')+(pz.code?' · your code is in Giveaways':''),'#ffd23f');if(0)toast(rk?'You placed #'+rk+' in '+String(pz.title||'a giveaway').slice(0,24)+'!':'You won a giveaway: '+String(pz.title||'').slice(0,28)+'!','#ffd23f')}
       if(n){save();refreshCoins();confetti(fxW/2,fxH*.35,100,850);sfx.discover()}if(!$('gw').hidden)renderGW()},()=>{});
   }catch(e){acctReady=false;if(!fbOnline||navigator.onLine===false){pendUser=user;acctUI();toast('Offline: progress saves on this device and syncs when you reconnect','#7cc8ff')}else toast('Could not load your account','#ff6fa8')}}
 
 // merge a cloud profile with what is on this device: keep the newer one, never lose best scores or unlocks
 function adoptCloud(cp){if(P.owner&&P.owner!==UID){P=cp;norm();return}const L=P,mine=L.owner===UID,localNewer=mine&&(L.t||0)>(cp.t||0);
-  const A=localNewer?L:cp,B=localNewer?cp:L;P=A;norm();
+  const A=localNewer?L:cp,B=localNewer?cp:L;P=A;norm();const aOwn=new Set(P.own||[]);
   for(const g of['drop','squish','doku','catch','combo','memory','slice'])P.best[g]=Math.max(P.best[g]||0,(B.best&&B.best[g])||0);
   {const pa=A.prest|0,pb=B.prest|0;if(pa===pb){P.own=[...new Set([...P.own,...(B.own||[])])];P.perma=[...new Set([...(P.perma||[]),...(B.perma||[])])]}else if(pb>pa){P.own=[...(B.own||[])];P.coins=B.coins|0;P.prest=pb;P.ptok=B.ptok|0;P.perma=[...(B.perma||[])]}}P.found=[...new Set([...P.found,...(B.found||[])])];
   if((B.level||1)>(P.level||1)||((B.level||1)===(P.level||1)&&(B.xp||0)>(P.xp||0))){P.level=B.level;P.xp=B.xp}
@@ -3261,7 +3290,13 @@ function adoptCloud(cp){if(P.owner&&P.owner!==UID){P=cp;norm();return}const L=P,
   for(const k of['maxTile','topStreak','wins','rounds'])P[k]=Math.max(P[k]||0,B[k]||0);
   P.gotPrize=Object.assign({},B.gotPrize||{},P.gotPrize||{});
   for(const g in(B.saves||{}))if(!P.saves[g])P.saves[g]=B.saves[g];
+  {const R=Object.assign({},B.rmv||{});for(const[k,t]of Object.entries(A.rmv||{}))R[k]=Math.max(+R[k]||0,+t||0);P.rmv=R;
+    P.own=P.own.filter(k=>!((+R[k]||0)>((aOwn.has(k)?A.t:B.t)||0)));
+    P.taken=[...new Set([...(A.taken||[]),...(B.taken||[])])];P.takeDone=Object.assign({},B.takeDone||{},A.takeDone||{});P.gk=[...new Set([...(A.gk||[]),...(B.gk||[])])].filter(k=>P.own.includes(k));
+    P.gaQ=[...(A.gaQ||[]),...(B.gaQ||[]).filter(e=>e&&!(A.gaQ||[]).some(x=>x&&x.t===e.t&&x.s===e.s&&x.g===e.g))].slice(-SCORE_Q_MAX)}
   norm()}
+// remember when an item was taken away so an older copy of the profile can't bring it back
+function rmvMark(keys){P.rmv=P.rmv&&typeof P.rmv==='object'?P.rmv:{};const now=Date.now();for(const k of keys)P.rmv[k]=now;for(const k in P.rmv)if(now-P.rmv[k]>60*864e5)delete P.rmv[k]}
 function refreshAll(){lvInit();applyBouncy();refreshCoins();if(gid)bestEl.textContent=fmt(P.best[gid]||0);$('pname').value=P.name;$('lbName').value=P.name;if(!$('menu').hidden)renderMenu();if(!$('lb').hidden)renderLB();syncDots()}
 
 function cloudSoon(){if(!UID||!acctReady||!fbOnline)return;clearTimeout(cloudTimer);cloudTimer=setTimeout(pushCloud,2500)}
@@ -3475,7 +3510,7 @@ $('acct').addEventListener('click',e=>{if(e.target.id==='acct')closeAcct()});
 $('acct').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')closeAcct()});
 
 // ---- giveaways
-const GN={any:'any game',drop:'Jelly Jar',squish:'Jelly 2048',doku:'Jellydoku',catch:'Jelly Catch',combo:'Jelly Combo',memory:'Jelly Memory'};
+const GN={any:'any game',drop:'Jelly Jar',squish:'Jelly 2048',doku:'Jellydoku',catch:'Jelly Catch',combo:'Jelly Combo',memory:'Jelly Memory',slice:'Jelly Slice'};
 const gaLive=ga=>!!ga&&!ga.winner&&Date.now()<(+ga.ends||0);
 function gwNew(){if(!GAS)return false;return Object.entries(GAS).some(([id,g])=>gaLive(g)&&!(P.gwSeen&&P.gwSeen[id]))}
 function fmtLeft(ms){if(ms<=0)return'Ended';const m=Math.floor(ms/6e4),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mm=m%60;return d?`${d}d ${h}h left`:h?`${h}h ${mm}m left`:`${Math.max(1,mm)}m left`}
@@ -3489,7 +3524,12 @@ function renderGW(){const L=$('gwList');L.textContent='';const el=(tag,cls,txt)=
   $('gwAdmin').hidden=!isAdmin();$('gvAdmin').hidden=!isAdmin();if(isAdmin()){gvOptions();gvTakeOptions()}
   if(fbDown){L.append(el('p','lgap','Could not reach giveaways. Check your connection.'));$('gwNote').textContent='';return}
   if(!gaReady){L.append(el('p','lgap','Loading…'));return}
-  const list=gaSorted(),signed=!!(UID&&acctReady);if(!list.length)L.append(el('p','lgap','No giveaways right now. Check back soon!'));
+  const list=gaSorted(),signed=!!(UID&&acctReady);
+  {const old=signed?Object.entries(myPrizes||{}).filter(([id,pz])=>pz&&!pz.dev&&pz.code&&!GAS[id.replace(/_t$/,'')]).sort((a,b)=>(+b[1].t||0)-(+a[1].t||0)):[];
+    if(old.length){const card=el('div','gwc gwmine');card.append(el('div','gwt','Your prize codes'),el('div','gwr','From giveaways that have finished. Show a code to the host to claim it.'));
+      for(const[,pz]of old.slice(0,12)){const r=el('div','gwpz');r.append(el('b',null,String(pz.title||'Giveaway').slice(0,40)+(+pz.rank?' · #'+pz.rank:' · raffle winner')),el('div',null,String(pz.prize||'')+(+pz.coins>0?(pz.prize?' + ':'')+fmt(+pz.coins)+' coins (added)':'')),el('div','gwcode',String(pz.code)));card.append(r)}
+      L.append(card)}}
+  if(!list.length)L.append(el('p','lgap','No giveaways right now. Check back soon!'));
   for(const ga of list){const live=gaLive(ga),E=gaEntries[ga.id]||{n:0,t:0,mine:0},card=el('div','gwc'+(live?'':' ended'));
     const top=el('div','gwm');top.append(el('span','gwlive'+(live?'':' off'),live?'LIVE':'ENDED'),el('span',null,live?fmtLeft(+ga.ends-Date.now()):'Ended '+new Date(+ga.ends||0).toLocaleDateString()));card.append(top);
     card.append(el('div','gwt',String(ga.title||'Giveaway').slice(0,40)));
@@ -3507,14 +3547,15 @@ function renderGW(){const L=$('gwList');L.textContent='';const el=(tag,cls,txt)=
     if(live){if(signed){const tx=el('div','tix');for(let i=0;i<10;i++)tx.append(el('i',i<E.mine?'on':''));tx.append(el('span','gwr',` ${E.mine}/10 tickets`));card.append(tx)}
       else card.append(btn('pink','Sign in to enter',()=>openAcct('in')))}
     const tz=UID&&myPrizes[ga.id+'_t'];if(tz){const w=el('div','gwwin');w.append(el('b',null,`You placed #${tz.rank}!`),el('div',null,'Prize: '+String(tz.prize||'')+(+tz.coins>0?' + '+fmt(+tz.coins)+' coins (added)':'')),el('div',null,'Show this code to the host to claim it:'),el('div','gwcode',String(tz.code||'…')));card.append(w)}
+    if(!live){const gone=(+ga.ends||0)+GA_KEEP;card.append(el('div','gwr gwgone',(ga.drawn&&!ga.winner&&(ga.prize||+ga.coins>0)?'No one entered the raffle, so there was no winner. ':(!ga.winner&&!ga.drawn&&(ga.prize||+ga.coins>0))||(gaTiers(ga).length&&!ga.awarded)?(Date.now()<(+ga.ends||0)+GA_GRACE&&!ga.endNow?'Winners are picked 15 minutes after it ends, so rounds played offline can still count. ':'Winners are being picked… '):'')+'This giveaway is removed on '+new Date(gone).toLocaleDateString(undefined,{month:'short',day:'numeric'})+'. Prize codes stay in your list.'))}
     if(ga.winner){const w=el('div','gwwin');w.append('Winner: ',el('b',null,cleanName(ga.winner.name)||'Someone'));
       if(UID&&ga.winner.uid===UID){const pz=myPrizes[ga.id];w.append(el('div',null,'That is you! Show this code to the host to claim your prize:'),el('div','gwcode',pz&&pz.code?String(pz.code):'…'))}
       card.append(w)}
     if(isAdmin()){const a=el('div','gwa');
       if(gaTiers(ga).length){if(ga.awarded)a.append(el('span','gwr','Top prizes sent ✓'));else{let arm2=0;const aw=btn('pink','Award top players',async()=>{if(Date.now()>arm2){arm2=Date.now()+3000;aw.textContent='Tap again to award';setTimeout(()=>{aw.textContent='Award top players'},3100);return}gaAward(ga.id,aw)});a.append(aw)}}
-      if(!ga.winner&&(ga.prize||+ga.coins>0)){const d=btn('mint','Draw raffle winner',()=>gaDraw(ga.id,d));a.append(d)}
+      if(!ga.winner&&!ga.drawn&&(ga.prize||+ga.coins>0)){const d=btn('mint','Draw raffle winner',()=>gaDraw(ga.id,d));a.append(d)}
       if(!ga.winner){
-        if(live)a.append(btn('white','End now',()=>FD.update(fref('giveaways/'+ga.id),{ends:Date.now()}).catch(()=>toast('Could not end it','#ff6fa8'))))}
+        if(live)a.append(btn('white','End now',()=>FD.update(fref('giveaways/'+ga.id),{ends:Date.now(),endNow:true}).catch(()=>toast('Could not end it','#ff6fa8'))))}
       else{const cd=el('span','gwr','Winner code: …');a.append(cd);FD.get(fref('prizes/'+ga.winner.uid+'/'+ga.id)).then(s=>{cd.textContent='Winner code: '+(s.exists()&&s.val().code?s.val().code:'missing')}).catch(()=>{cd.textContent='Winner code: unavailable'})}
       a.append(btn('white',gaEditId===ga.id?'Editing…':'Edit',()=>gaEdit(ga.id)));if(gaEditId===ga.id)card.classList.add('gwedit');
       let arm=0;const x=btn('danger','Delete',async()=>{if(Date.now()>arm){arm=Date.now()+2500;x.textContent='Sure?';setTimeout(()=>{x.textContent='Delete'},2600);return}
@@ -3522,36 +3563,54 @@ function renderGW(){const L=$('gwList');L.textContent='';const el=(tag,cls,txt)=
     L.append(card)}
   $('gwNote').textContent=signed?'Tickets are added automatically when a finished round meets the score.':'Create a free account to enter giveaways.'}
 setInterval(()=>{if(!$('gw').hidden)renderGW()},30000);
-async function gaRound(g,score){if(UID&&acctReady&&!fbOnline){P.gaQ=(Array.isArray(P.gaQ)?P.gaQ:[]).concat({g,s:Math.floor(score)}).slice(-20);save();return 0}if(!UID||!acctReady||!RDB)return 0;let got=0;
-  for(const ga of gaSorted()){if(!gaLive(ga))continue;if(ga.game!=='any'&&ga.game!==g)continue;if(score<(+ga.min||0))continue;
-    try{const r=fref('entries/'+ga.id+'/'+UID),s=await FD.get(r),cur=s.exists()?s.val():null,t=cur?clamp(Math.floor(+cur.tix||0),0,10):0;if(t>=10)continue;
-      await FD.set(r,{name:cleanName(myLb&&myLb.name||P.name),tix:t+1,best:Math.max(cur?Math.floor(+cur.best||0):0,Math.floor(score)),t:FD.serverTimestamp()});got++}catch(e){}}
-  return got}
+function gaRound(g,score){return scoreSubmit(g,score)}
+// one round into every giveaway it qualifies for. A round played offline still counts if it was played before the giveaway
+// ended and arrives within GA_GRACE of the end (the raffle waits that long before drawing).
+async function gaSend(e){if(!scoreCan())return{ok:false};const now=srvNow(),at=+e.t||now,score=Math.floor(+e.s||0),g=e.g;let got=0,ok=true;e.gd=Array.isArray(e.gd)?e.gd:[];
+  for(const ga of gaSorted()){if(e.gd.includes(ga.id))continue;if(ga.winner||ga.awarded||at>=(+ga.ends||0)||now>=(+ga.ends||0)+GA_GRACE)continue;if(at<(+ga.made||0)-6e4)continue;
+    if(ga.game!=='any'&&ga.game!==g)continue;if(score<(+ga.min||0))continue;
+    try{const r=fref('entries/'+ga.id+'/'+UID),s=await FD.get(r),cur=s.exists()?s.val():null,t=cur?clamp(Math.floor(+cur.tix||0),0,10):0;if(t<10){
+        await FD.set(r,{name:cleanName(myLb&&myLb.name||P.name),tix:t+1,best:Math.max(cur?Math.floor(+cur.best||0):0,score),t:FD.serverTimestamp()});got++}e.gd.push(ga.id)}catch(x){ok=false}}
+  return{ok,got}}
 function gaTiers(ga){const t=ga&&ga.tiers;return(Array.isArray(t)?t:t&&typeof t==='object'?Object.values(t):[]).filter(x=>x&&+x.n>=1).map(x=>({n:Math.floor(+x.n),p:String(x.p||'').slice(0,60),c:clamp(Math.floor(+x.c||0),0,100000)})).sort((a,b)=>a.n-b.n)}
-async function gaAward(id,btn){const ga=GAS[id];if(!ga||!isAdmin())return;const TR=gaTiers(ga);if(!TR.length)return;btn.disabled=true;
+async function gaAward(id,btn,auto){const ga=GAS[id];if(!ga||!isAdmin())return;const TR=gaTiers(ga);if(!TR.length)return;if(btn)btn.disabled=true;
   try{const s=await FD.get(fref('entries/'+id)),arr=[];s.forEach(c=>{const v=c.val()||{};arr.push({uid:c.key,best:+v.best||0,tix:+v.tix||0})});arr.sort((a,b)=>b.best-a.best||b.tix-a.tix);
     const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',u={};let n=0;
     arr.forEach((e,i)=>{const rank=i+1,tr=TR.slice().sort((p,q)=>p.n-q.n).find(x=>rank<=x.n);if(!tr)return;const code='JELLY-'+Array.from(crypto.getRandomValues(new Uint8Array(5)),b=>A[b%32]).join('');
       u[`prizes/${e.uid}/${id}_t`]={code,title:String(ga.title||'').slice(0,40),prize:tr.p,coins:clamp(Math.floor(+tr.c||+ga.coins||0),0,100000),rank,tier:tr.n,t:FD.serverTimestamp()};n++});
     u[`giveaways/${id}/awarded`]=true;u[`giveaways/${id}/ends`]=Math.min(+ga.ends||Date.now(),Date.now());await FD.update(FD.ref(RDB),u);
-    confAt(btn,90,850);sfx.discover();toast(n?`Prizes sent to ${n} player${n>1?'s':''}`:'No qualifying players','#ffd23f')}
-  catch(e){toast('Could not award prizes','#ff6fa8');btn.disabled=false}}
-async function gaDraw(id,btn){const ga=GAS[id];if(!ga||!isAdmin())return;btn.disabled=true;
+    if(btn)confAt(btn,90,850);if(!auto)sfx.discover();toast((auto?String(ga.title||'Giveaway').slice(0,24)+' ended: ':'')+(n?`prizes sent to ${n} player${n>1?'s':''}`:'no qualifying players'),'#ffd23f');return true}
+  catch(e){toast('Could not award prizes','#ff6fa8');if(btn)btn.disabled=false;return false}}
+async function gaDraw(id,btn,auto){const ga=GAS[id];if(!ga||!isAdmin())return;if(btn)btn.disabled=true;
   try{const s=await FD.get(fref('entries/'+id));const arr=[];s.forEach(c=>{const v=c.val()||{},t=clamp(Math.floor(+v.tix||0),0,10);if(t>0)arr.push({uid:c.key,name:cleanName(v.name),tix:t})});
-    const tot=arr.reduce((a,e)=>a+e.tix,0);if(!tot){toast('No entries yet','#ff6fa8');btn.disabled=false;return}
+    const tot=arr.reduce((a,e)=>a+e.tix,0);if(!tot){if(auto){await FD.update(fref('giveaways/'+id),{drawn:FD.serverTimestamp()});return true}toast('No entries yet','#ff6fa8');if(btn)btn.disabled=false;return false}
     let r=Math.random()*tot,w=arr[arr.length-1];for(const e of arr){r-=e.tix;if(r<0){w=e;break}}
     const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',code='JELLY-'+Array.from(crypto.getRandomValues(new Uint8Array(5)),b=>A[b%32]).join('');
     let name=w.name;try{const l=await FD.get(fref('lb/'+w.uid));if(l.exists()&&l.val().name)name=cleanName(l.val().name)}catch(e){}
     await FD.set(fref('prizes/'+w.uid+'/'+id),{code,title:String(ga.title||'').slice(0,40),prize:String(ga.prize||'').slice(0,80),coins:clamp(Math.floor(+ga.coins||0),0,100000),t:FD.serverTimestamp()});
     await FD.update(fref('giveaways/'+id),{winner:{uid:w.uid,name:name||'Someone'},drawn:FD.serverTimestamp(),ends:Math.min(+ga.ends||Date.now(),Date.now())});
-    confAt(btn,90,850);sfx.discover();toast('Winner: '+(name||'Someone'),'#ffd23f')}
-  catch(e){toast('Could not draw a winner','#ff6fa8');btn.disabled=false}}
+    if(btn)confAt(btn,90,850);if(!auto)sfx.discover();toast((auto?String(ga.title||'Giveaway').slice(0,24)+' ended. Raffle winner: ':'Winner: ')+(name||'Someone'),'#ffd23f');return true}
+  catch(e){toast('Could not draw a winner','#ff6fa8');if(btn)btn.disabled=false;return false}}
+// ended giveaways settle themselves: top prizes go out, the raffle is drawn, and a week later the giveaway is cleared away.
+// There is no server, so the dev account's game does this whenever it is open (checked every minute).
+const GA_KEEP=7*864e5;let gaAutoBusy=false;
+async function gaAuto(){if(gaAutoBusy||!isAdmin()||!acctReady||!fbOnline||!RDB||!gaReady)return;gaAutoBusy=true;
+  try{const now=srvNow();for(const ga of gaSorted()){const end=+ga.ends||0;if(!end||now<end+(ga.endNow?0:GA_GRACE))continue;
+      if(now>end+GA_KEEP){try{await FD.remove(fref('entries/'+ga.id));await FD.remove(fref('giveaways/'+ga.id))}catch(e){}continue}
+      const needT=gaTiers(ga).length>0&&!ga.awarded,needR=!ga.winner&&!ga.drawn&&!!(ga.prize||+ga.coins>0);if(!needT&&!needR)continue;
+      // write-once claim so two open dev devices never settle the same giveaway twice
+      const tok=Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+      try{if(ga.claim)continue;await FD.set(fref('giveaways/'+ga.id+'/claim'),tok);const c=await FD.get(fref('giveaways/'+ga.id+'/claim'));if(c.val()!==tok)continue}catch(e){continue}
+      let ok=true;if(needT)ok=(await gaAward(ga.id,null,true))!==false&&ok;if(needR)ok=(await gaDraw(ga.id,null,true))!==false&&ok;
+      if(!ok)FD.remove(fref('giveaways/'+ga.id+'/claim')).catch(()=>{})}}
+  finally{gaAutoBusy=false}}
+setInterval(gaAuto,60000);
 $('gaGo').onclick=async()=>{if(!isAdmin())return;const m=$('gaMsg'),bad=t=>{m.textContent=t;m.className='nmsg bad';sfx.nope()};
   const t=$('gaTitle').value.trim().slice(0,40),pz=$('gaPrize').value.trim().slice(0,80),co=clamp(Math.floor(+$('gaCoins').value||0),0,100000),gm=$('gaGame').value,mn=clamp(Math.floor(+$('gaMin').value||0),0,1e8),len=+$('gaLen').value||864e5;
   const tiers=[...$('gaTiers').querySelectorAll('.trow')].map(r=>({n:clamp(Math.floor(+r.querySelector('.tn').value||0),0,1000),p:r.querySelector('.tp').value.trim().slice(0,60),c:clamp(Math.floor(+r.querySelector('.tc').value||0),0,100000)})).filter(x=>x.n>=1&&(x.p||x.c>0)).sort((a,b)=>b.n-a.n);
   if(t.length<3)return bad('Give it a title (3+ characters).');if(pz.length<2&&co<=0&&!tiers.length)return bad('Add a raffle prize or at least one top-player prize.');
   $('gaGo').disabled=true;
-  try{if(gaEditId){const id=gaEditId;if(!GAS[id])throw new Error('gone');const u={title:t,prize:pz,coins:co,game:gm,min:mn,tiers:tiers.length?tiers:null};if($('gaLen').value!=='keep')u.ends=Date.now()+len;
+  try{if(gaEditId){const id=gaEditId;if(!GAS[id])throw new Error('gone');const u={title:t,prize:pz,coins:co,game:gm,min:mn,tiers:tiers.length?tiers:null};if($('gaLen').value!=='keep'){u.ends=Date.now()+len;if(!GAS[id].winner&&!GAS[id].awarded){u.claim=null;u.drawn=null}}
       await FD.update(fref('giveaways/'+id),u);gaEditEnd();m.textContent='Changes saved!';m.className='nmsg';sfx.discover();confAt($('gaGo'),40,500);$('gaGo').disabled=false;return}
     const r=FD.push(fref('giveaways')),data={title:t,prize:pz,coins:co,game:gm,min:mn,ends:Date.now()+len,made:FD.serverTimestamp()};if(tiers.length)data.tiers=tiers;await FD.set(r,data);gaTierReset();
     m.textContent='Giveaway is live!';m.className='nmsg';$('gaTitle').value='';$('gaPrize').value='';sfx.discover();confAt($('gaGo'),50,600)}
@@ -3694,7 +3753,7 @@ function popCheck(){const seen=P.newsSeen||{},n=newsList().find(x=>x.pop===true&
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&newsReady)setTimeout(popCheck,800)});
 function newsList(){return Object.entries(NEWS||{}).filter(([,n])=>n&&typeof n==='object').map(([id,n])=>Object.assign({id},n)).sort((a,b)=>(+b.t||0)-(+a.t||0))}
 function unreadNews(){const seen=P.newsSeen||{};return newsList().filter(n=>!seen[n.id]).length}
-function mailSync(){const n=unreadNews()+Object.keys(freqIn).length+sugUnseen(),b=$('mailN');b.hidden=!n;b.textContent=n>9?'9+':n;$('mailBtn').classList.toggle('has',n>0)}
+function mailSync(){const n=unreadNews()+Object.keys(freqIn).length+sugUnseen(),b=$('mailN');b.hidden=!n;b.textContent=n>9?'9+':n;$('mailBtn').classList.toggle('has',n>0);const mb=$('mMailN');if(mb){mb.hidden=!n;mb.textContent=n>9?'9+':n}}
 function openMail(){audio();sfx.ui();paused=true;$('mail').hidden=false;mailTab(mTab)}
 function closeMail(){$('mail').hidden=true;if(!anyOpen())paused=false}
 function renderReqs(box){box.textContent='';const ids=Object.keys(freqIn);if(!ids.length)return 0;
@@ -3750,7 +3809,12 @@ function renderSug(){const signed=!!(UID&&acctReady),adm=isAdmin(),el=(t,c,x)=>{
       f.append(vb,el('span','gwr',own?'Yours':x.v===1?'1 upvote':x.v+' upvotes'));c.append(f)}
     if(!adm){L.append(c);continue}const a=el('div','suga');
     if(!contribSet.has(x.uid)){const g=el('button','btn small mint','Give Contributor tag');g.type='button';g.onclick=async()=>{g.disabled=true;try{await FD.set(fref('contrib/'+x.uid),true);toast((cleanName(x.name)||'They')+' is now a Contributor!','#ffb547');confAt(g,40,500)}catch(e){toast('Could not give the tag','#ff6fa8');g.disabled=false}};a.append(g)}
-    else a.append(el('span','gwr','Contributor ✓'));
+    else{a.append(el('span','gwr','Contributor ✓'));P.sugPaid=P.sugPaid&&typeof P.sugPaid==='object'?P.sugPaid:{};
+      // already a Contributor: accepting another idea pays 2,500 coins instead (one payment per suggestion)
+      if(P.sugPaid[x.id])a.append(el('span','gwr','Idea accepted · 2,500 paid ✓'));
+      else{let arm2=0;const pay=el('button','btn small mint','Accept idea: +2,500 coins');pay.type='button';pay.onclick=async()=>{if(Date.now()>arm2){arm2=Date.now()+3000;pay.textContent='Tap again to pay 2,500';setTimeout(()=>{pay.textContent='Accept idea: +2,500 coins'},3100);return}
+        pay.disabled=true;try{await FD.set(fref('prizes/'+x.uid+'/sug_'+x.id),{dev:true,sug:true,coins:2500,title:'Idea accepted',prize:String(x.x||'').slice(0,60),t:FD.serverTimestamp()});P.sugPaid[x.id]=1;save();toast('Sent 2,500 coins to '+(cleanName(x.name)||'them')+' for their idea!','#ffb547');sfx.coin(6);confAt(pay,40,500);renderSug()}
+          catch(e){toast('Could not send the coins','#ff6fa8');pay.disabled=false}};a.append(pay)}}
     let arm=0;const d=el('button','btn small danger','Delete');d.type='button';d.onclick=async()=>{if(Date.now()>arm){arm=Date.now()+2500;d.textContent='Sure?';setTimeout(()=>{d.textContent='Delete'},2600);return}try{await FD.remove(fref('suggest/'+x.id));FD.remove(fref('sugvote/'+x.id)).catch(()=>{})}catch(e){toast('Could not delete it','#ff6fa8')}};a.append(d);c.append(a);L.append(c)}
   if(adm&&arr.length){const top=Math.max(...arr.map(x=>+x.t||0));if(top>(P.sugSeen||0)){P.sugSeen=top;save();mailSync()}}}
 $('sugGo').onclick=async()=>{if(!UID||!acctReady)return openAcct('in');const m=$('sugMsg'),say=(t,bad)=>{m.textContent=t;m.className='nmsg'+(bad?' bad':'');m.dataset.k=''};
@@ -3959,10 +4023,10 @@ function betaInit(){FD.onValue(FD.ref(RDB,'launch'),s=>{const v=s.val();launchOn
   FD.onValue(FD.ref(RDB,'status'),s=>{STAT=s.val()||{};statRefresh()},()=>{});
   FD.onValue(FD.ref(RDB,'contrib'),s=>{const v=s.val()||{};contribSet=new Set(Object.keys(v).filter(k=>v[k]===true));try{giftApply()}catch(e){}if(!$('lb').hidden)renderLB();if(!$('fr').hidden)renderFriends();if(gvUid)gvRender();if(!$('mail').hidden&&mTab==='sug')renderSug()},()=>{});
   FD.onValue(FD.ref(RDB,'roles'),s=>{const v=s.val()||{};roleMap={};for(const k in v)if(v[k]==='dev'||v[k]==='helper')roleMap[k]=v[k];rolesLoaded=true;giftApply();if(!$('lb').hidden)renderLB();if(pfD&&!$('pfShow').hidden&&UID)pfShowUI({id:UID});if(!$('fr').hidden)renderFriends();if(gvUid)gvRender()},()=>{rolesLoaded=true;giftApply()});
-  FD.onValue(FD.ref(RDB,'beta'),s=>{const v=s.val()||{};betaSet=new Set(Object.keys(v).filter(k=>v[k]===true));betaLoaded=true;betaSync();if(!$('lb').hidden)renderLB()},()=>{})}
+  FD.onValue(FD.ref(RDB,'beta'),s=>{const v=s.val()||{};betaSet=new Set(Object.keys(v).filter(k=>v[k]===true));betaLoaded=true;betaSync();if(!$('lb').hidden)renderLB();if(gvUid)gvRender()},()=>{})}
 function betaSync(){if(!UID||!acctReady||!betaLoaded)return;const mine=betaSet.has(UID);
-  if(mine&&!P.betaGot){P.beta=1;P.betaGot=1;P.coins+=1000;for(const k of BETA_OWN())if(!P.own.includes(k))P.own.push(k);save();refreshCoins();showBeta()}
-  else if(!mine&&P.betaGot){P.beta=0;P.betaGot=0;P.coins=Math.max(0,(P.coins||0)-1000);P.own=P.own.filter(k=>!BETA_OWN().includes(k));
+  if(mine&&!P.betaGot){P.beta=1;P.betaGot=1;P.coins+=1000;if(Array.isArray(P.taken))P.taken=P.taken.filter(t=>!BETA_OWN().some(k=>k.endsWith(':'+t)));for(const k of BETA_OWN())if(!P.own.includes(k))P.own.push(k);save();refreshCoins();showBeta()}
+  else if(!mine&&P.betaGot){P.beta=0;P.betaGot=0;P.coins=Math.max(0,(P.coins||0)-1000);rmvMark(BETA_OWN().filter(k=>P.own.includes(k)));P.own=P.own.filter(k=>!BETA_OWN().includes(k));
     for(const g in DEF)for(const cat in P.cos[g]){const id=P.cos[g][cat];if(['beta','betacrown','betaw','betab'].includes(id))P.cos[g][cat]=DEF[g][cat]}
     save();refreshCoins();if(G&&G.restyle)G.restyle();syncMe();toast('Beta Tester rewards were removed','#9a5bff')}
   else if(mine&&!P.beta){P.beta=1;save()}}
@@ -4001,12 +4065,12 @@ $('tagiOk').onclick=()=>{$('tagi').hidden=true};$('tagi').addEventListener('clic
 function rolePill(uid){const r=uid&&roleMap[uid];if(r!=='dev'&&r!=='helper')return null;const s=document.createElement('span');s.className=r==='dev'?'devpill':'helppill';s.dataset.tag=r;s.textContent=r==='dev'?'DEV':'HELPER';s.title=r==='dev'?'Developer':'Helper';return s}
 function giftUser(user){if(giftUnsub){try{giftUnsub()}catch(e){}giftUnsub=null}myGifts=null;if(!user||!RDB)return;const uid=user.uid;
   giftUnsub=FD.onValue(FD.ref(curDB(),'gifts/'+uid),s=>{if(UID!==uid)return;const v=s.val()||{};myGifts=Object.keys(v).filter(k=>v[k]===true);giftApply()},()=>{})}
-function giftApply(){if(!UID||!acctReady||myGifts===null||!rolesLoaded)return;{const cur=new Set();for(const id of myGifts)for(const k of giftKeys(id))cur.add(k);const prev=giftApply.prev||cur;giftApply.fresh=new Set([...cur].filter(k=>!prev.has(k)));giftApply.prev=cur;if(giftApply.fresh.size&&P.taken){P.taken=P.taken.filter(t=>![...giftApply.fresh].some(k=>k.endsWith(':'+t)))}}
+function giftApply(){if(!UID||!acctReady||myGifts===null||!rolesLoaded)return;{const cur=new Set();for(const id of myGifts)for(const k of giftKeys(id))cur.add(k);if(ROLE_T[roleMap[UID]])for(const k of ROLE_T[roleMap[UID]][1])cur.add(k);if(contribSet.has(UID))cur.add('prof:title:contrib');const prev=giftApply.prev||(Array.isArray(P.gall)?new Set(P.gall):cur);giftApply.fresh=new Set([...cur].filter(k=>!prev.has(k)));giftApply.prev=cur;if(giftApply.fresh.size&&P.taken){P.taken=P.taken.filter(t=>![...giftApply.fresh].some(k=>k.endsWith(':'+t)))}}
   const role=roleMap[UID],want=new Set();for(const id of myGifts)for(const k of giftKeys(id))want.add(k);if(ROLE_T[role])for(const k of ROLE_T[role][1])want.add(k);if(contribSet.has(UID))want.add('prof:title:contrib');
   P.gk=Array.isArray(P.gk)?P.gk:[];{const ga=[...want].sort();if(JSON.stringify(ga)!==JSON.stringify(P.gall||[])){P.gall=ga;save()}}const added=[],gone=[];
   for(const k of[...want]){const[,c2,i2]=k.split(':');if((P.taken||[]).includes(c2+':'+i2)){if(!giftApply.fresh||!giftApply.fresh.has(k))want.delete(k)}}
   for(const k of want)if(!P.own.includes(k)){P.own.push(k);P.gk.push(k);if(!P.fresh.includes(k))P.fresh.push(k);added.push(k)}
-  for(const k of P.gk.slice())if(!want.has(k)){P.gk=P.gk.filter(x=>x!==k);P.own=P.own.filter(x=>x!==k);P.fresh=P.fresh.filter(x=>x!==k);gone.push(k);const[g,cat,id]=k.split(':');if(P.cos[g]&&P.cos[g][cat]===id)P.cos[g][cat]=DEF[g][cat]}
+  for(const k of P.gk.slice())if(!want.has(k)){rmvMark([k]);P.gk=P.gk.filter(x=>x!==k);P.own=P.own.filter(x=>x!==k);P.fresh=P.fresh.filter(x=>x!==k);gone.push(k);const[g,cat,id]=k.split(':');if(P.cos[g]&&P.cos[g][cat]===id)P.cos[g][cat]=DEF[g][cat]}
   if(!added.length&&!gone.length)return;save();
   if(gone.length){if(G&&G.restyle)G.restyle();syncMe()}
   if(added.length)showDevGift(added);if(!$('style').hidden)renderStyle();if(!$('menu').hidden)renderMenu();syncDots()}
@@ -4021,7 +4085,7 @@ $('dgLater').onclick=closeDevGift;
 $('dgEquip').onclick=()=>{if(!devPrev)return;for(const k of devPrev.keys){const[g,cat,id]=k.split(':');if(owns(g,cat,id)&&P.cos[g])P.cos[g][cat]=id;P.fresh=P.fresh.filter(f=>f!==k)}save();if(G&&G.restyle)G.restyle();syncMe();closeDevGift();toast('DEV mode: on','#ff2d55');sfx.discover()};
 function gvOptions(){const s=$('gvItem');if(s.options.length)return;const CATN={set:'Critters',hat:'Hat',jar:'Jar',wall:'Wallpaper',board:'Board',title:'Title',frame:'Frame'};
   let h='<optgroup label="DEV exclusives"><option value="kit">Full DEV kit (everything below)</option>'+Object.entries(DEVG).map(([id,v])=>`<option value="${id}">${esc(v[0])}</option>`).join('')+'</optgroup>'+
-    '<optgroup label="Tags"><option value="r_dev">Developer tag + title</option><option value="r_helper">Helper tag + title</option><option value="c_contrib">Contributor tag</option></optgroup>';
+    '<optgroup label="Tags"><option value="r_dev">Developer tag + title</option><option value="r_helper">Helper tag + title</option><option value="c_contrib">Contributor tag + title</option><option value="c_beta">Beta Tester tag + title</option></optgroup>';
   for(const g of['prof','drop','squish','doku']){h+=`<optgroup label="${g==='prof'?'Profile':esc(GAMES[g].name)}">`;for(const cat in STYLE[g])for(const it of STYLE[g][cat].items){if(it[3]==='d'||it[0]==='none')continue;h+=`<option value="i_${g}:${cat}:${esc(it[0])}">${CATN[cat]||cat}: ${esc(it[1])}</option>`}h+='</optgroup>'}
   s.innerHTML=h}
 async function gvFind(){if(!isAdmin())return;const m=$('gvMsg'),v=cleanName($('gvName').value);if(v.length<2){m.textContent='Type the player name.';m.className='nmsg bad';sfx.nope();return}
@@ -4037,8 +4101,8 @@ function gvChip(txt,rm){const c=document.createElement('span');c.className='gvch
   x.onclick=async()=>{x.disabled=true;try{await rm();toast('Taken back: '+txt,'#ff6fa8')}catch(e){toast('Could not take it back','#ff6fa8');x.disabled=false}};c.append(x);return c}
 function gvRender(){const w=$('gvWho');if(!gvUid)return;w.textContent='';const head=document.createElement('div');head.className='gvh';const b=document.createElement('b');b.textContent=gvNm;head.append('Giving to ',b);const rp=rolePill(gvUid);if(rp)head.append(rp);w.append(head);
   const ids=Object.keys(gvGifts).filter(k=>gvGifts[k]===true),role=roleMap[gvUid],box=document.createElement('div');box.className='gvchips';
-  const isC=contribSet.has(gvUid);if(!ids.length&&!role&&!isC){const p=document.createElement('span');p.className='gvnone';p.textContent='Nothing gifted yet. Tap × on an item later to take it back.';box.append(p)}
-  if(role)box.append(gvChip(ROLE_T[role][0]+' tag',()=>FD.remove(fref('roles/'+gvUid))));if(isC)box.append(gvChip('Contributor tag',()=>FD.remove(fref('contrib/'+gvUid))));
+  const isC=contribSet.has(gvUid),isB=betaSet.has(gvUid);if(!ids.length&&!role&&!isC&&!isB){const p=document.createElement('span');p.className='gvnone';p.textContent='Nothing gifted yet. Tap × on an item later to take it back.';box.append(p)}
+  if(role)box.append(gvChip(ROLE_T[role][0]+' tag + title',()=>FD.remove(fref('roles/'+gvUid))));if(isC)box.append(gvChip('Contributor tag + title',()=>FD.remove(fref('contrib/'+gvUid))));if(isB)box.append(gvChip('Beta Tester tag + title',()=>FD.remove(fref('beta/'+gvUid))));
   for(const id of ids)box.append(gvChip(giftName(id),()=>FD.remove(fref('gifts/'+gvUid+'/'+id))));w.append(box)}
 $('gvCoinGo').onclick=async()=>{if(!isAdmin()||!gvUid)return;const m=$('gvMsg'),n=Math.floor(+$('gvCoins').value||0),btn=$('gvCoinGo');
   if(n<1||n>1e9){m.textContent='Type an amount from 1 to 1,000,000,000.';m.className='nmsg bad';sfx.nope();return}
@@ -4048,8 +4112,14 @@ $('gvCoinGo').onclick=async()=>{if(!isAdmin()||!gvUid)return;const m=$('gvMsg'),
   catch(e){m.textContent='Could not send coins.';m.className='nmsg bad';sfx.nope()}btn.disabled=false};
 $('gvCoins').addEventListener('keydown',e=>e.stopPropagation());
 $('gvFind').onclick=gvFind;$('gvName').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')gvFind()});
+// special titles and their tags always go together: give one and the player gets both, take one and both go
+const TAG_TITLES=new Set(['dev','helper','contrib','beta']);
+const tagOfTitle=k=>{const p=String(k).split(':');return p[0]==='prof'&&p[1]==='title'&&TAG_TITLES.has(p[2])?p[2]:null};
+async function gvTagSet(uid,tag,on){if(tag==='dev'||tag==='helper'){if(on)await FD.set(fref('roles/'+uid),tag);else if(roleMap[uid]===tag)await FD.remove(fref('roles/'+uid))}
+  else if(tag==='contrib'){if(on)await FD.set(fref('contrib/'+uid),true);else await FD.remove(fref('contrib/'+uid))}
+  else if(tag==='beta'){if(on)await FD.set(fref('beta/'+uid),true);else await FD.remove(fref('beta/'+uid))}}
 $('gvGo').onclick=async()=>{if(!isAdmin()||!gvUid)return;const v=$('gvItem').value,m=$('gvMsg'),btn=$('gvGo');if(!v)return;btn.disabled=true;
-  try{if(v==='c_contrib')await FD.set(fref('contrib/'+gvUid),true);else if(v.startsWith('r_'))await FD.set(fref('roles/'+gvUid),v.slice(2));else{const u={};for(const id of v==='kit'?Object.keys(DEVG):[v])u[id]=true;await FD.update(fref('gifts/'+gvUid),u)}
+  try{const tt=v.startsWith('i_')?tagOfTitle(v.slice(2)):null;if(tt)await gvTagSet(gvUid,tt,true);else if(v==='c_contrib'||v==='c_beta')await gvTagSet(gvUid,v.slice(2),true);else if(v.startsWith('r_'))await gvTagSet(gvUid,v.slice(2),true);else{const u={};for(const id of v==='kit'?Object.keys(DEVG):[v])u[id]=true;await FD.update(fref('gifts/'+gvUid),u)}
     m.textContent='Sent to '+gvNm+'! They get it next time they open the game.';m.className='nmsg';sfx.discover();confAt(btn,40,500)}
   catch(e){m.textContent='Could not send. Publish the new database rules first.';m.className='nmsg bad';sfx.nope()}
   btn.disabled=false};
@@ -4608,7 +4678,7 @@ function gvTakeOptions(){const s=$('gvTake');if(s.options.length)return;const CA
   s.innerHTML=h}
 async function gvTake(body,msg){const m=$('gvTakeMsg');try{await FD.set(fref('takes/'+gvUid+'/t'+Date.now().toString(36)),Object.assign(body,{t:FD.serverTimestamp()}));m.textContent=msg+' It happens as soon as they’re online.';m.className='nmsg';sfx.ui()}catch(e){m.textContent='Could not do it. Publish the new database rules first.';m.className='nmsg bad';sfx.nope()}}
 $('gvTakeGo').onclick=async()=>{if(!isAdmin()||!gvUid)return;const k=$('gvTake').value,b=$('gvTakeGo');if(!k)return;if(b.dataset.arm!==k){b.dataset.arm=k;b.textContent='Tap again to take it';setTimeout(()=>{b.dataset.arm='';b.textContent='Take item'},3000);return}b.dataset.arm='';b.textContent='Take item';
-  const it=itemByKey(k);try{const g=Object.entries(gvGifts).filter(([id,v])=>v===true&&giftKeys(id).some(x=>x.split(':').slice(1).join(':')===k.split(':').slice(1).join(':')));for(const[id]of g)await FD.remove(fref('gifts/'+gvUid+'/'+id))}catch(e){}await gvTake({k:'item',key:k},`Taking ${it?it.n:k} from ${gvNm}.`)};
+  const it=itemByKey(k);try{const g=Object.entries(gvGifts).filter(([id,v])=>v===true&&giftKeys(id).some(x=>x.split(':').slice(1).join(':')===k.split(':').slice(1).join(':')));for(const[id]of g)await FD.remove(fref('gifts/'+gvUid+'/'+id))}catch(e){}const tt=tagOfTitle(k);if(tt){try{await gvTagSet(gvUid,tt,false)}catch(e){}}await gvTake({k:'item',key:k},`Taking ${it?it.n:k}${tt?' and its tag':''} from ${gvNm}.`)};
 $('gvTakeF').onchange=()=>{$('gvTakeOther').hidden=$('gvTakeF').value!=='_other'};
 $('gvTakeNGo').onclick=async()=>{if(!isAdmin()||!gvUid)return;let f=$('gvTakeF').value;if(f==='_other')f=$('gvTakeOther').value.trim();if(!/^[A-Za-z_][\w.]{0,39}$/.test(f)){$('gvTakeMsg').textContent='Type a field name like coins.';$('gvTakeMsg').className='nmsg bad';return}
   const raw=$('gvTakeN').value.trim(),n=raw===''?null:Math.floor(+raw),b=$('gvTakeNGo'),arm=f+'|'+raw;if(n!==null&&!(n>0))return;if(b.dataset.arm!==arm){b.dataset.arm=arm;b.textContent='Tap again: take '+(n===null?'ALL':fmt(n))+' '+f;setTimeout(()=>{b.dataset.arm='';b.textContent='Take it'},3000);return}b.dataset.arm='';b.textContent='Take it';
@@ -4618,7 +4688,7 @@ for(const id of['gvTakeN','gvTakeOther'])$(id).addEventListener('keydown',e=>e.s
 var takeUnsub=null;
 function takeWatch(uid){if(takeUnsub){try{takeUnsub()}catch(e){}takeUnsub=null}if(!uid||!FD)return;takeUnsub=FD.onValue(fref('takes/'+uid),s=>{const v=s.val()||{};if(UID!==uid)return;P.takeDone=P.takeDone||{};let any=false;
   for(const[id,x]of Object.entries(v)){if(!x||P.takeDone[id]){FD.remove(fref('takes/'+uid+'/'+id)).catch(()=>{});continue}P.takeDone[id]=1;any=true;
-    try{if(x.k==='item'&&typeof x.key==='string'){const[,cat,iid]=x.key.split(':');P.own=P.own.filter(k=>{const p=String(k).split(':');return!(p[1]===cat&&p[2]===iid)});if(P.perma)P.perma=P.perma.filter(k=>k!==cat+':'+iid);P.gk=(P.gk||[]).filter(k=>!k.endsWith(':'+cat+':'+iid));P.taken=[...new Set([...(P.taken||[]),cat+':'+iid])];
+    try{if(x.k==='item'&&typeof x.key==='string'){const[,cat,iid]=x.key.split(':');rmvMark(P.own.filter(k=>{const p=String(k).split(':');return p[1]===cat&&p[2]===iid}));P.own=P.own.filter(k=>{const p=String(k).split(':');return!(p[1]===cat&&p[2]===iid)});if(P.perma)P.perma=P.perma.filter(k=>k!==cat+':'+iid);P.gk=(P.gk||[]).filter(k=>!k.endsWith(':'+cat+':'+iid));P.taken=[...new Set([...(P.taken||[]),cat+':'+iid])];
         for(const g in P.cos)if(P.cos[g][cat]===iid)P.cos[g][cat]=(DEF[g]&&DEF[g][cat])||'none';if(P.show){if(Array.isArray(P.show.sc))P.show.sc=P.show.sc.map(k=>k&&k.endsWith(':'+cat+':'+iid)?'':k);if(cat==='set'&&P.show.sk===iid)delete P.show.sk;if(cat==='hat'&&P.show.ht===iid)delete P.show.ht}
         const it=itemByKey(x.key);toast('The developer removed '+(it?it.n:'an item')+' from your account','#ff6fa8')}
       else if((x.k==='num'||x.k==='all')&&typeof x.f==='string'&&/^[A-Za-z_][\w.]{0,39}$/.test(x.f)){const path=x.f.split('.');let o=P;for(const p of path.slice(0,-1)){if(!o[p]||typeof o[p]!=='object')o[p]={};o=o[p]}const last=path[path.length-1],cur=+o[last]||0,amt=x.k==='all'?cur:Math.floor(+x.n||0);
