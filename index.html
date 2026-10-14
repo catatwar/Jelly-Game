@@ -311,6 +311,10 @@ select{font:600 16px var(--body);color:var(--ink);border:2.5px solid var(--ink);
 .mthumb{width:46px;height:46px;border-radius:10px;object-fit:cover;border:2px solid var(--ink);flex:none}
 .mdot{width:12px;height:12px;border-radius:50%;background:var(--pink);border:2px solid var(--ink);flex:none}
 .nwcard{gap:10px}
+.nwfeed{display:flex;flex-direction:column;gap:12px;width:100%;max-height:72vh;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:2px 4px 8px;box-sizing:border-box;text-align:left}
+.nwpost{border:3px solid var(--ink);border-radius:18px;background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:8px;box-shadow:0 4px 0 var(--ink)}.nwpost.new{border-color:#ff6fa8;box-shadow:0 4px 0 #ff6fa8}.nwpost.focus{background:#f0f8ff}
+.nwph{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:700;color:var(--muted)}.nwtag{background:#7cc8ff;color:var(--ink);border-radius:99px;padding:1px 8px;font-size:11px}.nwnew{background:#ff6fa8;color:#fff;border-radius:99px;padding:1px 8px;font-size:11px}
+.nwpost .nwt{font-size:24px}.nwpa{display:flex;gap:8px;flex-wrap:wrap}
 .nwt{font-family:var(--display);font-weight:400;font-size:30px;line-height:1.05;margin:0;word-break:break-word}
 .nwt.sm{font-size:22px}
 .nwimg{width:100%;max-height:300px;object-fit:cover;border-radius:14px;border:3px solid var(--ink);box-sizing:border-box}
@@ -950,12 +954,10 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
 
 <div id="news" class="overlay" hidden>
   <div class="card box3 menu nwcard" role="dialog" aria-label="Update">
-    <div class="mtop"><span class="lbl" id="nwDate"></span><button class="btn small white" id="nwClose" type="button">Close</button></div>
-    <h2 class="nwt" id="nwTitle"></h2>
-    <img id="nwImg" class="nwimg" alt="" hidden>
-    <div class="rich" id="nwBody"></div>
-    <button class="btn small white" id="nwEdit" type="button" hidden>Edit post</button>
-    <button class="linkbtn danger" id="nwDel" type="button" hidden>Delete post</button>
+    <div class="mtop"><span class="mtitle">Updates &amp; news</span><button class="btn small white" id="nwClose" type="button">Close</button></div>
+    <span class="lbl" id="nwCount"></span>
+    <div class="nwfeed" id="nwFeed"></div>
+    <div hidden><span id="nwDate"></span><h2 id="nwTitle"></h2><img id="nwImg" alt=""><div id="nwBody"></div><button id="nwEdit" type="button"></button><button id="nwDel" type="button"></button></div>
   </div>
 </div>
 
@@ -3648,12 +3650,19 @@ $('sugGo').onclick=async()=>{if(!UID||!acctReady)return openAcct('in');const m=$
   catch(e){say(String(e&&e.message||'').includes('PERMISSION')?'That could not be sent. Wait a minute between suggestions and keep it kind.':'Could not send. Try again.',1);sfx.nope()}
   $('sugGo').disabled=false};
 // ---- update reader
-function openNews(id){const n=NEWS[id];if(!n){FD.get(FD.ref(RDB,'news/'+id)).then(s=>{if(s.exists()){NEWS[id]=s.val();openNews(id)}}).catch(()=>{});return}
-  audio();paused=true;P.newsSeen=P.newsSeen||{};P.newsSeen[id]=1;save();mailSync();
-  $('nwTitle').textContent=String(n.title||'Update').slice(0,80);$('nwDate').textContent=fmtDay(n.t)+(n.push?' · Game update':'');
-  const im=$('nwImg');if(okImg(n.img)){im.src=n.img;im.hidden=false}else{im.hidden=true;im.removeAttribute('src')}
-  $('nwBody').innerHTML=md(String(n.body||'').slice(0,6000));$('nwDel').hidden=!isAdmin();$('nwDel').dataset.id=id;$('nwEdit').hidden=!isAdmin();$('nwEdit').dataset.id=id;$('nwDel').textContent='Delete post';
-  $('news').hidden=false;$('news').scrollTop=0;if(!$('mail').hidden)renderMail();sfx.discover()}
+function openNews(id){if(id&&!NEWS[id]){FD.get(FD.ref(RDB,'news/'+id)).then(s=>{if(s.exists()){NEWS[id]=s.val();openNews(id)}}).catch(()=>{});return}
+  audio();paused=true;const seen0=Object.assign({},P.newsSeen||{}),list=newsList();P.newsSeen=P.newsSeen||{};for(const n of list)P.newsSeen[n.id]=1;save();mailSync();
+  const F=$('nwFeed');F.textContent='';let tgt=null;const nNew=list.filter(n=>!seen0[n.id]).length;$('nwCount').textContent=list.length?`${list.length} post${list.length===1?'':'s'}${nNew?` · ${nNew} new`:''} · newest first`:'No updates yet';
+  for(const n of list){const c=document.createElement('article');c.className='nwpost'+(seen0[n.id]?'':' new')+(n.id===id?' focus':'');const h=document.createElement('div');h.className='nwph';h.append(fmtDay(n.t));
+    if(n.push){const t=document.createElement('span');t.className='nwtag';t.textContent='Game update';h.append(t)}if(!seen0[n.id]){const t=document.createElement('span');t.className='nwnew';t.textContent='NEW';h.append(t)}c.append(h);
+    const ti=document.createElement('h2');ti.className='nwt';ti.textContent=String(n.title||'Update').slice(0,80);c.append(ti);
+    if(okImg(n.img)){const im=document.createElement('img');im.className='nwimg';im.alt='';im.loading='lazy';im.src=n.img;c.append(im)}
+    const b=document.createElement('div');b.className='rich';b.innerHTML=md(String(n.body||'').slice(0,6000));c.append(b);
+    if(isAdmin()){const a=document.createElement('div');a.className='nwpa';const e=document.createElement('button');e.type='button';e.className='btn small white';e.textContent='Edit post';e.onclick=()=>editNews(n.id);
+      const d=document.createElement('button');d.type='button';d.className='linkbtn danger';d.textContent='Delete post';d.onclick=async()=>{if(d.textContent!=='Tap again to delete'){d.textContent='Tap again to delete';setTimeout(()=>{d.textContent='Delete post'},2500);return}try{await FD.remove(FD.ref(RDB,'news/'+n.id));delete NEWS[n.id];c.remove();toast('Post deleted','#ff6fa8')}catch(x){toast('Could not delete it','#ff6fa8')}};a.append(e,d);c.append(a)}
+    F.append(c);if(n.id===id)tgt=c}
+  if(!list.length){const p=document.createElement('p');p.className='lgap';p.textContent='No updates yet. Check back soon!';F.append(p)}
+  $('news').hidden=false;$('news').scrollTop=0;F.scrollTop=0;if(tgt&&tgt!==F.firstChild)requestAnimationFrame(()=>{F.scrollTop=tgt.offsetTop-F.offsetTop-6});if(!$('mail').hidden)renderMail();sfx.discover()}
 function closeNews(){$('news').hidden=true;if(!anyOpen())paused=false}
 $('nwDel').onclick=async()=>{const b=$('nwDel'),id=b.dataset.id;if(b.textContent!=='Tap again to delete'){b.textContent='Tap again to delete';setTimeout(()=>{b.textContent='Delete post'},2500);return}
   try{await FD.remove(FD.ref(RDB,'news/'+id));closeNews();toast('Post deleted','#ff6fa8')}catch(e){toast('Could not delete it','#ff6fa8')}};
