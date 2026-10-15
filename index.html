@@ -494,7 +494,7 @@ textarea{font:500 16px/1.4 var(--body);color:var(--ink);border:2.5px solid var(-
 .setrow{display:flex;align-items:center;gap:10px;width:100%;flex-wrap:wrap}.setrow .btn{flex:none;min-width:120px}.vol{display:flex;flex-direction:column;gap:2px;flex:1;min-width:150px}.vol b{color:var(--ink)}.vol input{width:100%;accent-color:#ff6fa8}
 .sndgrid{flex-wrap:wrap;overflow:visible}.cbgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}.cbb{border:2.5px solid var(--ink);border-radius:12px;background:#fff;padding:7px 8px;display:flex;flex-direction:column;align-items:flex-start;font:inherit;color:inherit;cursor:pointer;text-align:left}.cbb b{font-size:14px}.cbb span{font-size:11px;color:var(--muted);font-weight:700}.cbb.on{background:var(--ink);color:#fff}.cbb.on span{color:#d9cfff}
 .cbprev{display:flex;gap:4px;width:100%}.cbprev i{flex:1;height:22px;border-radius:6px;border:2px solid var(--ink)}
-.achrow{margin-top:4px}.achtop{width:100%}.achlist{display:flex;flex-direction:column;gap:6px;width:100%}.achc{display:flex;gap:10px;align-items:flex-start;border:2.5px solid var(--ink);border-radius:14px;background:#fff;padding:8px 10px;text-align:left}.achc.got{background:#eafff4}.achi{font-size:24px;line-height:1.2}.achm{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}.achm b{font-size:15px}.achd{font-size:12px;color:var(--muted);font-weight:600}
+.achrow{margin-top:4px}.achtop{width:100%}.achlist{display:flex;flex-direction:column;gap:6px;width:100%}.achc{display:flex;gap:10px;align-items:flex-start;border:2.5px solid var(--ink);border-radius:14px;background:#fff;padding:8px 10px;text-align:left}.achc.got{background:#eafff4}.achc.secret:not(.got){background:repeating-linear-gradient(135deg,#f4f1ff 0 10px,#ebe6ff 10px 20px)}.achc.secret:not(.got) b{letter-spacing:3px}.achsec{margin-left:6px;font-size:10px;font-weight:900;color:#fff;background:#7a3cff;border-radius:99px;padding:1px 6px;vertical-align:2px}.achi{font-size:24px;line-height:1.2}.achm{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}.achm b{font-size:15px}.achd{font-size:12px;color:var(--muted);font-weight:600}
 .achr{display:flex;flex-wrap:wrap;gap:4px;align-items:center}.achcoin{font-size:12px;font-weight:800;background:#fff3c4;border:2px solid #7a5200;border-radius:99px;padding:0 8px}.achcoin::before{content:'● ';color:#ffb000}.achx{font-size:11px;font-weight:800;background:#efe8ff;border-radius:99px;padding:1px 8px}.achok{font-size:12px;font-weight:800;color:#1f9e68}
 .evban{width:100%;border:3px solid var(--ink);border-radius:16px;padding:8px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;font:inherit;cursor:pointer;text-align:left;background:linear-gradient(135deg,#fff3c4,#ffd6e6);box-shadow:0 4px 0 var(--ink);color:var(--ink)}.evban b{font-family:var(--display);font-size:20px}.evban span{font-size:12px;font-weight:700}.evbar{width:100%;height:9px;border-radius:99px;background:rgba(0,0,0,.12);overflow:hidden}.evbar i{display:block;height:100%;background:linear-gradient(90deg,#ff6fa8,#ffd23f)}
 .bplist{display:flex;flex-direction:column;gap:6px;width:100%;max-height:52vh;overflow:auto}.bpr{display:flex;align-items:center;gap:10px;border:2.5px solid var(--ink);border-radius:12px;background:#fff;padding:6px 10px}.bpr.big{background:#fff8dc}.bpr.got{opacity:.6}.bpl{font-family:var(--display);font-size:20px;width:28px;text-align:center}.bpm{display:flex;align-items:center;gap:8px;flex:1;flex-wrap:wrap}.bpcv{width:54px;height:54px;border-radius:10px;border:2px solid var(--ink)}.bpn{font-size:13px;font-weight:700}.bpok{font-weight:900;color:#1f9e68;font-size:18px}
@@ -512,11 +512,17 @@ body.ev-thanks #menu .card{background:linear-gradient(170deg,#fff4e0,#ffe2b8);bo
 body.ev-summer #menu .card{background:linear-gradient(180deg,#e6fbff,#fff6d6);border-color:#0a6a8a}body.ev-summer #menu .mh{color:#0a7aa8}body.ev-summer #menu #mResume{background:#3fd6e8}body.ev-summer .evban{background:linear-gradient(135deg,#3fd6e8,#ffd23f)}body.ev-summer #menu .card{padding-bottom:40px}
 body.cbon>*:not(#playView):not(#fxc):not(script):not(svg){filter:var(--cbf)}body.cbon #hud,body.cbon #gbar,body.cbon #dhud,body.cbon #chatBar{filter:var(--cbf)}
 .gvres{display:flex;flex-direction:column;gap:4px;width:100%;max-height:220px;overflow:auto}.gvres button{display:flex;align-items:center;justify-content:space-between;gap:8px;border:2px solid var(--ink);border-radius:10px;background:#fff;padding:6px 10px;font:inherit;font-weight:700;cursor:pointer;text-align:left}.gvres button span{font-size:11px;color:var(--muted)}
-.overlay#cfm,.overlay#ntc{z-index:60}
+.overlay#cfm,.overlay#ntc{z-index:60}#ntr{z-index:40}
 .hsrcard{max-width:340px}.hsrcard h3{margin:0;font-family:var(--display);font-size:24px}.hsrcard p{margin:0;font-size:14px}.hsrcard ol{margin:0;padding-left:22px;text-align:left;font-size:14px;line-height:1.5;font-weight:600}#hsrC{width:96px;height:96px}
 .ntccard{max-width:360px;text-align:left}.ntccard h3{margin:0;font-family:var(--display);font-size:24px}
 .dulim{margin-top:-4px}#duQuick{margin-top:-4px}
 .gwgone{margin-top:6px;opacity:.85}.gwmine{border-color:#ffd23f}.gwpz{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(43,35,64,.18)}.gwpz .gwcode{margin-top:4px}
+#watchPill{position:absolute;left:8px;top:6px;z-index:3;display:flex;align-items:center;gap:5px;padding:3px 9px 3px 7px;border-radius:999px;background:rgba(43,35,64,.82);color:#fff;font:800 12px/1 var(--body);pointer-events:none;box-shadow:0 2px 0 rgba(0,0,0,.25)}#watchPill svg{width:15px;height:15px}#watchPill.pop{animation:pop .45s cubic-bezier(.3,1.9,.5,1)}
+.ssearch{position:relative;display:flex;align-items:center;margin:2px 0 8px}.ssearch svg{position:absolute;left:11px;width:18px;height:18px;color:#8a83a0;pointer-events:none}#sSearch{width:100%;box-sizing:border-box;height:40px;border:2.5px solid var(--ink);border-radius:12px;padding:0 38px 0 36px;font:600 15px var(--body);color:var(--ink);background:#fff;-webkit-appearance:none;appearance:none}#sSearch::-webkit-search-cancel-button{display:none}#sSearch:focus{outline:none;box-shadow:0 0 0 3px rgba(255,111,168,.35)}#sSearchX{position:absolute;right:6px;width:28px;height:28px;border:0;border-radius:50%;background:#efeaff;color:var(--ink);font:900 18px/1 var(--body);cursor:pointer}
+.rkfor{margin:0 0 6px;font:800 13px var(--body);color:#5e5878;text-align:left}
+.ntrcard{text-align:center}.ntrbell{width:74px;height:74px;margin:2px auto 6px;color:var(--ink);animation:ntrring 2.4s ease-in-out infinite;transform-origin:50% 12%}.ntrbell svg{width:100%;height:100%}@keyframes ntrring{0%,60%,100%{transform:rotate(0)}66%{transform:rotate(14deg)}74%{transform:rotate(-12deg)}82%{transform:rotate(8deg)}90%{transform:rotate(-4deg)}}
+.ntrl{list-style:none;margin:6px auto 4px;padding:0;text-align:left;max-width:300px;display:grid;gap:5px}.ntrl li{display:flex;gap:8px;align-items:center;font-weight:600}.ntrl b{width:24px;text-align:center}.ntrrow{display:flex;gap:10px;margin-top:10px}.ntrrow .btn{flex:1;white-space:nowrap}
+.ntfkinds{flex-wrap:wrap;gap:6px}.ntfdev{display:grid;gap:6px;margin-top:6px;padding:8px;border:2px dashed #c9c2e6;border-radius:12px}.ntfdev input{flex:1;min-width:0;height:36px;border:2.5px solid var(--ink);border-radius:10px;padding:0 8px;font:600 13px var(--body)}
 .sugc{border:2.5px solid var(--ink);border-radius:14px;background:#fff;padding:10px 12px;display:flex;flex-direction:column;gap:6px;text-align:left}
 .sugc .sh{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:600;color:var(--muted)}
 .sugc .sh b{color:var(--ink);font-size:14px}
@@ -727,7 +733,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
       <div class="hudR"><button class="icon-btn" id="mailBtn" type="button" aria-label="Mailbox"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.5" fill="#fff"/><path d="M3.8 7l8.2 6 8.2-6"/></svg><span class="mcount" id="mailN" hidden>0</span></button><button class="icon-btn" id="styleBtn" type="button" aria-label="Shop"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 11a1.6 1.6 0 0 1-1.6 1.4H7.8A1.6 1.6 0 0 1 6.2 19z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg><span class="dot" id="styleDot" hidden></span></button></div>
     </header>
     <div id="dhud" hidden><div class="dh-t" id="dhT">1:00</div><div class="dh-row"><span class="dh-me"><b id="dhMeN">You</b><i id="dhMe">0</i></span><span class="dh-vs">vs</span><span class="dh-op"><b id="dhOpN"></b><i id="dhOp">0</i></span></div><div id="dhBet" hidden><span id="dhBetT">Bet on yourself:</span><button data-a="100" type="button">100</button><button data-a="500" type="button">500</button><button data-a="1000" type="button">1,000</button></div><div class="dh-msg" id="dhMsg"></div></div>
-    <main id="stage"><canvas id="game"></canvas></main>
+    <main id="stage"><canvas id="game"></canvas><div id="watchPill" hidden aria-live="polite"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><span id="watchN">0</span></div></main>
     <div id="chatBar" aria-live="polite"></div>
     <footer id="gbar"></footer>
   </div>
@@ -793,6 +799,11 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
 <div id="set" class="overlay" hidden>
   <div class="card box3 menu" role="dialog" aria-label="Settings">
     <div class="mtop"><span class="mtitle">Settings</span><button class="btn small white" id="setBack" type="button">Back</button></div>
+    <h3 class="mh">Notifications</h3>
+    <p class="lnote" style="margin:0" id="ntfSt"></p>
+    <div class="setrow"><button class="btn small pink" id="ntfBtn" type="button">Turn on notifications</button></div>
+    <div class="tabs ntfkinds" id="ntfKinds" hidden></div>
+    <div class="ntfdev" id="ntfDev" hidden><span class="lbl">Notification server (dev only)</span><div class="frow"><input id="ntfUrl" type="url" inputmode="url" placeholder="https://jelly-push.yourname.workers.dev" autocomplete="off" spellcheck="false"><button class="btn small white" id="ntfUrlGo" type="button">Save</button></div><button class="btn small white" id="ntfTest" type="button">Send me a test notification</button><span class="nmsg" id="ntfDevMsg"></span></div>
     <h3 class="mh">Sound</h3>
     <div class="setrow"><button class="btn small white" id="musBtn" type="button">Music: on</button><label class="vol"><span class="lbl">Music volume <b id="volMN">80%</b></span><input type="range" id="volM" min="0" max="100" step="5"></label></div>
     <div class="setrow"><button class="btn small white" id="muteBtn" type="button">Sound: on</button><label class="vol"><span class="lbl">Sound effects volume <b id="volSN">80%</b></span><input type="range" id="volS" min="0" max="100" step="5"></label></div>
@@ -827,6 +838,14 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
   </div>
 </div>
 <div id="ntc" class="overlay" hidden><div class="card box3 ntccard" role="alertdialog" aria-label="Announcement"><span class="lbl">📣 Announcement</span><h3 id="ntcT"></h3><div class="rich" id="ntcB"></div><button class="btn pink" id="ntcOk" type="button">Got it</button></div></div>
+<div id="ntr" class="overlay" hidden><div class="card box3 hsrcard ntrcard" role="dialog" aria-label="Turn on notifications">
+  <div class="ntrbell" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9z" fill="#ffd23f"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/></svg></div>
+  <h3>Never miss a challenge</h3>
+  <p id="ntrTx">Turn on notifications and we’ll let you know when:</p>
+  <ul class="ntrl"><li><b>💬</b>a friend sends you a message</li><li><b>⚔️</b>someone challenges you to a 1v1</li><li><b>🤝</b>you get a friend request</li><li><b>✨</b>a new update or event drops</li></ul>
+  <p class="lnote">Only those things, never spam. You can change it anytime in Settings.</p>
+  <div class="ntrrow"><button class="btn white" id="ntrNo" type="button">Not now</button><button class="btn pink" id="ntrOk" type="button">Okay</button></div>
+</div></div>
 <div id="hsr" class="overlay" hidden><div class="card box3 hsrcard" role="dialog" aria-label="Add to home screen">
   <canvas id="hsrC" width="200" height="200"></canvas><h3>Play Jelly Critters like an app!</h3>
   <p id="hsrTx">Add it to your home screen: it opens full screen, loads faster and your progress is one tap away.</p>
@@ -843,6 +862,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
   <div class="sheet-card" role="dialog" aria-label="Shop">
     <div class="sheet-h"><h3 id="sTitle">Shop</h3><span class="coins"><i class="coin"></i><span class="coinN">0</span></span><button class="btn small white" id="sClose" type="button">Done</button></div>
     <div class="meter" id="sMeter"></div>
+    <div class="ssearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input id="sSearch" type="search" placeholder="Search the shop" autocomplete="off" enterkeyhint="search" aria-label="Search the shop" maxlength="40"><button id="sSearchX" type="button" aria-label="Clear search" hidden>×</button></div>
     <div class="tabs" id="sTabs" role="tablist"></div>
     <div class="items" id="sItems"></div>
   </div>
@@ -926,11 +946,16 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
       <h3 class="mh">Take from this player</h3>
       <label class="fld"><span class="lbl">Item to take away</span><select id="gvTake"></select></label>
       <button class="btn small danger" id="gvTakeGo" type="button" disabled>Take item</button>
-      <div class="frow"><label class="fld"><span class="lbl">What</span><select id="gvTakeF"><option value="coins">Coins</option><option value="spins">Free spins</option><option value="cap.dust">Jelly dust</option><option value="ptok">Prestige unlock tokens</option><option value="prest">Prestige count</option><option value="xp">XP</option><option value="level">Level</option><option value="mmr">Ranked MMR</option><option value="_other">Something else (type its name)…</option></select></label>
+      <div class="frow"><label class="fld"><span class="lbl">What</span><select id="gvTakeF"><option value="coins">Coins</option><option value="spins">Free spins</option><option value="cap.dust">Jelly dust</option><option value="ptok">Prestige unlock tokens</option><option value="prest">Prestige count</option><option value="xp">XP</option><option value="level">Level</option><option value="rkG.drop.m">Ranked MMR · Jelly Jar</option><option value="rkG.squish.m">Ranked MMR · Jelly 2048</option><option value="rkG.doku.m">Ranked MMR · Jellydoku</option><option value="rkG.catch.m">Ranked MMR · Jelly Catch</option><option value="rkG.combo.m">Ranked MMR · Jelly Combo</option><option value="rkG.memory.m">Ranked MMR · Jelly Memory</option><option value="rkG.slice.m">Ranked MMR · Jelly Slice</option><option value="_other">Something else (type its name)…</option></select></label>
         <label class="fld"><span class="lbl">Amount</span><input id="gvTakeN" type="number" inputmode="numeric" min="0" placeholder="Blank = all of it"></label></div>
       <input id="gvTakeOther" type="text" maxlength="40" placeholder="Profile field name, e.g. coins or cap.dust" hidden>
       <button class="btn small danger" id="gvTakeNGo" type="button" disabled>Take it</button>
       <span class="nmsg" id="gvTakeMsg"></span>
+      <h3 class="mh">Set a personal best</h3>
+      <div class="frow"><label class="fld"><span class="lbl">Game</span><select id="gvBestG"></select></label><label class="fld"><span class="lbl">New best score</span><input id="gvBestN" type="number" inputmode="numeric" min="0" max="99999999" placeholder="e.g. 12000"></label></div>
+      <span class="gvnone" id="gvBestCur"></span>
+      <button class="btn small white" id="gvBestGo" type="button" disabled>Set best</button>
+      <span class="nmsg" id="gvBestMsg"></span>
     </div>
   </div>
 </div>
@@ -1412,6 +1437,7 @@ function face(c,r,k,col,o){
 const HATS=[['none','No hat',0],['bow','Bow',40],['party','Party hat',60],['beanie','Beanie',60],['flower','Flower',60],['cap','Cap',80],['tophat','Top hat',100],['shades','Shades',100],['crown','Crown',160],['horns','Devil horns',300,'r'],['viking','Viking helm',450,'r',{rd:20}],['tiara','Tiara',600,'e',{lv:6}],['wizard','Wizard hat',800,'e',{rd:40}],['halo','Halo',1200,'l',{st:7}],['astro','Space helmet',1800,'l',{bd:15000}],['diamond','Diamond crown',3000,'l',{lv:15}],['flame','Flame crown',6000,'m',{lv:20,bd:40000}],['cone','Traffic cone',100],['chef','Chef hat',140],['toast','Slice of toast',150],['mushroom','Mushroom cap',160],['propeller','Propeller hat',180],['cowboy','Cowboy hat',200],['duck','Rubber duck',220,'r'],['headphones','Headphones',240,'r'],['betacrown','Beta crown',0,'x',{beta:1}]];
 HATS.push(['devcrown','Void crown',0,'d',{dev:1}],['devhalo','Broken halo',0,'d',{dev:1}],['laurel','Golden laurel',0,'v',{lvr:50}],['cent','Centurion crown',0,'v',{lvr:100}],['acorn','Acorn cap',300],['straw','Straw sun hat',250],['leafcrown','Leaf crown',700,'r']);
 HATS.push(['sprout','Sprout',0,'c',{cap:1}],['headband','Sweatband',0,'c',{cap:1}],['bucket','Bucket hat',0,'c',{cap:1}],['bunnyears','Bunny ears',0,'r',{cap:1}],['pirate','Pirate hat',0,'r',{cap:1}],['jester','Jester hat',0,'e',{cap:1}],['icecrown','Ice crown',0,'l',{cap:1}],['rainbowhalo','Rainbow halo',0,'m',{cap:1}]);
+HATS.push(['sleepy','Sleepy nightcap',650,'r']);
 function drawHat(c,r,h,k){
   const lw=Math.max(1.5,r*.075);c.save();c.lineWidth=lw;c.strokeStyle=INK;c.lineJoin='round';c.lineCap='round';
   const fs=f=>{c.fillStyle=f;c.fill();c.stroke()};
@@ -1815,6 +1841,14 @@ ENDFX2.alien={n:'Alien abduction',dur:()=>3.6,
 STYLE.prof.endfx.items.push(['alien','Alien abduction',120000,'m'],['confetti','Confetti pop',8000,'r'],['melt','Melt',12000,'e'],['balloons','Balloons',25000,'l'],['fireworks','Fireworks',60000,'m'],['blackhole','Black hole',250000,'u']);
 // ================================================= event + achievement cosmetics (Cat At War) — none of these count for prestige
 // new hats
+// sleepy nightcap: a floppy striped cap with a pompom and little floating z's
+HAT2.sleepy=(c,r,lw,fs)=>{c.translate(0,-r*.72);c.lineWidth=lw;
+  const cap=()=>{c.beginPath();c.moveTo(-r*.64,0);c.quadraticCurveTo(-r*.56,-r*.8,r*.08,-r*.9);c.quadraticCurveTo(r*.72,-r*.96,r*.98,-r*.16);c.quadraticCurveTo(r*.86,-r*.08,r*.78,-r*.24);c.quadraticCurveTo(r*.6,-r*.56,r*.34,-r*.5);c.quadraticCurveTo(r*.6,-r*.26,r*.64,0);c.closePath()};
+  cap();c.fillStyle='#3e4fc4';c.fill();c.save();cap();c.clip();c.fillStyle='#8fb0ff';for(let i=-4;i<5;i++){c.save();c.translate(i*r*.34,0);c.rotate(.5);c.fillRect(-r*.07,-r*1.4,r*.14,r*2);c.restore()}
+  c.fillStyle='rgba(255,255,255,.75)';for(const[x,y,s]of[[-r*.2,-r*.55,.05],[r*.22,-r*.72,.04],[r*.62,-r*.55,.035]]){c.beginPath();for(let k=0;k<10;k++){const a=k*Math.PI/5-Math.PI/2,q=k%2?r*s*.45:r*s;c.lineTo(x+Math.cos(a)*q,y+Math.sin(a)*q)}c.fill()}c.restore();
+  cap();c.stroke();rr(c,-r*.7,-r*.12,r*1.4,r*.26,r*.13);fs('#f6f3ff');circ(c,r*.98,-r*.1,r*.17);fs('#ffffff');
+  c.save();c.fillStyle='#ffffff';c.strokeStyle=INK;c.lineWidth=Math.max(1,lw*.6);c.textAlign='center';c.textBaseline='middle';
+  for(let i=0;i<3;i++){const p=((typeof time==='number'?time:0)*.55+i/3)%1,a=Math.sin(p*Math.PI);c.globalAlpha=a;c.font=`900 ${r*(.2+p*.2)}px sans-serif`;const x=-r*(.62+p*.42),y=-r*(.35+p*.9);c.strokeText('z',x,y);c.fillText('z',x,y)}c.restore()};
 HAT2.elf=(c,r,lw,fs)=>{c.translate(0,-r*.66);c.lineWidth=lw;c.beginPath();c.moveTo(-r*.6,0);c.quadraticCurveTo(-r*.1,-r*.5,r*.15,-r*1.1);c.quadraticCurveTo(r*.45,-r*1.25,r*.85,-r*.95);c.quadraticCurveTo(r*.4,-r*.62,r*.6,0);c.closePath();fs('#2fae4a');rr(c,-r*.66,-r*.1,r*1.32,r*.22,r*.1);fs('#e8323c');circ(c,r*.88,-r*.92,r*.14);fs('#ffd23f')};
 HAT2.pumpkin=(c,r,lw,fs)=>{c.translate(0,-r*.88);c.lineWidth=lw;for(const[dx,w]of[[-r*.26,r*.27],[r*.26,r*.27],[0,r*.3]]){ell(c,dx,0,w,r*.3);fs('#ff8a1f')}rr(c,-r*.06,-r*.46,r*.12,r*.2,r*.04);fs('#4f8a2a');c.fillStyle=INK;for(const d of[-1,1]){c.beginPath();c.moveTo(d*r*.18,-r*.08);c.lineTo(d*r*.06,-r*.08);c.lineTo(d*r*.12,-r*.18);c.closePath();c.fill()}c.beginPath();c.moveTo(-r*.16,r*.06);c.lineTo(r*.16,r*.06);c.lineTo(0,r*.16);c.closePath();c.fill()};
 HAT2.heartband=(c,r,lw,fs)=>{c.translate(0,-r*.8);c.beginPath();c.arc(0,r*.55,r*.86,Math.PI*1.14,Math.PI*1.86);c.lineWidth=r*.14;c.strokeStyle=INK;c.stroke();c.lineWidth=r*.08;c.strokeStyle='#ff6fa8';c.stroke();c.lineWidth=lw;c.strokeStyle=INK;for(const d of[-1,1]){c.save();c.translate(d*r*.46,-r*.36+Math.sin(time*3+d)*r*.03);heartPath(c,0,0,r*.24);fs('#ff3d7f');c.restore()}};
@@ -2092,7 +2126,8 @@ const Drop=(()=>{
   const mk=(x,y,l,vx=0,vy=0)=>{const r=RADII[l];return{id:++BID,x,y,px:x-vx*HS,py:y-vy*HS,l,r,m:r*r,age:0,sq:0,sqv:0,sqa:0,pop:1,blink:rand(1,4),bt:0,dead:false,happy:0,ang:rand(-.25,.25),av:0,seed:rand(6.28)}};
   const rad=b=>b.pop<1?b.r*(.8+.2*b.pop):b.r;
   const clampAim=(x,l)=>clamp(x,RADII[l]+2,W-RADII[l]-2);
-  function drawNext(){const c=midCtx;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,100,100);const cr=C(next),r=Math.min(30,cr.r*1.2);drawAnimal(c,50,55,r,cr.k,cr.c,{fx:cr.fx,hat:cos('drop').hat});bumpEl(midC,1)}
+  // only redraw (and bounce) the Next preview when it actually changes, so spectating doesn't make it flicker every update
+  let nextKey='';function drawNext(){const cr=C(next),hat=cos('drop').hat,key=next+'|'+cr.k+'|'+cr.c+'|'+hat;if(key===nextKey&&!midC.hidden)return;const changed=nextKey!==''&&nextKey.split('|')[0]!==String(next);nextKey=key;const c=midCtx;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,100,100);const r=Math.min(30,cr.r*1.2);drawAnimal(c,50,55,r,cr.k,cr.c,{fx:cr.fx,hat});if(changed)bumpEl(midC,1)}
   function ladder(){const el=$('ladder');if(!el)return;el.innerHTML=RADII.map((_,i)=>`<canvas width="52" height="52" class="${P.found.includes(i)?'':'off'}" title="${P.found.includes(i)?C(i).n:'Not found yet'}"></canvas>`).join('');
     el.querySelectorAll('canvas').forEach((cn,i)=>{const c=cn.getContext('2d'),cr=C(i);drawAnimal(c,26,29,17,cr.k,cr.c,{fx:cr.fx,crown:i===10,mood:i<=maxLv&&P.found.includes(i)?2:0})})}
   function reset(){balls=[];born=[];st='play';combo=0;comboT=0;overT=0;endQ=[];aimX=aimT=W/2;dropCD=.25;holdT=0}
@@ -2100,7 +2135,7 @@ const Drop=(()=>{
   function serialize(){if(st!=='play')return null;return{score,cur,next,merges,bestCombo,maxLv,ax:Math.round(aimX),balls:balls.map(b=>[Math.round(b.x),Math.round(b.y),b.l,+b.ang.toFixed(2),b.id])}}
   function restore(d){reset();cur=d.cur||0;next=d.next||1;merges=d.merges||0;bestCombo=d.bestCombo||0;maxLv=d.maxLv||0;score=shown=d.score||0;scoreEl.textContent=fmt(score);
     balls=(d.balls||[]).map(([x,y,l,a,id])=>{const b=mk(x,y,l);b.age=2;b.ang=a||0;if(id){b.id=id;BID=Math.max(BID,id)}return b});lastSS=0;setMidCanvas('Next');restyle()}
-  function restyle(){const w=WALLS[cos('drop').wall];theme(w.bg,w.hud);gbar(`<div class="ladder" id="ladder"></div><p class="tip">Two of a kind squish into a bigger jelly.</p>`);ladder();drawNext()}
+  function restyle(){const w=WALLS[cos('drop').wall];theme(w.bg,w.hud);gbar(`<div class="ladder" id="ladder"></div><p class="tip">Two of a kind squish into a bigger jelly.</p>`);ladder();nextKey='';drawNext()}
   function drop(){if(st!=='play'||dropCD>0||paused)return;const b=mk(clampAim(aimX,cur),HOLDY,cur,0,140);b.sqv=-6;b.sqa=Math.PI/2;b.av=rand(-1.5,1.5);balls.push(b);if(b.l>maxLv)maxLv=b.l;const was=cur;cur=next;next=randLevel(cur,was);dropCD=DROP_CD;holdT=0;sfx.drop();drawNext()}
   function endGame(){st='ending';endT=0;sfx.over();addShake(.5);endQ=balls.slice().sort((a,b)=>(a.y-a.r)-(b.y-b.r));
     if(endKind()!=='none'){const cs=cos('drop');endT=endBoom(balls.map(b=>{const cr=C(b.l);return{x:b.x,y:b.y,r:b.r,rot:b.ang,draw:c=>drawAnimal(c,0,0,b.r,cr.k,cr.c,{fx:cr.fx,mood:3,crown:b.l===10,hat:cs.hat})}}));balls=[];endQ=[]}}
@@ -2767,7 +2802,7 @@ const Slice=(()=>{
       const l=Math.min(10,Math.floor(Math.pow(Math.random(),1.7)*Math.min(11,4+t/18)));pend.push({at:t+i*rand(.06,.17)/sp,type,l,x,dx})}
     sfx.drop()}
   function sliceIt(it,ang){it.dead=1;const cr=C(it.l),col=it.type==='jelly'?cr.c:it.type==='star'?'#ffd23f':it.type==='heart'?'#ff4f8f':it.type==='ice'?'#9ff0ff':'#6b3fa0';
-    if(it.type==='spike'){lives--;combo=0;addShake(.7);flash=.9;sfx.thud();sfx.over();burst(it.x,it.y,'#3a1f5a',26,420,.1);burst(it.x,it.y,'#ffd23f',14,300,.6);big('BOOM!','#ff5f6d');hap('error');hearts();if(lives<=0)over();return}
+    if(it.type==='spike'){if(!SPEC)secBump('bombs');lives--;combo=0;addShake(.7);flash=.9;sfx.thud();sfx.over();burst(it.x,it.y,'#3a1f5a',26,420,.1);burst(it.x,it.y,'#ffd23f',14,300,.6);big('BOOM!','#ff5f6d');hap('error');hearts();if(lives<=0)over();return}
     for(const s of[-1,1])halves.push({it,ang,side:s,x:it.x,y:it.y,vx:it.vx+Math.cos(ang+Math.PI/2)*s*rand(90,140),vy:it.vy*.4-rand(60,130),rot:it.rot,av:s*rand(3,6),t:0});
     burst(it.x,it.y,col,14+it.l,260+it.l*18,.15);for(let i=0;i<5;i++)burst(it.x,it.y,shadeHex(col,.3),1,520,0);ring(it.x,it.y,it.r*1.3,'#fff');
     stains.push({x:it.x+rand(-10,10),y:it.y+rand(-10,10),r:it.r*rand(.9,1.4),col,a:.55,seed:rand(9)});if(stains.length>18)stains.shift();
@@ -2921,10 +2956,10 @@ function drawPerk(c,id){
   c.font=`13px ${FAM}`;c.textAlign='center';c.textBaseline='middle';c.lineWidth=3;c.strokeStyle='#2b1d00';c.strokeText('BOUNCIER',0,1);c.fillStyle=gold(-30,-6,30,6);c.fillText('BOUNCIER',0,1);c.restore();
   // twinkles
   c.fillStyle='#fff6cc';for(let i=0;i<5;i++){const q=(t*.7+i*.2)%1,sz=6*Math.sin(q*Math.PI);if(sz<.4)continue;const a=i*1.7+1,x=80+Math.cos(a)*64,y=74+Math.sin(a)*60;c.save();c.translate(x,y);c.rotate(q*2);c.beginPath();for(let j=0;j<8;j++){const rr2=j%2?sz*.3:sz,aa=j/8*TAU;c.lineTo(Math.cos(aa)*rr2,Math.sin(aa)*rr2)}c.closePath();c.fill();c.restore()}}
-function equip(g,cat,id){for(const x of(g!=='prof'&&SHARED[cat]?SHARED[cat]:[g]))if(P.cos[x])P.cos[x][cat]=id;if(cat==='perk'){setTimeout(applyBouncy,0);setTimeout(syncMe,0)}if(g==='prof'||(g==='drop'&&(cat==='set'||cat==='hat')))setTimeout(syncMe,0);P.fresh=P.fresh.filter(f=>!f.endsWith(':'+cat+':'+id));save();if(G&&G.restyle)G.restyle()}
+function equip(g,cat,id){if(cat!=='emote')secBump('fashion');for(const x of(g!=='prof'&&SHARED[cat]?SHARED[cat]:[g]))if(P.cos[x])P.cos[x][cat]=id;if(cat==='perk'){setTimeout(applyBouncy,0);setTimeout(syncMe,0)}if(g==='prof'||(g==='drop'&&(cat==='set'||cat==='hat')))setTimeout(syncMe,0);P.fresh=P.fresh.filter(f=>!f.endsWith(':'+cat+':'+id));save();if(G&&G.restyle)G.restyle()}
 function surprise(g){const pool=itemList(g).filter(i=>!owns(g,i.cat,i.id)&&!i.r&&!i.q);if(!pool.length)return null;const it=pool[Math.floor(rand(pool.length))];const key=g+':'+it.cat+':'+it.id;P.own.push(key);P.fresh.push(key);return it}
 let sTab=null,styleFromMenu=false;
-function openStyle(fromMenu=false){if(!gid)return;audio();sfx.ui();styleFromMenu=fromMenu;paused=true;sTab=shopCats().some(([k])=>k===sTab)?sTab:'set';$('sTitle').textContent='Shop';$('style').hidden=false;renderStyle()}
+function openStyle(fromMenu=false){if(!gid)return;audio();sfx.ui();styleFromMenu=fromMenu;paused=true;sQ='';if($('sSearch'))$('sSearch').value='';sTab=shopCats().some(([k])=>k===sTab)?sTab:'set';$('sTitle').textContent='Shop';$('style').hidden=false;renderStyle()}
 function closeStyle(){$('style').hidden=true;if(!styleFromMenu&&$('menu').hidden&&$('over').hidden)paused=false;syncDots()}
 function meterHTML(g){const m=P.meter[g]||0,left=5-m;return`<span class="pips">${[0,1,2,3,4].map(i=>`<i class="${i<m?'on':''}"></i>`).join('')}</span><span>${left===1?'Next round pays <b>1.5x coins</b>!':`1.5x bonus coins in ${left} rounds`}</span>`}
 let sPrev=[];
@@ -2933,17 +2968,32 @@ const SHOP_CATS=[['set','drop','Critters','Critters show up in every game.'],['h
 const shopCats=()=>[...SHOP_CATS.map(([k,g,n])=>[k,{n}]),...Object.entries(STYLE.prof)];
 // shop order inside each group: Common → Rare → Epic → Legendary → Mythic → Divine, then the special ones; cheaper first within a rarity
 const RAR_ORDER=['c','r','e','l','m','u','v','x','p','d'],rarRank=r=>{if(!r)return -1;const i=RAR_ORDER.indexOf(r);return i<0?0:i};
+var sQ='';
+const shopVis=(g,cat,it)=>owns(g,cat,it[0])||(!(cat==='title'&&(it[0]==='dev'||it[0]==='helper'))&&it[3]!=='d'&&!(it[4]&&it[4].dev)&&!(it[4]&&it[4].bp&&evKey()!==it[4].bp)&&!(it[4]&&it[4].ev&&evKey()!==it[4].ev));
+const shopSort=(g,cat,list)=>list.map((it,i)=>[it,i]).sort((a,b)=>(owns(g,cat,b[0][0])-owns(g,cat,a[0][0]))||((a[0][0]==='none')?-1:(b[0][0]==='none')?1:0)||(rarRank(a[0][3])-rarRank(b[0][3]))||((a[0][4]&&a[0][4].cap?1:0)-(b[0][4]&&b[0][4].cap?1:0))||((+a[0][2]||0)-(+b[0][2]||0))||a[1]-b[1]).map(x=>x[0]);
+// search matches the item name, its rarity ("mythic") or its category ("hats")
+const shopMatch=(cat,it,q)=>{const t=(String(it[1])+' '+(it[3]&&RAR[it[3]]?RAR[it[3]][0]:'')+' '+(CATL[cat]||cat)).toLowerCase();return q.split(/\s+/).filter(Boolean).every(w=>t.includes(w))};
 function renderStyle(){if(!gid)return;refreshCoins();if(!renderStyle._g){renderStyle._g=1;try{giftApply()}catch(e){}renderStyle._g=0}
   $('sMeter').innerHTML=meterHTML(gid);
-  const cats=shopCats();
-  $('sTabs').innerHTML=cats.map(([k,v])=>`<button class="tab${k===sTab?' on':''}${STYLE.prof[k]?' ptab':''}" role="tab" aria-selected="${k===sTab}" data-k="${k}" type="button">${v.n}</button>`).join('');
-  $('sTabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{sfx.ui();sTab=b.dataset.k;renderStyle()});
-  const cat=sTab,g=catG(cat),items=STYLE[g][cat].items.filter(it=>owns(g,cat,it[0])||(!(cat==='title'&&(it[0]==='dev'||it[0]==='helper'))&&it[3]!=='d'&&!(it[4]&&it[4].dev)&&!(it[4]&&it[4].bp&&evKey()!==it[4].bp)&&!(it[4]&&it[4].ev&&evKey()!==it[4].ev))).map((it,i)=>[it,i]).sort((a,b)=>(owns(g,cat,b[0][0])-owns(g,cat,a[0][0]))||((a[0][0]==='none')?-1:(b[0][0]==='none')?1:0)||(rarRank(a[0][3])-rarRank(b[0][3]))||((a[0][4]&&a[0][4].cap?1:0)-(b[0][4]&&b[0][4].cap?1:0))||((+a[0][2]||0)-(+b[0][2]||0))||a[1]-b[1]).map(x=>x[0]),sc=SHOP_CATS.find(c=>c[0]===cat);
-  $('sItems').innerHTML=(sc?`<p class="snote">${sc[3]}</p>`:'')+(g==='prof'?`<p class="snote">${cat==='title'?'Titles show under your name on the leaderboard and your profile.':cat==='perk'?'Perks change how the whole game feels. Bouncier makes every squish, wobble and pop springier, and you can show it off on your profile.':cat==='emote'?'Emotes are animated stickers for your DMs. Open a chat with a friend and tap the smiley to send one.':cat==='endfx'?'End effects play when a round ends, in every game. Explode sends everything on the board flying up and out of the top.':'Frames ring your critter on the leaderboard and your profile.'}</p>`:'')+items.map(([id,n,p,r,q],ix)=>{const own=owns(g,cat,id),hd=ix===0||own!==owns(g,cat,items[ix-1][0])?`<p class="sgroup">${own?'Yours':'Get more'}</p>`:'',on=cat!=='emote'&&P.cos[g][cat]===id,fresh=P.fresh.some(f=>f.endsWith(':'+cat+':'+id)),ok=reqMet(q);
+  const cats=shopCats(),q=sQ.trim().toLowerCase();
+  $('sTabs').innerHTML=cats.map(([k,v])=>`<button class="tab${k===sTab&&!q?' on':''}${STYLE.prof[k]?' ptab':''}" role="tab" aria-selected="${k===sTab}" data-k="${k}" type="button">${v.n}</button>`).join('');
+  $('sTabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{sfx.ui();sTab=b.dataset.k;if(sQ){sQ='';$('sSearch').value=''}renderStyle()});
+  $('sSearchX').hidden=!q;
+  let groups;
+  if(q)groups=cats.map(([k])=>{const g=catG(k);return{g,cat:k,items:shopSort(g,k,STYLE[g][k].items.filter(it=>it[0]!=='none'&&shopVis(g,k,it)&&shopMatch(k,it,q)))}}).filter(x=>x.items.length);
+  else{const g=catG(sTab);groups=[{g,cat:sTab,items:shopSort(g,sTab,STYLE[g][sTab].items.filter(it=>shopVis(g,sTab,it)))}]}
+  const card=(g,cat,[id,n,p,r,rq])=>{const own=owns(g,cat,id),on=cat!=='emote'&&P.cos[g][cat]===id,fresh=P.fresh.some(f=>f.endsWith(':'+cat+':'+id)),ok=reqMet(rq);
     const tag=on?'Wearing':own?'Owned':!ok?'Locked':p?`<i class="coin"></i>${fmt(p)}`:'Free';
-    return hd+`<button class="item${on?' on':''}${own?'':' locked'}${r?' r-'+r:''}" ${r?`style="--rc:${RAR[r][1]}"`:''} data-id="${id}" type="button"><canvas width="160" height="160"></canvas>${r?`<span class="rar">${RAR[r][0]}</span>`:''}<span class="in">${n}</span><span class="tag">${tag}</span>${!own&&q?`<span class="req${ok?' ok':''}">${ok?'Unlocked: ':''}${reqText(q)}</span>`:''}${fresh?'<span class="new">NEW</span>':''}</button>`}).join('');
+    return `<button class="item${on?' on':''}${own?'':' locked'}${r?' r-'+r:''}" ${r?`style="--rc:${RAR[r][1]}"`:''} data-id="${esc(id)}" data-g="${g}" data-cat="${cat}" type="button"><canvas width="160" height="160"></canvas>${r?`<span class="rar">${RAR[r][0]}</span>`:''}<span class="in">${n}</span><span class="tag">${tag}</span>${!own&&rq?`<span class="req${ok?' ok':''}">${ok?'Unlocked: ':''}${reqText(rq)}</span>`:''}${fresh?'<span class="new">NEW</span>':''}</button>`};
+  let html='';
+  if(q){html=groups.length?`<p class="snote">${groups.reduce((s,x)=>s+x.items.length,0)} match${groups.reduce((s,x)=>s+x.items.length,0)===1?'':'es'} for “${esc(sQ.trim())}”</p>`:`<p class="snote">Nothing matches “${esc(sQ.trim())}”. Try a name, a rarity like “mythic”, or a type like “hats”.</p>`;
+    for(const G0 of groups)html+=`<p class="sgroup">${CATL[G0.cat]||G0.cat}</p>`+G0.items.map(it=>card(G0.g,G0.cat,it)).join('')}
+  else{const{g,cat,items}=groups[0],sc=SHOP_CATS.find(c=>c[0]===cat);
+    html=(sc?`<p class="snote">${sc[3]}</p>`:'')+(g==='prof'?`<p class="snote">${cat==='title'?'Titles show under your name on the leaderboard and your profile.':cat==='perk'?'Perks change how the whole game feels. Bouncier makes every squish, wobble and pop springier, and you can show it off on your profile.':cat==='emote'?'Emotes are animated stickers for your DMs. Open a chat with a friend and tap the smiley to send one.':cat==='endfx'?'End effects play when a round ends, in every game. Explode sends everything on the board flying up and out of the top.':'Frames ring your critter on the leaderboard and your profile.'}</p>`:'')+
+      items.map((it,ix)=>{const own=owns(g,cat,it[0]),hd=ix===0||own!==owns(g,cat,items[ix-1][0])?`<p class="sgroup">${own?'Yours':'Get more'}</p>`:'';return hd+card(g,cat,it)}).join('')}
+  $('sItems').innerHTML=html;
   sPrev=[];
-  $('sItems').querySelectorAll('.item').forEach(b=>{const id=b.dataset.id,it=items.find(i=>i[0]===id),cx=b.querySelector('canvas').getContext('2d');drawItem(cx,g,cat,id);if(it[3]||cat==='endfx'||cat==='emote')sPrev.push({c:cx,g,cat,id});
+  $('sItems').querySelectorAll('.item').forEach(b=>{const id=b.dataset.id,g=b.dataset.g,cat=b.dataset.cat,it=STYLE[g][cat].items.find(i=>i[0]===id),cx=b.querySelector('canvas').getContext('2d');if(!it)return;drawItem(cx,g,cat,id);if(it[3]||cat==='endfx'||cat==='emote')sPrev.push({c:cx,g,cat,id});
     b.onclick=()=>{audio();
       if(owns(g,cat,id)){equip(g,cat,id);sfx.pop(4);renderStyle();return}
       if(!reqMet(it[4])){sfx.nope();b.classList.remove('nope');void b.offsetWidth;b.classList.add('nope');toast('To unlock: '+reqText(it[4]),RAR[it[3]||'c'][1]);return}
@@ -2951,6 +3001,8 @@ function renderStyle(){if(!gid)return;refreshCoins();if(!renderStyle._g){renderS
       const doBuy=()=>{if(owns(g,cat,id)||P.coins<it[2])return;P.coins-=it[2];P.own.push(...ownKeys(g,cat,id));refreshCoins();equip(g,cat,id);sfx.discover();
       const big2=it[3]==='l'||it[3]==='m'||it[3]==='p';if(it[3]==='p'){setTimeout(()=>confetti(fxW/2,fxH*.3,160,1100),300);addShake(.5);hap('success')}confAt(b,big2?110:40,big2?900:500);if(big2){setTimeout(()=>confAt(b,80,700),250);addShake(.3)}
       toast((it[3]?RAR[it[3]][0]+' unlocked: ':'Unlocked: ')+it[1],it[3]?RAR[it[3]][1]:'#5be0a6');renderStyle()};if(it[2]>0)askConfirm('Buy '+it[1]+'?',`It costs ${fmt(it[2])} coins. You have ${fmt(P.coins)}, so you’ll have ${fmt(P.coins-it[2])} left.`,'Buy for '+fmt(it[2]),'pink',doBuy);else doBuy()}})}
+$('sSearch').addEventListener('input',()=>{sQ=$('sSearch').value.slice(0,40);renderStyle()});$('sSearch').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape'){sQ='';$('sSearch').value='';renderStyle()}if(e.key==='Enter')$('sSearch').blur()});
+$('sSearchX').onclick=()=>{sQ='';$('sSearch').value='';sfx.ui();renderStyle();$('sSearch').focus()};
 $('styleBtn').onclick=()=>openStyle(false);$('sClose').onclick=closeStyle;$('style').addEventListener('click',e=>{if(e.target.id==='style')closeStyle()});
 
 // ================================================= saving
@@ -2964,7 +3016,8 @@ addEventListener('pagehide',()=>saveRun(false));
 let lastSurprise=null;
 var lastFin=null;
 function finishRound(g,s,title,items){
-  if(SPEC||VIEW)return;lastFin={at:Date.now(),g,title:String(title||'').slice(0,40),score:Math.floor(score),items:(items||[]).slice(0,4).map(([k,v])=>[String(k).slice(0,20),String(v).slice(0,20)])};if(DUEL&&DUEL.phase!=='wait'){if(DUEL.phase==='live'||DUEL.phase==='count')duLocalEnd();return}
+  if(SPEC||VIEW)return;try{secRound(g,score)}catch(e){}lastFin={at:Date.now(),g,title:String(title||'').slice(0,40),score:Math.floor(score),items:(items||[]).slice(0,4).map(([k,v])=>[String(k).slice(0,20),String(v).slice(0,20)])};if(DUEL&&DUEL.phase!=='wait'){if(DUEL.phase==='live'||DUEL.phase==='count')duLocalEnd();return}
+  setTimeout(()=>{try{ntrMaybe()}catch(e){}},1600);
   if(gid!==g)return;delete P.saves[g];
   s.score=score;shown=score;scoreEl.textContent=fmt(score);
   const prev=P.best[g]||0,nb=s.score>prev&&s.score>0;if(nb){P.best[g]=s.score;bestEl.textContent=fmt(s.score)}
@@ -3172,10 +3225,11 @@ function myBody(){const cr=critter(showSet(),showTier()),pr=P.cos.prof||{},hat=s
   const b={name:myLb&&myLb.name?cleanName(myLb.name):(cleanName(P.name)||'Critter Pal'),drop:Math.floor(P.best.drop||0),squish:Math.floor(P.best.squish||0),doku:Math.floor(P.best.doku||0),catch:Math.floor(P.best.catch||0),combo:Math.floor(P.best.combo||0),memory:Math.floor(P.best.memory||0),k:cr.k,c:cr.c,lv:Math.min(999,P.level||1),
     nt:myLb&&typeof myLb.nt==='number'?myLb.nt:0,j:myLb&&typeof myLb.j==='number'?myLb.j:joinedAt()};
   if(myLb){b.drop=Math.max(b.drop,+myLb.drop||0);b.squish=Math.max(b.squish,+myLb.squish||0);b.doku=Math.max(b.doku,+myLb.doku||0);b.catch=Math.max(b.catch,+myLb.catch||0);b.combo=Math.max(b.combo,+myLb.combo||0);b.memory=Math.max(b.memory,+myLb.memory||0)}
+  if(P.bestFix)for(const g of['drop','squish','doku','catch','combo','memory'])if(P.bestFix[g])b[g]=Math.floor(P.best[g]||0);
   if(cr.fx)b.fx=cr.fx;if(hat&&hat!=='none')b.h=hat;if(pr.title&&pr.title!=='none')b.tt=pr.title;if(pr.frame&&pr.frame!=='none')b.fr=pr.frame;
   {const sc=showSlots().filter(Boolean);if(sc.length)b.sc=showSlots().join('|')}
   const st=showTag();if(st&&st!=='auto')b.tg=st;if(showBn())b.bn=true;const sb=showBg();if(sb)b.bg=sb;
-  if((P.best.slice|0)>0&&!lbLeg)b.slice=Math.max(Math.floor(P.best.slice),myLb&&+myLb.slice||0);if((P.prest|0)>0&&!lbLeg)b.pr=Math.min(9999,P.prest|0);if(P.rkPlayed&&!lbLeg)b.rk=rkTier(rkMMR());
+  if((P.best.slice|0)>0&&!lbLeg)b.slice=Math.max(Math.floor(P.best.slice),myLb&&+myLb.slice||0);if(P.bestFix&&P.bestFix.slice&&!lbLeg)b.slice=Math.floor(P.best.slice||0);if((P.prest|0)>0&&!lbLeg)b.pr=Math.min(9999,P.prest|0);if(P.rkPlayed&&!lbLeg){const s=rkLbStr();if(s){b.rkg=s;b.rk=Math.max(...s.split('|').map(x=>+x.split(':')[1]||0))}}
   const h=myLb?histArr(myLb.hist):[];if(h.length)b.hist=h;return b}
 var lbLeg=false;
 const canon=o=>JSON.stringify(Object.keys(o||{}).sort().reduce((a,k)=>(a[k]=k==='hist'?histArr(o[k]):o[k],a),{}));
@@ -3185,7 +3239,7 @@ async function fbInit(){if(FD||fbTrying)return;fbTrying=true;try{
   const[a,u,d]=await Promise.all([import(FBU+'firebase-app.js'),import(FBU+'firebase-auth.js'),import(FBU+'firebase-database.js')]);
   const app=a.getApps().length?a.getApp():a.initializeApp(FB_CONFIG);FAPP=a;FA=u;FD=d;AUTH=u.getAuth(app);RDB=d.getDatabase(app);
   for(const g of['drop','squish','doku','catch','combo','memory','slice'])d.onValue(d.query(fref('lb'),d.orderByChild(g),d.limitToLast(100)),snap=>{const arr=[];snap.forEach(c=>{arr.push(Object.assign({id:c.key},c.val()))});lbBy[g]=arr;lbReady=true;if(!$('lb').hidden)renderLB()},()=>{lbReady=true;if(!$('lb').hidden)renderLB()});
-  socialInit();betaInit();duelInit();rkInit();evInit();noticeInit();
+  socialInit();betaInit();duelInit();rkInit();evInit();noticeInit();ntfInit();
   d.onValue(fref('giveaways'),s=>{const v=s.val();GAS=v&&typeof v==='object'?v:{};gaReady=true;if(!$('gw').hidden){gwSub();renderGW()}syncDots();setTimeout(gaAuto,2000);setTimeout(gaFlush,1200)},()=>{gaReady=true});
   u.onAuthStateChanged(AUTH,x=>{MAINU=x;route()});if(ACTIVE==='alt'||store.get('ca_alt',0))initAlt();
   fbDown=false;acctUI();
@@ -3284,6 +3338,7 @@ async function onUser(user){if(UID&&FD&&fbOnline&&acctReady&&(!user||user.uid!==
 function adoptCloud(cp){if(P.owner&&P.owner!==UID){P=cp;norm();return}const L=P,mine=L.owner===UID,localNewer=mine&&(L.t||0)>(cp.t||0);
   const A=localNewer?L:cp,B=localNewer?cp:L;P=A;norm();const aOwn=new Set(P.own||[]);
   for(const g of['drop','squish','doku','catch','combo','memory','slice'])P.best[g]=Math.max(P.best[g]||0,(B.best&&B.best[g])||0);
+  {const Fx=Object.assign({},B.bestFix||{});for(const[k,t]of Object.entries(A.bestFix||{}))Fx[k]=Math.max(+Fx[k]||0,+t||0);P.bestFix=Fx;for(const[g,t]of Object.entries(Fx)){const vals=[A,B].filter(S=>(S.t||0)>=t).map(S=>+(S.best&&S.best[g])||0);if(vals.length)P.best[g]=Math.max(...vals)}}
   {const pa=A.prest|0,pb=B.prest|0;if(pa===pb){P.own=[...new Set([...P.own,...(B.own||[])])];P.perma=[...new Set([...(P.perma||[]),...(B.perma||[])])]}else if(pb>pa){P.own=[...(B.own||[])];P.coins=B.coins|0;P.prest=pb;P.ptok=B.ptok|0;P.perma=[...(B.perma||[])]}}P.found=[...new Set([...P.found,...(B.found||[])])];
   if((B.level||1)>(P.level||1)||((B.level||1)===(P.level||1)&&(B.xp||0)>(P.xp||0))){P.level=B.level;P.xp=B.xp}
   if(!mine)P.coins=Math.max(P.coins||0,B.coins||0);
@@ -3292,6 +3347,7 @@ function adoptCloud(cp){if(P.owner&&P.owner!==UID){P=cp;norm();return}const L=P,
   for(const g in(B.saves||{}))if(!P.saves[g])P.saves[g]=B.saves[g];
   {const R=Object.assign({},B.rmv||{});for(const[k,t]of Object.entries(A.rmv||{}))R[k]=Math.max(+R[k]||0,+t||0);P.rmv=R;
     P.own=P.own.filter(k=>!((+R[k]||0)>((aOwn.has(k)?A.t:B.t)||0)));
+    {const S=Object.assign({},B.sec||{});for(const[k,v]of Object.entries(A.sec||{}))S[k]=Math.max(+S[k]||0,+v||0);P.sec=S;P.ach=Object.assign({},B.ach||{},A.ach||{})}
     P.taken=[...new Set([...(A.taken||[]),...(B.taken||[])])];P.takeDone=Object.assign({},B.takeDone||{},A.takeDone||{});P.gk=[...new Set([...(A.gk||[]),...(B.gk||[])])].filter(k=>P.own.includes(k));
     P.gaQ=[...(A.gaQ||[]),...(B.gaQ||[]).filter(e=>e&&!(A.gaQ||[]).some(x=>x&&x.t===e.t&&x.s===e.s&&x.g===e.g))].slice(-SCORE_Q_MAX)}
   norm()}
@@ -3310,7 +3366,7 @@ async function claimName(v){const key=nameKey(v),r=fref('names/'+key),s=await FD
 
 async function syncMe(){if(!RDB||!UID||!acctReady||renaming||!fbOnline)return;if(writing){again=true;return}
   const b=myBody();if(myLb&&canon(myLb)===canon(b))return;
-  writing=true;try{await FD.set(fref('lb/'+UID),b);myLb=b}catch(e){if((b.pr||b.rk!=null||b.slice)&&!lbLeg){lbLeg=true;again=true}}
+  writing=true;try{await FD.set(fref('lb/'+UID),b);myLb=b}catch(e){if((b.pr||b.rk!=null||b.rkg||b.slice)&&!lbLeg){lbLeg=true;again=true}}
   writing=false;if(again){again=false;return syncMe()}}
 
 async function renameAcct(v){if(nameWait()>0)return'wait';if(!await claimName(v))return'taken';
@@ -3338,7 +3394,7 @@ function ranked(g){return rankRows(lbScope==='friends'?friendRows():(lbBy[g]||[]
 function rankRows(arr,g){return arr.filter(d=>+d[g]>0).map(d=>({id:d.id,name:cleanName(d.name)||'Someone',score:Math.floor(+d[g]),k:KINDS.has(d.k)?d.k:'jelly',c:okCol(d.c),fx:FXS.has(d.fx)?d.fx:undefined,h:HAT_IDS.has(d.h)?d.h:'none',fr:FRAME_IDS.has(d.fr)?d.fr:'none',tt:TITLE_IDS.has(d.tt)?d.tt:'none',raw:d})).sort((a,b)=>b.score-a.score)}
 function myRank(g){if(!UID)return 0;return rankRows(lbBy[g]||[],g).findIndex(d=>d.id===UID)+1}
 function openLB(g){audio();sfx.ui();lbGame=g||gid||'drop';paused=true;$('lbName').value=cleanName(P.name);const w=nameWait();$('lbMsg').textContent=UID&&w>0?'Next name change in '+fmtWait(w)+'.':'';$('lbMsg').className='nmsg';$('lb').hidden=false;renderLB()}
-const anyOpen=()=>!['menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','beta','devg','who','lvp','pick','duel','capo','capi','dinv','dres','tut','tagi','dm','sres','pres','gm','rk','pl','set','ach','bp','evdev','cfm','hsr','ntc'].every(id=>$(id).hidden);
+const anyOpen=()=>!['ntr','menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','beta','devg','who','lvp','pick','duel','capo','capi','dinv','dres','tut','tagi','dm','sres','pres','gm','rk','pl','set','ach','bp','evdev','cfm','hsr','ntc'].every(id=>$(id).hidden);
 function closeLB(){$('lb').hidden=true;if(!anyOpen())paused=false}
 function renderLB(){
   $('lbTabs').innerHTML=Object.values(GAMES).map(g=>`<button class="tab${g.id===lbGame?' on':''}" data-g="${g.id}" type="button" role="tab" aria-selected="${g.id===lbGame}">${g.name}</button>`).join('');
@@ -3376,7 +3432,7 @@ function openProfile(d){if(!d)return;audio();sfx.ui();pfD={k:KINDS.has(d.k)?d.k:
   $('pfName').textContent=cleanName(d.name)||'Someone';{const T=$('pfTags');T.textContent='';const me=d.id===UID||d.id==='local';for(const tp of tagPills(me&&UID?UID:d.id,me?showTag():d.tg,me?showBn():d.bn===true)){tp.setAttribute('role','button');tp.tabIndex=0;tp.onclick=()=>tagInfo(tp.dataset.tag,tp);tp.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tagInfo(tp.dataset.tag,tp)}};T.append(tp)}}
   pfShowUI(d);presBadge(d);
   const t=titleOf(TITLE_IDS.has(d.tt)?d.tt:'none');$('pfTitle').hidden=!t;{const e=$('pfTitle'),tid=TITLE_IDS.has(d.tt)?d.tt:'none';e.classList.toggle('tapme',!!t);e.setAttribute('role','button');e.tabIndex=t?0:-1;e.onclick=()=>titleInfo(tid);e.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();titleInfo(tid)}}}if(t){$('pfTitle').textContent=t.n;$('pfTitle').style.background=t.d?devTitleBg(t.d):t.x?'linear-gradient(90deg,#0b0a18,#3d7bff,#9a5bff,#2fe39a)':t.u?'linear-gradient(90deg,#ff3df0,#7a3cff,#00b8ff)':t.c}
-  const st=$('pfStats');st.textContent='';for(const[k,v]of[['Level',fmt(+d.lv||1)],['Jelly Jar',fmt(+d.drop||0)],['Jelly 2048',fmt(+d.squish||0)],['Jellydoku',fmt(+d.doku||0)],['Jelly Catch',fmt(+d.catch||0)],['Jelly Combo',fmt(+d.combo||0)],['Jelly Memory',fmt(+d.memory||0)],['Jelly Slice',fmt(+d.slice||0)],...(Number.isInteger(+d.rk)&&d.rk!=null?[['Ranked',rkName(clamp(+d.rk,0,14))]]:[])]){const box=document.createElement('div'),a=document.createElement('span'),b=document.createElement('span');a.className='v';a.textContent=v;b.className='k';b.textContent=k;box.append(a,b);st.appendChild(box)}
+  const st=$('pfStats');st.textContent='';for(const[k,v]of[['Level',fmt(+d.lv||1)],['Jelly Jar',fmt(+d.drop||0)],['Jelly 2048',fmt(+d.squish||0)],['Jellydoku',fmt(+d.doku||0)],['Jelly Catch',fmt(+d.catch||0)],['Jelly Combo',fmt(+d.combo||0)],['Jelly Memory',fmt(+d.memory||0)],['Jelly Slice',fmt(+d.slice||0)],...(typeof d.rkg==='string'&&d.rkg?d.rkg.split('|').map(x=>x.split(':')).filter(([g,t])=>GAMES[g]&&Number.isInteger(+t)).map(([g,t])=>['Ranked · '+GAMES[g].name.replace(/^Jelly\s+/,''),rkName(clamp(+t,0,14))]):Number.isInteger(+d.rk)&&d.rk!=null?[['Ranked',rkName(clamp(+d.rk,0,14))]]:[])]){const box=document.createElement('div'),a=document.createElement('span'),b=document.createElement('span');a.className='v';a.textContent=v;b.className='k';b.textContent=k;box.append(a,b);st.appendChild(box)}
   if(d.id===UID||d.id==='local'){const lb=st.firstChild;lb.classList.add('pfstat-lv');lb.title='See level rewards';lb.onclick=()=>{closeProfile();openLvp()}}
   const hl=$('pfHist');hl.textContent='';const h=histArr(d.hist);
   if(d.id==='local'){const s=document.createElement('span');s.className='pfnone';s.textContent='Sign in to keep a name history.';hl.appendChild(s)}
@@ -3889,6 +3945,7 @@ $('cpGo').onclick=async()=>{if(!isAdmin())return;const m=$('cpMsg'),bad=t=>{m.te
     const keep=$('cpSave').checked,notify=$('cpNotify').checked||!keep,pop=$('cpPop').checked,r=FD.push(FD.ref(RDB,'news')),id=r.key,data={title,body,t:FD.serverTimestamp(),push};if(pop)data.pop=true;if(img)data.img=img;if(keep)await FD.set(FD.ref(RDB,'news/'+id),data);
     if(notify)await FD.set(FD.ref(RDB,'notice'),{id,title,body:String(body).slice(0,2000),t:FD.serverTimestamp()});
     if(push)await FD.set(FD.ref(RDB,'deploy'),{id,t:FD.serverTimestamp(),h:pushH});
+    if(keep||notify)ntfBroadcast(title,body).then(n=>{if(n)toast('Also sent a notification to '+n+' device'+(n>1?'s':''),'#7cc8ff')});
     m.textContent=push?'Posted! Everyone is updating to these files now.':!keep?'Sent! Everyone online sees it now (not saved to the update logs).':notify?'Posted and sent to everyone online!':data.pop?'Posted! It is popping up on everyone’s screen.':'Posted to everyone’s mailbox.';$('cpSave').checked=true;$('cpNotify').checked=false;$('cpPop').checked=false;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg='';compPrev();sfx.discover();if(!push)setTimeout(closeComp,900)}
   catch(e){bad('Could not post. Check the database rules are published.')}
   $('cpGo').disabled=false};
@@ -3903,7 +3960,7 @@ function socialUser(user){if(!user){giftUser(null);if(sugUnsub){try{sugUnsub()}c
     if(hadAny)for(const f of added)setTimeout(()=>{const n=frLb[f]&&frLb[f].name;if(n)toast(n+' is now your friend!','#5be0a6')},600);socUnsubs.ready=true;dmSync();if(dmOpen&&!next.has(dmOpen))closeDM();
     renderFriendsIfOpen()},()=>{}));
   socUnsubs.push(FD.onValue(FD.ref(db,'freq/'+uid),s=>{const v=s.val();const prev=Object.keys(freqIn).length;freqIn=v&&typeof v==='object'?Object.fromEntries(Object.entries(v).filter(([k])=>!isBlocked(k))):{};mailSync();
-    if(Object.keys(freqIn).length>prev&&socUnsubs.ready2)sfx.pop(8);socUnsubs.ready2=true;if(!$('mail').hidden)renderMail();renderFriendsIfOpen()},()=>{}))}
+    if(Object.keys(freqIn).length>prev&&socUnsubs.ready2){sfx.pop(8);const nw=Object.values(freqIn).sort((a,b)=>(+(b&&b.t)||0)-(+(a&&a.t)||0))[0];ntfLocal('fr','Friend request',(cleanName(nw&&nw.name)||'Someone')+' wants to be friends','fr')}socUnsubs.ready2=true;if(!$('mail').hidden)renderMail();renderFriendsIfOpen()},()=>{}))}
 async function loadFriend(f){try{const[a,b]=await Promise.all([FD.get(FD.ref(RDB,'lb/'+f)),FD.get(FD.ref(curDB(),'friends/'+f))]);if(a.exists())frLb[f]=Object.assign({id:f},a.val());const v=b.val()||{};frOf[f]=new Set(Object.keys(v).filter(k=>v[k]===true));renderFriendsIfOpen()}catch(e){}}
 function mutualWith(id,theirs){if(!theirs)return[];return[...theirs].filter(x=>x!==UID&&myFriends.has(x))}
 function friendRows(){const out=Object.values(frLb).filter(d=>myFriends.has(d.id));if(UID&&acctReady)out.push(Object.assign(myBody(),{id:UID}));return out}
@@ -3912,7 +3969,7 @@ async function sendFriend(raw,m){const say=(t,b)=>{if(m){m.textContent=t;m.class
   try{const s=await FD.get(FD.ref(curDB(),'names/'+nameKey(v)));if(!s.exists())return say('No player with that name.',1);const to=s.val();
     if(to===UID)return say('That is you!',1);if(myFriends.has(to))return say('You are already friends.');
     if(freqIn[to])return acceptFriend(to);
-    await FD.set(FD.ref(curDB(),'freq/'+to+'/'+UID),{name:cleanName(myLb&&myLb.name||P.name),t:FD.serverTimestamp()});say('Friend request sent to '+v+'!');sfx.pop(6);return true}
+    await FD.set(FD.ref(curDB(),'freq/'+to+'/'+UID),{name:cleanName(myLb&&myLb.name||P.name),t:FD.serverTimestamp()});pushTo(to,'fr');say('Friend request sent to '+v+'!');sfx.pop(6);return true}
   catch(e){say('Could not send the request. Try again.',1)}}
 async function acceptFriend(from){if(!UID)return;try{await FD.update(FD.ref(curDB()),{[`friends/${UID}/${from}`]:true,[`friends/${from}/${UID}`]:true,[`freq/${UID}/${from}`]:null});sfx.discover();const n=freqIn[from]&&freqIn[from].name;toast((cleanName(n)||'New friend')+' added!','#5be0a6');loadFriend(from)}catch(e){toast('Could not accept. Try again.','#ff6fa8')}}
 async function declineFriend(from){try{await FD.remove(FD.ref(curDB(),`freq/${UID}/${from}`));sfx.ui()}catch(e){}}
@@ -3933,7 +3990,7 @@ function dmSync(){for(const f in dmWatch)if(!myFriends.has(f)||!UID){try{dmWatch
   if(!UID)return;for(const f of myFriends){if(!dmPruned[f]){dmPruned[f]=1;setTimeout(()=>dmPrune(f),1500+Math.random()*3000)}if(dmWatch[f])continue;const k=dmPair(f);
     dmWatch[f]=FD.onValue(FD.query(fref('dm/'+k),FD.orderByChild('t'),FD.limitToLast(10)),s=>{const v=s.val()||{},arr=Object.values(v).filter(x=>x&&typeof x.m==='string').sort((a,b)=>(+a.t||0)-(+b.t||0)),last=arr[arr.length-1];
       const seen=+((P.dmSeen||{})[k])||0,unread=arr.filter(x=>x.u!==UID&&(+x.t||0)>seen).length,prev=dmLast[f];dmLast[f]=last?{t:+last.t||0,u:last.u,n:unread}:null;
-      if(dmReady[f]&&last&&last.u!==UID&&(!prev||(+last.t||0)>prev.t)&&dmOpen!==f&&!badText(last.m)){const nm=frLb[f]&&cleanName(frLb[f].name)||'A friend';toast(emoOf(last.m)?nm+' sent you an emote!':nm+': '+String(last.m).slice(0,60),'#5be0a6');sfx.pop(9)}
+      if(dmReady[f]&&last&&last.u!==UID&&(!prev||(+last.t||0)>prev.t)&&dmOpen!==f&&!badText(last.m)){const nm=frLb[f]&&cleanName(frLb[f].name)||'A friend';toast(emoOf(last.m)?nm+' sent you an emote!':nm+': '+String(last.m).slice(0,60),'#5be0a6');sfx.pop(9);ntfLocal('dm',nm,emoOf(last.m)?'sent you an emote':String(last.m).slice(0,90),'dm-'+f)}
       dmReady[f]=true;renderFriendsIfOpen();syncDots()},()=>{})}}
 function dmDay(t){const d=new Date(t),n=new Date();if(d.toDateString()===n.toDateString())return'Today';const y=new Date(n-864e5);if(d.toDateString()===y.toDateString())return'Yesterday';return d.toLocaleDateString(undefined,{month:'short',day:'numeric'})}
 var dmEmoCv=[];
@@ -3956,7 +4013,7 @@ async function dmSend(){const inp=$('dmIn'),txt=inp.value.replace(/\s+/g,' ').tr
 async function dmSendRaw(txt){const f=dmOpen,inp=$('dmIn'),m=$('dmMsg');if(!f||!txt)return false;const eid=emoOf(txt);if(eid&&!owns('prof','emote',eid))return false;
   if(!myFriends.has(f)){m.textContent='You can only message friends.';m.className='nmsg bad';return false}
   if(!eid&&badText(txt)){sfx.nope();m.textContent='Keep it friendly!';m.className='nmsg bad';return false}if(Date.now()-dmSendT<900){return false}
-  dmSendT=Date.now();m.textContent='';if(eid)$('dmEmo').hidden=true;try{await FD.set(FD.push(fref('dm/'+dmPair(f))),{u:UID,to:f,m:txt,t:FD.serverTimestamp()});sfx.pop(5);dmPrune(f);return true}catch(e){m.textContent='Could not send. Try again.';m.className='nmsg bad';return false}}
+  dmSendT=Date.now();m.textContent='';if(eid)$('dmEmo').hidden=true;try{await FD.set(FD.push(fref('dm/'+dmPair(f))),{u:UID,to:f,m:txt,t:FD.serverTimestamp()});pushTo(f,'dm',{text:emoOf(txt)?'sent you an emote':String(txt).slice(0,90)});sfx.pop(5);dmPrune(f);return true}catch(e){m.textContent='Could not send. Try again.';m.className='nmsg bad';return false}}
 $('dmSend').onclick=dmSend;$('dmIn').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();dmSend()}});$('dmClose').onclick=closeDM;
 $('dm').addEventListener('click',e=>{if(e.target.id==='dm')closeDM()});$('dm').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')closeDM()});
 function renderFriendsIfOpen(){if(!$('fr').hidden)renderFriends();if(!$('lb').hidden&&lbScope==='friends')renderLB()}
@@ -4000,7 +4057,7 @@ async function pfSocial(d){const act=$('pfAct'),mu=$('pfMut');act.textContent=''
     else if(freqIn[id])act.append(bt('mint','Accept friend request',()=>acceptFriend(id).then(()=>setTimeout(draw,300))));
     else{let sent=false;try{sent=(await FD.get(FD.ref(curDB(),'freq/'+id+'/'+UID))).exists()}catch(e){}
       if(sent){const b=bt('white','Request sent',null);b.disabled=true;act.append(b)}
-      else act.append(bt('mint','Add friend',async()=>{try{await FD.set(FD.ref(curDB(),'freq/'+id+'/'+UID),{name:cleanName(myLb&&myLb.name||P.name),t:FD.serverTimestamp()});toast('Friend request sent!','#5be0a6');sfx.pop(6)}catch(e){toast('Could not send it','#ff6fa8')}draw()}))}};
+      else act.append(bt('mint','Add friend',async()=>{try{await FD.set(FD.ref(curDB(),'freq/'+id+'/'+UID),{name:cleanName(myLb&&myLb.name||P.name),t:FD.serverTimestamp()});pushTo(id,'fr');toast('Friend request sent!','#5be0a6');sfx.pop(6)}catch(e){toast('Could not send it','#ff6fa8')}draw()}))}};
   draw();
   {const bb=document.createElement('button');bb.type='button';bb.className='btn small '+(isBlocked(id)?'mint':'danger')+' pfblock';bb.textContent=isBlocked(id)?'Unblock':'Block';bb.onclick=()=>blockAsk(Object.assign({},d));mu.after(bb);setTimeout(()=>{},0);pfSocial.bb=bb}
   try{const s=await FD.get(FD.ref(curDB(),'friends/'+id)),v=s.val()||{},theirs=new Set(Object.keys(v).filter(k=>v[k]===true)),m=mutualWith(id,theirs);
@@ -4095,7 +4152,7 @@ async function gvFind(){if(!isAdmin())return;const m=$('gvMsg'),v=cleanName($('g
   if(!uid){m.textContent='No player called “'+v+'”. Check the spelling.';m.className='nmsg bad';sfx.nope();gvSet(null);return}
   let nm=v;try{const l=await FD.get(fref('lb/'+uid));if(l.exists()&&l.val().name)nm=cleanName(l.val().name)}catch(e){}
   m.textContent='';sfx.ui();gvSet(uid,nm)}
-function gvSet(uid,nm){if(gvUnsub){try{gvUnsub()}catch(e){}gvUnsub=null}gvUid=uid;gvNm=nm||'';gvGifts={};$('gvWho').hidden=!uid;$('gvGo').disabled=!uid;$('gvCoinGo').disabled=!uid;$('gvTakeGo').disabled=!uid;$('gvTakeNGo').disabled=!uid;$('gvTakeMsg').textContent='';if(!uid)return;
+function gvSet(uid,nm){if(gvUnsub){try{gvUnsub()}catch(e){}gvUnsub=null}gvUid=uid;gvNm=nm||'';gvGifts={};$('gvWho').hidden=!uid;$('gvGo').disabled=!uid;$('gvBestGo').disabled=!uid;$('gvBestMsg').textContent='';gvBestLb=null;gvBestUI();if(uid)FD.get(fref('lb/'+uid)).then(s=>{if(gvUid===uid){gvBestLb=s.val()||{};gvBestUI()}}).catch(()=>{});$('gvCoinGo').disabled=!uid;$('gvTakeGo').disabled=!uid;$('gvTakeNGo').disabled=!uid;$('gvTakeMsg').textContent='';if(!uid)return;
   gvRender();gvUnsub=FD.onValue(fref('gifts/'+uid),s=>{gvGifts=s.val()||{};gvRender()},()=>{gvGifts={};gvRender()})}
 function gvChip(txt,rm){const c=document.createElement('span');c.className='gvchip';c.append(txt);const x=document.createElement('button');x.type='button';x.textContent='×';x.title='Take it back';x.setAttribute('aria-label','Take back '+txt);
   x.onclick=async()=>{x.disabled=true;try{await rm();toast('Taken back: '+txt,'#ff6fa8')}catch(e){toast('Could not take it back','#ff6fa8');x.disabled=false}};c.append(x);return c}
@@ -4297,7 +4354,7 @@ function duelInit(){FD.onValue(FD.ref(RDB,'.info/serverTimeOffset'),s=>{SKEW=+s.
   FD.onValue(FD.query(FD.ref(RDB,'duels'),FD.orderByChild('t'),FD.limitToLast(40)),s=>{DUELS=s.val()||{};if(!$('duel').hidden)renderDuel();if(pfD&&pfD.id)pfPlayUI(pfD)},()=>{})}
 function duelUser(user){if(!user)return;const uid=user.uid;
   socUnsubs.push(FD.onValue(fref('duelInv/'+uid),s=>{dInv=Object.fromEntries(Object.entries(s.val()||{}).filter(([,x])=>!(x&&isBlocked(x.from))));duInvCheck()},()=>{}));
-  socUnsubs.push(FD.onValue(fref('watch/'+uid),s=>{const v=s.val()||{};watchN=Object.keys(v).length},()=>{}));
+  socUnsubs.push(FD.onValue(fref('watch/'+uid),s=>{const v=s.val()||{};const was=watchN;watchN=Object.keys(v).filter(k=>v[k]===true&&!isBlocked(k)).length;watchUI();if(watchN>=3)secBump('crowd',1);if(watchN>was&&!SPEC&&!document.hidden)toast(watchN===1?'Someone is watching you play!':watchN+' people are watching you play!','#7cc8ff')},()=>{}));
   setTimeout(betSettleAll,3000)}
 // ---- hub
 function openDuel(){audio();sfx.ui();paused=true;$('duel').hidden=false;if(GAMES[gid]&&!DUEL)duMode=gid;renderDuel()}
@@ -4330,7 +4387,7 @@ async function duQuick(){const now=srvNow(),open=Object.entries(DUELS).filter(([
   const ids=Object.keys(GAMES);duMode=ids[Math.floor(Math.random()*ids.length)];await duFind();toast('Waiting for anyone to join: '+GAMES[duMode].name,'#7cc8ff')}
 async function duJoin(id){duWatch(id,'b');try{await FD.update(fref('duels/'+id),{b:UID,bn:duName(),st:'live',start:FD.serverTimestamp()})}catch(e){duStop();throw e}}
 async function duChallenge(uid,name,g,nl){if(nl===undefined)nl=duNl;if(!duNeedAcct())return;if(DUEL)return toast('You already have a match going','#ff6fa8');
-  try{const r=FD.push(fref('duels'));const rec={a:UID,an:duName(),g,st:'invite',to:uid,t:FD.serverTimestamp()},inv={from:UID,name:duName(),g,t:FD.serverTimestamp()};if(nl){rec.nl=true;inv.nl=true}await FD.set(r,rec);await FD.set(fref('duelInv/'+uid+'/'+r.key),inv);duMode=g;duWatch(r.key,'a');closeAllO();openDuel();toast('Challenge sent to '+name+'!','#7cc8ff')}
+  try{const r=FD.push(fref('duels'));const rec={a:UID,an:duName(),g,st:'invite',to:uid,t:FD.serverTimestamp()},inv={from:UID,name:duName(),g,t:FD.serverTimestamp()};if(nl){rec.nl=true;inv.nl=true}await FD.set(r,rec);await FD.set(fref('duelInv/'+uid+'/'+r.key),inv);pushTo(uid,'duel',{text:((GAMES[g]||{}).name||'a 1v1')+(nl?' (no time limit)':'')});duMode=g;duWatch(r.key,'a');closeAllO();openDuel();toast('Challenge sent to '+name+'!','#7cc8ff')}
   catch(e){toast('Could not send the challenge','#ff6fa8')}}
 function duWatch(id,me){DUEL={id,me,phase:'wait',rec:null,made:Date.now()};if(duUnsub)try{duUnsub()}catch(e){}
   duUnsub=FD.onValue(fref('duels/'+id),s=>{const v=s.val();if(!DUEL||DUEL.id!==id)return;if(!v){if(DUEL.phase==='wait')duStop('The match was cancelled');return}DUEL.rec=v;duStep()},()=>{});
@@ -4358,7 +4415,7 @@ function duLoop(){const d=DUEL;if(!d)return;const now=Date.now(),v=d.rec||{};
 function duLocalEnd(){const d=DUEL;if(!d||(d.phase!=='live'&&d.phase!=='count'))return;d.phase='end';d.endT=Date.now();paused=true;d.final=Math.floor(score);
   if(GAMES[d.g]&&d.final>(P.best[d.g]||0)){P.best[d.g]=d.final;bestEl.textContent=fmt(d.final);save();setTimeout(syncMe,0);setTimeout(()=>toast('New best in '+GAMES[d.g].name+': '+fmt(d.final)+'!','#ffd23f'),400)}$('dhBet').hidden=true;$('dhT').textContent=d.nl?'Done':'0:00';$('dhMsg').textContent=d.nl?'Your game is over! Watching '+d.oppN+'…':'Time! Waiting for '+d.oppN+'…';
   FD.update(fref('duels/'+d.id),{[d.me==='a'?'sa':'sb']:d.final,[d.me==='a'?'fa':'fb']:true}).catch(()=>{});sfx.discover()}
-function duResult(){const d=DUEL;if(!d||d.phase==='done')return;d.phase='done';const v=d.rec||{},op=+(d.me==='a'?v.sb:v.sa)||0,me=d.final||0,res=me>op?'w':me<op?'l':'t';
+function duResult(){const d=DUEL;if(!d||d.phase==='done')return;d.phase='done';const v=d.rec||{},op=+(d.me==='a'?v.sb:v.sa)||0,me=d.final||0,res=me>op?'w':me<op?'l':'t';if(res==='t')secBump('tie',1);if(res==='w'&&d.nl&&d.specTried)secBump('underdog',1);
   if(SPEC&&SPEC.inDuel)specStop(true);if(d.rk){rkRoundDone(d,res,me,op);return}
   const R=P.duel=P.duel||{w:0,l:0,t:0};R[res]=(R[res]||0)+1;const co=Math.round((res==='w'?150:res==='t'?75:25)*presMult());lastDu={opp:d.opp,oppN:d.oppN,g:d.g,nl:!!d.nl};P.coins+=co;addXP(res==='w'?30:10);save();refreshCoins();
   if(d.me==='a')FD.update(fref('duels/'+d.id),{st:'done'}).catch(()=>{});
@@ -4371,7 +4428,13 @@ document.querySelectorAll('#dhBet button').forEach(b=>b.onclick=()=>{if(DUEL)bet
 // ================================================= game modes: featured, casual and ranked (Cat At War)
 const RANKS=[{n:'Gumdrop',c:['#ffbf8a','#c26a35'],j:'#ff9a5c'},{n:'Taffy',c:['#ffffff','#9aa6c0'],j:'#ff9ad5'},{n:'Caramel',c:['#ffe28a','#c98a00'],j:'#ffd23f'},{n:'Crystal',c:['#c8f8ff','#2f9fd6'],j:'#7cc8ff'},{n:'Supernova',c:['#ff3df0','#7a3cff','#00b8ff'],j:'#c86bff'}];
 const RK_BASE=1000,RK_STEP=100,RK_START=1000,RK_WIN=300,RK_TIE=150,RK_LOSS=75,RK_SEARCH=60000;
-const rkMMR=()=>typeof P.mmr==='number'?P.mmr:RK_START;
+// ranks are kept per game: P.rkG[game] = {m: MMR, w, l, t, best, played}. The old single rank is copied into every game once.
+function rkMig(){if(P.rkMig)return;P.rkMig=1;P.rkG=P.rkG&&typeof P.rkG==='object'?P.rkG:{};if(typeof P.mmr==='number')for(const g in GAMES)if(!P.rkG[g])P.rkG[g]={m:P.mmr,w:0,l:0,t:0,best:P.rkBest|0,played:P.rkPlayed?1:0}}
+const rkCur=()=>RK&&RK.g&&GAMES[RK.g]?RK.g:(typeof rkG!=='undefined'&&GAMES[rkG]?rkG:'drop');
+function rkS(g){rkMig();if(!GAMES[g])g=rkCur();P.rkG=P.rkG&&typeof P.rkG==='object'?P.rkG:{};const s=P.rkG[g];if(s&&typeof s==='object')return s;return(P.rkG[g]={m:RK_START,w:0,l:0,t:0,best:0,played:0})}
+const rkMMR=g=>{const m=+rkS(g).m;return Number.isFinite(m)?m:RK_START};
+const rkSetMMR=(g,m)=>{rkS(g).m=Math.round(m)};
+function rkLbStr(){rkMig();return Object.keys(GAMES).filter(g=>P.rkG&&P.rkG[g]&&P.rkG[g].played).map(g=>g+':'+rkTier(rkMMR(g))).join('|')}
 const rkTier=m=>clamp(Math.floor(((m==null?RK_START:m)-RK_BASE)/RK_STEP),0,14);
 const rkName=t=>RANKS[clamp(Math.floor(t/3),0,4)].n+' '+['I','II','III'][clamp(t,0,14)%3];
 const rkLo=t=>t<=0?-Infinity:RK_BASE+t*RK_STEP,rkHi=t=>t>=14?Infinity:RK_BASE+(t+1)*RK_STEP;
@@ -4394,7 +4457,7 @@ function rkCanvas(t,S){const cv=document.createElement('canvas'),d=Math.max(2,de
 function rkDrawAll(){for(const q of rkCv){if(!q.c.canvas.isConnected)continue;q.c.setTransform(q.d,0,0,q.d,0,0);q.c.clearRect(0,0,q.S,q.S);drawRank(q.c,q.S/2,q.S*.46,q.S*.34,q.t)}rkCv=rkCv.filter(q=>q.c.canvas.isConnected)}
 const elx2=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 function rkInit(){try{FD.onValue(FD.ref(RDB,'cfg/ranked'),s=>{RKCFG=s.val()===true;if(!$('gm').hidden)renderGM()},()=>{})}catch(e){}
-  if(P.rkOpen){const R=P.rk=P.rk||{w:0,l:0,t:0};R.l=(R.l||0)+1;P.rkOpen=null;save();setTimeout(()=>toast('You left a ranked match, so it counted as a loss','#ff6fa8'),2500)}}
+  if(P.rkOpen){const R=P.rk=P.rk||{w:0,l:0,t:0};R.l=(R.l||0)+1;if(GAMES[P.rkOpen.g]){const s=rkS(P.rkOpen.g);s.l=(s.l||0)+1}P.rkOpen=null;save();setTimeout(()=>toast('You left a ranked match, so it counted as a loss','#ff6fa8'),2500)}}
 // ---- the Game Mode screen
 function openGM(){audio();sfx.ui();$('menu').hidden=true;paused=true;$('gm').hidden=false;if(GAMES[gid]&&!RK)rkG=rkG||gid;renderGM()}
 function closeGM(back){$('gm').hidden=true;gmPrev=[];if(back)openMenu();else if(!anyOpen())paused=false}
@@ -4412,8 +4475,8 @@ function renderGM(){const now=Date.now(),F=$('gmFeat');F.textContent='';rkCv=[];
   C.querySelectorAll('.mg').forEach(b=>b.onclick=()=>{const g=b.dataset.g;closeGM(false);if(g===gid){paused=false;return}saveRun(false);sfx.ui();playGame(g);toast(P.saves[g]?'Welcome back!':'Switched to '+GAMES[g].name,'#7cc8ff')});
   renderRanked()}
 function renderRanked(){const W=$('gmRanked'),ok=rkAllowed(),signed=!!(UID&&acctReady);W.textContent='';W.classList.toggle('locked',!ok);
-  const m=rkMMR(),t=rkTier(m),R=P.rk||{w:0,l:0,t:0},lo=rkLo(t),hi=rkHi(t);
-  const card=elx2('div','rkcard');card.append(rkCanvas(t,88));const inf=elx2('div','rkinf');inf.append(elx2('b','rkn',rkName(t)),elx2('span','rkm',fmt(Math.round(m))+' MMR'));
+  const m=rkMMR(rkG),t=rkTier(m),R=rkS(rkG),lo=rkLo(t),hi=rkHi(t);
+  W.append(elx2('p','rkfor','Your '+(GAMES[rkG]?GAMES[rkG].name:'')+' rank'+(R.played?'':' (not played yet)')));const card=elx2('div','rkcard');card.append(rkCanvas(t,88));const inf=elx2('div','rkinf');inf.append(elx2('b','rkn',rkName(t)),elx2('span','rkm',fmt(Math.round(m))+' MMR'));
   const bar=elx2('div','rkbar'),fill=elx2('i');fill.style.width=(t>=14?100:clamp((m-(lo===-Infinity?RK_BASE+t*RK_STEP:lo))/RK_STEP*100,0,100))+'%';bar.append(fill);inf.append(bar,elx2('span','rksub',t>=14?'Top rank! Keep climbing your MMR.':`${fmt(Math.max(0,Math.ceil(hi-m)))} MMR to ${rkName(t+1)}`),elx2('span','rksub',`${R.w||0} W · ${R.l||0} L${R.t?' · '+R.t+' T':''}`));card.append(inf);W.append(card);
   if(!ok){const lk=elx2('div','rklock');lk.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>Ranked is coming soon</b>';W.append(lk)}
   const modes=elx2('div','tabs rkmodes');for(const g of Object.values(GAMES)){const b=elx2('button','tab'+(g.id===rkG?' on':''),g.name);b.type='button';b.onclick=()=>{if(!ok||RK)return;rkG=g.id;sfx.ui();renderRanked()};modes.append(b)}W.append(modes);
@@ -4429,7 +4492,7 @@ function renderRanked(){const W=$('gmRanked'),ok=rkAllowed(),signed=!!(UID&&acct
 function rkShow(html){const b=$('rkBody');rkCv=rkCv.filter(q=>!b.contains(q.c.canvas));b.textContent='';if(typeof html==='string')b.innerHTML=html;else b.append(html);$('rk').hidden=false}
 function rkHide(){$('rk').hidden=true}
 async function rkQueue(g){if(!duNeedAcct()||!rkAllowed())return;if(DUEL||RK)return toast('You already have a match going','#ff6fa8');
-  closeGM(false);paused=true;RK={phase:'queue',g,s0:Date.now(),mmr:rkMMR(),played:{},prev:gid};const ref=fref('rq/'+g+'/'+UID);
+  closeGM(false);paused=true;RK={phase:'queue',g,s0:Date.now(),mmr:rkMMR(g),played:{},prev:gid};const ref=fref('rq/'+g+'/'+UID);
   try{await FD.set(ref,{r:Math.round(RK.mmr),n:duName(),s:FD.serverTimestamp(),h:FD.serverTimestamp(),m:''});try{FD.onDisconnect(ref).remove()}catch(e){}}catch(e){RK=null;toast('Could not start ranked. Publish the new database rules first.','#ff6fa8');return}
   if(!RK)return;RK.unq=FD.onValue(fref('rq/'+g),s=>{if(!RK||RK.phase!=='queue')return;RK.q=s.val()||{};rkScan()},()=>{});RK.tick=setInterval(rkQTick,500);rkQUI();sfx.ui()}
 function rkQUI(){const R=RK;if(!R||R.phase!=='queue')return;const el=Math.floor((Date.now()-R.s0)/1000),win=rkWin(el);
@@ -4450,8 +4513,8 @@ function rkScan(){const R=RK;if(!R||R.phase!=='queue'||R.busy)return;const q=R.q
   FD.update(FD.ref(curDB()),upd).then(()=>{if(RK===R){R.busy=false;rkFound(id)}}).catch(()=>{R.busy=false})}
 function rkFound(id){const R=RK;if(!R||R.phase!=='queue')return;R.phase='found';R.id=id;R.last=Date.now();clearInterval(R.tick);if(R.unq)try{R.unq()}catch(e){}FD.remove(fref('rq/'+R.g+'/'+UID)).catch(()=>{});
   sfx.discover();hap('success');R.unm=FD.onValue(fref('rmatch/'+id),s=>{const v=s.val();if(!RK||RK.id!==id||!v)return;const first=!RK.rec;RK.rec=v;RK.last=Date.now();if(first)rkStart();rkStep()},()=>{});R.tick=setInterval(rkLoop,400)}
-function rkStart(){const R=RK,v=R.rec;R.me=v.a===UID?'a':'b';R.oppN=cleanName(R.me==='a'?v.bn:v.an)||'Opponent';R.oppR=+(R.me==='a'?v.br:v.ar)||RK_START;R.mmr0=rkMMR();R.dl=rkDelta(R.mmr0,R.oppR);
-  P.mmr=R.mmr0-R.dl.loss;P.rkOpen={id:R.id,loss:R.dl.loss,win:R.dl.win};P.rkPlayed=1;save();R.vsUntil=Date.now()+3800;
+function rkStart(){const R=RK,v=R.rec;R.me=v.a===UID?'a':'b';R.oppN=cleanName(R.me==='a'?v.bn:v.an)||'Opponent';R.oppR=+(R.me==='a'?v.br:v.ar)||RK_START;R.mmr0=rkMMR(R.g);R.dl=rkDelta(R.mmr0,R.oppR);
+  rkSetMMR(R.g,R.mmr0-R.dl.loss);P.rkOpen={id:R.id,g:R.g,loss:R.dl.loss,win:R.dl.win};P.rkPlayed=1;rkS(R.g).played=1;save();R.vsUntil=Date.now()+3800;
   const box=elx2('div','rkvs');box.append(elx2('span','lbl','Match found · '+GAMES[v.g].name));const row=elx2('div','rkvr');
   const side=(n,m)=>{const s=elx2('div','rkvp');s.append(rkCanvas(rkTier(m),78),elx2('b',null,n),elx2('span','rksub',rkName(rkTier(m))));return s};
   row.append(side('You',R.mmr0),elx2('span','rkvsx','VS'),side(R.oppN,R.oppR));box.append(row,elx2('span','rksub','Best of 3 · Win: +'+R.dl.win+' MMR · Loss: −'+R.dl.loss+' MMR'),elx2('h3','rkqt','Round 1 starts in a moment…'));rkShow(box)}
@@ -4477,9 +4540,9 @@ function rkRoundDone(d,res,me,op){const R=RK;clearInterval(duTickI);if(duUnsub)t
 function rkFinish(){const R=RK;if(!R||R.phase==='done')return;R.phase='done';clearInterval(R.tick);if(R.unm)try{R.unm()}catch(e){}
   if(DUEL){clearInterval(duTickI);if(duUnsub)try{duUnsub()}catch(e){}duUnsub=null;DUEL=null;$('dhud').hidden=true;$('dcount').hidden=true}
   const v=R.rec||{},res=v.win===R.me?'w':v.win==='t'?'t':'l',op=P.rkOpen,t0=rkTier(R.mmr0);
-  if(op&&op.id===R.id){if(res==='w')P.mmr=rkMMR()+op.loss+op.win;else if(res==='t')P.mmr=rkMMR()+op.loss;P.rkOpen=null}
-  const Rr=P.rk=P.rk||{w:0,l:0,t:0};Rr[res]=(Rr[res]||0)+1;let coins=res==='w'?RK_WIN:res==='t'?RK_TIE:RK_LOSS,spins=0;
-  const t1=rkTier(rkMMR()),best=typeof P.rkBest==='number'?P.rkBest:0,ups=[];for(let t=best+1;t<=t1;t++){const r=rkTierReward(t);coins+=r.coins;spins+=r.spins;ups.push(t)}P.rkBest=Math.max(best,t1);
+  if(op&&op.id===R.id){if(res==='w')rkSetMMR(R.g,rkMMR(R.g)+op.loss+op.win);else if(res==='t')rkSetMMR(R.g,rkMMR(R.g)+op.loss);P.rkOpen=null}
+  const Rr=P.rk=P.rk||{w:0,l:0,t:0};Rr[res]=(Rr[res]||0)+1;{const s=rkS(R.g);s[res]=(s[res]||0)+1;s.best=Math.max(s.best|0,rkTier(rkMMR(R.g)))}let coins=res==='w'?RK_WIN:res==='t'?RK_TIE:RK_LOSS,spins=0;
+  const t1=rkTier(rkMMR(R.g)),best=typeof P.rkBest==='number'?P.rkBest:0,ups=[];for(let t=best+1;t<=t1;t++){const r=rkTierReward(t);coins+=r.coins;spins+=r.spins;ups.push(t)}P.rkBest=Math.max(best,t1);
   for(const t of ups){const tid={3:'rk_taffy',6:'rk_caramel',9:'rk_crystal',12:'rk_nova'}[t];if(tid&&!P.own.includes('prof:title:'+tid)){P.own.push('prof:title:'+tid);P.fresh.push('prof:title:'+tid)}}
   P.coins+=coins;if(spins)P.spins=(P.spins||0)+spins;addXP(res==='w'?60:25);save();refreshCoins();setTimeout(syncMe,0);
   const dm=Math.round(rkMMR()-R.mmr0),sc=rkScore(v),mine=R.me==='a'?sc.wa:sc.wb,theirs=R.me==='a'?sc.wb:sc.wa;
@@ -4531,6 +4594,20 @@ achTier('Collection','🎁',ownCount,[['own25',25,'Collector','Own 25 cosmetics'
 achTier('Collection','🎰',capCount,[['cap5',5,'Lucky pull','Find 5 capsule prizes',200],['cap15',15,'Capsule fan','Find 15 capsule prizes',800],['cap30',30,'Capsule master','Find 30 capsule prizes',2500,{spins:3}]]);
 achTier('Coins','🪙',()=>P.earned||0,[['earn10k',10000,'Saver','Earn 10,000 coins from games',500],['earn100k',100000,'Rich jelly','Earn 100,000 coins from games',3000],['earn1m',1000000,'Jelly Mogul','Earn 1,000,000 coins from games',20000,{item:'prof:title:ach_rich'}]]);
 achTier('Prestige','✨',()=>P.prest|0,[['prest1',1,'Reborn','Prestige once',5000,{item:'prof:title:ach_reborn'}],['prest3',3,'Thrice reborn','Prestige 3 times',15000,{spins:5}],['prest5',5,'Eternal','Prestige 5 times',40000,{spins:10}]]);
+// secret achievements: listed as ??? with no progress bar until you stumble into them
+const SECRETS=[['sec_night','🦉','Night owl','Finish a round between 1 and 5 in the morning','night',1,800],
+  ['sec_zero','🫠','Butterfingers','Finish a round with a score of 0','zero',1,300],
+  ['sec_777','🎰','Lucky sevens','Finish a round with a score ending in 777','s777',1,1777],
+  ['sec_bombs','💥','Kaboom collector','Hit 25 bombs in Jelly Slice','bombs',25,1200],
+  ['sec_sleepy','😴','Sleepyhead','Finish a round at night wearing the Sleepy nightcap','sleepy',1,1500],
+  ['sec_tie','📸','Photo finish','Tie a 1v1','tie',1,1000],
+  ['sec_underdog','🐢','Slow and steady','Win a no-time-limit 1v1 after your game ended first','underdog',1,2000],
+  ['sec_fashion','👗','Fashionista','Change your look 50 times','fashion',50,900],
+  ['sec_crowd','🍿','Crowd pleaser','Have 3 people watch you play at once','crowd',1,2500]];
+for(const[id,icon,n,d,k,goal,coins]of SECRETS)ACH.push({id,group:'Secret',icon,cur:()=>+(P.sec&&P.sec[k])||0,goal,n,d,coins,extra:{},secret:true});
+function secBump(k,v){try{P.sec=P.sec&&typeof P.sec==='object'?P.sec:{};if(v===undefined)P.sec[k]=(+P.sec[k]||0)+1;else P.sec[k]=Math.max(+P.sec[k]||0,v)}catch(e){}}
+function secRound(g,s){const h=new Date().getHours(),n=Math.floor(+s||0);if(h>=1&&h<5)secBump('night',1);if(n===0)secBump('zero',1);if(n>=777&&n%1000===777)secBump('s777',1);
+  if((h>=21||h<5)&&cos('drop').hat==='sleepy')secBump('sleepy',1)}
 ACH.push({id:'complete',group:'Completionist',icon:'💎',cur:()=>ACH.filter(a=>a.id!=='complete'&&P.ach&&P.ach[a.id]).length,goal:0,n:'Completionist',d:'Finish every other achievement',coins:50000,extra:{item:'drop:set:ach_trophy',item2:'prof:title:ach_done'}});
 ACH[ACH.length-1].goal=ACH.length-1;
 var achQ=[],achBusy=false;
@@ -4538,13 +4615,14 @@ function achCheck(quiet){if(!P.ach)P.ach={};let any=false;for(const a of ACH){if
     P.ach[a.id]=Date.now();P.coins+=a.coins;if(a.extra.spins)P.spins=(P.spins||0)+a.extra.spins;for(const k of[a.extra.item,a.extra.item2])if(k&&!P.own.includes(k)){const[g,cat,id]=k.split(':');P.own.push(...(SHARED[cat]&&g!=='prof'?SHARED[cat].map(x=>x+':'+cat+':'+id):[k]));P.fresh.push(k)}any=true;if(!quiet)achQ.push(a)}
   if(achQ.length>3){const n=achQ.length,co=achQ.reduce((s,a)=>s+a.coins,0);achQ=[];setTimeout(()=>{toast(`🏆 ${n} achievements unlocked! +${fmt(co)} coins`,'#ffcf4a');sfx.discover()},600)}
   if(any){save();refreshCoins();achPump();if(!$('ach').hidden)renderAch();if(!$('menu').hidden)achRowUI()}}
-function achPump(){if(achBusy||!achQ.length)return;achBusy=true;const a=achQ.shift();toast(`🏆 ${a.n}! +${fmt(a.coins)} coins`+(a.extra.spins?` +${a.extra.spins} spins`:'')+(a.extra.item?' + a cosmetic':''),'#ffcf4a');sfx.discover();setTimeout(()=>{achBusy=false;achPump()},2600)}
+function achPump(){if(achBusy||!achQ.length)return;achBusy=true;const a=achQ.shift();toast(`${a.secret?'🤫 Secret achievement: ':'🏆 '}${a.n}! +${fmt(a.coins)} coins`+(a.extra.spins?` +${a.extra.spins} spins`:'')+(a.extra.item?' + a cosmetic':''),'#ffcf4a');sfx.discover();setTimeout(()=>{achBusy=false;achPump()},2600)}
 setInterval(()=>{try{achCheck(false)}catch(e){}},4000);
 function achRowUI(){const n=ACH.filter(a=>P.ach&&P.ach[a.id]).length;const e=$('achN');if(e)e.textContent=n+' / '+ACH.length}
 function openAch(){audio();sfx.ui();$('menu').hidden=true;paused=true;$('ach').hidden=false;renderAch()}
 function renderAch(){const L=$('achList');L.textContent='';const done=ACH.filter(a=>P.ach&&P.ach[a.id]).length;$('achTop').textContent=`${done} of ${ACH.length} done`;$('achBar').style.width=(done/ACH.length*100)+'%';
   let grp='';for(const a of ACH){if(a.group!==grp){grp=a.group;L.append(elx('h3','mh',grp))}const got=!!(P.ach&&P.ach[a.id]);let v=0;try{v=a.cur()}catch(e){}
-    const row=elx('div','achc'+(got?' got':''));row.append(elx('span','achi',a.icon));const m=elx('div','achm');m.append(elx('b',null,a.n),elx('span','achd',a.d));
+    if(a.secret&&!got){const row=elx('div','achc secret');row.append(elx('span','achi','❔'));const m=elx('div','achm');m.append(elx('b',null,'???'),elx('span','achd','Secret achievement. Keep playing to discover it!'));const rw=elx('div','achr');rw.append(elx('span','achx','Reward: ???'));m.append(rw);row.append(m);L.append(row);continue}
+    const row=elx('div','achc'+(got?' got':'')+(a.secret?' secret':''));row.append(elx('span','achi',a.icon));const m=elx('div','achm');m.append(elx('b',null,a.n),elx('span','achd',a.d));if(a.secret)m.firstChild.append(elx('span','achsec','SECRET'));
     const bar=elx('div','bar'),fi=elx('i');fi.style.width=Math.min(100,v/a.goal*100)+'%';bar.append(fi);if(!got)m.append(bar,elx('span','achd',`${fmt(Math.min(v,a.goal))} / ${fmt(a.goal)}`));
     const rw=elx('div','achr');rw.append(elx('span','achcoin',`${fmt(a.coins)}`));if(a.extra.spins)rw.append(elx('span','achx',`+${a.extra.spins} spins`));if(a.extra.item){const it=itemByKey(a.extra.item);if(it)rw.append(elx('span','achx',CATL[it.cat].replace(/s$/,'')+': '+it.n))}if(got)rw.append(elx('span','achok','Done ✓'));
     m.append(rw);row.append(m);L.append(row)}}
@@ -4637,7 +4715,7 @@ function cbCol(hex){if(cbMode==='off'||typeof hex!=='string'||hex.length!==7||he
 function cbApply(){const m=CB[cbMode]?cbMode:'off';cbCache={};document.documentElement.style.filter='';document.body.classList.toggle('cbon',m!=='off');document.body.style.setProperty('--cbf',CB[m][1]||'none');try{if(G&&G.restyle)G.restyle()}catch(e){}}
 cbApply();
 function openSet(){audio();sfx.ui();$('menu').hidden=true;paused=true;$('set').hidden=false;renderSet()}
-function renderSet(){$('volM').value=VOL.m;$('volS').value=VOL.s;$('volMN').textContent=VOL.m+'%';$('volSN').textContent=VOL.s+'%';
+function renderSet(){try{ntfUI()}catch(e){}$('volM').value=VOL.m;$('volS').value=VOL.s;$('volMN').textContent=VOL.m+'%';$('volSN').textContent=VOL.s+'%';
   const G=$('sndGrid');G.textContent='';for(const[id,[n]]of Object.entries(SNDS)){const b=elx('button','tab'+(sndOf()===id?' on':''),n);b.type='button';b.onclick=()=>{P.snd=id;save();audio();[0,2,4,6].forEach((l,i)=>setTimeout(()=>sfx.merge(l,0),i*170));renderSet()};G.append(b)}
   const C=$('cbGrid');C.textContent='';for(const[id,[n,,d]]of Object.entries(CB)){const b=elx('button','cbb'+(cbMode===id?' on':''));b.type='button';b.append(elx('b',null,n));if(d)b.append(elx('span',null,d));b.onclick=()=>{cbMode=id;store.set('ca_cb',id);cbApply();sfx.ui();renderSet()};C.append(b)}
   const pv=$('cbPrev');if(!pv.childElementCount)for(const e of SETS.jelly.list){const s=elx('i');s.style.background=e[1];pv.append(s)}}
@@ -4676,6 +4754,15 @@ $('gvName').addEventListener('input',()=>{clearTimeout(gvSearch.t);gvSearch.t=se
 function gvTakeOptions(){const s=$('gvTake');if(s.options.length)return;const CATN={set:'Critters',hat:'Hat',jar:'Jar',wall:'Wallpaper',board:'Board',title:'Title',frame:'Frame',perk:'Perk',endfx:'End effect',emote:'Emote'};let h='';const seen=new Set();
   for(const g of['prof','drop','squish','doku'])for(const cat in STYLE[g])for(const it of STYLE[g][cat].items){if(it[0]==='none')continue;const t=cat+':'+it[0];if(seen.has(t))continue;seen.add(t);h+=`<option value="${g}:${cat}:${esc(it[0])}">${CATN[cat]||cat}: ${esc(it[1])}</option>`}
   s.innerHTML=h}
+// ---- dev: set any player's personal best in any game (they get it the next time they're online)
+var gvBestLb=null;
+function gvBestUI(){const s=$('gvBestG');if(!s.options.length)s.innerHTML=Object.values(GAMES).map(g=>`<option value="${g.id}">${esc(g.name)}</option>`).join('');const g=s.value;$('gvBestCur').textContent=!gvUid?'':gvBestLb?('Their current best in '+GAMES[g].name+': '+fmt(+gvBestLb[g]||0)):'Loading their current best…'}
+$('gvBestG').onchange=gvBestUI;$('gvBestN').addEventListener('keydown',e=>e.stopPropagation());
+$('gvBestGo').onclick=async()=>{if(!isAdmin()||!gvUid)return;const g=$('gvBestG').value,raw=$('gvBestN').value,n=Math.floor(+raw),m=$('gvBestMsg'),b=$('gvBestGo');
+  if(raw===''||!Number.isFinite(n)||n<0||n>99999999){m.textContent='Type a score from 0 to 99,999,999.';m.className='nmsg bad';sfx.nope();return}
+  const arm=g+':'+n;if(b.dataset.arm!==arm){b.dataset.arm=arm;b.textContent='Tap again: '+fmt(n);setTimeout(()=>{b.dataset.arm='';b.textContent='Set best'},3000);return}b.dataset.arm='';b.textContent='Set best';b.disabled=true;
+  try{await FD.set(fref('takes/'+gvUid+'/b'+Date.now().toString(36)),{k:'best',g,n,t:FD.serverTimestamp()});m.textContent=`${gvNm}’s ${GAMES[g].name} best will be set to ${fmt(n)} as soon as they’re online.`;m.className='nmsg';sfx.ui();$('gvBestN').value=''}
+  catch(e){m.textContent='Could not do it. Publish the new database rules first.';m.className='nmsg bad';sfx.nope()}b.disabled=false};
 async function gvTake(body,msg){const m=$('gvTakeMsg');try{await FD.set(fref('takes/'+gvUid+'/t'+Date.now().toString(36)),Object.assign(body,{t:FD.serverTimestamp()}));m.textContent=msg+' It happens as soon as they’re online.';m.className='nmsg';sfx.ui()}catch(e){m.textContent='Could not do it. Publish the new database rules first.';m.className='nmsg bad';sfx.nope()}}
 $('gvTakeGo').onclick=async()=>{if(!isAdmin()||!gvUid)return;const k=$('gvTake').value,b=$('gvTakeGo');if(!k)return;if(b.dataset.arm!==k){b.dataset.arm=k;b.textContent='Tap again to take it';setTimeout(()=>{b.dataset.arm='';b.textContent='Take item'},3000);return}b.dataset.arm='';b.textContent='Take item';
   const it=itemByKey(k);try{const g=Object.entries(gvGifts).filter(([id,v])=>v===true&&giftKeys(id).some(x=>x.split(':').slice(1).join(':')===k.split(':').slice(1).join(':')));for(const[id]of g)await FD.remove(fref('gifts/'+gvUid+'/'+id))}catch(e){}const tt=tagOfTitle(k);if(tt){try{await gvTagSet(gvUid,tt,false)}catch(e){}}await gvTake({k:'item',key:k},`Taking ${it?it.n:k}${tt?' and its tag':''} from ${gvNm}.`)};
@@ -4691,6 +4778,7 @@ function takeWatch(uid){if(takeUnsub){try{takeUnsub()}catch(e){}takeUnsub=null}i
     try{if(x.k==='item'&&typeof x.key==='string'){const[,cat,iid]=x.key.split(':');rmvMark(P.own.filter(k=>{const p=String(k).split(':');return p[1]===cat&&p[2]===iid}));P.own=P.own.filter(k=>{const p=String(k).split(':');return!(p[1]===cat&&p[2]===iid)});if(P.perma)P.perma=P.perma.filter(k=>k!==cat+':'+iid);P.gk=(P.gk||[]).filter(k=>!k.endsWith(':'+cat+':'+iid));P.taken=[...new Set([...(P.taken||[]),cat+':'+iid])];
         for(const g in P.cos)if(P.cos[g][cat]===iid)P.cos[g][cat]=(DEF[g]&&DEF[g][cat])||'none';if(P.show){if(Array.isArray(P.show.sc))P.show.sc=P.show.sc.map(k=>k&&k.endsWith(':'+cat+':'+iid)?'':k);if(cat==='set'&&P.show.sk===iid)delete P.show.sk;if(cat==='hat'&&P.show.ht===iid)delete P.show.ht}
         const it=itemByKey(x.key);toast('The developer removed '+(it?it.n:'an item')+' from your account','#ff6fa8')}
+      else if(x.k==='best'&&GAMES[x.g]&&Number.isFinite(+x.n)){const n=clamp(Math.floor(+x.n),0,99999999);P.best[x.g]=n;P.bestFix=P.bestFix&&typeof P.bestFix==='object'?P.bestFix:{};P.bestFix[x.g]=Date.now();if(gid===x.g)bestEl.textContent=fmt(n);toast('The developer set your '+GAMES[x.g].name+' best to '+fmt(n),'#7cc8ff')}
       else if((x.k==='num'||x.k==='all')&&typeof x.f==='string'&&/^[A-Za-z_][\w.]{0,39}$/.test(x.f)){const path=x.f.split('.');let o=P;for(const p of path.slice(0,-1)){if(!o[p]||typeof o[p]!=='object')o[p]={};o=o[p]}const last=path[path.length-1],cur=+o[last]||0,amt=x.k==='all'?cur:Math.floor(+x.n||0);
         o[last]=x.f==='level'?Math.max(1,cur-amt):Math.max(0,cur-amt);toast('The developer removed '+(x.k==='all'?'all your ':fmt(amt)+' ')+x.f.replace('cap.dust','jelly dust'),'#ff6fa8')}}catch(e){}
     FD.remove(fref('takes/'+uid+'/'+id)).catch(()=>{})}
@@ -4698,8 +4786,84 @@ function takeWatch(uid){if(takeUnsub){try{takeUnsub()}catch(e){}takeUnsub=null}i
 // ---- dev: a notification for everyone online right now (optionally saved to the update log too)
 var noticeSeen=store.get('ca_notice','');
 function noticeInit(){try{FD.onValue(FD.ref(RDB,'notice'),s=>{const v=s.val();if(!v||!v.id||v.id===noticeSeen)return;if(srvNow()-(+v.t||0)>10*60000)return;noticeSeen=v.id;store.set('ca_notice',v.id);if(isAdmin()&&srvNow()-(+v.t||0)<15000)return;
-  $('ntcT').textContent=String(v.title||'Announcement').slice(0,80);$('ntcB').innerHTML=md(String(v.body||'').slice(0,2000));$('ntc').hidden=false;sfx.discover();hap('double')},()=>{})}catch(e){}}
+  $('ntcT').textContent=String(v.title||'Announcement').slice(0,80);$('ntcB').innerHTML=md(String(v.body||'').slice(0,2000));$('ntc').hidden=false;ntfLocal('upd',String(v.title||'Announcement').slice(0,60),String(v.body||'').slice(0,140),'update');sfx.discover();hap('double')},()=>{})}catch(e){}}
 $('ntcOk').onclick=()=>{$('ntc').hidden=true};
+
+// ================================================= notifications
+// Two ways a notification can reach a player:
+//  1. the game is open but in the background: this tab shows it itself (works with no setup)
+//  2. the game is closed: the dev's notification server (a small Cloudflare Worker, see cfg/push) sends a web push
+// Each player picks which kinds they want. On iPhone/iPad, Apple only allows them once the game is on the Home Screen.
+var PUSHCFG={url:''},pushKey='',mySubOk=false,ntfBusy=false;
+const NTF_KINDS=[['dm','Messages from friends'],['duel','1v1 challenges'],['fr','Friend requests'],['upd','Updates and events']];
+const ntfSupported=()=>{try{return'Notification' in window&&typeof Notification.requestPermission==='function'}catch(e){return false}};
+const ntfPerm=()=>ntfSupported()?Notification.permission:'unsupported';
+const ntfIOS=()=>{const ua=navigator.userAgent;return/iP(hone|ad|od)/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)};
+function ntfPrefs(){P.ntf=P.ntf&&typeof P.ntf==='object'?P.ntf:{};for(const[k]of NTF_KINDS)if(typeof P.ntf[k]!=='boolean')P.ntf[k]=true;return P.ntf}
+const ntfOn=()=>ntfPerm()==='granted'&&ntfPrefs().on!==false;
+const ntfWants=k=>ntfOn()&&ntfPrefs()[k]!==false;
+const ntfDev=()=>{let d=store.get('ca_dev','');if(!d){d=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);store.set('ca_dev',d)}return d};
+const pushBase=()=>String(PUSHCFG.url||'').replace(/\/+$/,'');
+const b64uBytes=s=>{s=String(s).replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';const b=atob(s),o=new Uint8Array(b.length);for(let i=0;i<b.length;i++)o[i]=b.charCodeAt(i);return o};
+async function ntfReg(){try{if(!('serviceWorker' in navigator))return null;return await navigator.serviceWorker.getRegistration()||null}catch(e){return null}}
+async function ntfShow(kind,title,body,tag){title=String(title||'Jelly Critters').slice(0,80);body=String(body||'').replace(/[*_]{1,2}/g,'').slice(0,200);
+  try{const reg=await ntfReg();if(reg&&reg.showNotification){await reg.showNotification(title,{body,icon:'icon-192.png',badge:'icon-192.png',tag:tag||kind,renotify:true,data:{url:'./',kind}});return true}}catch(e){}
+  try{const n=new Notification(title,{body,icon:'icon-192.png',tag:tag||kind});n.onclick=()=>{try{window.focus()}catch(e){}n.close()};return true}catch(e){}return false}
+// shown by this tab only while the game is open but not being looked at (the server covers the closed case)
+function ntfLocal(kind,title,body,tag){if(!ntfWants(kind))return;if(!document.hidden&&(!document.hasFocus||document.hasFocus()))return;if(mySubOk&&pushBase())return;ntfShow(kind,title,body,tag)}
+const ntfPub=()=>{const p=ntfPrefs(),o={};for(const[k]of NTF_KINDS)o[k]=p[k]!==false;return o};
+async function ntfSubscribe(){if(ntfBusy||!UID||!acctReady||!fbOnline||!ntfOn()||!pushBase()||!('PushManager' in window))return false;ntfBusy=true;
+  try{const reg=await ntfReg();if(!reg||!reg.pushManager)return false;
+    if(!pushKey){const r=await fetch(pushBase()+'/key');const j=await r.json();pushKey=String(j&&j.key||'')}if(!pushKey)return false;
+    let sub=await reg.pushManager.getSubscription();if(sub&&store.get('ca_pushk','')!==pushKey){try{await sub.unsubscribe()}catch(e){}sub=null}
+    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64uBytes(pushKey)});store.set('ca_pushk',pushKey);
+    const j=sub.toJSON();if(!j||!j.endpoint||!j.keys)return false;
+    await FD.set(fref('push/'+UID+'/'+ntfDev()),{sub:{endpoint:j.endpoint,keys:{p256dh:j.keys.p256dh,auth:j.keys.auth}},p:ntfPub(),t:FD.serverTimestamp()});mySubOk=true;return true}
+  catch(e){return false}finally{ntfBusy=false}}
+async function ntfUnsub(){mySubOk=false;try{if(UID)await FD.remove(fref('push/'+UID+'/'+ntfDev()))}catch(e){}try{const reg=await ntfReg();const s=reg&&reg.pushManager&&await reg.pushManager.getSubscription();if(s)await s.unsubscribe()}catch(e){}}
+async function ntfToken(){try{return FA.getIdToken?await FA.getIdToken(ME):await ME.getIdToken()}catch(e){return''}}
+async function ntfPost(body){const tok=await ntfToken();if(!tok)return null;const r=await fetch(pushBase()+'/send',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+tok},body:JSON.stringify(body)});return r.json().catch(()=>null)}
+// tell someone about a message/challenge/request when they're not looking at the game right now
+async function pushTo(uid,kind,extra){try{if(!pushBase()||!UID||!acctReady||!ME||!uid||uid===UID)return;
+    const st=(await FD.get(fref('status/'+uid))).val();if(st&&st.on===true&&srvNow()-(+st.t||0)<150000)return;
+    const v=(await FD.get(fref('push/'+uid))).val();if(!v||typeof v!=='object')return;
+    const subs=Object.values(v).filter(x=>x&&x.sub&&typeof x.sub.endpoint==='string'&&!(x.p&&x.p[kind]===false)).sort((a,b)=>(+b.t||0)-(+a.t||0)).slice(0,3).map(x=>x.sub);if(!subs.length)return;
+    await ntfPost(Object.assign({kind,subs,name:duName()},extra||{}))}catch(e){}}
+// the dev's update posts go to everyone who wants them and isn't in the game right now
+async function ntfBroadcast(title,text){if(!isAdmin()||!pushBase())return 0;try{const v=(await FD.get(fref('push'))).val()||{},st=(await FD.get(fref('status'))).val()||{},now=srvNow(),subs=[];
+    for(const[u,devs]of Object.entries(v)){if(u===UID)continue;const s=st[u];if(s&&s.on===true&&now-(+s.t||0)<150000)continue;for(const x of Object.values(devs||{}))if(x&&x.sub&&!(x.p&&x.p.upd===false))subs.push(x.sub)}
+    let sent=0;for(let i=0;i<subs.length;i+=400){const j=await ntfPost({kind:'update',title:String(title||'').slice(0,60),text:String(text||'').replace(/[*_#>]/g,'').replace(/\s+/g,' ').slice(0,140),subs:subs.slice(i,i+400)});sent+=(j&&j.sent)||0}return sent}catch(e){return 0}}
+function ntfInit(){try{FD.onValue(FD.ref(RDB,'cfg/push'),s=>{const v=s.val();PUSHCFG.url=typeof v==='string'&&/^https:\/\//.test(v)?v:'';pushKey='';if(!$('set').hidden)ntfUI();setTimeout(ntfSubscribe,1500)},()=>{})}catch(e){}}
+setInterval(()=>{if(!mySubOk)ntfSubscribe()},30000);
+async function ntfTurnOn(){if(!ntfSupported()){if(ntfIOS()&&!isStandalone()){$('set').hidden=true;$('ntr').hidden=true;hsrDue=true;hsrShow()}return}
+  let r=Notification.permission;
+  if(r!=='granted'){try{r=await new Promise(res=>{const p=Notification.requestPermission(res);if(p&&p.then)p.then(res)})}catch(e){r=Notification.permission}}
+  if(r==='granted'){ntfPrefs().on=true;save();await ntfSubscribe();ntfShow('test','Notifications are on!','We’ll ping you about messages, 1v1 challenges, friend requests and updates.','welcome');toast('Notifications are on!','#5be0a6');sfx.discover()}
+  else if(r==='denied')toast('Notifications are blocked. You can allow them in your browser’s site settings.','#ff6fa8');
+  if(!$('set').hidden)ntfUI()}
+function ntfUI(){const p=ntfPerm(),pr=ntfPrefs(),on=ntfOn(),ios=ntfIOS(),b=$('ntfBtn');
+  $('ntfSt').textContent=p==='unsupported'?(ios&&!isStandalone()?'On iPhone and iPad, notifications work once Jelly Critters is on your Home Screen. Add it, open it from there, then turn them on here.':'This browser can’t show notifications.')
+    :p==='denied'?'Notifications are blocked for this site. Allow them in your browser’s site settings, then come back here.'
+    :on?(mySubOk&&pushBase()?'On. You’ll get them even when the game is closed.':'On. You’ll get them while the game is open in another tab or in the background.'):'Off. Turn them on to hear about messages, 1v1 challenges, friend requests and updates.';
+  b.hidden=p==='denied'||(p==='unsupported'&&!(ios&&!isStandalone()));b.textContent=p==='unsupported'?'Add to Home Screen':on?'Turn off notifications':'Turn on notifications';b.className='btn small '+(on?'white':'pink');
+  const K=$('ntfKinds');K.textContent='';K.hidden=!on;for(const[k,n]of NTF_KINDS){const t=elx('button','tab'+(pr[k]!==false?' on':''),(pr[k]!==false?'✓ ':'')+n);t.type='button';t.onclick=()=>{pr[k]=pr[k]===false;save();sfx.ui();if(UID&&mySubOk)FD.set(fref('push/'+UID+'/'+ntfDev()+'/p'),ntfPub()).catch(()=>{});ntfUI()};K.append(t)}
+  $('ntfDev').hidden=!isAdmin();if(isAdmin()&&document.activeElement!==$('ntfUrl'))$('ntfUrl').value=PUSHCFG.url||''}
+$('ntfBtn').onclick=()=>{if(ntfOn()){ntfPrefs().on=false;save();ntfUnsub();toast('Notifications are off','#7cc8ff');ntfUI();return}ntfTurnOn()};
+$('ntfUrl').addEventListener('keydown',e=>e.stopPropagation());
+$('ntfUrlGo').onclick=async()=>{if(!isAdmin())return;const v=$('ntfUrl').value.trim().replace(/\/+$/,''),m=$('ntfDevMsg');if(v&&!/^https:\/\/[^\s]+$/.test(v)){m.textContent='It should start with https://';m.className='nmsg bad';return}
+  m.textContent='Checking…';m.className='nmsg';if(v){try{const r=await fetch(v+'/key');const j=await r.json();if(!j||!j.key)throw 0}catch(e){m.textContent='Could not reach that server. Check the address and that the worker is deployed.';m.className='nmsg bad';return}}
+  try{await FD.set(fref('cfg/push'),v);m.textContent=v?'Saved! Players get closed-game notifications from now on.':'Removed. Only open-game notifications now.';sfx.discover()}catch(e){m.textContent='Could not save. Publish the new database rules first.';m.className='nmsg bad'}};
+$('ntfTest').onclick=async()=>{const m=$('ntfDevMsg');if(!pushBase()){m.textContent='Save the server address first.';m.className='nmsg bad';return}if(!ntfOn()){m.textContent='Turn notifications on for yourself first.';m.className='nmsg bad';return}
+  m.textContent='Sending…';m.className='nmsg';await ntfSubscribe();try{const v=(await FD.get(fref('push/'+UID))).val()||{},subs=Object.values(v).map(x=>x&&x.sub).filter(Boolean).slice(0,3);if(!subs.length)throw 0;const j=await ntfPost({kind:'test',subs});m.textContent=j&&j.sent?'Sent! It should pop up in a few seconds.':'The server answered but nothing was sent: '+(j&&j.error||'unknown');m.className='nmsg'+(j&&j.sent?'':' bad')}catch(e){m.textContent='Could not send a test.';m.className='nmsg bad'}};
+// ---- the "turn on notifications?" reminder, now and then between games
+function ntrMaybe(){if($('over').hidden||SPEC||DUEL||RK||VIEW||!UID||!acctReady)return;if(['menu','style','gw','mail','fr','news','dinv','hsr','gift','cd','cfm','ntc','tut','ntr','pres','dres'].some(id=>$(id)&&!$(id).hidden))return;
+  const st=store.get('ca_ntr',{n:0,t:0})||{n:0,t:0};if((st.n|0)>=4||Date.now()-(+st.t||0)<36*3600e3)return;
+  const mode=ntfSupported()?(Notification.permission==='default'&&ntfPrefs().on!==false?'ask':null):(ntfIOS()&&!isStandalone()?'ios':null);if(!mode)return;
+  if(!ntrMaybe.force&&Math.random()>.25)return;store.set('ca_ntr',{n:(st.n|0)+1,t:Date.now()});
+  $('ntrOk').textContent=mode==='ios'?'Show me how':'Okay';$('ntrTx').textContent=mode==='ios'?'On iPhone and iPad, add Jelly Critters to your Home Screen first, then we can let you know when:':'Turn on notifications and we’ll let you know when:';
+  $('ntr').dataset.mode=mode;$('ntr').hidden=false;sfx.discover()}
+$('ntrNo').onclick=()=>{$('ntr').hidden=true;sfx.ui()};
+$('ntrOk').onclick=()=>{$('ntr').hidden=true;if($('ntr').dataset.mode==='ios'){hsrDue=true;hsrShow();return}ntfTurnOn()};
 
 // ---- now and then (1 in 10 visits) remind players who aren't playing from their home screen to add it
 const isStandalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true}catch(e){return false}};
@@ -4718,7 +4882,7 @@ $('hsrLater').onclick=()=>{$('hsr').hidden=true;sfx.ui()};
 $('hsrNever').onclick=()=>{store.set('ca_hsr_never',1);$('hsr').hidden=true;toast('Okay, no more reminders','#7cc8ff')};
 // ---- invites
 function duInvCheck(){const now=srvNow(),list=Object.entries(dInv).filter(([id,v])=>v&&now-(+v.t||0)<60000&&!invSeen[id]).sort((a,b)=>(+b[1].t)-(+a[1].t));if(!list.length||(DUEL&&DUEL.phase!=='done')||!$('dinv').hidden)return;if(DUEL&&DUEL.phase==='done'){$('dres').hidden=true;duInvCheck.fromRes=1}
-  const[id,v]=list[0];invSeen[id]=1;$('dinvT').textContent=`${cleanName(v.name)||'Someone'} challenges you!`;$('dinvS').textContent=(v.nl?`${(GAMES[v.g]||{}).name||'Jelly Jar'} with no time limit. Highest final score wins.`:`1 minute of ${(GAMES[v.g]||{}).name||'Jelly Jar'}. Highest score wins.`)+(G&&G.state()==='play'&&!SPEC?' Your game is paused and saved, and comes back after the 1v1.':'');$('dinv').dataset.id=id;$('dinv').hidden=false;invWas=paused;paused=true;try{saveRun(false)}catch(e){}clearTimeout(invT);invT=setTimeout(()=>{if(!$('dinv').hidden&&$('dinv').dataset.id===id){$('dinv').hidden=true;if(duInvCheck.fromRes&&DUEL&&DUEL.phase==='done'){duInvCheck.fromRes=0;$('dres').hidden=false}if(!anyOpen()&&!invWas)paused=false;toast('Challenge missed','#ff6fa8')}},Math.max(1000,60000-(now-(+v.t||0))));sfx.discover();hap('success')}
+  const[id,v]=list[0];invSeen[id]=1;$('dinvT').textContent=`${cleanName(v.name)||'Someone'} challenges you!`;$('dinvS').textContent=(v.nl?`${(GAMES[v.g]||{}).name||'Jelly Jar'} with no time limit. Highest final score wins.`:`1 minute of ${(GAMES[v.g]||{}).name||'Jelly Jar'}. Highest score wins.`)+(G&&G.state()==='play'&&!SPEC?' Your game is paused and saved, and comes back after the 1v1.':'');$('dinv').dataset.id=id;$('dinv').hidden=false;ntfLocal('duel','New 1v1 challenge!',(cleanName(v.name)||'Someone')+' challenged you to '+((GAMES[v.g]||{}).name||'a 1v1')+(v.nl?' (no time limit)':''),'duel');invWas=paused;paused=true;try{saveRun(false)}catch(e){}clearTimeout(invT);invT=setTimeout(()=>{if(!$('dinv').hidden&&$('dinv').dataset.id===id){$('dinv').hidden=true;if(duInvCheck.fromRes&&DUEL&&DUEL.phase==='done'){duInvCheck.fromRes=0;$('dres').hidden=false}if(!anyOpen()&&!invWas)paused=false;toast('Challenge missed','#ff6fa8')}},Math.max(1000,60000-(now-(+v.t||0))));sfx.discover();hap('success')}
 var invWas=false,invT=0;
 $('dinvYes').onclick=async()=>{const id=$('dinv').dataset.id;$('dinv').hidden=true;clearTimeout(invT);if(DUEL&&DUEL.phase==='done'){duInvCheck.fromRes=0;duExit(false)}if(!duNeedAcct()){if(!anyOpen()&&!invWas)paused=false;return}try{await FD.remove(fref('duelInv/'+UID+'/'+id));await duJoin(id)}catch(e){toast('That challenge expired','#ff6fa8');if(!anyOpen()&&!invWas)paused=false}};
 $('dinvNo').onclick=async()=>{const id=$('dinv').dataset.id;$('dinv').hidden=true;clearTimeout(invT);if(duInvCheck.fromRes&&DUEL&&DUEL.phase==='done'){duInvCheck.fromRes=0;$('dres').hidden=false}if(!anyOpen()&&!invWas)paused=false;try{await FD.remove(fref('duelInv/'+UID+'/'+id));await FD.update(fref('duels/'+id),{st:'cancel'})}catch(e){}if(!anyOpen())paused=false};
@@ -4746,7 +4910,9 @@ setInterval(chatSync,800);
 function specStart(uid,name,duelId,opt){const inDuel=!!(opt&&opt.inDuel);if(!duNeedAcct())return;if(DUEL&&DUEL.phase!=='done'&&!inDuel)return toast('Finish your 1v1 first','#ff6fa8');if(uid===UID)return;if(SPEC)specStop(true);
   closeAllO();saveRun(false);const mine=VIEW||gid;VIEW=mine;$('pauseBtn').style.visibility='hidden';SPEC={inDuel,uid,name:name||'Player',d:duelId||'',prev:mine,g:null,rec:null,q:[],offs:[]};paused=true;$('spec').hidden=false;specPanel(false);$('specShield').hidden=false;specWatch(uid);
   if(duelId){specUnsubs.push(FD.onValue(fref('duels/'+duelId),s=>{if(!SPEC)return;SPEC.rec=s.val();specUI()},()=>{}));specUnsubs.push(FD.onValue(fref('bets/'+duelId),s=>{BETS=s.val()||{};specUI()},()=>{}))}
-  specUI();sfx.ui();presenceSet(!document.hidden)}
+  specUI();sfx.ui();presenceSet(!document.hidden);watchUI()}
+// how many people are watching you right now (hidden while you're the one watching)
+function watchUI(){const p=$('watchPill');if(!p)return;const n=SPEC?0:watchN|0,old=+p.dataset.n||0;p.hidden=n<1;$('watchN').textContent=n+' watching';p.dataset.n=n;if(n>old){p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop')}}
 function specWatch(uid){const S=SPEC;if(S.watchU&&S.watchU!==uid){FD.remove(fref('watch/'+S.watchU+'/'+UID)).catch(()=>{});if(S.liveUnsub)try{S.liveUnsub()}catch(e){}}
   S.watchU=uid;S.g=null;const w=fref('watch/'+uid+'/'+UID);FD.set(w,true).catch(()=>{});try{FD.onDisconnect(w).remove()}catch(e){}
   S.liveUnsub=FD.onValue(fref('live/'+uid),s=>{if(!SPEC||SPEC.watchU!==uid)return;specApply(s.val())},()=>{})}
@@ -4789,7 +4955,7 @@ function specFinish(){const S=SPEC;if(!S||S.fin)return;if(S.q&&S.q.length){const
 $('sresOk').onclick=()=>{const p=$('sres').dataset.prev;$('sres').hidden=true;playGame(p&&GAMES[p]?p:(P.last||'drop'))};
 $('sresAgain').onclick=()=>{const e=$('sres');e.hidden=true;VIEW=e.dataset.prev||VIEW;specStart(e.dataset.uid,e.dataset.name,'');if(SPEC){SPEC.prev=e.dataset.prev||SPEC.prev;SPEC.skipF=e.dataset.f||'';SPEC.wait=1;specUI()}};
 function specStop(quiet){const S=SPEC;if(!S)return;SPEC=null;$('pauseBtn').style.visibility='';for(const f of specUnsubs)try{f()}catch(e){}specUnsubs=[];if(S.liveUnsub)try{S.liveUnsub()}catch(e){}if(S.watchU)FD.remove(fref('watch/'+S.watchU+'/'+UID)).catch(()=>{});BETS={};
-  $('spec').hidden=true;specDown=false;$('spec').classList.remove('down');$('specKb').hidden=true;$('specShield').hidden=true;if(!quiet){playGame(S.prev&&GAMES[S.prev]?S.prev:(P.last||'drop'))}presenceSet(!document.hidden)}
+  $('spec').hidden=true;specDown=false;$('spec').classList.remove('down');$('specKb').hidden=true;$('specShield').hidden=true;if(!quiet){playGame(S.prev&&GAMES[S.prev]?S.prev:(P.last||'drop'))}presenceSet(!document.hidden);watchUI()}
 // spectate panel: drag it down to tuck it away; the keyboard button brings it back
 var specDown=false;
 function specPanel(down,focus){const e=$('spec');specDown=!!down;e.classList.remove('drag');e.style.transform='';e.classList.toggle('down',specDown);$('specKb').hidden=!specDown||e.hidden;chatDraw(false);if(!specDown&&focus)setTimeout(()=>{try{$('specMsg').focus({preventScroll:true})}catch(x){}},120)}
