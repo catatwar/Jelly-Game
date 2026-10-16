@@ -512,17 +512,15 @@ body.ev-thanks #menu .card{background:linear-gradient(170deg,#fff4e0,#ffe2b8);bo
 body.ev-summer #menu .card{background:linear-gradient(180deg,#e6fbff,#fff6d6);border-color:#0a6a8a}body.ev-summer #menu .mh{color:#0a7aa8}body.ev-summer #menu #mResume{background:#3fd6e8}body.ev-summer .evban{background:linear-gradient(135deg,#3fd6e8,#ffd23f)}body.ev-summer #menu .card{padding-bottom:40px}
 body.cbon>*:not(#playView):not(#fxc):not(script):not(svg){filter:var(--cbf)}body.cbon #hud,body.cbon #gbar,body.cbon #dhud,body.cbon #chatBar{filter:var(--cbf)}
 .gvres{display:flex;flex-direction:column;gap:4px;width:100%;max-height:220px;overflow:auto}.gvres button{display:flex;align-items:center;justify-content:space-between;gap:8px;border:2px solid var(--ink);border-radius:10px;background:#fff;padding:6px 10px;font:inherit;font-weight:700;cursor:pointer;text-align:left}.gvres button span{font-size:11px;color:var(--muted)}
-.overlay#cfm,.overlay#ntc{z-index:60}#ntr{z-index:40}
+.overlay#cfm,.overlay#ntc{z-index:60}
 .hsrcard{max-width:340px}.hsrcard h3{margin:0;font-family:var(--display);font-size:24px}.hsrcard p{margin:0;font-size:14px}.hsrcard ol{margin:0;padding-left:22px;text-align:left;font-size:14px;line-height:1.5;font-weight:600}#hsrC{width:96px;height:96px}
 .ntccard{max-width:360px;text-align:left}.ntccard h3{margin:0;font-family:var(--display);font-size:24px}
-.dulim{margin-top:-4px}#duQuick{margin-top:-4px}
+.dulim{margin-top:0}#duQuick{margin-top:0}
 .gwgone{margin-top:6px;opacity:.85}.gwmine{border-color:#ffd23f}.gwpz{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(43,35,64,.18)}.gwpz .gwcode{margin-top:4px}
 #watchPill{position:absolute;left:8px;top:6px;z-index:3;display:flex;align-items:center;gap:5px;padding:3px 9px 3px 7px;border-radius:999px;background:rgba(43,35,64,.82);color:#fff;font:800 12px/1 var(--body);pointer-events:none;box-shadow:0 2px 0 rgba(0,0,0,.25)}#watchPill svg{width:15px;height:15px}#watchPill.pop{animation:pop .45s cubic-bezier(.3,1.9,.5,1)}
 .ssearch{position:relative;display:flex;align-items:center;margin:2px 0 8px}.ssearch svg{position:absolute;left:11px;width:18px;height:18px;color:#8a83a0;pointer-events:none}#sSearch{width:100%;box-sizing:border-box;height:40px;border:2.5px solid var(--ink);border-radius:12px;padding:0 38px 0 36px;font:600 15px var(--body);color:var(--ink);background:#fff;-webkit-appearance:none;appearance:none}#sSearch::-webkit-search-cancel-button{display:none}#sSearch:focus{outline:none;box-shadow:0 0 0 3px rgba(255,111,168,.35)}#sSearchX{position:absolute;right:6px;width:28px;height:28px;border:0;border-radius:50%;background:#efeaff;color:var(--ink);font:900 18px/1 var(--body);cursor:pointer}
 .rkfor{margin:0 0 6px;font:800 13px var(--body);color:#5e5878;text-align:left}
-.ntrcard{text-align:center}.ntrbell{width:74px;height:74px;margin:2px auto 6px;color:var(--ink);animation:ntrring 2.4s ease-in-out infinite;transform-origin:50% 12%}.ntrbell svg{width:100%;height:100%}@keyframes ntrring{0%,60%,100%{transform:rotate(0)}66%{transform:rotate(14deg)}74%{transform:rotate(-12deg)}82%{transform:rotate(8deg)}90%{transform:rotate(-4deg)}}
-.ntrl{list-style:none;margin:6px auto 4px;padding:0;text-align:left;max-width:300px;display:grid;gap:5px}.ntrl li{display:flex;gap:8px;align-items:center;font-weight:600}.ntrl b{width:24px;text-align:center}.ntrrow{display:flex;gap:10px;margin-top:10px}.ntrrow .btn{flex:1;white-space:nowrap}
-.ntfkinds{flex-wrap:wrap;gap:6px}.ntfdev{display:grid;gap:6px;margin-top:6px;padding:8px;border:2px dashed #c9c2e6;border-radius:12px}.ntfdev input{flex:1;min-width:0;height:36px;border:2.5px solid var(--ink);border-radius:10px;padding:0 8px;font:600 13px var(--body)}
+.gmpong{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;margin-top:8px;padding:10px 14px;background:linear-gradient(90deg,#2b2350,#4a2f7a);color:#fff;text-align:left}.gmpong b{font-size:16px}.gmpong span{font:600 12px var(--body);opacity:.85}
 .sugc{border:2.5px solid var(--ink);border-radius:14px;background:#fff;padding:10px 12px;display:flex;flex-direction:column;gap:6px;text-align:left}
 .sugc .sh{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;font-weight:600;color:var(--muted)}
 .sugc .sh b{color:var(--ink);font-size:14px}
@@ -799,15 +797,12 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
 <div id="set" class="overlay" hidden>
   <div class="card box3 menu" role="dialog" aria-label="Settings">
     <div class="mtop"><span class="mtitle">Settings</span><button class="btn small white" id="setBack" type="button">Back</button></div>
-    <h3 class="mh">Notifications</h3>
-    <p class="lnote" style="margin:0" id="ntfSt"></p>
-    <div class="setrow"><button class="btn small pink" id="ntfBtn" type="button">Turn on notifications</button></div>
-    <div class="tabs ntfkinds" id="ntfKinds" hidden></div>
-    <div class="ntfdev" id="ntfDev" hidden><span class="lbl">Notification server (dev only)</span><div class="frow"><input id="ntfUrl" type="url" inputmode="url" placeholder="https://jelly-push.yourname.workers.dev" autocomplete="off" spellcheck="false"><button class="btn small white" id="ntfUrlGo" type="button">Save</button></div><button class="btn small white" id="ntfTest" type="button">Send me a test notification</button><span class="nmsg" id="ntfDevMsg"></span></div>
     <h3 class="mh">Sound</h3>
     <div class="setrow"><button class="btn small white" id="musBtn" type="button">Music: on</button><label class="vol"><span class="lbl">Music volume <b id="volMN">80%</b></span><input type="range" id="volM" min="0" max="100" step="5"></label></div>
     <div class="setrow"><button class="btn small white" id="muteBtn" type="button">Sound: on</button><label class="vol"><span class="lbl">Sound effects volume <b id="volSN">80%</b></span><input type="range" id="volS" min="0" max="100" step="5"></label></div>
     <div class="setrow"><button class="btn small white" id="hapBtn" type="button">Haptics: on</button></div>
+    <h3 class="mh">Battery saver</h3><p class="lnote" style="margin:0">Runs at 30 frames a second with lighter effects so your phone stays cooler and the battery lasts longer.</p>
+    <div class="setrow"><button class="btn small white" id="saverBtn" type="button">Battery saver: off</button></div>
     <h3 class="mh">Merge &amp; squish sound</h3><p class="lnote" style="margin:0">Tap one to hear it. Every jelly size and combo plays a different note, with little variations each time.</p>
     <div class="tabs sndgrid" id="sndGrid"></div>
     <h3 class="mh">Color blind mode</h3><p class="lnote" style="margin:0">Puts a color filter over the whole game so the jellies are easier to tell apart.</p>
@@ -838,14 +833,6 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
   </div>
 </div>
 <div id="ntc" class="overlay" hidden><div class="card box3 ntccard" role="alertdialog" aria-label="Announcement"><span class="lbl">📣 Announcement</span><h3 id="ntcT"></h3><div class="rich" id="ntcB"></div><button class="btn pink" id="ntcOk" type="button">Got it</button></div></div>
-<div id="ntr" class="overlay" hidden><div class="card box3 hsrcard ntrcard" role="dialog" aria-label="Turn on notifications">
-  <div class="ntrbell" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9z" fill="#ffd23f"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/></svg></div>
-  <h3>Never miss a challenge</h3>
-  <p id="ntrTx">Turn on notifications and we’ll let you know when:</p>
-  <ul class="ntrl"><li><b>💬</b>a friend sends you a message</li><li><b>⚔️</b>someone challenges you to a 1v1</li><li><b>🤝</b>you get a friend request</li><li><b>✨</b>a new update or event drops</li></ul>
-  <p class="lnote">Only those things, never spam. You can change it anytime in Settings.</p>
-  <div class="ntrrow"><button class="btn white" id="ntrNo" type="button">Not now</button><button class="btn pink" id="ntrOk" type="button">Okay</button></div>
-</div></div>
 <div id="hsr" class="overlay" hidden><div class="card box3 hsrcard" role="dialog" aria-label="Add to home screen">
   <canvas id="hsrC" width="200" height="200"></canvas><h3>Play Jelly Critters like an app!</h3>
   <p id="hsrTx">Add it to your home screen: it opens full screen, loads faster and your progress is one tap away.</p>
@@ -1245,6 +1232,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
 (()=>{
 // ================================================= helpers
 const W=400,H=620,TAU=Math.PI*2,INK='#2b2340',FAM='"Lilita One","Arial Rounded MT Bold",sans-serif';
+var SAVER=(()=>{try{return JSON.parse(localStorage.getItem('ca_saver')||'false')===true}catch(e){return false}})();
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $=id=>document.getElementById(id);
 const rand=(a=1,b)=>b===undefined?Math.random()*a:a+Math.random()*(b-a);
@@ -1352,6 +1340,25 @@ const BALLFX={
   beach(c,r){const cols=['#ff4f5a','#ffd23f','#3f8cff','#3fd68a','#ff9a3c','#ffffff'];for(let i=0;i<6;i++){c.beginPath();c.moveTo(0,-r*.05);c.arc(0,-r*.05,r*1.3,i*TAU/6-.2,(i+1)*TAU/6-.2);c.closePath();c.fillStyle=cols[i];c.globalAlpha=.9;c.fill()}c.globalAlpha=1;circ(c,0,-r*.05,r*.16);c.fillStyle='#fff';c.fill()}};
 function stitches(c,r,red,sc=1){c.strokeStyle=red;c.lineWidth=r*.055;for(const d of[-1,1]){c.beginPath();c.arc(d*r*1.28*sc,0,r*.92,d<0?-.9:Math.PI-.9,d<0?.9:Math.PI+.9);c.stroke();
   for(let i=-3;i<=3;i++){const a=(d<0?0:Math.PI)+i*.25,x=d*r*1.28*sc+Math.cos(a)*r*.92,y=Math.sin(a)*r*.92,nx=Math.cos(a),ny=Math.sin(a),tx=-ny,ty=nx;c.beginPath();c.moveTo(x-nx*r*.08+tx*r*.06,y-ny*r*.08+ty*r*.06);c.lineTo(x+nx*r*.08+tx*r*.06,y+ny*r*.08+ty*r*.06);c.stroke()}}}
+// ---- virus jellies: spike proteins, fuzzy germs, phage legs and wobbly amoebas (still squishy jellies underneath)
+SETS.virus={n:'Virus jellies',list:[['jelly','#8fe36a','Sniffle','vspike'],['jelly','#c39bff','Achoo','vcilia'],['jelly','#ff7a8a','Fever','vcell'],['jelly','#4fd6c8','Spore','vphage'],
+  ['jelly','#ffa8e0','Cootie','vspike'],['jelly','#ffb347','Germy','vcilia'],['jelly','#6aa8ff','Wobble Pox','vcell'],['jelly','#c6f04a','Bugsy','vphage'],['jelly','#ff5fd2','Zombie Germ','vcilia'],['jelly','#3b3355','Night Plague','vspike'],['jelly','#ff3b5c','Mega Virus','vspike']]};
+const VIRUS_FX=new Set(['vspike','vcilia','vphage','vcell']);
+function virusBack(c,r,fx,col){const dk=shadeHex(col,-.35),lt=shadeHex(col,.35),lw=Math.max(1.3,r*.065);c.save();c.lineCap='round';c.lineJoin='round';
+  if(fx==='vspike'){const n=r>30?12:9;for(let i=0;i<n;i++){const a=i/n*TAU+Math.sin(time*1.3+i)*.06,w=1+Math.sin(time*3+i*1.7)*.05,x0=Math.cos(a)*r*.9,y0=Math.sin(a)*r*.9,x1=Math.cos(a)*r*1.27*w,y1=Math.sin(a)*r*1.27*w;
+      c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.lineWidth=lw*1.9;c.strokeStyle=INK;c.stroke();c.lineWidth=lw*.9;c.strokeStyle=dk;c.stroke();circ(c,x1,y1,r*.13);c.fillStyle=lt;c.fill();c.lineWidth=lw;c.strokeStyle=INK;c.stroke()}}
+  else if(fx==='vcilia'){const n=r>30?30:20;c.strokeStyle=INK;c.lineWidth=lw*.9;for(let i=0;i<n;i++){const a=i/n*TAU,wg=Math.sin(time*7+i*1.3)*.22,x0=Math.cos(a)*r*.95,y0=Math.sin(a)*r*.95,xm=Math.cos(a+wg*.25)*r*1.12,ym=Math.sin(a+wg*.25)*r*1.12,x1=Math.cos(a+wg*.5)*r*1.24,y1=Math.sin(a+wg*.5)*r*1.24;
+      c.beginPath();c.moveTo(x0,y0);c.quadraticCurveTo(xm,ym,x1,y1);c.stroke()}}
+  else if(fx==='vphage'){c.strokeStyle=INK;c.lineWidth=lw*1.2;for(let i=0;i<6;i++){const s=i<3?-1:1,k=i%3,a=Math.PI/2+s*(.35+k*.32),kn=Math.sin(time*6+i)*.08,x0=Math.cos(a)*r*.85,y0=Math.sin(a)*r*.85,x1=Math.cos(a)*r*1.18+s*r*.12,y1=Math.sin(a)*r*1.1+r*.02,x2=x1+s*r*(.18+kn),y2=y1+r*.28;
+      c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.lineTo(x2,y2);c.stroke();circ(c,x2,y2,r*.05);c.fillStyle=INK;c.fill()}
+    rr(c,-r*.12,-r*1.32,r*.24,r*.42,r*.08);c.fillStyle=dk;c.fill();c.lineWidth=lw;c.strokeStyle=INK;c.stroke();for(let j=0;j<3;j++){c.beginPath();c.moveTo(-r*.12,-r*(1.22-j*.11));c.lineTo(r*.12,-r*(1.22-j*.11));c.stroke()}}
+  else if(fx==='vcell'){for(let i=0;i<4;i++){const a=i/4*TAU+.6+Math.sin(time*.9+i)*.25,b=1+.12*Math.sin(time*2.2+i*1.9);ell(c,Math.cos(a)*r*.82,Math.sin(a)*r*.82,r*.42*b,r*.3*b,a);c.fillStyle=lt;c.fill();c.lineWidth=lw;c.strokeStyle=INK;c.stroke()}}
+  c.restore()}
+Object.assign(BALLFX,{
+  vspike(c,r,col){c.fillStyle=shadeHex(col,-.28);c.globalAlpha=.5;for(const[x,y,s]of[[-.45,.25,.14],[.38,.42,.1],[.1,.62,.08],[.5,-.05,.07]]){circ(c,x*r,y*r,s*r);c.fill()}c.globalAlpha=1},
+  vcilia(c,r,col){c.fillStyle=shadeHex(col,.45);c.globalAlpha=.55;for(let i=0;i<14;i++){const a=i*2.4,d=r*(.2+((i*29)%60)/100);circ(c,Math.cos(a)*d,Math.sin(a)*d*.9+r*.1,r*.045);c.fill()}c.globalAlpha=1},
+  vphage(c,r,col){c.strokeStyle=shadeHex(col,-.3);c.globalAlpha=.4;c.lineWidth=Math.max(1,r*.04);const s=r*.34;for(let y=-1;y<=1;y++)for(let x=-1;x<=1;x++){const cx=x*s*1.5,cy=y*s*1.7+(x%2?s*.85:0);c.beginPath();for(let k=0;k<6;k++){const a=k*Math.PI/3;c.lineTo(cx+Math.cos(a)*s*.9,cy+Math.sin(a)*s*.9)}c.closePath();c.stroke()}c.globalAlpha=1},
+  vcell(c,r,col,ph){c.fillStyle=shadeHex(col,-.4);c.globalAlpha=.45;circ(c,r*.28+Math.sin(time*1.4+ph)*r*.04,r*.28,r*.3);c.fill();c.globalAlpha=.6;c.fillStyle=shadeHex(col,.5);for(const[x,y]of[[-.5,.1],[-.25,.55],[.55,-.2]]){circ(c,x*r,y*r,r*.07);c.fill()}c.globalAlpha=1}});
 // antennae for the aliens (drawn behind the body like ears)
 function alienBack(c,r,k,col){const n=k==='cyclops'?1:k==='trialien'?3:2,glow=shadeHex(col,.45);c.save();c.lineWidth=Math.max(1.4,r*.07);c.strokeStyle=INK;
   for(let i=0;i<n;i++){const t=n===1?0:(i/(n-1)-.5)*1.1,x0=Math.sin(t)*r*.55,y0=-r*.78,sw=Math.sin(time*3+i*1.7)*r*.08,x1=Math.sin(t)*r*1.05+sw,y1=-r*1.42+Math.abs(t)*r*.25;
@@ -1382,6 +1389,7 @@ function drawAnimal(c,x,y,r,k,col,o={}){col=cbCol(col);
   if(k==='monkey'){for(const d of[-1,1]){circ(c,d*r*.98,r*.02,r*.28);fs(col);circ(c,d*r*.98,r*.02,r*.15);c.fillStyle='#f5d2b0';c.fill()}}
   if(k==='frog'){for(const d of[-1,1]){circ(c,d*r*.45,-r*.72,r*.32);fs(col)}}
   if(ALIEN_K.has(k))alienBack(c,r,k,col);
+  if(o.fx&&VIRUS_FX.has(o.fx))virusBack(c,r,o.fx,col);
   const jig=o.jig||0,ph=o.seed||0,body=()=>{c.beginPath();for(let i=0;i<=28;i++){const a=i/28*TAU,q=r*(1+jig*(.6*Math.sin(3*a+time*13+ph)+.4*Math.sin(5*a-time*10+ph*2)));if(i)c.lineTo(Math.cos(a)*q,Math.sin(a)*q);else c.moveTo(Math.cos(a)*q,Math.sin(a)*q)}c.closePath()};
   const fx=o.fx,bc=fx==='starlit'?shadeHex(col,-.5):fx==='neon'?'#1b1633':fx==='galaxy'?shadeHex(col,-.4):fx==='aura'?shadeHex(col,-.78):fx==='dev'?shadeHex(col,-.7):col;
   body();c.fillStyle=bc;if(fx==='ghost')c.globalAlpha=.62;c.fill();c.globalAlpha=1;
@@ -1704,7 +1712,7 @@ const BOARDS={lilac:{n:'Grape',bg:'#2a2350',board:'#4a3d8a',slot:'#3a3070',hud:L
   gold:{n:'Royal gold',bg:'#181226',board:'#d9a52a',slot:'#b5851c',rim:'#fff1a8',fx:'gold',hud:LT},
   moss:{n:'Mossy',bg:'#16281a',board:'#5f8a4a',slot:'#4e7a3c',hud:LT},pastelb:{n:'Pastel',bg:'#3d3560',board:'#f7d6e8',slot:'#efc2db',rim:'#ffffff',hud:LT},picnic:{n:'Picnic blanket',bg:'#3a1218',board:'#d94a4a',slot:'#c23a3a',fx:'gingham',hud:LT},toastb:{n:'Toast',bg:'#2b1d10',board:'#e0a85a',slot:'#f5d29a',rim:'#a8652a',hud:LT},betab:{n:'Beta void',bg:'#07060f',board:'#0e0c1f',slot:'#1a1633',rim:'#9a5bff',fx:'void',hud:LT},devb:{n:'Code rain',bg:'#050307',board:'#0b0407',slot:'rgba(40,6,16,.82)',rim:'#ff2d55',fx:'code',hud:LT},oakb:{n:'Oak',bg:'#2b1d10',board:'#c48a4a',slot:'rgba(150,95,45,.85)',rim:'#e8c08a',fx:'woodb',hud:LT},walnutb:{n:'Walnut',bg:'#1a120c',board:'#6b4429',slot:'rgba(80,50,28,.85)',rim:'#a8754a',fx:'woodb',hud:LT},slateb:{n:'Slate',bg:'#1c2026',board:'#5a626e',slot:'rgba(66,74,84,.85)',rim:'#8a94a2',fx:'stoneb',hud:LT},terrab:{n:'Terracotta',bg:'#3a1a10',board:'#c9724a',slot:'#b8623a',rim:'#f0b48a',hud:LT}};
 const SET_META={wood:[1200,'e',{rd:30}],earth:[400],stone:[1500,'l',{lv:15}],tropic:[500,'r'],starlit:[0,'v',{lvr:50}],celest:[0,'v',{lvr:100}],dev:[0,'d',{dev:1}],beta:[0,'x',{beta:1}],pastel:[300],camp:[300],ocean:[350],breakfast:[350],couch:[250],spooky:[450,'r'],candy:[450,'r'],cow:[500,'r'],cheese:[500,'r'],camo:[600,'r',{rd:10}],pixel:[800,'e',{lv:5}],glitch:[1000,'e',{rd:30}],jelly:[0],pets:[80],kitties:[100],puppies:[100],forest:[160],ghost:[400,'r',{rd:15}],crystal:[700,'e',{lv:8}],neon:[900,'e',{bd:8000}],holo:[1500,'l',{lv:12}],galaxy:[2500,'l',{bd:20000}],gold:[5000,'m',{lv:18,tile:2048}]};
-SET_META.aliens=[900,'e'];SET_META.sports=[700,'r'];
+SET_META.aliens=[900,'e'];SET_META.sports=[700,'r'];SET_META.virus=[1100,'e'];
 for(const[cat,id,r]of CAP_ITEMS)if(cat==='set')SET_META[id]=[0,r,{cap:1}];
 const WALL_META={polka:[0,'c',{cap:1}],underwater:[0,'r',{cap:1}],lavacave:[0,'e',{cap:1}],woodw:[600,'r'],terra:[300],devw:[0,'d',{dev:1}],betaw:[0,'x',{beta:1}],camp:[150],gingham:[120],pastelw:[140],cheesew:[160,'r'],mint:[0],peach:[40],sky:[60],lilac:[60],night:[100],sakura:[500,'e',{rd:20}],grid:[700,'e',{bd:10000}],aurora:[1500,'l',{st:5}],galaxy:[2200,'l',{lv:12}],luxe:[5000,'m',{bd:30000,lv:18}]};
 const BOARD_META={oakb:[500,'r'],walnutb:[900,'e'],slateb:[700,'r'],terrab:[300],devb:[0,'d',{dev:1}],betab:[0,'x',{beta:1}],moss:[120],pastelb:[150],picnic:[150],toastb:[130,'r'],lilac:[0],mint:[40],peach:[40],wood:[60],night:[100],neon:[600,'e',{bs:5000}],marble:[800,'e',{rd:30}],ice:[1400,'l',{tile:1024}],galaxy:[2200,'l',{lv:12}],gold:[5000,'m',{tile:2048,lv:18}]};
@@ -1996,7 +2004,7 @@ for(const[k,h]of[['drop','tap'],['thud','tap'],['nope','error'],['discover','suc
 
 // ================================================= flat effects
 let parts=[],rings=[],texts=[],bigT=null,shake=0,freeze=0,flash=0;
-function burst(x,y,color,n,sp,starP=.25){for(let i=0;i<n;i++){const a=rand(TAU),s=sp*rand(.25,1);parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-sp*.25,t:0,life:rand(.4,.8),size:rand(3,6.5),color,star:Math.random()<starP,rot:rand(TAU)})}}
+function burst(x,y,color,n,sp,starP=.25){if(SAVER)n=Math.ceil(n/2);if(parts.length>260)parts.splice(0,parts.length-200);for(let i=0;i<n;i++){const a=rand(TAU),s=sp*rand(.25,1);parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-sp*.25,t:0,life:rand(.4,.8),size:rand(3,6.5),color,star:Math.random()<starP,rot:rand(TAU)})}}
 const ring=(x,y,r,color)=>rings.push({x,y,r,color,t:0});
 const float=(x,y,text,color,size=22)=>texts.push({x,y,text:String(text),color,size,t:0});
 const big=(text,color)=>{bigT={text,color,t:0}};
@@ -2014,10 +2022,10 @@ function drawFX(c){
   for(const t of texts){const s=elastic(Math.min(1,t.t/.3)),a=t.t>.7?1-(t.t-.7)/.3:1;c.save();c.globalAlpha=Math.max(0,a);c.translate(t.x,t.y);c.scale(s,s);outlineText(c,t.text,0,0,t.size,t.color);c.restore()}c.globalAlpha=1}
 function drawBig(c){if(!bigT)return;const t=bigT.t,s=elastic(Math.min(1,t/.5)),a=t>1?1-(t-1)/.3:1;c.save();c.globalAlpha=Math.max(0,a);c.translate(W/2,H*.36-t*10);c.rotate(Math.sin(t*14)*.06*Math.max(0,1-t));c.scale(s,s);let fs=48;c.font=`${fs}px ${FAM}`;const w=c.measureText(bigT.text).width;if(w>W-40)fs*=(W-40)/w;outlineText(c,bigT.text,0,0,fs,bigT.color);c.restore()}
 const fxc=$('fxc'),fctx=fxc.getContext('2d');let conf=[],fdpr=1,confDirty=false;
-let fxW=1,fxH=1;function sizeFx(){fdpr=Math.min(2,devicePixelRatio||1);fxW=fxc.clientWidth||innerWidth;fxH=fxc.clientHeight||innerHeight;fxc.width=Math.max(1,Math.round(fxW*fdpr));fxc.height=Math.max(1,Math.round(fxH*fdpr))}
+let fxW=1,fxH=1;function sizeFx(){fdpr=Math.min(SAVER?1.25:2,devicePixelRatio||1);fxW=fxc.clientWidth||innerWidth;fxH=fxc.clientHeight||innerHeight;fxc.width=Math.max(1,Math.round(fxW*fdpr));fxc.height=Math.max(1,Math.round(fxH*fdpr))}
 addEventListener('resize',sizeFx);if(window.visualViewport)visualViewport.addEventListener('resize',sizeFx);sizeFx();
 const CONF=['#ff6fa8','#ffd23f','#5be0a6','#7cc8ff','#b9a3f0','#ff8a4c'];
-function confetti(x,y,n=60,sp=700){if(RM)n=Math.min(n,12);for(let i=0;i<n;i++){const a=rand(-Math.PI,0),s=rand(.3,1)*sp;conf.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:rand(6.28),vr:rand(-10,10),w:rand(6,11),h:rand(8,14),c:CONF[i%CONF.length],t:0,life:rand(1.2,2)})}}
+function confetti(x,y,n=60,sp=700){if(RM)n=Math.min(n,12);if(SAVER)n=Math.min(n,24);for(let i=0;i<n;i++){const a=rand(-Math.PI,0),s=rand(.3,1)*sp;conf.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,r:rand(6.28),vr:rand(-10,10),w:rand(6,11),h:rand(8,14),c:CONF[i%CONF.length],t:0,life:rand(1.2,2)})}}
 function confAt(el,n,sp){const r=el.getBoundingClientRect();confetti(r.left+r.width/2,r.top+r.height/2,n,sp)}
 function confUpdate(dt){if(!conf.length&&!confDirty)return;if(fxc.clientWidth!==fxW||fxc.clientHeight!==fxH)sizeFx();fctx.setTransform(1,0,0,1,0,0);fctx.clearRect(0,0,fxc.width,fxc.height);fctx.setTransform(fdpr,0,0,fdpr,0,0);confDirty=conf.length>0;
   for(const p of conf){p.t+=dt;p.vy+=1100*dt;p.vx*=1-dt*1.2;p.x+=p.vx*dt;p.y+=p.vy*dt;p.r+=p.vr*dt;fctx.save();fctx.globalAlpha=Math.max(0,1-p.t/p.life);fctx.translate(p.x,p.y);fctx.rotate(p.r);fctx.scale(1,Math.cos(p.t*8));fctx.fillStyle=p.c;fctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);fctx.strokeStyle=INK;fctx.lineWidth=1.5;fctx.strokeRect(-p.w/2,-p.h/2,p.w,p.h);fctx.restore()}
@@ -2085,7 +2093,7 @@ function fitNum(el,force){if(!el||!el.parentElement)return;const t=el.textConten
 const fitAll=f=>{for(const id of['score','best','midT'])fitNum(document.getElementById(id),f)};
 for(const id of['score','best','midT']){const el=document.getElementById(id);if(el)new MutationObserver(()=>fitNum(el)).observe(el,{childList:true,characterData:true,subtree:true})}
 addEventListener('resize',()=>fitAll(true));setTimeout(()=>fitAll(true),300);
-function resize(){const r=stage.getBoundingClientRect();cw=r.width;ch=r.height;dpr=Math.min(2,devicePixelRatio||1);const w=Math.max(1,Math.round(cw*dpr)),h=Math.max(1,Math.round(ch*dpr));if(cv.width!==w)cv.width=w;if(cv.height!==h)cv.height=h;sc=Math.min(cw/(W+44),ch/(H+30));offX=(cw-W*sc)/2;offY=(ch-H*sc)/2+4*sc;if(G)try{drawGame()}catch(e){}}
+function resize(){const r=stage.getBoundingClientRect();cw=r.width;ch=r.height;dpr=Math.min(SAVER?1.4:2,devicePixelRatio||1);const w=Math.max(1,Math.round(cw*dpr)),h=Math.max(1,Math.round(ch*dpr));if(cv.width!==w)cv.width=w;if(cv.height!==h)cv.height=h;sc=Math.min(cw/(W+44),ch/(H+30));offX=(cw-W*sc)/2;offY=(ch-H*sc)/2+4*sc;if(G)try{drawGame()}catch(e){}}
 new ResizeObserver(resize).observe(stage);
 const extent=()=>{const x0=-offX/sc-30,y0=-offY/sc-30,x1=(cw-offX)/sc+30,y1=(ch-offY)/sc+30;return{x0,y0,x1,y1,w:x1-x0,h:y1-y0}};
 
@@ -2878,6 +2886,108 @@ function menuSlice(c,t){const cs=P.cos.drop,w=cs.wall;wallpaper(c,w,0,0,240,180,
   for(let i=0;i<3;i++){const ph=(k+i*.8)%2.4,x=50+i*70,y=170-ph*150+ph*ph*62,cr=critter(cs.set,[2,5,7][i]);if(ph<1.25||i!==1)drawAnimal(c,x,y,20+i*3,cr.k,cr.c,{fx:cr.fx,mood:2});else{for(const s of[-1,1]){c.save();c.translate(x+s*(ph-1.25)*40,y+(ph-1.25)*30);c.rotate(s*(ph-1.25)*3);c.beginPath();c.rect(-30,s>0?0:-30,60,30);c.clip();drawAnimal(c,0,0,23,cr.k,cr.c,{fx:cr.fx,mood:1});c.restore()}}}
   const sw=(k%2.4)/2.4;if(sw>.4&&sw<.62){const a=(sw-.4)/.22;c.save();c.lineCap='round';c.strokeStyle='rgba(255,255,255,.9)';c.lineWidth=6;c.beginPath();c.moveTo(40+a*0,40+a*0);c.lineTo(40+a*170,40+a*110);c.stroke();c.restore()}}
 
+// ================================================= GAME 8: Jelly Pong (1v1 only, first to 3). By Cat At War.
+// The ball is never streamed. Both players (and anyone watching) work it out from the last "bounce": where it was,
+// how fast it was going, and the exact server time. So it glides identically on every screen at full frame rate.
+// Only the player the ball is heading toward decides hit or miss and posts the next bounce; the other player predicts
+// that bounce from the paddle they can see and melts into the real one when it arrives (usually a pixel or two off).
+const Pong=(()=>{
+  const PW=52,PT=20,R=20,YA=H-78,YB=78,WIN=3,SPD0=340,SPDMAX=900,ACC=1.07,REACH=PW+R*.8;
+  let st='done',id='',me='a',view='a',spec=false,start0=0,ev=null,pred=null,predFx=-1,done=-1,unsub=null,ended=false,endT=0,
+      pos={a:W/2,b:W/2},tgt={a:W/2,b:W/2},seen=0,sentX=-1,sentT=0,off={x:0,y:0},lastWall=null,splats=[],trail=[],wob={a:0,b:0},
+      sq=0,sqv=0,sqa=Math.PI/2,pts={a:0,b:0},pressed=false,leftT=0,lastRender=0;
+  const NOW=()=>srvNow(),L=W-2*R,cs=()=>cos('drop'),ball=()=>critter(cs().set,4);
+  const yc=s=>s==='a'?YA-PT/2-R:YB+PT/2+R;          // ball centre when it touches that side's paddle
+  const rx=raw=>{const u=raw-R,m=((u%(2*L))+2*L)%(2*L);return R+(m<=L?m:2*L-m)};
+  const walls=raw=>Math.floor((raw-R)/L);
+  function at(e,T){const dt=Math.max(0,(T-e.t)/1000),raw=e.x+e.vx*dt;return{x:rx(raw),y:e.y+e.vy*dt,raw}}
+  const toward=e=>e.vy>0?'a':e.vy<0?'b':'';
+  const tContact=e=>{const s=toward(e);return s?e.t+(yc(s)-e.y)/e.vy*1000:Infinity};
+  const r2=v=>Math.round(v*100)/100;
+  function serveEv(n,t,dir,sa,sb,k){return{n,t:Math.round(t),x:W/2,y:H/2,vx:r2(((n*53)%7-3)*38),vy:dir*SPD0,sa,sb,k:k||'s'}}
+  function bounce(e,p,t,s,px){const o=clamp((p.x-px)/PW,-1,1),sp=Math.min(SPDMAX,Math.hypot(e.vx,e.vy)*ACC),a=o*1.05;
+    return{n:e.n+1,t:Math.round(t),x:r2(p.x),y:r2(yc(s)),vx:r2(sp*Math.sin(a)),vy:r2((s==='a'?-1:1)*sp*Math.cos(a)),sa:e.sa,sb:e.sb,k:'h'}}
+  function seedDir(){let h=0;for(const ch of String(id))h=(h*31+ch.charCodeAt(0))|0;return h&1?1:-1}
+  // ---- effects
+  function splat(x,y,col,n,wall){burst(x,y,col,n,320,.2);ring(x,y,R*2.2,'#ffffff');splats.push({x,y,col:shadeHex(col,.18),r:R*rand(.85,1.25),a:1.6,seed:rand(9),wall});if(splats.length>18)splats.shift()}
+  function hitFx(s,x){wob[s]=1;sq=.42;sqv=0;sqa=Math.PI/2;const cr=ball();splat(x,s==='a'?YA-PT/2:YB+PT/2,cr.c,14);sfx.merge(Math.min(9,2+Math.round((Math.hypot(ev.vx,ev.vy)-SPD0)/70)),0);hap('tap');addShake(.12)}
+  function pointFx(scorer){const mine=scorer===(spec?view:me),cr=ball(),gy=scorer==='a'?YB-10:YA+10;
+    for(let i=0;i<3;i++)splat(rand(60,W-60),gy,cr.c,10);addShake(.45);if(spec)big((scorer==='a'?'⬇':'⬆')+' Point!','#ffd23f');else if(mine){big('POINT!','#5be0a6');sfx.combo(4);hap('success')}else{big('Missed!','#ff6fa8');sfx.thud();hap('error')}}
+  // ---- the shared timeline
+  function setEv(E,mineNow){if(!E||(ev&&E.n<=ev.n))return;const before=ev?renderPos():null,wasPred=pred&&pred.n===E.n;ev=E;pred=null;lastWall=null;
+    if(E.k==='h'){const now=renderPosRaw();if(before&&!mineNow){const dx=before.x-now.x,dy=before.y-now.y;off=Math.hypot(dx,dy)<160?{x:dx,y:dy}:{x:0,y:0}}else off={x:0,y:0};
+      if(!(wasPred&&predFx===E.n))hitFx(E.vy<0?'a':'b',E.x)}
+    else{off={x:0,y:0};trail=[];if(E.sa!==pts.a||E.sb!==pts.b){const sc=E.sa>pts.a?'a':'b';pointFx(sc)}}
+    pts={a:E.sa|0,b:E.sb|0};score=shown=pts[spec?view:me];scoreEl.textContent=fmt(score);
+    if(E.k==='end'&&!ended){ended=true;endT=performance.now();if(E.ff&&!spec&&E.ff!==me)setTimeout(()=>toast('Your opponent left, so you win!','#5be0a6'),300)}}
+  function post(E){setEv(E,true);if(!spec&&id)FD.set(fref('pong/'+id+'/e'),E).catch(()=>{})}
+  function renderPosRaw(){const e=pred||ev;if(!e)return{x:W/2,y:H/2};const T=NOW();return at(e,Math.max(T,e.t))}
+  function renderPos(){const p=renderPosRaw();return{x:p.x+off.x,y:p.y+off.y,raw:p.raw}}
+  // ---- every frame: decide hits on my side, predict the other side, notice a player who left
+  function tick(){if(st!=='play'||!ev||ended)return;const T=NOW(),s=toward(ev);if(!s)return;const tc=tContact(ev);
+    if(!spec&&s===me&&done!==ev.n&&T>=tc){done=ev.n;const p=at(ev,tc);
+      if(Math.abs(p.x-pos[me])<=REACH)post(bounce(ev,p,tc,me,pos[me]));
+      else{const sc=me==='a'?'b':'a',sa=ev.sa+(sc==='a'?1:0),sb=ev.sb+(sc==='b'?1:0),fin=sa>=WIN||sb>=WIN;post(fin?Object.assign(serveEv(ev.n+1,T,0,sa,sb,'end'),{vx:0,vy:0}):serveEv(ev.n+1,T+1700,me==='a'?1:-1,sa,sb))}}
+    else if((spec||s!==me)&&T>=tc&&!pred){const p=at(ev,tc);if(Math.abs(p.x-pos[s])<=REACH){pred=bounce(ev,p,tc,s,pos[s]);predFx=pred.n;const keep=ev;ev=pred;hitFx(s,p.x);ev=keep}}
+    if(!spec&&(seen?T-seen>15000&&T-start0>8000:T-start0>DU_CD+20000)){const sa=me==='a'?WIN:ev.sa,sb=me==='b'?WIN:ev.sb;post(Object.assign(serveEv(ev.n+1,T,0,sa,sb,'end'),{vx:0,vy:0,ff:me==='a'?'b':'a'}))}}
+  function listen(){if(unsub)try{unsub()}catch(e){}unsub=null;if(!id||!FD)return;
+    unsub=FD.onValue(fref('pong/'+id),s=>{const v=s.val()||{};for(const k of['a','b']){const q=v['p'+k];if(q&&typeof q.x==='number'&&(spec||k!==me)){tgt[k]=clamp(q.x,PW,W-PW);if(!spec)seen=NOW()}}
+      if(v.e&&typeof v.e.n==='number')setEv(v.e,false)},()=>{})}
+  function begin(o){st='play';id=o.id;me=o.me;view=o.view||o.me;spec=!!o.spec;start0=o.start||NOW();ended=false;done=-1;pred=null;predFx=-1;off={x:0,y:0};splats=[];trail=[];pts={a:0,b:0};
+    pos={a:W/2,b:W/2};tgt={a:W/2,b:W/2};seen=0;sentX=-1;score=shown=0;scoreEl.textContent='0';
+    ev=serveEv(0,start0+DU_CD+500,seedDir(),0,0);restyle();listen()}
+  function start(){const d=DUEL;if(d&&d.rec&&(d.g==='pong')){begin({id:d.id,me:d.me,start:+d.rec.start||NOW()});return}
+    st='done';ev=null;restyle();gbar('Jelly Pong is a 1v1 game. Open 1v1 battles from the menu to play someone!')}
+  function restyle(){theme('#1c1736','#2b2350');gbar('Drag to move your jelly paddle. Bounce the ball past your opponent. First to 3 points wins!');setMid('First to','3');bestEl.textContent='—'}
+  function leave(){if(unsub)try{unsub()}catch(e){}unsub=null;st='done';ev=null;id=''}
+  function update(dt){if(st!=='play')return;tick();const T=NOW();
+    if(!spec){const kd=(keys.ArrowRight||keys.d?1:0)-(keys.ArrowLeft||keys.a?1:0);if(kd){const dir=view==='b'?-kd:kd;pos[me]=tgt[me]=clamp(pos[me]+dir*520*dt,PW,W-PW)}}
+    for(const k of['a','b'])if(spec||k!==me)pos[k]+=(tgt[k]-pos[k])*(1-Math.exp(-dt*20));
+    const dk=Math.exp(-dt*13);off.x*=dk;off.y*=dk;for(const k of['a','b'])wob[k]=Math.max(0,wob[k]-dt*2.2);
+    sqv+=(-sq*230-sqv*11)*dt;sq+=sqv*dt;for(const s of splats)s.a-=dt*.32;splats=splats.filter(s=>s.a>0);
+    if(ev&&ev.vx){const e=pred||ev,p=at(e,Math.max(T,e.t)),w=walls(p.raw);if(lastWall===null)lastWall=w;else if(w!==lastWall){lastWall=w;const cr=ball(),wx=p.x<W/2?0:W;splat(wx,p.y,cr.c,9,1);sq=.3;sqv=0;sqa=0;sfx.pop(3)}}
+    const bp=renderPos();if(T>=(ev?ev.t:0)){trail.push({x:bp.x,y:bp.y,a:1});if(trail.length>9)trail.shift()}for(const t of trail)t.a-=dt*4;
+    if(!spec&&id&&(Math.abs(pos[me]-sentX)>.8&&T-sentT>66||T-sentT>2000)){sentX=pos[me];sentT=T;FD.set(fref('pong/'+id+'/p'+me),{x:Math.round(pos[me]*10)/10,t:Math.round(T)}).catch(()=>{})}
+    if(ended&&performance.now()-endT>1300&&st==='play'){st='done';if(!spec&&DUEL&&(DUEL.phase==='live'||DUEL.phase==='count')){score=pts[me];duLocalEnd()}}}
+  function setX(p){if(spec||st!=='play')return;const x=view==='b'?W-p.x:p.x;pos[me]=tgt[me]=clamp(x,PW,W-PW)}
+  function down(p){pressed=true;setX(p)}
+  function move(p){setX(p)}
+  function up(){pressed=false}
+  function key(){}
+  // ---- drawing
+  function bg(c,ex){const g=c.createLinearGradient(0,ex.y0,0,ex.y1);g.addColorStop(0,'#2a1f4f');g.addColorStop(.5,'#1a1533');g.addColorStop(1,'#2a1f4f');c.fillStyle=g;c.fillRect(ex.x0,ex.y0,ex.w,ex.h)}
+  function paddle(c,s,x,y,col,isMe){const w=wob[s],k=1+w*.22*Math.sin(performance.now()/38),hw=PW*k,ht=PT/k;c.save();c.translate(x,y);
+    c.fillStyle='rgba(0,0,0,.25)';rr(c,-hw,-ht/2+5,hw*2,ht,ht/2);c.fill();rr(c,-hw,-ht/2,hw*2,ht,ht/2);c.fillStyle=col;c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();
+    c.fillStyle='rgba(255,255,255,.45)';rr(c,-hw*.8,-ht/2+3,hw*.9,ht*.28,ht*.14);c.fill();
+    const b=renderPos(),lx=clamp((b.x-x)/W*6,-3,3),ly=(view==='a'?(s==='a'?-1:1):(s==='a'?1:-1))*-1.2;c.fillStyle=INK;for(const d of[-1,1]){circ(c,d*9+lx,ly,2.6);c.fill()}
+    if(isMe){c.fillStyle='#fff';c.font=`900 9px ${FAM}`;c.textAlign='center';c.textBaseline='middle';c.globalAlpha=.85}c.restore()}
+  function render(c){if(st!=='play'&&!ev){c.fillStyle='rgba(255,255,255,.75)';c.font=`22px ${FAM}`;c.textAlign='center';c.fillText('Jelly Pong is 1v1 only',W/2,H/2);return}
+    tick();const flip=view==='b';c.save();if(flip){c.translate(W,H);c.scale(-1,-1)}
+    // arena
+    c.strokeStyle='rgba(255,255,255,.14)';c.lineWidth=3;c.setLineDash([10,12]);c.beginPath();c.moveTo(14,H/2);c.lineTo(W-14,H/2);c.stroke();c.setLineDash([]);
+    circ(c,W/2,H/2,46);c.stroke();
+    const mineS=spec?view:me,cMe='#5be0a6',cOp='#ff6fa8',colA=mineS==='a'?cMe:cOp,colB=mineS==='b'?cMe:cOp;
+    for(const[s,y,col]of[['a',YA+PT/2+6,colA],['b',YB-PT/2-6,colB]]){const g=c.createLinearGradient(0,y,0,s==='a'?H+30:-30);g.addColorStop(0,col+'55');g.addColorStop(1,col+'00');c.fillStyle=g;c.fillRect(0,s==='a'?y:-30,W,s==='a'?H+30-y:y+30)}
+    c.fillStyle='rgba(255,255,255,.08)';c.fillRect(0,0,6,H);c.fillRect(W-6,0,6,H);
+    for(const s of splats){c.save();c.globalAlpha=Math.max(0,Math.min(.85,s.a));c.fillStyle=s.col;const sx=s.wall?.6:1.25,sy=s.wall?1.25:.6;c.beginPath();for(let i=0;i<=16;i++){const a=i/16*TAU,q=s.r*(.82+.2*Math.sin(i*2.7+s.seed));c.lineTo(s.x+Math.cos(a)*q*sx,s.y+Math.sin(a)*q*sy)}c.closePath();c.fill();
+      for(let i=0;i<5;i++){const a=s.seed+i*1.3,d=s.r*(1.25+(i%3)*.3);circ(c,s.x+Math.cos(a)*d*sx,s.y+Math.sin(a)*d*sy,s.r*(.11+(i%2)*.07));c.fill()}c.globalAlpha*=.5;c.fillStyle='#fff';circ(c,s.x-s.r*.3*sx,s.y-s.r*.25*sy,s.r*.18);c.fill();c.restore()}
+    // score digits in each half (read from the player's side)
+    c.save();c.globalAlpha=.16;c.fillStyle='#fff';c.font=`120px ${FAM}`;c.textAlign='center';c.textBaseline='middle';
+    for(const[s,y]of[['a',H*.72],['b',H*.28]]){c.save();c.translate(W/2,y);if(flip)c.rotate(Math.PI);c.fillText(String(pts[s]),0,0);c.restore()}c.restore();
+    paddle(c,'b',pos.b,YB,colB,mineS==='b');paddle(c,'a',pos.a,YA,colA,mineS==='a');
+    // ball
+    const b=renderPos(),cr=ball(),T=NOW();for(const t of trail){if(t.a<=0)continue;c.globalAlpha=t.a*.25;circ(c,t.x,t.y,R*(.5+t.a*.4));c.fillStyle=cr.c;c.fill()}c.globalAlpha=1;
+    const waiting=ev&&T<ev.t&&!ended;if(waiting){const k=1+.08*Math.sin(T/120);c.save();c.globalAlpha=.6;circ(c,W/2,H/2,R*1.9*k);c.strokeStyle='#fff';c.lineWidth=2;c.stroke();c.restore()}
+    const e=pred||ev,vy=e?e.vy:0;drawAnimal(c,b.x,b.y,R,cr.k,cr.c,{fx:cr.fx,mood:waiting?2:Math.abs(vy)>620?3:0,sq:clamp(sq,-.3,.45),sqa,seed:1,jig:.02,look:Math.atan2(vy,0)});
+    drawFX(c);c.restore();
+    if(waiting){const n=Math.ceil((ev.t-T)/1000);c.fillStyle='rgba(255,255,255,.9)';c.font=`28px ${FAM}`;c.textAlign='center';c.textBaseline='middle';if(ev.n>0||n<=2)c.fillText(n>0?String(n):'',W/2,H/2-60)}
+    if(ended){c.fillStyle='rgba(20,14,40,.35)';c.fillRect(0,0,W,H);const w=pts.a>=WIN?'a':'b',mineS2=spec?view:me;outlineText(c,spec?(w===mineS2?'They win!':'They lose!'):w===me?'YOU WIN!':'So close!',W/2,H/2,40,w===mineS2?'#5be0a6':'#ff6fa8')}}
+  // spectators: the watched player's board snapshot just says which match and side; the ball comes from the shared timeline
+  function serialize(){return st==='play'&&id?{pg:1,id,me,s:start0}:null}
+  function restore(d){if(!d||!d.pg){st='done';ev=null;return}begin({id:d.id,me:d.me,view:d.me,spec:true,start:d.s})}
+  function specSync(d){if(!d||!d.pg)return;if(d.id!==id||!spec)restore(d)}
+  return{start,update,render,bg,down,move,up,key,action(){},restyle,serialize,restore,specSync,leave,state:()=>st,dbg:()=>({off:Math.hypot(off.x,off.y),ev,pred,pos:Object.assign({},pos),pts,me,view,ended,b:renderPos(),tc:ev?tContact(ev):0,yc:{a:yc('a'),b:yc('b')},raw:ev?at(ev,NOW()):null})};
+})();
 const GAMES={
   drop:{id:'drop',name:'Jelly Jar',impl:Drop,coins:s=>s.score/140},
   squish:{id:'squish',name:'Jelly 2048',impl:Squish,coins:s=>s.score/60},
@@ -3017,7 +3127,6 @@ let lastSurprise=null;
 var lastFin=null;
 function finishRound(g,s,title,items){
   if(SPEC||VIEW)return;try{secRound(g,score)}catch(e){}lastFin={at:Date.now(),g,title:String(title||'').slice(0,40),score:Math.floor(score),items:(items||[]).slice(0,4).map(([k,v])=>[String(k).slice(0,20),String(v).slice(0,20)])};if(DUEL&&DUEL.phase!=='wait'){if(DUEL.phase==='live'||DUEL.phase==='count')duLocalEnd();return}
-  setTimeout(()=>{try{ntrMaybe()}catch(e){}},1600);
   if(gid!==g)return;delete P.saves[g];
   s.score=score;shown=score;scoreEl.textContent=fmt(score);
   const prev=P.best[g]||0,nb=s.score>prev&&s.score>0;if(nb){P.best[g]=s.score;bestEl.textContent=fmt(s.score)}
@@ -3049,7 +3158,7 @@ function finishRound(g,s,title,items){
 $('oSurEq').onclick=()=>{if(!lastSurprise)return;equip(lastSurprise.g,lastSurprise.cat,lastSurprise.id);$('oSurEq').textContent='Wearing!';$('oSurEq').disabled=true;sfx.pop(6);syncDots()};
 
 // ================================================= play / menu
-function playGame(g,fresh=false){VIEW='';lastFin=null;setTimeout(()=>presenceSet(!document.hidden),200);setTimeout(()=>tutMaybe(g),60);audio();gid=g;G=GAMES[g].impl;P.last=g;paused=false;['menu','over','style'].forEach(id=>$(id).hidden=true);
+function playGame(g,fresh=false){const def=GAMES[g]||DUELONLY[g]||GAMES.drop;if(!GAMES[g]&&!DUELONLY[g])g='drop';VIEW='';lastFin=null;setTimeout(()=>presenceSet(!document.hidden),200);setTimeout(()=>tutMaybe(g),60);audio();if(G&&G!==def.impl&&G.leave)try{G.leave()}catch(e){}gid=g;G=def.impl;if(GAMES[g])P.last=g;paused=false;['menu','over','style'].forEach(id=>$(id).hidden=true);
   score=0;shown=0;scoreEl.textContent='0';bestEl.textContent=fmt(P.best[g]||0);clearFX();resize();
   if(!fresh&&P.saves[g])G.restore(P.saves[g]);else{delete P.saves[g];G.start()}save();syncDots()}
 // ---- first-time "how to play" cards with a little looping animation
@@ -3158,6 +3267,8 @@ $('mResume').onclick=()=>{sfx.ui();closeMenu()};
 $('mStyle').onclick=()=>openStyle(true);
 $('mSave').onclick=()=>{saveRun(true);sfx.coin(2);const b=$('mSave').querySelector('span');b.textContent='Saved!';setTimeout(()=>b.textContent='Save',1400);renderMenu()};
 $('mRestart').onclick=()=>{if(restartArm>time){delete P.saves[gid];save();playGame(gid,true);return}restartArm=time+2;$('mRestart').querySelector('span').textContent='Tap again';$('mRestart').classList.add('armed');sfx.nope();setTimeout(()=>{if(restartArm<=time){$('mRestart').querySelector('span').textContent='Restart';$('mRestart').classList.remove('armed')}},2100)};
+const saverUI=()=>{const b=$('saverBtn');if(b){b.textContent='Battery saver: '+(SAVER?'on':'off');b.className='btn small '+(SAVER?'mint':'white')}};saverUI();
+$('saverBtn').onclick=()=>{SAVER=!SAVER;try{localStorage.setItem('ca_saver',JSON.stringify(SAVER))}catch(e){}saverUI();resize();sizeFx();sfx.ui();toast(SAVER?'Battery saver is on':'Battery saver is off','#5be0a6')};
 $('hapBtn').onclick=()=>{P.hapOff=!P.hapOff;save();$('hapBtn').textContent='Haptics: '+(P.hapOff?'off':'on');if(!P.hapOff)hap('double')};
 // ---- music: slow lo-fi chords, soft bass, a few marimba notes and brushed hats at 70 bpm
 var musicOn=store.get('ca_music',true),MUS=null,NOISE=null;
@@ -3239,7 +3350,7 @@ async function fbInit(){if(FD||fbTrying)return;fbTrying=true;try{
   const[a,u,d]=await Promise.all([import(FBU+'firebase-app.js'),import(FBU+'firebase-auth.js'),import(FBU+'firebase-database.js')]);
   const app=a.getApps().length?a.getApp():a.initializeApp(FB_CONFIG);FAPP=a;FA=u;FD=d;AUTH=u.getAuth(app);RDB=d.getDatabase(app);
   for(const g of['drop','squish','doku','catch','combo','memory','slice'])d.onValue(d.query(fref('lb'),d.orderByChild(g),d.limitToLast(100)),snap=>{const arr=[];snap.forEach(c=>{arr.push(Object.assign({id:c.key},c.val()))});lbBy[g]=arr;lbReady=true;if(!$('lb').hidden)renderLB()},()=>{lbReady=true;if(!$('lb').hidden)renderLB()});
-  socialInit();betaInit();duelInit();rkInit();evInit();noticeInit();ntfInit();
+  socialInit();betaInit();duelInit();rkInit();evInit();noticeInit();
   d.onValue(fref('giveaways'),s=>{const v=s.val();GAS=v&&typeof v==='object'?v:{};gaReady=true;if(!$('gw').hidden){gwSub();renderGW()}syncDots();setTimeout(gaAuto,2000);setTimeout(gaFlush,1200)},()=>{gaReady=true});
   u.onAuthStateChanged(AUTH,x=>{MAINU=x;route()});if(ACTIVE==='alt'||store.get('ca_alt',0))initAlt();
   fbDown=false;acctUI();
@@ -3356,7 +3467,15 @@ function rmvMark(keys){P.rmv=P.rmv&&typeof P.rmv==='object'?P.rmv:{};const now=D
 function refreshAll(){lvInit();applyBouncy();refreshCoins();if(gid)bestEl.textContent=fmt(P.best[gid]||0);$('pname').value=P.name;$('lbName').value=P.name;if(!$('menu').hidden)renderMenu();if(!$('lb').hidden)renderLB();syncDots()}
 
 function cloudSoon(){if(!UID||!acctReady||!fbOnline)return;clearTimeout(cloudTimer);cloudTimer=setTimeout(pushCloud,2500)}
-async function pushCloud(){clearTimeout(cloudTimer);if(!UID||!RDB||!acctReady||!fbOnline)return;const t=Math.max(Date.now(),P.t||0);lastPush=t;try{await FD.set(fref('users/'+UID),{profile:JSON.stringify(P),t});store.set('ca_dirty',0)}catch(e){}}
+function pruneP(){try{
+  if(P.takeDone&&typeof P.takeDone==='object'){const ks=Object.keys(P.takeDone);if(ks.length>40)for(const k of ks.slice(0,ks.length-40))delete P.takeDone[k]}
+  if(gaReady&&P.gwSeen)for(const k in P.gwSeen)if(!GAS[k])delete P.gwSeen[k];
+  if(newsReady&&P.newsSeen&&Object.keys(NEWS).length)for(const k in P.newsSeen)if(!NEWS[k])delete P.newsSeen[k];
+  if(socUnsubs.ready&&P.dmSeen&&UID){const keep=new Set([...myFriends].map(f=>dmPair(f)));for(const k in P.dmSeen)if(!keep.has(k))delete P.dmSeen[k]}
+  if(Array.isArray(P.fresh))P.fresh=[...new Set(P.fresh)].filter(k=>P.own.includes(k)).slice(-80);
+  if(Array.isArray(P.myDu))P.myDu=P.myDu.filter(x=>x&&Date.now()-(+x.t||0)<7*864e5).slice(-30)}catch(e){}}
+function cloudP(){pruneP();const o=Object.assign({},P);o.own=P.own.filter(k=>{const[g,cat]=String(k).split(':');const sh=g!=='prof'&&SHARED[cat];return!sh||sh[0]===g||!P.own.includes(sh[0]+':'+cat+':'+String(k).split(':')[2])});return o}
+async function pushCloud(){clearTimeout(cloudTimer);if(!UID||!RDB||!acctReady||!fbOnline)return;const t=Math.max(Date.now(),P.t||0);lastPush=t;try{await FD.set(fref('users/'+UID),{profile:JSON.stringify(cloudP()),t});store.set('ca_dirty',0)}catch(e){}}
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pushCloud()});
 
 async function claimName(v){const key=nameKey(v),r=fref('names/'+key),s=await FD.get(r);
@@ -3394,7 +3513,7 @@ function ranked(g){return rankRows(lbScope==='friends'?friendRows():(lbBy[g]||[]
 function rankRows(arr,g){return arr.filter(d=>+d[g]>0).map(d=>({id:d.id,name:cleanName(d.name)||'Someone',score:Math.floor(+d[g]),k:KINDS.has(d.k)?d.k:'jelly',c:okCol(d.c),fx:FXS.has(d.fx)?d.fx:undefined,h:HAT_IDS.has(d.h)?d.h:'none',fr:FRAME_IDS.has(d.fr)?d.fr:'none',tt:TITLE_IDS.has(d.tt)?d.tt:'none',raw:d})).sort((a,b)=>b.score-a.score)}
 function myRank(g){if(!UID)return 0;return rankRows(lbBy[g]||[],g).findIndex(d=>d.id===UID)+1}
 function openLB(g){audio();sfx.ui();lbGame=g||gid||'drop';paused=true;$('lbName').value=cleanName(P.name);const w=nameWait();$('lbMsg').textContent=UID&&w>0?'Next name change in '+fmtWait(w)+'.':'';$('lbMsg').className='nmsg';$('lb').hidden=false;renderLB()}
-const anyOpen=()=>!['ntr','menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','beta','devg','who','lvp','pick','duel','capo','capi','dinv','dres','tut','tagi','dm','sres','pres','gm','rk','pl','set','ach','bp','evdev','cfm','hsr','ntc'].every(id=>$(id).hidden);
+const anyOpen=()=>!['menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','beta','devg','who','lvp','pick','duel','capo','capi','dinv','dres','tut','tagi','dm','sres','pres','gm','rk','pl','set','ach','bp','evdev','cfm','hsr','ntc'].every(id=>$(id).hidden);
 function closeLB(){$('lb').hidden=true;if(!anyOpen())paused=false}
 function renderLB(){
   $('lbTabs').innerHTML=Object.values(GAMES).map(g=>`<button class="tab${g.id===lbGame?' on':''}" data-g="${g.id}" type="button" role="tab" aria-selected="${g.id===lbGame}">${g.name}</button>`).join('');
@@ -3945,7 +4064,6 @@ $('cpGo').onclick=async()=>{if(!isAdmin())return;const m=$('cpMsg'),bad=t=>{m.te
     const keep=$('cpSave').checked,notify=$('cpNotify').checked||!keep,pop=$('cpPop').checked,r=FD.push(FD.ref(RDB,'news')),id=r.key,data={title,body,t:FD.serverTimestamp(),push};if(pop)data.pop=true;if(img)data.img=img;if(keep)await FD.set(FD.ref(RDB,'news/'+id),data);
     if(notify)await FD.set(FD.ref(RDB,'notice'),{id,title,body:String(body).slice(0,2000),t:FD.serverTimestamp()});
     if(push)await FD.set(FD.ref(RDB,'deploy'),{id,t:FD.serverTimestamp(),h:pushH});
-    if(keep||notify)ntfBroadcast(title,body).then(n=>{if(n)toast('Also sent a notification to '+n+' device'+(n>1?'s':''),'#7cc8ff')});
     m.textContent=push?'Posted! Everyone is updating to these files now.':!keep?'Sent! Everyone online sees it now (not saved to the update logs).':notify?'Posted and sent to everyone online!':data.pop?'Posted! It is popping up on everyone’s screen.':'Posted to everyone’s mailbox.';$('cpSave').checked=true;$('cpNotify').checked=false;$('cpPop').checked=false;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg='';compPrev();sfx.discover();if(!push)setTimeout(closeComp,900)}
   catch(e){bad('Could not post. Check the database rules are published.')}
   $('cpGo').disabled=false};
@@ -3960,7 +4078,7 @@ function socialUser(user){if(!user){giftUser(null);if(sugUnsub){try{sugUnsub()}c
     if(hadAny)for(const f of added)setTimeout(()=>{const n=frLb[f]&&frLb[f].name;if(n)toast(n+' is now your friend!','#5be0a6')},600);socUnsubs.ready=true;dmSync();if(dmOpen&&!next.has(dmOpen))closeDM();
     renderFriendsIfOpen()},()=>{}));
   socUnsubs.push(FD.onValue(FD.ref(db,'freq/'+uid),s=>{const v=s.val();const prev=Object.keys(freqIn).length;freqIn=v&&typeof v==='object'?Object.fromEntries(Object.entries(v).filter(([k])=>!isBlocked(k))):{};mailSync();
-    if(Object.keys(freqIn).length>prev&&socUnsubs.ready2){sfx.pop(8);const nw=Object.values(freqIn).sort((a,b)=>(+(b&&b.t)||0)-(+(a&&a.t)||0))[0];ntfLocal('fr','Friend request',(cleanName(nw&&nw.name)||'Someone')+' wants to be friends','fr')}socUnsubs.ready2=true;if(!$('mail').hidden)renderMail();renderFriendsIfOpen()},()=>{}))}
+    if(Object.keys(freqIn).length>prev&&socUnsubs.ready2){sfx.pop(8);const nw=Object.values(freqIn).sort((a,b)=>(+(b&&b.t)||0)-(+(a&&a.t)||0))[0];toast((cleanName(nw&&nw.name)||'Someone')+' sent you a friend request! Open Mailbox to accept','#5be0a6')}socUnsubs.ready2=true;if(!$('mail').hidden)renderMail();renderFriendsIfOpen()},()=>{}))}
 async function loadFriend(f){try{const[a,b]=await Promise.all([FD.get(FD.ref(RDB,'lb/'+f)),FD.get(FD.ref(curDB(),'friends/'+f))]);if(a.exists())frLb[f]=Object.assign({id:f},a.val());const v=b.val()||{};frOf[f]=new Set(Object.keys(v).filter(k=>v[k]===true));renderFriendsIfOpen()}catch(e){}}
 function mutualWith(id,theirs){if(!theirs)return[];return[...theirs].filter(x=>x!==UID&&myFriends.has(x))}
 function friendRows(){const out=Object.values(frLb).filter(d=>myFriends.has(d.id));if(UID&&acctReady)out.push(Object.assign(myBody(),{id:UID}));return out}
@@ -3969,7 +4087,7 @@ async function sendFriend(raw,m){const say=(t,b)=>{if(m){m.textContent=t;m.class
   try{const s=await FD.get(FD.ref(curDB(),'names/'+nameKey(v)));if(!s.exists())return say('No player with that name.',1);const to=s.val();
     if(to===UID)return say('That is you!',1);if(myFriends.has(to))return say('You are already friends.');
     if(freqIn[to])return acceptFriend(to);
-    await FD.set(FD.ref(curDB(),'freq/'+to+'/'+UID),{name:cleanName(myLb&&myLb.name||P.name),t:FD.serverTimestamp()});pushTo(to,'fr');say('Friend request sent to '+v+'!');sfx.pop(6);return true}
+    await FD.set(FD.ref(curDB(),'freq/'+to+'/'+UID),{name:cleanName(myLb&&myLb.name||P.name),t:FD.serverTimestamp()});say('Friend request sent to '+v+'!');sfx.pop(6);return true}
   catch(e){say('Could not send the request. Try again.',1)}}
 async function acceptFriend(from){if(!UID)return;try{await FD.update(FD.ref(curDB()),{[`friends/${UID}/${from}`]:true,[`friends/${from}/${UID}`]:true,[`freq/${UID}/${from}`]:null});sfx.discover();const n=freqIn[from]&&freqIn[from].name;toast((cleanName(n)||'New friend')+' added!','#5be0a6');loadFriend(from)}catch(e){toast('Could not accept. Try again.','#ff6fa8')}}
 async function declineFriend(from){try{await FD.remove(FD.ref(curDB(),`freq/${UID}/${from}`));sfx.ui()}catch(e){}}
@@ -3990,7 +4108,7 @@ function dmSync(){for(const f in dmWatch)if(!myFriends.has(f)||!UID){try{dmWatch
   if(!UID)return;for(const f of myFriends){if(!dmPruned[f]){dmPruned[f]=1;setTimeout(()=>dmPrune(f),1500+Math.random()*3000)}if(dmWatch[f])continue;const k=dmPair(f);
     dmWatch[f]=FD.onValue(FD.query(fref('dm/'+k),FD.orderByChild('t'),FD.limitToLast(10)),s=>{const v=s.val()||{},arr=Object.values(v).filter(x=>x&&typeof x.m==='string').sort((a,b)=>(+a.t||0)-(+b.t||0)),last=arr[arr.length-1];
       const seen=+((P.dmSeen||{})[k])||0,unread=arr.filter(x=>x.u!==UID&&(+x.t||0)>seen).length,prev=dmLast[f];dmLast[f]=last?{t:+last.t||0,u:last.u,n:unread}:null;
-      if(dmReady[f]&&last&&last.u!==UID&&(!prev||(+last.t||0)>prev.t)&&dmOpen!==f&&!badText(last.m)){const nm=frLb[f]&&cleanName(frLb[f].name)||'A friend';toast(emoOf(last.m)?nm+' sent you an emote!':nm+': '+String(last.m).slice(0,60),'#5be0a6');sfx.pop(9);ntfLocal('dm',nm,emoOf(last.m)?'sent you an emote':String(last.m).slice(0,90),'dm-'+f)}
+      if(dmReady[f]&&last&&last.u!==UID&&(!prev||(+last.t||0)>prev.t)&&dmOpen!==f&&!badText(last.m)){const nm=frLb[f]&&cleanName(frLb[f].name)||'A friend';toast(emoOf(last.m)?nm+' sent you an emote!':nm+': '+String(last.m).slice(0,60),'#5be0a6');sfx.pop(9)}
       dmReady[f]=true;renderFriendsIfOpen();syncDots()},()=>{})}}
 function dmDay(t){const d=new Date(t),n=new Date();if(d.toDateString()===n.toDateString())return'Today';const y=new Date(n-864e5);if(d.toDateString()===y.toDateString())return'Yesterday';return d.toLocaleDateString(undefined,{month:'short',day:'numeric'})}
 var dmEmoCv=[];
@@ -4013,7 +4131,7 @@ async function dmSend(){const inp=$('dmIn'),txt=inp.value.replace(/\s+/g,' ').tr
 async function dmSendRaw(txt){const f=dmOpen,inp=$('dmIn'),m=$('dmMsg');if(!f||!txt)return false;const eid=emoOf(txt);if(eid&&!owns('prof','emote',eid))return false;
   if(!myFriends.has(f)){m.textContent='You can only message friends.';m.className='nmsg bad';return false}
   if(!eid&&badText(txt)){sfx.nope();m.textContent='Keep it friendly!';m.className='nmsg bad';return false}if(Date.now()-dmSendT<900){return false}
-  dmSendT=Date.now();m.textContent='';if(eid)$('dmEmo').hidden=true;try{await FD.set(FD.push(fref('dm/'+dmPair(f))),{u:UID,to:f,m:txt,t:FD.serverTimestamp()});pushTo(f,'dm',{text:emoOf(txt)?'sent you an emote':String(txt).slice(0,90)});sfx.pop(5);dmPrune(f);return true}catch(e){m.textContent='Could not send. Try again.';m.className='nmsg bad';return false}}
+  dmSendT=Date.now();m.textContent='';if(eid)$('dmEmo').hidden=true;try{await FD.set(FD.push(fref('dm/'+dmPair(f))),{u:UID,to:f,m:txt,t:FD.serverTimestamp()});sfx.pop(5);dmPrune(f);return true}catch(e){m.textContent='Could not send. Try again.';m.className='nmsg bad';return false}}
 $('dmSend').onclick=dmSend;$('dmIn').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();dmSend()}});$('dmClose').onclick=closeDM;
 $('dm').addEventListener('click',e=>{if(e.target.id==='dm')closeDM()});$('dm').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')closeDM()});
 function renderFriendsIfOpen(){if(!$('fr').hidden)renderFriends();if(!$('lb').hidden&&lbScope==='friends')renderLB()}
@@ -4057,7 +4175,7 @@ async function pfSocial(d){const act=$('pfAct'),mu=$('pfMut');act.textContent=''
     else if(freqIn[id])act.append(bt('mint','Accept friend request',()=>acceptFriend(id).then(()=>setTimeout(draw,300))));
     else{let sent=false;try{sent=(await FD.get(FD.ref(curDB(),'freq/'+id+'/'+UID))).exists()}catch(e){}
       if(sent){const b=bt('white','Request sent',null);b.disabled=true;act.append(b)}
-      else act.append(bt('mint','Add friend',async()=>{try{await FD.set(FD.ref(curDB(),'freq/'+id+'/'+UID),{name:cleanName(myLb&&myLb.name||P.name),t:FD.serverTimestamp()});pushTo(id,'fr');toast('Friend request sent!','#5be0a6');sfx.pop(6)}catch(e){toast('Could not send it','#ff6fa8')}draw()}))}};
+      else act.append(bt('mint','Add friend',async()=>{try{await FD.set(FD.ref(curDB(),'freq/'+id+'/'+UID),{name:cleanName(myLb&&myLb.name||P.name),t:FD.serverTimestamp()});toast('Friend request sent!','#5be0a6');sfx.pop(6)}catch(e){toast('Could not send it','#ff6fa8')}draw()}))}};
   draw();
   {const bb=document.createElement('button');bb.type='button';bb.className='btn small '+(isBlocked(id)?'mint':'danger')+' pfblock';bb.textContent=isBlocked(id)?'Unblock':'Block';bb.onclick=()=>blockAsk(Object.assign({},d));mu.after(bb);setTimeout(()=>{},0);pfSocial.bb=bb}
   try{const s=await FD.get(FD.ref(curDB(),'friends/'+id)),v=s.val()||{},theirs=new Set(Object.keys(v).filter(k=>v[k]===true)),m=mutualWith(id,theirs);
@@ -4354,40 +4472,53 @@ function duelInit(){FD.onValue(FD.ref(RDB,'.info/serverTimeOffset'),s=>{SKEW=+s.
   FD.onValue(FD.query(FD.ref(RDB,'duels'),FD.orderByChild('t'),FD.limitToLast(40)),s=>{DUELS=s.val()||{};if(!$('duel').hidden)renderDuel();if(pfD&&pfD.id)pfPlayUI(pfD)},()=>{})}
 function duelUser(user){if(!user)return;const uid=user.uid;
   socUnsubs.push(FD.onValue(fref('duelInv/'+uid),s=>{dInv=Object.fromEntries(Object.entries(s.val()||{}).filter(([,x])=>!(x&&isBlocked(x.from))));duInvCheck()},()=>{}));
-  socUnsubs.push(FD.onValue(fref('watch/'+uid),s=>{const v=s.val()||{};const was=watchN;watchN=Object.keys(v).filter(k=>v[k]===true&&!isBlocked(k)).length;watchUI();if(watchN>=3)secBump('crowd',1);if(watchN>was&&!SPEC&&!document.hidden)toast(watchN===1?'Someone is watching you play!':watchN+' people are watching you play!','#7cc8ff')},()=>{}));
+  try{FD.onDisconnect(fref('live/'+uid)).remove()}catch(e){}
+  socUnsubs.push(FD.onValue(fref('watch/'+uid),s=>{const v=s.val()||{};const was=watchN;watchN=Object.keys(v).filter(k=>v[k]===true&&!isBlocked(k)).length;watchUI();if(watchN>=3)secBump('crowd',1);clearTimeout(liveRmT);if(watchN<1&&was>0)liveRmT=setTimeout(()=>{if(watchN<1&&UID){liveLast='';FD.remove(fref('live/'+UID)).catch(()=>{})}},8000);if(watchN>was&&!SPEC&&!document.hidden)toast(watchN===1?'Someone is watching you play!':watchN+' people are watching you play!','#7cc8ff')},()=>{}));
   setTimeout(betSettleAll,3000)}
 // ---- hub
-function openDuel(){audio();sfx.ui();paused=true;$('duel').hidden=false;if(GAMES[gid]&&!DUEL)duMode=gid;renderDuel()}
+const DUELONLY={pong:{id:'pong',name:'Jelly Pong',impl:Pong,duelOnly:true}};
+const duGameList=()=>[...Object.values(GAMES),...Object.values(DUELONLY)];
+const duGameName=g=>(GAMES[g]||DUELONLY[g]||{}).name||'Jelly Jar';
+var duPicked=false;
+function openDuel(){audio();sfx.ui();paused=true;$('duel').hidden=false;if(GAMES[gid]&&!DUEL&&!duPicked)duMode=gid;renderDuel()}
 function closeDuel(){$('duel').hidden=true;if(!anyOpen())paused=false}
 function renderDuel(){const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e},now=srvNow();
-  $('duModes').innerHTML=Object.values(GAMES).map(g=>`<button class="tab${g.id===duMode?' on':''}" data-g="${g.id}" type="button" role="tab">${g.name}</button>`).join('');
-  $('duModes').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{if(DUEL)return;duMode=b.dataset.g;sfx.ui();renderDuel()});
-  $('duLim').querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',(b.dataset.nl==='1')===duNl));$('duIntro').textContent=duNl?'No time limit: you both play until your game ends, and the higher final score wins. If you finish first, you watch your opponent live.':'One minute, same game, highest score wins. Anyone watching can bet coins during the first 15 seconds.';
+  {const M=$('duModes'),gl=duGameList(),key=gl.map(g=>g.id).join(',');if(M.dataset.k!==key){M.dataset.k=key;M.innerHTML=gl.map(g=>`<button class="tab" data-g="${g.id}" type="button" role="tab">${g.name}</button>`).join('');
+      M.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{if(DUEL&&DUEL.phase!=='done')return;duMode=b.dataset.g;duPicked=true;sfx.ui();renderDuel()})}
+    M.querySelectorAll('.tab').forEach(b=>{const on=b.dataset.g===duMode;b.classList.toggle('on',on);b.setAttribute('aria-selected',on);if(on&&M.dataset.sel!==duMode){M.dataset.sel=duMode;const bl=b.offsetLeft,br=bl+b.offsetWidth;if(bl<M.scrollLeft||br>M.scrollLeft+M.clientWidth)M.scrollLeft=Math.max(0,bl-(M.clientWidth-b.offsetWidth)/2)}});
+    $('duLim').hidden=!!DUELONLY[duMode]}
+  $('duLim').querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',(b.dataset.nl==='1')===duNl));$('duIntro').textContent=DUELONLY[duMode]?'Jelly Pong is played live against each other: drag your paddle to bounce the jelly past your opponent. First to 3 points wins!':duNl?'No time limit: you both play until your game ends, and the higher final score wins. If you finish first, you watch your opponent live.':'One minute, same game, highest score wins. Anyone watching can bet coins during the first 15 seconds.';
   const W=$('duWait');W.hidden=!(DUEL&&DUEL.phase==='wait');$('duFind').hidden=!!DUEL;$('duQuick').hidden=!!DUEL;$('duFind').textContent=duNl?'Find an opponent (no time limit)':'Find an opponent';
-  if(DUEL&&DUEL.phase==='wait'){const v=DUEL.rec||{};$('duWaitT').textContent=v.st==='invite'?'Waiting for your friend to accept…':'Looking for an opponent in '+(GAMES[v.g||duMode]||{}).name+'…'}
-  const O=$('duOpen');O.textContent='';const open=Object.entries(DUELS).filter(([,d])=>d&&d.st==='open'&&!d.b&&now-(+d.t||0)<120000).sort((a,b)=>(+b[1].t)-(+a[1].t));
+  if(DUEL&&DUEL.phase==='wait'){const v=DUEL.rec||{};$('duWaitT').textContent=v.st==='invite'?'Waiting for your friend to accept…':'Looking for an opponent in '+duGameName(v.g||duMode)+(DUELONLY[v.g||duMode]?'':(v.nl?' (no time limit)':' (1 minute)'))+'…'}
+  const O=$('duOpen'),oRows=[];const open=Object.entries(DUELS).filter(([,d])=>d&&d.st==='open'&&!d.b&&now-(+d.t||0)<120000).sort((a,b)=>(+b[1].t)-(+a[1].t));
+  const oKey=open.map(([id,d])=>id+(d.a===UID?'*':'')).join('|')+'#'+(DUEL?1:0);if(O.dataset.k!==oKey){O.dataset.k=oKey;O.textContent='';
   if(!open.length)O.append(el('p','lgap','No open matches right now. Tap Find to start one!'));
-  for(const[id,d]of open){const r=el('div','mrow req');r.append(el('span','mrt',`${cleanName(d.an)||'Someone'} · ${(GAMES[d.g]||{}).name||''}${d.nl?' · no limit':''}`));const a=el('span','mra');
-    if(d.a===UID)a.append(el('span','gwr','Yours'));else{const j=el('button','btn small pink','Join');j.type='button';j.onclick=async()=>{if(!duNeedAcct()||DUEL)return;j.disabled=true;try{await duJoin(id)}catch(e){toast('Someone else got that match','#ff6fa8');j.disabled=false}};a.append(j)}r.append(a);O.append(r)}
-  const L=$('duLive');L.textContent='';const live=Object.entries(DUELS).filter(([,d])=>d&&d.st==='live'&&d.start&&now-(+d.start)<(d.nl?30*60000:DU_CD+DU_LEN+5000)).sort((a,b)=>(+b[1].start)-(+a[1].start));
+  for(const[id,d]of open){const r=el('div','mrow req');r.append(el('span','mrt',`${cleanName(d.an)||'Someone'} · ${duGameName(d.g)}${DUELONLY[d.g]?'':d.nl?' · no limit':' · 1 min'}`));const a=el('span','mra');
+    if(d.a===UID)a.append(el('span','gwr','Yours'));else{const j=el('button','btn small pink','Join');j.type='button';j.onclick=async()=>{if(!duNeedAcct()||DUEL)return;j.disabled=true;try{await duJoin(id)}catch(e){toast('Someone else got that match','#ff6fa8');j.disabled=false}};a.append(j)}r.append(a);O.append(r)}}
+  const L=$('duLive');const live=Object.entries(DUELS).filter(([,d])=>d&&d.st==='live'&&d.start&&now-(+d.start)<(d.nl?30*60000:DU_CD+DU_LEN+5000)).sort((a,b)=>(+b[1].start)-(+a[1].start));
+  const lKey=live.map(([id,d])=>id+(now<+d.start+DU_CD+DU_BET?'b':'')).join('|');const lft=d=>DUELONLY[d.g]?'first to 3':d.nl?'no limit':Math.max(0,Math.ceil((+d.start+DU_CD+DU_LEN-now)/1000))+'s';
+  if(L.dataset.k===lKey){L.querySelectorAll('[data-lt]').forEach(s=>{const d=DUELS[s.dataset.lt];if(d)s.textContent=lft(d)})}else{L.dataset.k=lKey;L.textContent='';
   if(!live.length)L.append(el('p','lgap','No 1v1s being played right now.'));
-  for(const[id,d]of live){const left=Math.max(0,Math.ceil((+d.start+DU_CD+DU_LEN-now)/1000)),r=el('div','mrow req');r.append(el('span','mrt',`${cleanName(d.an)} vs ${cleanName(d.bn)} · ${(GAMES[d.g]||{}).name||''} · ${d.nl?'no limit':left+'s'}`));const a=el('span','mra');
-    if(d.a!==UID&&d.b!==UID){const w=el('button','btn small mint',now<+d.start+DU_CD+DU_BET?'Watch + bet':'Watch');w.type='button';w.onclick=()=>specStart(d.a,cleanName(d.an),id);a.append(w)}else a.append(el('span','gwr','You'));r.append(a);L.append(r)}
+  for(const[id,d]of live){const r=el('div','mrow req'),tx=el('span','mrt',`${cleanName(d.an)} vs ${cleanName(d.bn)} · ${duGameName(d.g)} · `),tt=el('span',null,lft(d));tt.dataset.lt=id;tx.append(tt);r.append(tx);const a=el('span','mra');
+    if(d.a!==UID&&d.b!==UID){const w=el('button','btn small mint',now<+d.start+DU_CD+DU_BET?'Watch + bet':'Watch');w.type='button';w.onclick=()=>specStart(d.a,cleanName(d.an),id);a.append(w)}else a.append(el('span','gwr','You'));r.append(a);L.append(r)}}
   const R=P.duel||{w:0,l:0,t:0};$('duRec').textContent=`${R.w||0} wins · ${R.l||0} losses · ${R.t||0} ties`}
 $('mDuel').onclick=openDuel;$('duClose').onclick=closeDuel;$('duel').addEventListener('click',e=>{if(e.target.id==='duel')closeDuel()});$('duel').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Escape')closeDuel()});
 $('duFind').onclick=async()=>{if(!duNeedAcct()||DUEL)return;$('duFind').disabled=true;try{await duFind()}catch(e){toast('Could not start a match. Publish the new database rules first.','#ff6fa8')}$('duFind').disabled=false};
 $('duCancel').onclick=()=>duCancel();
 $('duQuick').onclick=async()=>{if(!duNeedAcct()||DUEL)return;$('duQuick').disabled=true;try{await duQuick()}catch(e){toast('Could not start a match. Publish the new database rules first.','#ff6fa8')}$('duQuick').disabled=false;renderDuel()};
 $('duLim').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{if(DUEL)return;duNl=b.dataset.nl==='1';sfx.ui();renderDuel()});
-async function duFind(){const now=srvNow(),open=Object.entries(DUELS).filter(([,d])=>d&&d.st==='open'&&d.g===duMode&&!!d.nl===duNl&&d.a!==UID&&!d.b&&now-(+d.t||0)<120000).sort((x,y)=>(+x[1].t)-(+y[1].t));
+async function duFind(){const nlx=!DUELONLY[duMode]&&duNl,now=srvNow(),open=Object.entries(DUELS).filter(([,d])=>d&&d.st==='open'&&d.g===duMode&&!!d.nl===nlx&&d.a!==UID&&!d.b&&now-(+d.t||0)<120000).sort((x,y)=>(+x[1].t)-(+y[1].t));
   for(const[id]of open){try{await duJoin(id);return}catch(e){}}
-  const r=FD.push(fref('duels')),rec={a:UID,an:duName(),g:duMode,st:'open',t:FD.serverTimestamp()};if(duNl)rec.nl=true;await FD.set(r,rec);duWatch(r.key,'a');sfx.ui();renderDuel()}
+  const r=FD.push(fref('duels')),rec={a:UID,an:duName(),g:duMode,st:'open',t:FD.serverTimestamp()};if(nlx)rec.nl=true;await FD.set(r,rec);duMine(r.key);duWatch(r.key,'a');sfx.ui();renderDuel()}
 async function duQuick(){const now=srvNow(),open=Object.entries(DUELS).filter(([,d])=>d&&d.st==='open'&&d.a!==UID&&!d.b&&now-(+d.t||0)<120000).sort((x,y)=>(+x[1].t)-(+y[1].t));
-  for(const[id,d]of open){try{duMode=d.g;await duJoin(id);toast('Matched! '+(GAMES[d.g]||{}).name+(d.nl?' · no time limit':''),'#5be0a6');return}catch(e){}}
-  const ids=Object.keys(GAMES);duMode=ids[Math.floor(Math.random()*ids.length)];await duFind();toast('Waiting for anyone to join: '+GAMES[duMode].name,'#7cc8ff')}
+  for(const[id,d]of open){try{await duJoin(id);toast('Matched! '+duGameName(d.g)+(DUELONLY[d.g]?'':d.nl?' · no time limit':' · 1 minute'),'#5be0a6');return}catch(e){}}
+  const keep=duMode,ids=duGameList().map(g=>g.id);duMode=ids[Math.floor(Math.random()*ids.length)];const pick=duMode;try{await duFind()}finally{duMode=keep}toast('Waiting for anyone to join: '+duGameName(pick),'#7cc8ff')}
+function duJanitor(){if(!UID||!acctReady||!fbOnline)return;const L=Array.isArray(P.myDu)?P.myDu:[],now=Date.now(),keep=[];for(const x of L){if(!x||!x.id)continue;if(now-(+x.t||0)>3*864e5){FD.remove(fref(x.k==='rm'?'rmatch/'+x.id:'duels/'+x.id)).catch(()=>{})}else keep.push(x)}if(keep.length!==L.length){P.myDu=keep;save()}}
+setTimeout(duJanitor,20000);setInterval(duJanitor,30*60000);
+function duMine(id,k){P.myDu=(Array.isArray(P.myDu)?P.myDu:[]).filter(x=>x&&x.id!==id).concat({id,k:k||'du',t:Date.now()}).slice(-30)}
 async function duJoin(id){duWatch(id,'b');try{await FD.update(fref('duels/'+id),{b:UID,bn:duName(),st:'live',start:FD.serverTimestamp()})}catch(e){duStop();throw e}}
-async function duChallenge(uid,name,g,nl){if(nl===undefined)nl=duNl;if(!duNeedAcct())return;if(DUEL)return toast('You already have a match going','#ff6fa8');
-  try{const r=FD.push(fref('duels'));const rec={a:UID,an:duName(),g,st:'invite',to:uid,t:FD.serverTimestamp()},inv={from:UID,name:duName(),g,t:FD.serverTimestamp()};if(nl){rec.nl=true;inv.nl=true}await FD.set(r,rec);await FD.set(fref('duelInv/'+uid+'/'+r.key),inv);pushTo(uid,'duel',{text:((GAMES[g]||{}).name||'a 1v1')+(nl?' (no time limit)':'')});duMode=g;duWatch(r.key,'a');closeAllO();openDuel();toast('Challenge sent to '+name+'!','#7cc8ff')}
+async function duChallenge(uid,name,g,nl){if(nl===undefined)nl=duNl;if(DUELONLY[g])nl=false;if(!duNeedAcct())return;if(DUEL)return toast('You already have a match going','#ff6fa8');
+  try{const r=FD.push(fref('duels'));const rec={a:UID,an:duName(),g,st:'invite',to:uid,t:FD.serverTimestamp()},inv={from:UID,name:duName(),g,t:FD.serverTimestamp()};if(nl){rec.nl=true;inv.nl=true}await FD.set(r,rec);duMine(r.key);await FD.set(fref('duelInv/'+uid+'/'+r.key),inv);duMode=g;duWatch(r.key,'a');closeAllO();openDuel();toast('Challenge sent to '+name+'!','#7cc8ff')}
   catch(e){toast('Could not send the challenge','#ff6fa8')}}
 function duWatch(id,me){DUEL={id,me,phase:'wait',rec:null,made:Date.now()};if(duUnsub)try{duUnsub()}catch(e){}
   duUnsub=FD.onValue(fref('duels/'+id),s=>{const v=s.val();if(!DUEL||DUEL.id!==id)return;if(!v){if(DUEL.phase==='wait')duStop('The match was cancelled');return}DUEL.rec=v;duStep()},()=>{});
@@ -4396,7 +4527,7 @@ function duStop(msg){if(duUnsub)try{duUnsub()}catch(e){}duUnsub=null;clearInterv
 async function duCancel(){if(!DUEL||DUEL.phase!=='wait')return;const d=DUEL,v=d.rec||{};duStop();try{if(v.to)await FD.remove(fref('duelInv/'+v.to+'/'+d.id));await FD.remove(fref('duels/'+d.id))}catch(e){}sfx.ui()}
 function duStep(){const d=DUEL,v=d&&d.rec;if(!v)return;
   if(d.phase==='wait'){if(v.st==='cancel')return duStop(v.to?'Your challenge was declined':'The match was cancelled');if(v.st==='live'&&v.start&&v.b)duBegin();else if(!$('duel').hidden)renderDuel()}}
-function duBegin(){const d=DUEL,v=d.rec;if(SPEC)specStop(true);d.g=GAMES[v.g]?v.g:'drop';d.opp=d.me==='a'?v.b:v.a;d.oppN=cleanName(d.me==='a'?v.bn:v.an)||'Opponent';d.t0=(+v.start)-SKEW;d.goAt=d.t0+DU_CD;d.nl=!!v.nl;d.endAt=d.nl?Infinity:d.goAt+DU_LEN;d.lastOpT=Date.now();
+function duBegin(){const d=DUEL,v=d.rec;if(SPEC)specStop(true);d.g=GAMES[v.g]||DUELONLY[v.g]?v.g:'drop';d.opp=d.me==='a'?v.b:v.a;d.oppN=cleanName(d.me==='a'?v.bn:v.an)||'Opponent';d.t0=(+v.start)-SKEW;d.goAt=d.t0+DU_CD;d.nl=!!v.nl&&!DUELONLY[d.g];d.endAt=d.nl||DUELONLY[d.g]?Infinity:d.goAt+DU_LEN;d.lastOpT=Date.now();
   if(d.rk&&RK){if(!RK.saved){saveRun(false);RK.saved=1;RK.prev=gid;RK.stash=P.saves[d.g]?JSON.parse(JSON.stringify(P.saves[d.g])):null}d.prev=RK.prev;d.stash=RK.stash}else{saveRun(false);d.prev=gid;d.stash=P.saves[d.g]?JSON.parse(JSON.stringify(P.saves[d.g])):null}d.phase='count';closeAllO();playGame(d.g,true);paused=true;$('specShield').hidden=false;
   $('dhMeN').textContent='You';$('dhOpN').textContent=d.oppN;$('dhMe').textContent='0';$('dhOp').textContent='0';$('dhMsg').textContent=d.rk&&RK&&RK.rec?`Ranked · Round ${d.rn} · ${RK.me==='a'?(+RK.rec.wa||0)+'–'+(+RK.rec.wb||0):(+RK.rec.wb||0)+'–'+(+RK.rec.wa||0)}`:'';$('dhud').hidden=false;$('dcount').hidden=false;$('dhBet').hidden=true;$('rk').hidden=true;
   sfx.discover();hap('success');presenceSet(!document.hidden)}
@@ -4404,22 +4535,22 @@ function duLoop(){const d=DUEL;if(!d)return;const now=Date.now(),v=d.rec||{};
   if(d.phase==='wait'){if(v.st==='invite'&&now-d.made>60000){duCancel();toast('No answer, challenge cancelled','#ff6fa8')}else if(v.st==='open'&&now-d.made>120000){duCancel();toast('No one joined. Try again soon!','#ff6fa8')}return}
   const op=+(d.me==='a'?v.sb:v.sa)||0,mine=Math.floor(score);$('dhOp').textContent=fmt(op);$('dhMe').textContent=fmt(d.phase==='end'||d.phase==='done'?d.final:mine);
   $('dhud').classList.toggle('ahead',mine>op);$('dhud').classList.toggle('behind',mine<op);
-  if(d.phase==='count'){const n=Math.ceil((d.goAt-now)/1000);$('dcount').textContent=n>0?String(n):'GO!';$('dhT').textContent='1:00';if(now>=d.goAt){d.phase='live';paused=false;$('specShield').hidden=true;sfx.pop(8);setTimeout(()=>{$('dcount').hidden=true},500)}return}
+  if(d.phase==='count'){const n=Math.ceil((d.goAt-now)/1000);$('dcount').textContent=n>0?String(n):'GO!';$('dhT').textContent=DUELONLY[d.g]?'First to 3':d.nl?'No limit':'1:00';if(now>=d.goAt){d.phase='live';paused=false;$('specShield').hidden=true;sfx.pop(8);setTimeout(()=>{$('dcount').hidden=true},500)}return}
   if(op!==d.lastOp){d.lastOp=op;d.lastOpT=now}
-  if(d.phase==='live'){const left=Math.max(0,d.endAt-now);$('dhT').textContent=d.nl?'No limit':`0:${String(Math.ceil(left/1000)).padStart(2,'0')}`;$('dhT').classList.toggle('hurry',!d.nl&&left<10000);
+  if(d.phase==='live'){const left=Math.max(0,d.endAt-now);$('dhT').textContent=DUELONLY[d.g]?'First to 3':d.nl?'No limit':`0:${String(Math.ceil(left/1000)).padStart(2,'0')}`;$('dhT').classList.toggle('hurry',!d.nl&&left<10000);
     $('dhBet').hidden=!!d.rk||!(now<d.goAt+DU_BET&&!(P.bets&&P.bets[d.id]));if(!$('dhBet').hidden)$('dhBetT').textContent=`Bet on yourself (${Math.ceil((d.goAt+DU_BET-now)/1000)}s):`;
     if(now-duSent>500&&mine!==d.lastSent){duSent=now;d.lastSent=mine;FD.update(fref('duels/'+d.id),{[d.me==='a'?'sa':'sb']:mine}).catch(()=>{})}
     if(left<=0)duLocalEnd();return}
-  if(d.phase==='end'){const of=d.me==='a'?v.fb:v.fa;if(of||now>d.endAt+8000||(d.nl&&now-(d.lastOpT||now)>150000)){duResult();return}
+  if(d.phase==='end'){const of=d.me==='a'?v.fb:v.fa;if(of||now>d.endAt+8000||(d.nl&&now-(d.lastOpT||now)>150000)||(DUELONLY[d.g]&&now-(d.endT||now)>3500)){duResult();return}
     if(d.nl&&!of&&!d.specTried&&d.opp&&now-(d.endT||now)>900){d.specTried=1;$('dhud').hidden=true;specStart(d.opp,d.oppN,d.id,{inDuel:true})}}}
 function duLocalEnd(){const d=DUEL;if(!d||(d.phase!=='live'&&d.phase!=='count'))return;d.phase='end';d.endT=Date.now();paused=true;d.final=Math.floor(score);
-  if(GAMES[d.g]&&d.final>(P.best[d.g]||0)){P.best[d.g]=d.final;bestEl.textContent=fmt(d.final);save();setTimeout(syncMe,0);setTimeout(()=>toast('New best in '+GAMES[d.g].name+': '+fmt(d.final)+'!','#ffd23f'),400)}$('dhBet').hidden=true;$('dhT').textContent=d.nl?'Done':'0:00';$('dhMsg').textContent=d.nl?'Your game is over! Watching '+d.oppN+'…':'Time! Waiting for '+d.oppN+'…';
+  if(GAMES[d.g]&&d.final>(P.best[d.g]||0)){P.best[d.g]=d.final;bestEl.textContent=fmt(d.final);save();setTimeout(syncMe,0);setTimeout(()=>toast('New best in '+GAMES[d.g].name+': '+fmt(d.final)+'!','#ffd23f'),400)}$('dhBet').hidden=true;$('dhT').textContent=d.nl||DUELONLY[d.g]?'Done':'0:00';$('dhMsg').textContent=DUELONLY[d.g]?'Match over!':d.nl?'Your game is over! Watching '+d.oppN+'…':'Time! Waiting for '+d.oppN+'…';
   FD.update(fref('duels/'+d.id),{[d.me==='a'?'sa':'sb']:d.final,[d.me==='a'?'fa':'fb']:true}).catch(()=>{});sfx.discover()}
 function duResult(){const d=DUEL;if(!d||d.phase==='done')return;d.phase='done';const v=d.rec||{},op=+(d.me==='a'?v.sb:v.sa)||0,me=d.final||0,res=me>op?'w':me<op?'l':'t';if(res==='t')secBump('tie',1);if(res==='w'&&d.nl&&d.specTried)secBump('underdog',1);
   if(SPEC&&SPEC.inDuel)specStop(true);if(d.rk){rkRoundDone(d,res,me,op);return}
   const R=P.duel=P.duel||{w:0,l:0,t:0};R[res]=(R[res]||0)+1;const co=Math.round((res==='w'?150:res==='t'?75:25)*presMult());lastDu={opp:d.opp,oppN:d.oppN,g:d.g,nl:!!d.nl};P.coins+=co;addXP(res==='w'?30:10);save();refreshCoins();
-  if(d.me==='a')FD.update(fref('duels/'+d.id),{st:'done'}).catch(()=>{});
-  $('dresT').textContent=res==='w'?'You win!':res==='l'?'So close!':'It’s a tie!';$('dresS').textContent=`You ${fmt(me)}  ·  ${d.oppN} ${fmt(op)}`;$('dresR').textContent=`+${co} coins`+(res==='l'?' for playing':'');$('dresB').textContent='';
+  if(d.me==='a'){FD.update(fref('duels/'+d.id),{st:'done'}).catch(()=>{});if(DUELONLY[d.g]){const pid=d.id;setTimeout(()=>FD.remove(fref('pong/'+pid)).catch(()=>{}),20000)}}
+  $('dresT').textContent=res==='w'?'You win!':res==='l'?'So close!':'It’s a tie!';$('dresS').textContent=DUELONLY[d.g]?`Points: you ${me} · ${d.oppN} ${op}`:`You ${fmt(me)}  ·  ${d.oppN} ${fmt(op)}`;$('dresR').textContent=`+${co} coins`+(res==='l'?' for playing':'');$('dresB').textContent='';
   $('dhud').hidden=true;$('dres').hidden=false;if(res==='w'){confetti(fxW/2,fxH*.3,140,1000);hap('success')}else sfx.ui();
   betSettle(d.id).then(t=>{if(t)$('dresB').textContent=t})}
 function duExit(again){clearInterval(duTickI);if(duUnsub)try{duUnsub()}catch(e){}duUnsub=null;const prev=DUEL&&DUEL.prev;if(DUEL){if(DUEL.stash)P.saves[DUEL.g]=DUEL.stash;else delete P.saves[DUEL.g]}$('specShield').hidden=true;DUEL=null;$('dres').hidden=true;$('dhud').hidden=true;$('dcount').hidden=true;playGame(prev&&GAMES[prev]?prev:(P.last||'drop'));presenceSet(!document.hidden);if(again)openDuel()}
@@ -4472,6 +4603,7 @@ function renderGM(){const now=Date.now(),F=$('gmFeat');F.textContent='';rkCv=[];
     const db=elx2('button','btn small white','Details');db.type='button';db.onclick=()=>{closeGM(false);openGW()};a.append(pb,db);card.append(a);F.append(card)}
   const C=$('gmCasual');C.innerHTML=Object.values(GAMES).map(g=>{const curG=g.id===gid,sv=P.saves[g.id];return`<button class="mg${curG?' cur':''}" data-g="${g.id}" type="button"><canvas width="240" height="180"></canvas><span class="badge">${curG?'Playing':sv?'Saved':'New'}</span><span class="gb"><span class="gn">${g.name}</span><span class="gs">Best ${fmt(P.best[g.id]||0)}</span></span></button>`}).join('');
   gmPrev=[...C.querySelectorAll('.mg')].map(b=>({g:b.dataset.g,c:b.querySelector('canvas').getContext('2d')}));
+  {const old=$('gmPong');if(old)old.remove();const pb=elx2('button','btn gmpong','');pb.id='gmPong';pb.type='button';pb.innerHTML='<b>🏓 Jelly Pong</b><span>1v1 only · bounce a jelly past your opponent · first to 3</span>';pb.onclick=()=>{closeGM(false);duMode='pong';duPicked=true;openDuel()};C.after(pb)}
   C.querySelectorAll('.mg').forEach(b=>b.onclick=()=>{const g=b.dataset.g;closeGM(false);if(g===gid){paused=false;return}saveRun(false);sfx.ui();playGame(g);toast(P.saves[g]?'Welcome back!':'Switched to '+GAMES[g].name,'#7cc8ff')});
   renderRanked()}
 function renderRanked(){const W=$('gmRanked'),ok=rkAllowed(),signed=!!(UID&&acctReady);W.textContent='';W.classList.toggle('locked',!ok);
@@ -4507,7 +4639,7 @@ function rkLeaveQ(msg){const R=RK;if(!R)return;clearInterval(R.tick);if(R.unq)tr
 function rkScan(){const R=RK;if(!R||R.phase!=='queue'||R.busy)return;const q=R.q||{},me=q[UID];if(!me)return;if(me.m)return rkFound(me.m);
   const now=srvNow(),el=s=>Math.max(0,(now-(+s||now))/1000);let best=null,bd=1e9;
   for(const[u,x]of Object.entries(q)){if(u===UID||!x||x.m||now-(+x.h||0)>12000)continue;const d=Math.abs((+x.r||0)-(+me.r||0));if(d>rkWin(Math.max(el(me.s),el(x.s))))continue;if(d<bd){bd=d;best=[u,x]}}
-  if(!best||!(UID<best[0]))return;const[u,x]=best;R.busy=true;const id=FD.push(fref('rmatch')).key,upd={};
+  if(!best||!(UID<best[0]))return;const[u,x]=best;R.busy=true;const id=FD.push(fref('rmatch')).key,upd={};duMine(id,'rm');
   upd['rmatch/'+id]={a:UID,b:u,an:duName(),bn:cleanName(x.n)||'Player',ar:Math.round(R.mmr),br:Math.round(+x.r||RK_START),g:R.g,st:'live',t:FD.serverTimestamp(),wa:0,wb:0,rn:0};
   upd['rq/'+R.g+'/'+UID+'/m']=id;upd['rq/'+R.g+'/'+u+'/m']=id;
   FD.update(FD.ref(curDB()),upd).then(()=>{if(RK===R){R.busy=false;rkFound(id)}}).catch(()=>{R.busy=false})}
@@ -4523,7 +4655,7 @@ function rkStep(){const R=RK,v=R&&R.rec;if(!v)return;if(v.st==='done')return rkF
   const rn=+v.rn||0,did=v['d'+rn];if(rn>=1&&did&&!R.played[rn]&&!DUEL){R.played[rn]=1;R.cur=rn;
     if(R.me==='a')duWatch(did,'a');else duJoin(did).catch(()=>{});if(DUEL)Object.assign(DUEL,{rk:R.id,rn})}}
 async function rkNewRound(){const R=RK,v=R.rec;if(!R||R.me!=='a'||R.creating)return;R.creating=1;const rn=(+v.rn||0)+1;
-  try{const r=FD.push(fref('duels'));await FD.set(r,{a:UID,an:duName(),g:R.g,st:'invite',to:v.b,t:FD.serverTimestamp(),rk:R.id,rn});await FD.update(fref('rmatch/'+R.id),{rn,['d'+rn]:r.key});R.nextAt=0}catch(e){toast('Could not start the next round','#ff6fa8')}R.creating=0}
+  try{const r=FD.push(fref('duels'));await FD.set(r,{a:UID,an:duName(),g:R.g,st:'invite',to:v.b,t:FD.serverTimestamp(),rk:R.id,rn});duMine(r.key);await FD.update(fref('rmatch/'+R.id),{rn,['d'+rn]:r.key});R.nextAt=0}catch(e){toast('Could not start the next round','#ff6fa8')}R.creating=0}
 function rkLoop(){const R=RK;if(!R||R.phase==='done')return;const now=Date.now(),v=R.rec;if(!v)return;if(DUEL)R.last=now;
   if(R.me==='a'&&!DUEL){if((+v.rn||0)===0&&now>R.vsUntil)rkNewRound();else if(R.nextAt&&now>R.nextAt)rkNewRound()}
   if(!DUEL&&now-R.last>45000&&v.st!=='done'){FD.update(fref('rmatch/'+R.id),{st:'done',win:R.me,ff:R.me==='a'?'b':'a'}).catch(()=>{});R.last=now}}
@@ -4635,11 +4767,16 @@ const EVENTS={
   valentine:{n:'Valentine’s Day',ic:'💘',bp:[['prof:title:ev_lovebug',5],['squish:board:ev_valb',10],['drop:hat:heartband',15],['drop:set:ev_val',20]],shop:'drop:wall:ev_lovew'},
   thanks:{n:'Thanksgiving',ic:'🦃',bp:[['prof:title:ev_gobble',5],['squish:board:ev_thxb',10],['drop:hat:pilgrim',15],['drop:set:ev_thx',20]],shop:'drop:wall:ev_leafw'},
   summer:{n:'Summer',ic:'🏖️',bp:[['prof:title:ev_sunny',5],['squish:board:ev_sumb',10],['drop:hat:sunvisor',15],['drop:set:ev_sum',20]],shop:'drop:wall:ev_sunw'}};
-const BP_XP=250,BP_MAX=20;var EVT=null;
+const BP_XP=250,BP_MAX=20;
+// XP needed for each pass level: it grows as you go, so the whole pass lasts most of the event (about 12x longer than before)
+const bpNeed=l=>1500+150*(Math.max(1,l)-1);var EVT=null;
 const evKey=()=>{const e=EVT;if(!e||!EVENTS[e.k])return'';const n=srvNow();return n>=(+e.start||0)&&n<(+e.ends||0)?e.k:''};
 const bpCoins=l=>l%5===0?600+l*40:120+l*20;
-function bpState(){const k=evKey();if(!k)return null;const id=k+':'+EVT.start;if(!P.bp||P.bp.id!==id)P.bp={id,xp:0,lv:0};return P.bp}
-function bpAdd(n){const B=bpState();if(!B||n<=0)return;B.xp+=n;let ups=[];while(B.lv<BP_MAX&&B.xp>=BP_XP){B.xp-=BP_XP;B.lv++;ups.push(B.lv)}if(B.lv>=BP_MAX)B.xp=Math.min(B.xp,BP_XP);
+function bpState(){const k=evKey();if(!k)return null;const id=k+':'+EVT.start;if(!P.bp||P.bp.id!==id)P.bp={id,xp:0,lv:0,paid:0,v:2};
+  // a pass from before the longer levels: keep all the XP earned, re-level it on the new curve, never pay a level twice
+  if(P.bp.v!==2){let tot=(P.bp.lv|0)*BP_XP+(+P.bp.xp||0),lv=0;while(lv<BP_MAX&&tot>=bpNeed(lv+1)){tot-=bpNeed(lv+1);lv++}P.bp={id:P.bp.id,xp:lv>=BP_MAX?0:Math.floor(tot),lv,paid:P.bp.lv|0,v:2};save()}
+  return P.bp}
+function bpAdd(n){const B=bpState();if(!B||n<=0)return;B.xp+=n;let ups=[];while(B.lv<BP_MAX&&B.xp>=bpNeed(B.lv+1)){B.xp-=bpNeed(B.lv+1);B.lv++;if(B.lv>(B.paid|0)){ups.push(B.lv);B.paid=B.lv}}if(B.lv>=BP_MAX)B.xp=0;
   for(const l of ups){P.coins+=bpCoins(l);const r=EVENTS[evKey()].bp.find(x=>x[1]===l);if(r&&!P.own.includes(r[0])){const[g,cat,id]=r[0].split(':');P.own.push(...(SHARED[cat]&&g!=='prof'?SHARED[cat].map(x=>x+':'+cat+':'+id):[r[0]]));P.fresh.push(r[0])}
     setTimeout(()=>{toast(`${EVENTS[evKey()]?EVENTS[evKey()].ic:''} Battle pass level ${l}! +${fmt(bpCoins(l))} coins`+(r?' + '+(itemByKey(r[0])||{}).n:''),'#ffcf4a');sfx.combo(4)},400)}
   if(ups.length){refreshCoins();if(!$('bp').hidden)renderBP()}evBanner()}
@@ -4648,14 +4785,14 @@ try{EVT=store.get('ca_evt',null)}catch(e){}
 function evApply(){const k=evKey();for(const id in EVENTS)document.body.classList.toggle('ev-'+id,id===k);evBanner();if(!$('menu').hidden)renderMenu()}
 setInterval(()=>{const k=evKey();if(k!==evApply.k){evApply.k=k;evApply()}},5000);
 function evBanner(){const b=$('evBan');if(!b)return;const k=evKey();b.hidden=!k;$('evDeco').innerHTML=k?EVDECO[k]:'';if(!k)return;const E=EVENTS[k],B=bpState();
-  $('evBanT').textContent=E.ic+' '+E.n+' event';$('evBanS').textContent=fmtLeft(+EVT.ends-srvNow())+' · Battle pass level '+B.lv+'/'+BP_MAX;$('evBanF').style.width=(B.lv>=BP_MAX?100:(B.lv+B.xp/BP_XP)/BP_MAX*100)+'%'}
+  $('evBanT').textContent=E.ic+' '+E.n+' event';$('evBanS').textContent=fmtLeft(+EVT.ends-srvNow())+' · Battle pass level '+B.lv+'/'+BP_MAX;$('evBanF').style.width=(B.lv>=BP_MAX?100:(B.lv+B.xp/bpNeed(B.lv+1))/BP_MAX*100)+'%'}
 function openBP(){if(!evKey())return;audio();sfx.ui();$('menu').hidden=true;paused=true;$('bp').hidden=false;renderBP()}
 var bpPrev=[];
 function renderBP(){const k=evKey();if(!k){$('bp').hidden=true;return}const E=EVENTS[k],B=bpState(),L=$('bpList');bpPrev=[];L.textContent='';
   $('bpT').textContent=E.ic+' '+E.n+' battle pass';$('bpS').textContent=`Ends in ${fmtLeft(+EVT.ends-srvNow()).replace(' left','')} · Earn XP by playing any game`;
-  $('bpLv').textContent=B.lv>=BP_MAX?'Pass complete!':`Level ${B.lv} · ${fmt(B.xp)} / ${BP_XP} XP to level ${B.lv+1}`;$('bpF').style.width=(B.lv>=BP_MAX?100:B.xp/BP_XP*100)+'%';
+  $('bpLv').textContent=B.lv>=BP_MAX?'Pass complete!':`Level ${B.lv} · ${fmt(B.xp)} / ${fmt(bpNeed(B.lv+1))} XP to level ${B.lv+1}`;$('bpF').style.width=(B.lv>=BP_MAX?100:B.xp/bpNeed(B.lv+1)*100)+'%';
   const shop=itemByKey(E.shop);if(shop)$('bpShop').textContent=`Event shop: ${shop.n} wallpaper is in Shop → Wallpapers until the event ends.`;
-  for(let l=1;l<=BP_MAX;l++){const got=B.lv>=l,r=E.bp.find(x=>x[1]===l),row=elx('div','bpr'+(got?' got':'')+(r?' big':''));row.append(elx('b','bpl',String(l)));
+  for(let l=1;l<=BP_MAX;l++){const got=B.lv>=l||(B.paid|0)>=l,r=E.bp.find(x=>x[1]===l),row=elx('div','bpr'+(got?' got':'')+(r?' big':''));row.append(elx('b','bpl',String(l)));
     const m=elx('div','bpm');m.append(elx('span','achcoin',fmt(bpCoins(l))));if(r){const it=itemByKey(r[0]);const cv=document.createElement('canvas');cv.width=cv.height=120;cv.className='bpcv';m.append(cv,elx('span','bpn',it?it.n+' ('+CATL[it.cat].replace(/s$/,'')+')':''));bpPrev.push({c:cv.getContext('2d'),g:it.g,cat:it.cat,id:it.id})}
     row.append(m,elx('span','bpok',got?'✓':''));L.append(row)}}
 // dev: set an event (30 days, ends at 3 am)
@@ -4715,7 +4852,7 @@ function cbCol(hex){if(cbMode==='off'||typeof hex!=='string'||hex.length!==7||he
 function cbApply(){const m=CB[cbMode]?cbMode:'off';cbCache={};document.documentElement.style.filter='';document.body.classList.toggle('cbon',m!=='off');document.body.style.setProperty('--cbf',CB[m][1]||'none');try{if(G&&G.restyle)G.restyle()}catch(e){}}
 cbApply();
 function openSet(){audio();sfx.ui();$('menu').hidden=true;paused=true;$('set').hidden=false;renderSet()}
-function renderSet(){try{ntfUI()}catch(e){}$('volM').value=VOL.m;$('volS').value=VOL.s;$('volMN').textContent=VOL.m+'%';$('volSN').textContent=VOL.s+'%';
+function renderSet(){$('volM').value=VOL.m;$('volS').value=VOL.s;$('volMN').textContent=VOL.m+'%';$('volSN').textContent=VOL.s+'%';
   const G=$('sndGrid');G.textContent='';for(const[id,[n]]of Object.entries(SNDS)){const b=elx('button','tab'+(sndOf()===id?' on':''),n);b.type='button';b.onclick=()=>{P.snd=id;save();audio();[0,2,4,6].forEach((l,i)=>setTimeout(()=>sfx.merge(l,0),i*170));renderSet()};G.append(b)}
   const C=$('cbGrid');C.textContent='';for(const[id,[n,,d]]of Object.entries(CB)){const b=elx('button','cbb'+(cbMode===id?' on':''));b.type='button';b.append(elx('b',null,n));if(d)b.append(elx('span',null,d));b.onclick=()=>{cbMode=id;store.set('ca_cb',id);cbApply();sfx.ui();renderSet()};C.append(b)}
   const pv=$('cbPrev');if(!pv.childElementCount)for(const e of SETS.jelly.list){const s=elx('i');s.style.background=e[1];pv.append(s)}}
@@ -4786,84 +4923,8 @@ function takeWatch(uid){if(takeUnsub){try{takeUnsub()}catch(e){}takeUnsub=null}i
 // ---- dev: a notification for everyone online right now (optionally saved to the update log too)
 var noticeSeen=store.get('ca_notice','');
 function noticeInit(){try{FD.onValue(FD.ref(RDB,'notice'),s=>{const v=s.val();if(!v||!v.id||v.id===noticeSeen)return;if(srvNow()-(+v.t||0)>10*60000)return;noticeSeen=v.id;store.set('ca_notice',v.id);if(isAdmin()&&srvNow()-(+v.t||0)<15000)return;
-  $('ntcT').textContent=String(v.title||'Announcement').slice(0,80);$('ntcB').innerHTML=md(String(v.body||'').slice(0,2000));$('ntc').hidden=false;ntfLocal('upd',String(v.title||'Announcement').slice(0,60),String(v.body||'').slice(0,140),'update');sfx.discover();hap('double')},()=>{})}catch(e){}}
+  $('ntcT').textContent=String(v.title||'Announcement').slice(0,80);$('ntcB').innerHTML=md(String(v.body||'').slice(0,2000));$('ntc').hidden=false;sfx.discover();hap('double')},()=>{})}catch(e){}}
 $('ntcOk').onclick=()=>{$('ntc').hidden=true};
-
-// ================================================= notifications
-// Two ways a notification can reach a player:
-//  1. the game is open but in the background: this tab shows it itself (works with no setup)
-//  2. the game is closed: the dev's notification server (a small Cloudflare Worker, see cfg/push) sends a web push
-// Each player picks which kinds they want. On iPhone/iPad, Apple only allows them once the game is on the Home Screen.
-var PUSHCFG={url:''},pushKey='',mySubOk=false,ntfBusy=false;
-const NTF_KINDS=[['dm','Messages from friends'],['duel','1v1 challenges'],['fr','Friend requests'],['upd','Updates and events']];
-const ntfSupported=()=>{try{return'Notification' in window&&typeof Notification.requestPermission==='function'}catch(e){return false}};
-const ntfPerm=()=>ntfSupported()?Notification.permission:'unsupported';
-const ntfIOS=()=>{const ua=navigator.userAgent;return/iP(hone|ad|od)/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)};
-function ntfPrefs(){P.ntf=P.ntf&&typeof P.ntf==='object'?P.ntf:{};for(const[k]of NTF_KINDS)if(typeof P.ntf[k]!=='boolean')P.ntf[k]=true;return P.ntf}
-const ntfOn=()=>ntfPerm()==='granted'&&ntfPrefs().on!==false;
-const ntfWants=k=>ntfOn()&&ntfPrefs()[k]!==false;
-const ntfDev=()=>{let d=store.get('ca_dev','');if(!d){d=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);store.set('ca_dev',d)}return d};
-const pushBase=()=>String(PUSHCFG.url||'').replace(/\/+$/,'');
-const b64uBytes=s=>{s=String(s).replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';const b=atob(s),o=new Uint8Array(b.length);for(let i=0;i<b.length;i++)o[i]=b.charCodeAt(i);return o};
-async function ntfReg(){try{if(!('serviceWorker' in navigator))return null;return await navigator.serviceWorker.getRegistration()||null}catch(e){return null}}
-async function ntfShow(kind,title,body,tag){title=String(title||'Jelly Critters').slice(0,80);body=String(body||'').replace(/[*_]{1,2}/g,'').slice(0,200);
-  try{const reg=await ntfReg();if(reg&&reg.showNotification){await reg.showNotification(title,{body,icon:'icon-192.png',badge:'icon-192.png',tag:tag||kind,renotify:true,data:{url:'./',kind}});return true}}catch(e){}
-  try{const n=new Notification(title,{body,icon:'icon-192.png',tag:tag||kind});n.onclick=()=>{try{window.focus()}catch(e){}n.close()};return true}catch(e){}return false}
-// shown by this tab only while the game is open but not being looked at (the server covers the closed case)
-function ntfLocal(kind,title,body,tag){if(!ntfWants(kind))return;if(!document.hidden&&(!document.hasFocus||document.hasFocus()))return;if(mySubOk&&pushBase())return;ntfShow(kind,title,body,tag)}
-const ntfPub=()=>{const p=ntfPrefs(),o={};for(const[k]of NTF_KINDS)o[k]=p[k]!==false;return o};
-async function ntfSubscribe(){if(ntfBusy||!UID||!acctReady||!fbOnline||!ntfOn()||!pushBase()||!('PushManager' in window))return false;ntfBusy=true;
-  try{const reg=await ntfReg();if(!reg||!reg.pushManager)return false;
-    if(!pushKey){const r=await fetch(pushBase()+'/key');const j=await r.json();pushKey=String(j&&j.key||'')}if(!pushKey)return false;
-    let sub=await reg.pushManager.getSubscription();if(sub&&store.get('ca_pushk','')!==pushKey){try{await sub.unsubscribe()}catch(e){}sub=null}
-    if(!sub)sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64uBytes(pushKey)});store.set('ca_pushk',pushKey);
-    const j=sub.toJSON();if(!j||!j.endpoint||!j.keys)return false;
-    await FD.set(fref('push/'+UID+'/'+ntfDev()),{sub:{endpoint:j.endpoint,keys:{p256dh:j.keys.p256dh,auth:j.keys.auth}},p:ntfPub(),t:FD.serverTimestamp()});mySubOk=true;return true}
-  catch(e){return false}finally{ntfBusy=false}}
-async function ntfUnsub(){mySubOk=false;try{if(UID)await FD.remove(fref('push/'+UID+'/'+ntfDev()))}catch(e){}try{const reg=await ntfReg();const s=reg&&reg.pushManager&&await reg.pushManager.getSubscription();if(s)await s.unsubscribe()}catch(e){}}
-async function ntfToken(){try{return FA.getIdToken?await FA.getIdToken(ME):await ME.getIdToken()}catch(e){return''}}
-async function ntfPost(body){const tok=await ntfToken();if(!tok)return null;const r=await fetch(pushBase()+'/send',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+tok},body:JSON.stringify(body)});return r.json().catch(()=>null)}
-// tell someone about a message/challenge/request when they're not looking at the game right now
-async function pushTo(uid,kind,extra){try{if(!pushBase()||!UID||!acctReady||!ME||!uid||uid===UID)return;
-    const st=(await FD.get(fref('status/'+uid))).val();if(st&&st.on===true&&srvNow()-(+st.t||0)<150000)return;
-    const v=(await FD.get(fref('push/'+uid))).val();if(!v||typeof v!=='object')return;
-    const subs=Object.values(v).filter(x=>x&&x.sub&&typeof x.sub.endpoint==='string'&&!(x.p&&x.p[kind]===false)).sort((a,b)=>(+b.t||0)-(+a.t||0)).slice(0,3).map(x=>x.sub);if(!subs.length)return;
-    await ntfPost(Object.assign({kind,subs,name:duName()},extra||{}))}catch(e){}}
-// the dev's update posts go to everyone who wants them and isn't in the game right now
-async function ntfBroadcast(title,text){if(!isAdmin()||!pushBase())return 0;try{const v=(await FD.get(fref('push'))).val()||{},st=(await FD.get(fref('status'))).val()||{},now=srvNow(),subs=[];
-    for(const[u,devs]of Object.entries(v)){if(u===UID)continue;const s=st[u];if(s&&s.on===true&&now-(+s.t||0)<150000)continue;for(const x of Object.values(devs||{}))if(x&&x.sub&&!(x.p&&x.p.upd===false))subs.push(x.sub)}
-    let sent=0;for(let i=0;i<subs.length;i+=400){const j=await ntfPost({kind:'update',title:String(title||'').slice(0,60),text:String(text||'').replace(/[*_#>]/g,'').replace(/\s+/g,' ').slice(0,140),subs:subs.slice(i,i+400)});sent+=(j&&j.sent)||0}return sent}catch(e){return 0}}
-function ntfInit(){try{FD.onValue(FD.ref(RDB,'cfg/push'),s=>{const v=s.val();PUSHCFG.url=typeof v==='string'&&/^https:\/\//.test(v)?v:'';pushKey='';if(!$('set').hidden)ntfUI();setTimeout(ntfSubscribe,1500)},()=>{})}catch(e){}}
-setInterval(()=>{if(!mySubOk)ntfSubscribe()},30000);
-async function ntfTurnOn(){if(!ntfSupported()){if(ntfIOS()&&!isStandalone()){$('set').hidden=true;$('ntr').hidden=true;hsrDue=true;hsrShow()}return}
-  let r=Notification.permission;
-  if(r!=='granted'){try{r=await new Promise(res=>{const p=Notification.requestPermission(res);if(p&&p.then)p.then(res)})}catch(e){r=Notification.permission}}
-  if(r==='granted'){ntfPrefs().on=true;save();await ntfSubscribe();ntfShow('test','Notifications are on!','We’ll ping you about messages, 1v1 challenges, friend requests and updates.','welcome');toast('Notifications are on!','#5be0a6');sfx.discover()}
-  else if(r==='denied')toast('Notifications are blocked. You can allow them in your browser’s site settings.','#ff6fa8');
-  if(!$('set').hidden)ntfUI()}
-function ntfUI(){const p=ntfPerm(),pr=ntfPrefs(),on=ntfOn(),ios=ntfIOS(),b=$('ntfBtn');
-  $('ntfSt').textContent=p==='unsupported'?(ios&&!isStandalone()?'On iPhone and iPad, notifications work once Jelly Critters is on your Home Screen. Add it, open it from there, then turn them on here.':'This browser can’t show notifications.')
-    :p==='denied'?'Notifications are blocked for this site. Allow them in your browser’s site settings, then come back here.'
-    :on?(mySubOk&&pushBase()?'On. You’ll get them even when the game is closed.':'On. You’ll get them while the game is open in another tab or in the background.'):'Off. Turn them on to hear about messages, 1v1 challenges, friend requests and updates.';
-  b.hidden=p==='denied'||(p==='unsupported'&&!(ios&&!isStandalone()));b.textContent=p==='unsupported'?'Add to Home Screen':on?'Turn off notifications':'Turn on notifications';b.className='btn small '+(on?'white':'pink');
-  const K=$('ntfKinds');K.textContent='';K.hidden=!on;for(const[k,n]of NTF_KINDS){const t=elx('button','tab'+(pr[k]!==false?' on':''),(pr[k]!==false?'✓ ':'')+n);t.type='button';t.onclick=()=>{pr[k]=pr[k]===false;save();sfx.ui();if(UID&&mySubOk)FD.set(fref('push/'+UID+'/'+ntfDev()+'/p'),ntfPub()).catch(()=>{});ntfUI()};K.append(t)}
-  $('ntfDev').hidden=!isAdmin();if(isAdmin()&&document.activeElement!==$('ntfUrl'))$('ntfUrl').value=PUSHCFG.url||''}
-$('ntfBtn').onclick=()=>{if(ntfOn()){ntfPrefs().on=false;save();ntfUnsub();toast('Notifications are off','#7cc8ff');ntfUI();return}ntfTurnOn()};
-$('ntfUrl').addEventListener('keydown',e=>e.stopPropagation());
-$('ntfUrlGo').onclick=async()=>{if(!isAdmin())return;const v=$('ntfUrl').value.trim().replace(/\/+$/,''),m=$('ntfDevMsg');if(v&&!/^https:\/\/[^\s]+$/.test(v)){m.textContent='It should start with https://';m.className='nmsg bad';return}
-  m.textContent='Checking…';m.className='nmsg';if(v){try{const r=await fetch(v+'/key');const j=await r.json();if(!j||!j.key)throw 0}catch(e){m.textContent='Could not reach that server. Check the address and that the worker is deployed.';m.className='nmsg bad';return}}
-  try{await FD.set(fref('cfg/push'),v);m.textContent=v?'Saved! Players get closed-game notifications from now on.':'Removed. Only open-game notifications now.';sfx.discover()}catch(e){m.textContent='Could not save. Publish the new database rules first.';m.className='nmsg bad'}};
-$('ntfTest').onclick=async()=>{const m=$('ntfDevMsg');if(!pushBase()){m.textContent='Save the server address first.';m.className='nmsg bad';return}if(!ntfOn()){m.textContent='Turn notifications on for yourself first.';m.className='nmsg bad';return}
-  m.textContent='Sending…';m.className='nmsg';await ntfSubscribe();try{const v=(await FD.get(fref('push/'+UID))).val()||{},subs=Object.values(v).map(x=>x&&x.sub).filter(Boolean).slice(0,3);if(!subs.length)throw 0;const j=await ntfPost({kind:'test',subs});m.textContent=j&&j.sent?'Sent! It should pop up in a few seconds.':'The server answered but nothing was sent: '+(j&&j.error||'unknown');m.className='nmsg'+(j&&j.sent?'':' bad')}catch(e){m.textContent='Could not send a test.';m.className='nmsg bad'}};
-// ---- the "turn on notifications?" reminder, now and then between games
-function ntrMaybe(){if($('over').hidden||SPEC||DUEL||RK||VIEW||!UID||!acctReady)return;if(['menu','style','gw','mail','fr','news','dinv','hsr','gift','cd','cfm','ntc','tut','ntr','pres','dres'].some(id=>$(id)&&!$(id).hidden))return;
-  const st=store.get('ca_ntr',{n:0,t:0})||{n:0,t:0};if((st.n|0)>=4||Date.now()-(+st.t||0)<36*3600e3)return;
-  const mode=ntfSupported()?(Notification.permission==='default'&&ntfPrefs().on!==false?'ask':null):(ntfIOS()&&!isStandalone()?'ios':null);if(!mode)return;
-  if(!ntrMaybe.force&&Math.random()>.25)return;store.set('ca_ntr',{n:(st.n|0)+1,t:Date.now()});
-  $('ntrOk').textContent=mode==='ios'?'Show me how':'Okay';$('ntrTx').textContent=mode==='ios'?'On iPhone and iPad, add Jelly Critters to your Home Screen first, then we can let you know when:':'Turn on notifications and we’ll let you know when:';
-  $('ntr').dataset.mode=mode;$('ntr').hidden=false;sfx.discover()}
-$('ntrNo').onclick=()=>{$('ntr').hidden=true;sfx.ui()};
-$('ntrOk').onclick=()=>{$('ntr').hidden=true;if($('ntr').dataset.mode==='ios'){hsrDue=true;hsrShow();return}ntfTurnOn()};
 
 // ---- now and then (1 in 10 visits) remind players who aren't playing from their home screen to add it
 const isStandalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true}catch(e){return false}};
@@ -4881,13 +4942,13 @@ $('hsrInstall').onclick=async()=>{if(!hsrPrompt)return;try{hsrPrompt.prompt();co
 $('hsrLater').onclick=()=>{$('hsr').hidden=true;sfx.ui()};
 $('hsrNever').onclick=()=>{store.set('ca_hsr_never',1);$('hsr').hidden=true;toast('Okay, no more reminders','#7cc8ff')};
 // ---- invites
-function duInvCheck(){const now=srvNow(),list=Object.entries(dInv).filter(([id,v])=>v&&now-(+v.t||0)<60000&&!invSeen[id]).sort((a,b)=>(+b[1].t)-(+a[1].t));if(!list.length||(DUEL&&DUEL.phase!=='done')||!$('dinv').hidden)return;if(DUEL&&DUEL.phase==='done'){$('dres').hidden=true;duInvCheck.fromRes=1}
-  const[id,v]=list[0];invSeen[id]=1;$('dinvT').textContent=`${cleanName(v.name)||'Someone'} challenges you!`;$('dinvS').textContent=(v.nl?`${(GAMES[v.g]||{}).name||'Jelly Jar'} with no time limit. Highest final score wins.`:`1 minute of ${(GAMES[v.g]||{}).name||'Jelly Jar'}. Highest score wins.`)+(G&&G.state()==='play'&&!SPEC?' Your game is paused and saved, and comes back after the 1v1.':'');$('dinv').dataset.id=id;$('dinv').hidden=false;ntfLocal('duel','New 1v1 challenge!',(cleanName(v.name)||'Someone')+' challenged you to '+((GAMES[v.g]||{}).name||'a 1v1')+(v.nl?' (no time limit)':''),'duel');invWas=paused;paused=true;try{saveRun(false)}catch(e){}clearTimeout(invT);invT=setTimeout(()=>{if(!$('dinv').hidden&&$('dinv').dataset.id===id){$('dinv').hidden=true;if(duInvCheck.fromRes&&DUEL&&DUEL.phase==='done'){duInvCheck.fromRes=0;$('dres').hidden=false}if(!anyOpen()&&!invWas)paused=false;toast('Challenge missed','#ff6fa8')}},Math.max(1000,60000-(now-(+v.t||0))));sfx.discover();hap('success')}
+function duInvCheck(){const now=srvNow();for(const[id,v]of Object.entries(dInv))if(!v||now-(+v.t||0)>120000){delete dInv[id];if(UID)FD.remove(fref('duelInv/'+UID+'/'+id)).catch(()=>{})}const list=Object.entries(dInv).filter(([id,v])=>v&&now-(+v.t||0)<60000&&!invSeen[id]).sort((a,b)=>(+b[1].t)-(+a[1].t));if(!list.length||(DUEL&&DUEL.phase!=='done')||!$('dinv').hidden)return;if(DUEL&&DUEL.phase==='done'){$('dres').hidden=true;duInvCheck.fromRes=1}
+  const[id,v]=list[0];invSeen[id]=1;$('dinvT').textContent=`${cleanName(v.name)||'Someone'} challenges you!`;$('dinvS').textContent=(DUELONLY[v.g]?`${duGameName(v.g)}: first to 3 points wins.`:v.nl?`${duGameName(v.g)} with no time limit. Highest final score wins.`:`1 minute of ${duGameName(v.g)}. Highest score wins.`)+(G&&G.state()==='play'&&!SPEC?' Your game is paused and saved, and comes back after the 1v1.':'');$('dinv').dataset.id=id;$('dinv').hidden=false;invWas=paused;paused=true;try{saveRun(false)}catch(e){}clearTimeout(invT);invT=setTimeout(()=>{if(!$('dinv').hidden&&$('dinv').dataset.id===id){$('dinv').hidden=true;if(duInvCheck.fromRes&&DUEL&&DUEL.phase==='done'){duInvCheck.fromRes=0;$('dres').hidden=false}if(!anyOpen()&&!invWas)paused=false;toast('Challenge missed','#ff6fa8')}},Math.max(1000,60000-(now-(+v.t||0))));sfx.discover();hap('success')}
 var invWas=false,invT=0;
 $('dinvYes').onclick=async()=>{const id=$('dinv').dataset.id;$('dinv').hidden=true;clearTimeout(invT);if(DUEL&&DUEL.phase==='done'){duInvCheck.fromRes=0;duExit(false)}if(!duNeedAcct()){if(!anyOpen()&&!invWas)paused=false;return}try{await FD.remove(fref('duelInv/'+UID+'/'+id));await duJoin(id)}catch(e){toast('That challenge expired','#ff6fa8');if(!anyOpen()&&!invWas)paused=false}};
 $('dinvNo').onclick=async()=>{const id=$('dinv').dataset.id;$('dinv').hidden=true;clearTimeout(invT);if(duInvCheck.fromRes&&DUEL&&DUEL.phase==='done'){duInvCheck.fromRes=0;$('dres').hidden=false}if(!anyOpen()&&!invWas)paused=false;try{await FD.remove(fref('duelInv/'+UID+'/'+id));await FD.update(fref('duels/'+id),{st:'cancel'})}catch(e){}if(!anyOpen())paused=false};
 // ---- live streaming of your board (only while someone is watching)
-var liveLeg=false;
+var liveLeg=false,liveRmT=0;
 setInterval(()=>{if(!UID||!acctReady||!fbOnline||SPEC||VIEW||!G||watchN<1)return;let snap=null;try{snap=G.serialize()}catch(e){}const ov=!!(G.state&&(G.state()==='ending'||G.state()==='done'));if(!ov&&lastFin)lastFin=null;const fin=ov&&lastFin&&lastFin.g===gid?JSON.stringify(lastFin).slice(0,800):'';
   const so=Object.assign({},snap||{},{_o:ov?1:0,_f:fin,_h:LOCAL_H,_n:snap?1:0}),body={g:gid,s:Math.floor(score),snap:JSON.stringify(so).slice(0,29000),d:DUEL&&DUEL.id||''};if(!liveLeg){body.o=ov;body.f=fin}
   const str=JSON.stringify(body);if(str===liveLast)return;liveLast=str;body.snap=JSON.stringify(Object.assign(so,{_c:Math.round(performance.now())}));body.t=FD.serverTimestamp();
@@ -4903,7 +4964,7 @@ function chatDraw(fresh){const html=chatMsgs.map(x=>`<div class="cm${x.me?' me':
   if(fresh){clearTimeout(chatHide);chatHide=setTimeout(()=>{chatMsgs=[];chatDraw()},10000);if(!SPEC)sfx.pop(3)}}
 async function chatSend(){const inp=$('specMsg'),txt=inp.value.replace(/\s+/g,' ').trim().slice(0,80);if(!txt||!SPEC)return;const k=chatKey();if(!k)return;
   if(badText(txt)){sfx.nope();toast('Keep it friendly!','#ff6fa8');return}if(Date.now()-chatLast<2500){sfx.nope();toast('Slow down a little','#ffd23f');return}
-  chatLast=Date.now();inp.value='';try{await FD.set(FD.push(fref('chat/'+k)),{u:UID,n:duName(),m:txt,t:FD.serverTimestamp()});sfx.ui()}catch(e){toast('Could not send that','#ff6fa8')}}
+  chatLast=Date.now();inp.value='';try{const cr=FD.push(fref('chat/'+k));await FD.set(cr,{u:UID,n:duName(),m:txt,t:FD.serverTimestamp()});setTimeout(()=>FD.remove(cr).catch(()=>{}),15000);sfx.ui()}catch(e){toast('Could not send that','#ff6fa8')}}
 $('specSend').onclick=chatSend;$('specMsg').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();chatSend()}});
 setInterval(chatSync,800);
 // ---- spectating
@@ -4930,14 +4991,14 @@ function specPlay(v,d){const S=SPEC;if(!S)return;S.live=v;const o=v&&(v.o===true
   if(!S.got&&v){S.got=1;if(o&&S.skipF==null&&(!v.t||srvNow()-(+v.t)>4000)){S.skipF=f||'';S.wait=1}}
   if(S.skipF!=null){if(o&&(f===S.skipF||!f)){S.wait=1;specUI();return}if(!o){S.skipF=null;S.wait=0;S.synced=null;S.lastSnap=null}}
   if(v&&!S.d){if(o){if(!S.endAt)S.endAt=Date.now();if(f){S.finF=f;if(!S.finQ){S.finQ=1;setTimeout(()=>{if(SPEC===S)specFinish()},1200)}}}else if(v.snap)S.endAt=0}
-  if(v&&v.g&&GAMES[v.g]){if(S.g!==v.g){S.g=v.g;gid=v.g;G=GAMES[v.g].impl;S.synced=null;clearFX();resize();try{if(G.restyle)G.restyle()}catch(e){}}
+  if(v&&v.g&&(GAMES[v.g]||DUELONLY[v.g])){if(S.g!==v.g){S.g=v.g;if(G&&G.leave&&G!==(GAMES[v.g]||DUELONLY[v.g]).impl)try{G.leave()}catch(e){}gid=v.g;G=(GAMES[v.g]||DUELONLY[v.g]).impl;S.synced=null;clearFX();resize();try{if(G.restyle)G.restyle()}catch(e){}}
     const has=d&&(d._n===1||d._n==null);if(o&&!has&&G.specEnd&&S.synced===v.g&&!S.endPlayed){S.endPlayed=1;try{G.specEnd()}catch(e){}}
     if(has&&v.snap!==S.lastSnap){S.lastSnap=v.snap;try{if(G.specSync&&S.synced===v.g)G.specSync(d);else{G.restore(d);S.synced=v.g}}catch(e){}}score=shown=+v.s||0;scoreEl.textContent=fmt(score);paused=true}specUI()}
 function specUI(){const S=SPEC;if(!S)return;const v=S.live,r=S.rec,now=srvNow(),nm=S.watchU===(r&&r.b)?cleanName(r.bn):S.watchU===(r&&r.a)?cleanName(r.an):S.name;
-  $('specT').textContent=`Watching ${nm}`+(v&&v.g&&GAMES[v.g]?' · '+GAMES[v.g].name:'');$('specW').hidden=!!(v&&v.snap)&&!S.wait;$('specW').textContent=S.wait?'Waiting for their next game…':v&&v.g?'Loading their board…':'Waiting for them to play…';if(S.ver&&!S.wait&&!S.verT){S.verT=1;toast('They’re on a different version, so the view may not match exactly','#ffd23f')}
-  const D=$('specDuel');D.hidden=!r;if(!r)return;const a=+r.sa||0,b=+r.sb||0,t0=(+r.start||0)-SKEW,goAt=t0+DU_CD,endAt=r.nl?Infinity:goAt+DU_LEN,nowL=Date.now();
+  $('specT').textContent=`Watching ${nm}`+(v&&v.g&&(GAMES[v.g]||DUELONLY[v.g])?' · '+duGameName(v.g):'');$('specW').hidden=!!(v&&v.snap)&&!S.wait;$('specW').textContent=S.wait?'Waiting for their next game…':v&&v.g?'Loading their board…':'Waiting for them to play…';if(S.ver&&!S.wait&&!S.verT){S.verT=1;toast('They’re on a different version, so the view may not match exactly','#ffd23f')}
+  const D=$('specDuel');D.hidden=!r;if(!r)return;const a=+r.sa||0,b=+r.sb||0,t0=(+r.start||0)-SKEW,goAt=t0+DU_CD,endAt=r.nl||DUELONLY[r.g]?Infinity:goAt+DU_LEN,nowL=Date.now();
   $('specA').textContent=`${cleanName(r.an)} ${fmt(a)}`;$('specB').textContent=`${cleanName(r.bn||'…')} ${fmt(b)}`;$('specA').classList.toggle('on',S.watchU===r.a);$('specB').classList.toggle('on',S.watchU===r.b);
-  const done=r.st==='done'||(r.start&&nowL>endAt+8000)||(r.fa&&r.fb);if(done&&!S.finT&&!S.inDuel)S.finT=setTimeout(()=>{if(SPEC===S)specFinish()},2500);$('specTime').textContent=!r.start?'Starting…':nowL<goAt?'Starts in '+Math.ceil((goAt-nowL)/1000):done?(a>b?cleanName(r.an)+' wins!':b>a?cleanName(r.bn)+' wins!':'Tie!'):(r.nl?((S.watchU===r.a?r.fa:r.fb)?'Finished':'No time limit'):'0:'+String(Math.ceil(Math.max(0,endAt-nowL)/1000)).padStart(2,'0'));
+  const done=r.st==='done'||(r.start&&nowL>endAt+8000)||(r.fa&&r.fb);if(done&&!S.finT&&!S.inDuel)S.finT=setTimeout(()=>{if(SPEC===S)specFinish()},2500);$('specTime').textContent=!r.start?'Starting…':nowL<goAt?'Starts in '+Math.ceil((goAt-nowL)/1000):done?(a>b?cleanName(r.an)+' wins!':b>a?cleanName(r.bn)+' wins!':'Tie!'):(DUELONLY[r.g]?'First to 3':r.nl?((S.watchU===r.a?r.fa:r.fb)?'Finished':'No time limit'):'0:'+String(Math.ceil(Math.max(0,endAt-nowL)/1000)).padStart(2,'0'));
   let pa=0,pb=0;for(const k in BETS){const x=BETS[k];if(!x)continue;if(x.on==='a')pa+=+x.amt||0;else if(x.on==='b')pb+=+x.amt||0}
   const mine=P.bets&&P.bets[S.d],open=r.start&&nowL<goAt+DU_BET&&r.st==='live';$('specPool').textContent=`Bets · ${cleanName(r.an)}: ${fmt(pa)}  ·  ${cleanName(r.bn||'?')}: ${fmt(pb)}`;
   $('specBetRow').hidden=!open||!!mine||!!S.inDuel;$('specBetMsg').textContent=mine?`You bet ${fmt(mine.amt)} on ${cleanName(mine.on==='a'?r.an:r.bn)}`+(mine.res?' · '+mine.res:''):open?`Bets close in ${Math.ceil((goAt+DU_BET-nowL)/1000)}s`:r.start?'Bets are closed':'Bets open when the match starts';
@@ -4982,11 +5043,15 @@ async function betSettle(d){const b=P.bets&&P.bets[d];if(!b||b.done)return'';try
 async function betSettleAll(){if(!P.bets)return;for(const d in P.bets){const b=P.bets[d];if(b&&!b.done){const t=await betSettle(d);if(t)toast(t,'#ffd23f')}else if(b&&b.done&&Date.now()-(b.t||0)>7*864e5)delete P.bets[d]}}
 setInterval(()=>{if(UID&&acctReady&&fbOnline&&!SPEC)betSettleAll()},30000);
 // ---- profile: what they're playing, watch live, challenge
-function pfPlayUI(d){const E=$('pfPlay');if(!E)return;const me=d.id===UID||d.id==='local',st=STAT[d.id];E.textContent='';E.hidden=me||!st||st.on!==true;if(E.hidden)return;
+var pfChG='',pfChNl=false;
+function pfPlayUI(d){const E=$('pfPlay');if(!E)return;if(E.contains(document.activeElement)&&document.activeElement.tagName==='SELECT')return;const me=d.id===UID||d.id==='local',st=STAT[d.id];E.textContent='';E.hidden=me||!st||st.on!==true;if(E.hidden)return;
   const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e},nm=cleanName(d.name)||'Player';
   const dv=st.d&&DUELS[st.d],inDuel=!!(dv&&dv.st==='live');E.append(el('span','pfpl',inDuel?`In a 1v1: ${cleanName(dv.an)} vs ${cleanName(dv.bn)}`:st.g&&GAMES[st.g]?'Playing '+GAMES[st.g].name:'Online, in the menus'));
   const row=el('div','row');if(st.g||inDuel){const w=el('button','btn small mint',inDuel?'Watch the 1v1':'Watch live');w.type='button';w.onclick=()=>specStart(d.id,nm,inDuel?st.d:'');row.append(w)}
-  if(!inDuel&&UID){const sel=el('select','pfsel');sel.innerHTML=Object.values(GAMES).map(g=>`<option value="${g.id}"${g.id===(GAMES[gid]?gid:'drop')?' selected':''}>${g.name}</option>`).join('');const c=el('button','btn small pink','Challenge to 1v1');c.type='button';c.onclick=()=>duChallenge(d.id,nm,sel.value);row.append(sel,c)}
+  if(!inDuel&&UID){if(!pfChG||!duGameList().some(g=>g.id===pfChG))pfChG=GAMES[gid]?gid:'drop';const sel=el('select','pfsel');sel.innerHTML=duGameList().map(g=>`<option value="${g.id}"${g.id===pfChG?' selected':''}>${g.name}</option>`).join('');
+    const lim=el('select','pfsel');lim.innerHTML=`<option value="0"${pfChNl?'':' selected'}>1 minute</option><option value="1"${pfChNl?' selected':''}>No time limit</option>`;lim.hidden=!!DUELONLY[pfChG];
+    sel.onchange=()=>{pfChG=sel.value;lim.hidden=!!DUELONLY[pfChG]};lim.onchange=()=>{pfChNl=lim.value==='1'};
+    const c=el('button','btn small pink','Challenge to 1v1');c.type='button';c.onclick=()=>duChallenge(d.id,nm,pfChG,DUELONLY[pfChG]?false:pfChNl);row.append(sel,lim,c)}
   E.append(row)}
 
 // daily reset ticker (3 am) and countdowns
@@ -5056,16 +5121,22 @@ addEventListener('keyup',e=>{keys[e.key]=false});
 function drawGame(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cw,ch);const sk=shake*shake*14;ctx.translate(offX+(Math.random()*2-1)*sk,offY+(Math.random()*2-1)*sk);ctx.scale(sc,sc);
   const ex=extent();G.bg(ctx,ex);G.render(ctx,ex);boomDraw(ctx);drawBig(ctx);if(flash>0){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle=`rgba(255,255,255,${flash*.4})`;ctx.fillRect(0,0,cw,ch)}}
 let last=performance.now(),acc=0;
-function frame(now){let dt=(now-last)/1000;last=now;if(dt>.1)dt=.1;acc+=dt;BNC=isBouncy()?1:0;SPK=BNC?1.2:1;SPD=BNC?.6:1;
+const prevIO=typeof IntersectionObserver==='function'?new IntersectionObserver(es=>{for(const e of es)e.target.__vis=e.isIntersecting}):null;
+// true if a small preview canvas is worth redrawing this frame (visible on screen)
+function pvOK(c){const cv=c&&c.canvas;if(!cv)return false;if(prevIO&&!cv.__obs){cv.__obs=1;prevIO.observe(cv)}return cv.__vis!==false}
+function frame(now){const gap=SAVER?32:paused&&!SPEC&&anyOpen()?40:15.2;if(now-(frame.t0||0)<gap){requestAnimationFrame(frame);return}frame.t0=now;
+  const pv=now-(frame.pv||0)>=(SAVER?95:48);if(pv)frame.pv=now;
+  let dt=(now-last)/1000;last=now;if(dt>.1)dt=.1;acc+=dt;BNC=isBouncy()?1:0;SPK=BNC?1.2:1;SPD=BNC?.6:1;
   if(SPEC)try{specPump()}catch(e){}
   while(acc>=1/60){acc-=1/60;time+=1/60;if(SPEC&&G){try{G.update(1/60)}catch(e){}fxUpdate(1/60)}else if(G&&!paused){if(freeze>0){freeze-=1/60;fxUpdate(1/60*.15)}else{G.update(1/60);fxUpdate(1/60)}}
     else if(G&&!$('over').hidden)fxUpdate(1/60);
     if(shown<score){shown+=Math.max(1,Math.ceil((score-shown)*.15));if(shown>score)shown=score;scoreEl.textContent=fmt(shown)}else if(shown>score){shown=score;scoreEl.textContent=fmt(shown)}}
   if(VIEW&&!SPEC&&!paused&&$('sres').hidden){const g=VIEW;playGame(GAMES[g]?g:(P.last||'drop'))}
   if(G)try{drawGame()}catch(e){if(!window.__drawErr){window.__drawErr=1;console.error(e)}}
-  if(!$('gm').hidden)for(const p of gmPrev)drawMenuPreview(p.g,p.c,time);if(!$('bp').hidden)for(const p of bpPrev)drawItem(p.c,p.g,p.cat,p.id,120);if((!$('gm').hidden||!$('rk').hidden)&&rkCv.length)rkDrawAll();
-  if(!$('menu').hidden){for(const p of mPrev)drawMenuPreview(p.g,p.c,time);drawAvatar();drawCapMachine($('capC').getContext('2d'),220,0)}
-  if(!$('capo').hidden){if(!$('capoC').hidden)drawCapo();for(const p of capPrev)drawItem(p.c,p.g,p.cat,p.id)}if(!$('capi').hidden)for(const p of capInfoPrev)drawItem(p.c,p.g,p.cat,p.id);if(!$('tut').hidden)drawTut();if(!$('dm').hidden)for(const e of dmEmoCv)drawEmote(e.c,e.id,e.S);
+  if(pv){if(!$('gm').hidden)for(const p of gmPrev)if(pvOK(p.c))drawMenuPreview(p.g,p.c,time);if(!$('bp').hidden)for(const p of bpPrev)if(pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id,120);if((!$('gm').hidden||!$('rk').hidden)&&rkCv.length)rkDrawAll();
+  if(!$('menu').hidden){for(const p of mPrev)if(pvOK(p.c))drawMenuPreview(p.g,p.c,time);drawAvatar();drawCapMachine($('capC').getContext('2d'),220,0)}
+  if(!$('capi').hidden)for(const p of capInfoPrev)if(pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id);if(!$('dm').hidden)for(const e of dmEmoCv)if(pvOK(e.c))drawEmote(e.c,e.id,e.S)}
+  if(!$('capo').hidden){if(!$('capoC').hidden)drawCapo();if(pv)for(const p of capPrev)if(pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id)}if(!$('tut').hidden)drawTut();
   if(SPEC||(DUEL&&(DUEL.phase==='count'||DUEL.phase==='end'||DUEL.phase==='done'))||!$('maint').hidden)paused=true;
   // safety nets: never stay stuck paused or blocked with nothing on screen
   {const quiet=!anyOpen()&&$('gift').hidden&&$('cd').hidden&&$('maint').hidden&&$('rot').hidden&&!$('splash')&&$('rk').hidden;
@@ -5075,7 +5146,7 @@ function frame(now){let dt=(now-last)/1000;last=now;if(dt>.1)dt=.1;acc+=dt;BNC=i
     if(quiet&&lastFin&&lastFin.g===gid&&!SPEC&&!DUEL&&!VIEW&&!RK&&G&&G.state&&G.state()==='done'){$('over').hidden=false;paused=true}
     if(paused&&quiet&&!SPEC&&!DUEL&&!RK&&!VIEW&&G&&G.state&&G.state()==='play'){frame.stuck=(frame.stuck||0)+1;if(frame.stuck>45){paused=false;frame.stuck=0}}else frame.stuck=0}if(!$('maint').hidden)drawMaint();
   const sp=$('splashC');if(sp)drawSplash(sp,now/1000);
-  if(pfD){drawProfileAv();for(const p of slotPrev)if(p.r)drawItem(p.c,p.g,p.cat,p.id,p.S||120)}if(!$('pick').hidden)for(const p of sPrevPick)drawItem(p.c,p.g,p.cat,p.id);if(!$('cd').hidden)drawCd();if(!$('beta').hidden)drawBetaCard();if(!$('devg').hidden)drawDevCard();if(!$('who').hidden)drawWho();if(!$('lvp').hidden){drawSpin();for(const p of lvPrev)drawItem(p.c,p.g,p.cat,p.id,96)}if(sPrev.length&&!$('style').hidden)for(const p of sPrev)drawItem(p.c,p.g,p.cat,p.id);
+  if(pfD&&pv){drawProfileAv();for(const p of slotPrev)if(p.r&&pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id,p.S||120)}if(!$('pick').hidden&&pv)for(const p of sPrevPick)if(pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id);if(!$('cd').hidden)drawCd();if(!$('beta').hidden)drawBetaCard();if(!$('devg').hidden)drawDevCard();if(!$('who').hidden)drawWho();if(!$('lvp').hidden){drawSpin();if(pv)for(const p of lvPrev)if(pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id,96)}if(pv&&sPrev.length&&!$('style').hidden)for(const p of sPrev)if(pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id);
   confUpdate(dt);requestAnimationFrame(frame)}
 function drawSplash(cv,t){const c=cv.getContext('2d');c.setTransform(2,0,0,2,0,0);c.clearRect(0,0,160,160);
   const k=(t*1.6)%1,b=Math.sin(k*Math.PI),land=k<.12||k>.88;
