@@ -1892,6 +1892,43 @@ shopAdd(['drop','squish','doku'],'set',[['ev_xmas','Christmas lights',0,'l',{bp:
 TITLES.push(['ev_jolly','Jolly Jelly',0,'r',{bp:'christmas'}],['ev_boo','Boo Crew',0,'r',{bp:'halloween'}],['ev_lovebug','Lovebug',0,'r',{bp:'valentine'}],['ev_gobble','Gobbler',0,'r',{bp:'thanks'}],['ev_sunny','Sun Chaser',0,'r',{bp:'summer'}],
   ['ach_marathon','Marathoner',0,'e',{ach:'rounds2000'}],['ach_titan','Tile Titan',0,'l',{ach:'tile4096'}],['ach_logic','Logic Legend',0,'l',{ach:'doku30'}],['ach_duelist','Duelist',0,'e',{ach:'duel50'}],['ach_social','Social Butterfly',0,'r',{ach:'friends15'}],
   ['ach_loyal','Loyal Jelly',0,'e',{ach:'streak30'}],['ach_hoard','Hoarder',0,'e',{ach:'own150'}],['ach_reborn','Reborn',0,'l',{ach:'prest1'}],['ach_jar','Jar Master',0,'l',{ach:'drop50k'}],['ach_rich','Jelly Mogul',0,'l',{ach:'earn1m'}],['ach_done','Completionist',0,'u',{ach:'complete'}]);
+// ---- bigger event passes: five more rewards per event (title, wallpaper, board, frame, hat, plus a legendary title)
+TITLES.push(['ev_snowday','Snow Day',0,'r',{bp:'christmas'}],['ev_northstar','North Star',0,'l',{bp:'christmas'}],
+  ['ev_crawler','Night Crawler',0,'r',{bp:'halloween'}],['ev_grim','Grim Jelly',0,'l',{bp:'halloween'}],
+  ['ev_heartthrob','Heartthrob',0,'r',{bp:'valentine'}],['ev_truelove','True Love',0,'l',{bp:'valentine'}],
+  ['ev_leafpeep','Leaf Peeper',0,'r',{bp:'thanks'}],['ev_feast','Feast Mode',0,'l',{bp:'thanks'}],
+  ['ev_beachbum','Beach Bum',0,'r',{bp:'summer'}],['ev_endless','Endless Summer',0,'l',{bp:'summer'}]);
+Object.assign(WALLS,{ev_nightw:{n:'Winter night',bg:'#1d1846',pat:'snow',pc:'#b9c8ff',table:'#0e0b26',hud:LT},ev_cavew:{n:'Bat cave',bg:'#0b1a12',pat:'bats',pc:'#2f5a3a',table:'#040d08',hud:LT},
+  ev_rosew:{n:'Rose petals',bg:'#a8325f',pat:'hearts',pc:'#ff9ec0',table:'#5a0c2c',hud:LT},ev_glowyw:{n:'Autumn glow',bg:'#6a3a0a',pat:'leaves',pc:'#c8822a',table:'#2e1604',hud:LT},
+  ev_duskw:{n:'Beach sunset',bg:'#c8552a',pat:'suns',pc:'#ffd23f',table:'#6a2410',hud:LT}});
+shopAdd(['drop'],'wall',[['ev_nightw','Winter night',0,'e',{bp:'christmas'}],['ev_cavew','Bat cave',0,'e',{bp:'halloween'}],['ev_rosew','Rose petals',0,'e',{bp:'valentine'}],['ev_glowyw','Autumn glow',0,'e',{bp:'thanks'}],['ev_duskw','Beach sunset',0,'e',{bp:'summer'}]]);
+Object.assign(BOARDS,{ev_caneb:{n:'Candy cane',bg:'#3c0610',board:'#f4f1ff',slot:'#e8323c',rim:'#2fae4a',hud:LT},ev_graveb:{n:'Graveyard',bg:'#0c1408',board:'#4a5a4a',slot:'#2a3a2a',rim:'#b8ff9a',hud:LT},
+  ev_chocb:{n:'Chocolate box',bg:'#2a1408',board:'#7a3e1e',slot:'#ff6fa8',rim:'#ffd6e6',hud:LT},ev_tableb:{n:'Harvest table',bg:'#2a1404',board:'#8a5a2a',slot:'#f5d08a',rim:'#fff',hud:LT},
+  ev_poolb:{n:'Pool party',bg:'#063a5a',board:'#7cdcff',slot:'#ffffff',rim:'#ff6fa8',hud:LT}});
+shopAdd(['squish','doku'],'board',[['ev_caneb','Candy cane',0,'e',{bp:'christmas'}],['ev_graveb','Graveyard',0,'e',{bp:'halloween'}],['ev_chocb','Chocolate box',0,'e',{bp:'valentine'}],['ev_tableb','Harvest table',0,'e',{bp:'thanks'}],['ev_poolb','Pool party',0,'e',{bp:'summer'}]]);
+// event frames: a ring with little themed charms going round
+const evCharm=(c,k,s,lw)=>{c.lineWidth=lw*.5;c.strokeStyle=INK;
+  if(k==='snow'){c.strokeStyle='#e8f4ff';c.lineWidth=lw*.7;c.beginPath();for(let i=0;i<3;i++){const a=i*Math.PI/3;c.moveTo(Math.cos(a)*s,Math.sin(a)*s);c.lineTo(-Math.cos(a)*s,-Math.sin(a)*s)}c.stroke();circ(c,0,0,s*.3);c.fillStyle='#e8323c';c.fill()}
+  else if(k==='bat'){c.beginPath();c.moveTo(-s*1.3,-s*.2);c.quadraticCurveTo(-s*.6,-s*.9,-s*.2,-s*.2);c.lineTo(0,-s*.6);c.lineTo(s*.2,-s*.2);c.quadraticCurveTo(s*.6,-s*.9,s*1.3,-s*.2);c.quadraticCurveTo(s*.6,s*.1,0,s*.5);c.quadraticCurveTo(-s*.6,s*.1,-s*1.3,-s*.2);c.closePath();c.fillStyle='#2b2340';c.fill();c.strokeStyle='#ff8a1f';c.stroke()}
+  else if(k==='heart'){heartPath(c,0,s*.1,s*1.1);c.fillStyle='#ff4f8f';c.fill();c.stroke()}
+  else if(k==='leaf'){c.save();c.rotate(.6);ell(c,0,0,s*.55,s*1.05);c.fillStyle='#e8732a';c.fill();c.stroke();c.beginPath();c.moveTo(0,-s);c.lineTo(0,s);c.stroke();c.restore()}
+  else if(k==='shell'){c.beginPath();c.moveTo(0,s*.9);c.lineTo(-s,-s*.2);c.quadraticCurveTo(0,-s*1.3,s,-s*.2);c.closePath();c.fillStyle='#ffd6c8';c.fill();c.stroke();c.beginPath();for(const d of[-.5,0,.5]){c.moveTo(0,s*.8);c.lineTo(d*s,-s*.55)}c.stroke()}};
+const EVFR={ev_hollyring:['#2fae4a','snow'],ev_webring:['#9a5bff','bat'],ev_cupidring:['#ff8fbf','heart'],ev_leafring:['#c8822a','leaf'],ev_shellring:['#3fd6e8','shell']};
+for(const[id,[col,k]]of Object.entries(EVFR))FRAME2[id]=(c,R,lw,ring)=>{ring(col,lw*1.2);for(let i=0;i<8;i++){const a=i/8*TAU+time*.35;c.save();c.translate(Math.cos(a)*R,Math.sin(a)*R);c.rotate(a+Math.PI/2+Math.sin(time*2+i)*.2);evCharm(c,k,R*.19,lw);c.restore()}};
+shopAdd(['prof'],'frame',[['ev_hollyring','Holly ring',0,'e',{bp:'christmas'}],['ev_webring','Bat ring',0,'e',{bp:'halloween'}],['ev_cupidring','Cupid ring',0,'e',{bp:'valentine'}],['ev_leafring','Autumn ring',0,'e',{bp:'thanks'}],['ev_shellring','Seashell ring',0,'e',{bp:'summer'}]]);
+// event hats, part two
+HAT2.frosty=(c,r,lw,fs)=>{c.translate(0,-r*.82);c.lineWidth=lw;ell(c,0,0,r*.78,r*.16);fs('#1b1830');rr(c,-r*.44,-r*.78,r*.88,r*.78,r*.08);fs('#1b1830');rr(c,-r*.44,-r*.3,r*.88,r*.16,r*.04);fs('#e8323c');
+  for(const[x,y]of[[-r*.6,-r*.06],[r*.2,-r*.84],[r*.55,-r*.02]]){ell(c,x,y,r*.2,r*.07);c.fillStyle='#fff';c.fill()}for(const d of[-1,1]){c.save();c.translate(r*.25,-r*.32);c.rotate(d*.6);ell(c,d*r*.12,-r*.06,r*.13,r*.06);fs('#2fae4a');c.restore()}circ(c,r*.25,-r*.36,r*.07);fs('#e8323c')};
+HAT2.batbow=(c,r,lw,fs)=>{c.translate(0,-r*.8);c.beginPath();c.arc(0,r*.55,r*.86,Math.PI*1.15,Math.PI*1.85);c.lineWidth=r*.12;c.strokeStyle=INK;c.stroke();c.lineWidth=r*.06;c.strokeStyle='#5a3a8a';c.stroke();c.lineWidth=lw;
+  const f=Math.sin(time*9)*.12;c.save();c.translate(0,-r*.42);c.scale(1,1+f);evCharm(c,'bat',r*.52,lw*1.3);c.restore();for(const d of[-1,1]){circ(c,d*r*.11,-r*.5,r*.045);c.fillStyle='#ffd23f';c.fill()}};
+HAT2.heartcrown=(c,r,lw,fs)=>{c.translate(0,-r*.86);c.scale(1.18,1.18);const w=r*.52;c.lineWidth=lw;c.beginPath();c.moveTo(-w,0);c.lineTo(-w,-r*.34);c.lineTo(-w*.5,-r*.14);c.lineTo(0,-r*.42);c.lineTo(w*.5,-r*.14);c.lineTo(w,-r*.34);c.lineTo(w,0);c.closePath();fs('#ffc9dc');
+  for(const x of[-w,0,w]){heartPath(c,x,x?-r*.38:-r*.46,r*.2);fs('#ff4f8f')}rr(c,-w,-r*.08,w*2,r*.12,r*.05);fs('#ff8fbf')};
+HAT2.turkey=(c,r,lw,fs)=>{c.translate(0,-r*.82);c.lineWidth=lw;const cols=['#e8323c','#ff9a3c','#ffd23f','#c8551a','#8a4a1a'];for(let i=0;i<7;i++){const a=-Math.PI/2+(i-3)*.32;c.save();c.rotate(a+Math.PI/2);ell(c,0,-r*.62,r*.15,r*.42);fs(cols[i%5]);c.restore()}
+  ell(c,0,-r*.12,r*.42,r*.3);fs('#8a4a1a');circ(c,0,-r*.42,r*.18);fs('#8a4a1a');c.fillStyle=INK;for(const d of[-1,1]){circ(c,d*r*.06,-r*.45,r*.03);c.fill()}c.beginPath();c.moveTo(-r*.05,-r*.36);c.lineTo(r*.05,-r*.36);c.lineTo(0,-r*.27);c.closePath();fs('#ffb000');ell(c,r*.08,-r*.28,r*.04,r*.07);c.fillStyle='#e8323c';c.fill()};
+HAT2.pineapple=(c,r,lw,fs)=>{c.translate(0,-r*.9);c.scale(1.3,1.3);c.lineWidth=lw;for(let i=0;i<5;i++){const a=(i-2)*.38,s=Math.sin(time*3+i)*.05;c.save();c.rotate(a+s);c.beginPath();c.moveTo(-r*.08,-r*.2);c.quadraticCurveTo(0,-r*.95+Math.abs(i-2)*r*.12,r*.08,-r*.2);c.closePath();fs(i%2?'#3fae4a':'#5be06a');c.restore()}
+  ell(c,0,0,r*.44,r*.3);fs('#ffcf3a');c.save();ell(c,0,0,r*.44,r*.3);c.clip();c.strokeStyle='#c8901a';c.lineWidth=lw*.6;for(let i=-4;i<=4;i++){c.beginPath();c.moveTo(i*r*.14-r*.4,-r*.4);c.lineTo(i*r*.14+r*.4,r*.4);c.moveTo(i*r*.14+r*.4,-r*.4);c.lineTo(i*r*.14-r*.4,r*.4);c.stroke()}c.restore();ell(c,0,0,r*.44,r*.3);c.lineWidth=lw;c.strokeStyle=INK;c.stroke()};
+shopAdd(['drop','squish','doku'],'hat',[['frosty','Frosty top hat',0,'l',{bp:'christmas'}],['batbow','Bat headband',0,'l',{bp:'halloween'}],['heartcrown','Heart crown',0,'l',{bp:'valentine'}],['turkey','Turkey hat',0,'l',{bp:'thanks'}],['pineapple','Pineapple hat',0,'l',{bp:'summer'}]]);
+
 const FX_COLS=['#ff5f6d','#ffd23f','#5be0a6','#7cc8ff','#b46bff','#ff9ad5','#ff9a3c'];
 let fx2=null;  // {k,ps,t,B}
 function fx2Bounds(){const ex=extent();return{left:ex.x0,right:ex.x1,top:ex.y0,y1:H,cx:W/2,cy:H*.48,k:1}}
@@ -2914,13 +2951,13 @@ const Pong=(()=>{
   function pointFx(scorer){const mine=scorer===(spec?view:me),cr=ball(),gy=scorer==='a'?YB-10:YA+10;
     for(let i=0;i<3;i++)splat(rand(60,W-60),gy,cr.c,10);addShake(.45);if(spec)big((scorer==='a'?'⬇':'⬆')+' Point!','#ffd23f');else if(mine){big('POINT!','#5be0a6');sfx.combo(4);hap('success')}else{big('Missed!','#ff6fa8');sfx.thud();hap('error')}}
   // ---- the shared timeline
-  function setEv(E,mineNow){if(!E||(ev&&E.n<=ev.n))return;const before=ev?renderPos():null,wasPred=pred&&pred.n===E.n;ev=E;pred=null;lastWall=null;
+  function setEv(E,mineNow){if(!E||(E.d&&E.d!==id)||(ev&&E.n<=ev.n))return;const before=ev?renderPos():null,wasPred=pred&&pred.n===E.n;ev=E;pred=null;lastWall=null;
     if(E.k==='h'){const now=renderPosRaw();if(before&&!mineNow){const dx=before.x-now.x,dy=before.y-now.y;off=Math.hypot(dx,dy)<160?{x:dx,y:dy}:{x:0,y:0}}else off={x:0,y:0};
       if(!(wasPred&&predFx===E.n))hitFx(E.vy<0?'a':'b',E.x)}
     else{off={x:0,y:0};trail=[];if(E.sa!==pts.a||E.sb!==pts.b){const sc=E.sa>pts.a?'a':'b';pointFx(sc)}}
     pts={a:E.sa|0,b:E.sb|0};score=shown=pts[spec?view:me];scoreEl.textContent=fmt(score);
     if(E.k==='end'&&!ended){ended=true;endT=performance.now();if(E.ff&&!spec&&E.ff!==me)setTimeout(()=>toast('Your opponent left, so you win!','#5be0a6'),300)}}
-  function post(E){setEv(E,true);if(!spec&&id)FD.set(fref('pong/'+id+'/e'),E).catch(()=>{})}
+  function post(E){E.d=id;setEv(E,true);if(!spec&&id)FD.set(fref('pong/'+id+'/e'),E).catch(()=>{})}
   function renderPosRaw(){const e=pred||ev;if(!e)return{x:W/2,y:H/2};const T=NOW();return at(e,Math.max(T,e.t))}
   function renderPos(){const p=renderPosRaw();return{x:p.x+off.x,y:p.y+off.y,raw:p.raw}}
   // ---- every frame: decide hits on my side, predict the other side, notice a player who left
@@ -2931,7 +2968,7 @@ const Pong=(()=>{
     else if((spec||s!==me)&&T>=tc&&!pred){const p=at(ev,tc);if(Math.abs(p.x-pos[s])<=REACH){pred=bounce(ev,p,tc,s,pos[s]);predFx=pred.n;const keep=ev;ev=pred;hitFx(s,p.x);ev=keep}}
     if(!spec&&(seen?T-seen>15000&&T-start0>8000:T-start0>DU_CD+20000)){const sa=me==='a'?WIN:ev.sa,sb=me==='b'?WIN:ev.sb;post(Object.assign(serveEv(ev.n+1,T,0,sa,sb,'end'),{vx:0,vy:0,ff:me==='a'?'b':'a'}))}}
   function listen(){if(unsub)try{unsub()}catch(e){}unsub=null;if(!id||!FD)return;
-    unsub=FD.onValue(fref('pong/'+id),s=>{const v=s.val()||{};for(const k of['a','b']){const q=v['p'+k];if(q&&typeof q.x==='number'&&(spec||k!==me)){tgt[k]=clamp(q.x,PW,W-PW);if(!spec)seen=NOW()}}
+    const lid=id;unsub=FD.onValue(fref('pong/'+lid),s=>{if(lid!==id)return;const v=s.val()||{};if(v.e&&v.e.d!==lid)return void 0;for(const k of['a','b']){const q=v['p'+k];if(q&&typeof q.x==='number'&&(spec||k!==me)){tgt[k]=clamp(q.x,PW,W-PW);if(!spec)seen=NOW()}}
       if(v.e&&typeof v.e.n==='number')setEv(v.e,false)},()=>{})}
   function begin(o){st='play';id=o.id;me=o.me;view=o.view||o.me;spec=!!o.spec;start0=o.start||NOW();ended=false;done=-1;pred=null;predFx=-1;off={x:0,y:0};splats=[];trail=[];pts={a:0,b:0};
     pos={a:W/2,b:W/2};tgt={a:W/2,b:W/2};seen=0;sentX=-1;score=shown=0;scoreEl.textContent='0';
@@ -2948,7 +2985,7 @@ const Pong=(()=>{
     if(ev&&ev.vx){const e=pred||ev,p=at(e,Math.max(T,e.t)),w=walls(p.raw);if(lastWall===null)lastWall=w;else if(w!==lastWall){lastWall=w;const cr=ball(),wx=p.x<W/2?0:W;splat(wx,p.y,cr.c,9,1);sq=.3;sqv=0;sqa=0;sfx.pop(3)}}
     const bp=renderPos();if(T>=(ev?ev.t:0)){trail.push({x:bp.x,y:bp.y,a:1});if(trail.length>9)trail.shift()}for(const t of trail)t.a-=dt*4;
     if(!spec&&id&&(Math.abs(pos[me]-sentX)>.8&&T-sentT>66||T-sentT>2000)){sentX=pos[me];sentT=T;FD.set(fref('pong/'+id+'/p'+me),{x:Math.round(pos[me]*10)/10,t:Math.round(T)}).catch(()=>{})}
-    if(ended&&performance.now()-endT>1300&&st==='play'){st='done';if(!spec&&DUEL&&(DUEL.phase==='live'||DUEL.phase==='count')){score=pts[me];duLocalEnd()}}}
+    if(ended&&performance.now()-endT>1300&&st==='play'){st='done';if(!spec&&DUEL&&DUEL.id===id&&(DUEL.phase==='live'||DUEL.phase==='count')){score=pts[me];duLocalEnd()}}}
   function setX(p){if(spec||st!=='play')return;const x=view==='b'?W-p.x:p.x;pos[me]=tgt[me]=clamp(x,PW,W-PW)}
   function down(p){pressed=true;setX(p)}
   function move(p){setX(p)}
@@ -2986,7 +3023,7 @@ const Pong=(()=>{
   function serialize(){return st==='play'&&id?{pg:1,id,me,s:start0}:null}
   function restore(d){if(!d||!d.pg){st='done';ev=null;return}begin({id:d.id,me:d.me,view:d.me,spec:true,start:d.s})}
   function specSync(d){if(!d||!d.pg)return;if(d.id!==id||!spec)restore(d)}
-  return{start,update,render,bg,down,move,up,key,action(){},restyle,serialize,restore,specSync,leave,state:()=>st,dbg:()=>({off:Math.hypot(off.x,off.y),ev,pred,pos:Object.assign({},pos),pts,me,view,ended,b:renderPos(),tc:ev?tContact(ev):0,yc:{a:yc('a'),b:yc('b')},raw:ev?at(ev,NOW()):null})};
+  return{start,update,render,bg,down,move,up,key,action(){},restyle,serialize,restore,specSync,leave,state:()=>st,points:()=>id?{id,a:pts.a|0,b:pts.b|0}:null,dbg:()=>({spec,id,st,ended,off:Math.hypot(off.x,off.y),ev,pred,pos:Object.assign({},pos),pts,me,view,ended,b:renderPos(),tc:ev?tContact(ev):0,yc:{a:yc('a'),b:yc('b')},raw:ev?at(ev,NOW()):null})};
 })();
 const GAMES={
   drop:{id:'drop',name:'Jelly Jar',impl:Drop,coins:s=>s.score/140},
@@ -3551,7 +3588,7 @@ function openProfile(d){if(!d)return;audio();sfx.ui();pfD={k:KINDS.has(d.k)?d.k:
   $('pfName').textContent=cleanName(d.name)||'Someone';{const T=$('pfTags');T.textContent='';const me=d.id===UID||d.id==='local';for(const tp of tagPills(me&&UID?UID:d.id,me?showTag():d.tg,me?showBn():d.bn===true)){tp.setAttribute('role','button');tp.tabIndex=0;tp.onclick=()=>tagInfo(tp.dataset.tag,tp);tp.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tagInfo(tp.dataset.tag,tp)}};T.append(tp)}}
   pfShowUI(d);presBadge(d);
   const t=titleOf(TITLE_IDS.has(d.tt)?d.tt:'none');$('pfTitle').hidden=!t;{const e=$('pfTitle'),tid=TITLE_IDS.has(d.tt)?d.tt:'none';e.classList.toggle('tapme',!!t);e.setAttribute('role','button');e.tabIndex=t?0:-1;e.onclick=()=>titleInfo(tid);e.onkeydown=ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();titleInfo(tid)}}}if(t){$('pfTitle').textContent=t.n;$('pfTitle').style.background=t.d?devTitleBg(t.d):t.x?'linear-gradient(90deg,#0b0a18,#3d7bff,#9a5bff,#2fe39a)':t.u?'linear-gradient(90deg,#ff3df0,#7a3cff,#00b8ff)':t.c}
-  const st=$('pfStats');st.textContent='';for(const[k,v]of[['Level',fmt(+d.lv||1)],['Jelly Jar',fmt(+d.drop||0)],['Jelly 2048',fmt(+d.squish||0)],['Jellydoku',fmt(+d.doku||0)],['Jelly Catch',fmt(+d.catch||0)],['Jelly Combo',fmt(+d.combo||0)],['Jelly Memory',fmt(+d.memory||0)],['Jelly Slice',fmt(+d.slice||0)],...(typeof d.rkg==='string'&&d.rkg?d.rkg.split('|').map(x=>x.split(':')).filter(([g,t])=>GAMES[g]&&Number.isInteger(+t)).map(([g,t])=>['Ranked · '+GAMES[g].name.replace(/^Jelly\s+/,''),rkName(clamp(+t,0,14))]):Number.isInteger(+d.rk)&&d.rk!=null?[['Ranked',rkName(clamp(+d.rk,0,14))]]:[])]){const box=document.createElement('div'),a=document.createElement('span'),b=document.createElement('span');a.className='v';a.textContent=v;b.className='k';b.textContent=k;box.append(a,b);st.appendChild(box)}
+  const st=$('pfStats');st.textContent='';for(const[k,v]of[['Level',fmt(+d.lv||1)],['Jelly Jar',fmt(+d.drop||0)],['Jelly 2048',fmt(+d.squish||0)],['Jellydoku',fmt(+d.doku||0)],['Jelly Catch',fmt(+d.catch||0)],['Jelly Combo',fmt(+d.combo||0)],['Jelly Memory',fmt(+d.memory||0)],['Jelly Slice',fmt(+d.slice||0)],...(typeof d.rkg==='string'&&d.rkg?d.rkg.split('|').map(x=>x.split(':')).filter(([g,t])=>rkOK(g)&&Number.isInteger(+t)).map(([g,t])=>['Ranked · '+duGameName(g).replace(/^Jelly\s+/,''),rkName(clamp(+t,0,14))]):Number.isInteger(+d.rk)&&d.rk!=null?[['Ranked',rkName(clamp(+d.rk,0,14))]]:[])]){const box=document.createElement('div'),a=document.createElement('span'),b=document.createElement('span');a.className='v';a.textContent=v;b.className='k';b.textContent=k;box.append(a,b);st.appendChild(box)}
   if(d.id===UID||d.id==='local'){const lb=st.firstChild;lb.classList.add('pfstat-lv');lb.title='See level rewards';lb.onclick=()=>{closeProfile();openLvp()}}
   const hl=$('pfHist');hl.textContent='';const h=histArr(d.hist);
   if(d.id==='local'){const s=document.createElement('span');s.className='pfnone';s.textContent='Sign in to keep a name history.';hl.appendChild(s)}
@@ -4546,7 +4583,10 @@ function duLoop(){const d=DUEL;if(!d)return;const now=Date.now(),v=d.rec||{};
 function duLocalEnd(){const d=DUEL;if(!d||(d.phase!=='live'&&d.phase!=='count'))return;d.phase='end';d.endT=Date.now();paused=true;d.final=Math.floor(score);
   if(GAMES[d.g]&&d.final>(P.best[d.g]||0)){P.best[d.g]=d.final;bestEl.textContent=fmt(d.final);save();setTimeout(syncMe,0);setTimeout(()=>toast('New best in '+GAMES[d.g].name+': '+fmt(d.final)+'!','#ffd23f'),400)}$('dhBet').hidden=true;$('dhT').textContent=d.nl||DUELONLY[d.g]?'Done':'0:00';$('dhMsg').textContent=DUELONLY[d.g]?'Match over!':d.nl?'Your game is over! Watching '+d.oppN+'…':'Time! Waiting for '+d.oppN+'…';
   FD.update(fref('duels/'+d.id),{[d.me==='a'?'sa':'sb']:d.final,[d.me==='a'?'fa':'fb']:true}).catch(()=>{});sfx.discover()}
-function duResult(){const d=DUEL;if(!d||d.phase==='done')return;d.phase='done';const v=d.rec||{},op=+(d.me==='a'?v.sb:v.sa)||0,me=d.final||0,res=me>op?'w':me<op?'l':'t';if(res==='t')secBump('tie',1);if(res==='w'&&d.nl&&d.specTried)secBump('underdog',1);
+function duResult(){const d=DUEL;if(!d||d.phase==='done')return;d.phase='done';const v=d.rec||{};let op=+(d.me==='a'?v.sb:v.sa)||0,me=d.final||0;
+  // Jelly Pong: both players saw the exact same points, so use those instead of waiting on the score fields
+  {const pp=DUELONLY[d.g]&&G&&G.points?G.points():null;if(pp&&pp.id===d.id){me=pp[d.me];op=pp[d.me==='a'?'b':'a'];d.final=me}}
+  const res=me>op?'w':me<op?'l':'t';if(res==='t')secBump('tie',1);if(res==='w'&&d.nl&&d.specTried)secBump('underdog',1);
   if(SPEC&&SPEC.inDuel)specStop(true);if(d.rk){rkRoundDone(d,res,me,op);return}
   const R=P.duel=P.duel||{w:0,l:0,t:0};R[res]=(R[res]||0)+1;const co=Math.round((res==='w'?150:res==='t'?75:25)*presMult());lastDu={opp:d.opp,oppN:d.oppN,g:d.g,nl:!!d.nl};P.coins+=co;addXP(res==='w'?30:10);save();refreshCoins();
   if(d.me==='a'){FD.update(fref('duels/'+d.id),{st:'done'}).catch(()=>{});if(DUELONLY[d.g]){const pid=d.id;setTimeout(()=>FD.remove(fref('pong/'+pid)).catch(()=>{}),20000)}}
@@ -4561,11 +4601,12 @@ const RANKS=[{n:'Gumdrop',c:['#ffbf8a','#c26a35'],j:'#ff9a5c'},{n:'Taffy',c:['#f
 const RK_BASE=1000,RK_STEP=100,RK_START=1000,RK_WIN=300,RK_TIE=150,RK_LOSS=75,RK_SEARCH=60000;
 // ranks are kept per game: P.rkG[game] = {m: MMR, w, l, t, best, played}. The old single rank is copied into every game once.
 function rkMig(){if(P.rkMig)return;P.rkMig=1;P.rkG=P.rkG&&typeof P.rkG==='object'?P.rkG:{};if(typeof P.mmr==='number')for(const g in GAMES)if(!P.rkG[g])P.rkG[g]={m:P.mmr,w:0,l:0,t:0,best:P.rkBest|0,played:P.rkPlayed?1:0}}
-const rkCur=()=>RK&&RK.g&&GAMES[RK.g]?RK.g:(typeof rkG!=='undefined'&&GAMES[rkG]?rkG:'drop');
-function rkS(g){rkMig();if(!GAMES[g])g=rkCur();P.rkG=P.rkG&&typeof P.rkG==='object'?P.rkG:{};const s=P.rkG[g];if(s&&typeof s==='object')return s;return(P.rkG[g]={m:RK_START,w:0,l:0,t:0,best:0,played:0})}
+const rkOK=g=>!!(GAMES[g]||DUELONLY[g]);
+const rkCur=()=>RK&&RK.g&&rkOK(RK.g)?RK.g:(typeof rkG!=='undefined'&&rkOK(rkG)?rkG:'drop');
+function rkS(g){rkMig();if(!rkOK(g))g=rkCur();P.rkG=P.rkG&&typeof P.rkG==='object'?P.rkG:{};const s=P.rkG[g];if(s&&typeof s==='object')return s;return(P.rkG[g]={m:RK_START,w:0,l:0,t:0,best:0,played:0})}
 const rkMMR=g=>{const m=+rkS(g).m;return Number.isFinite(m)?m:RK_START};
 const rkSetMMR=(g,m)=>{rkS(g).m=Math.round(m)};
-function rkLbStr(){rkMig();return Object.keys(GAMES).filter(g=>P.rkG&&P.rkG[g]&&P.rkG[g].played).map(g=>g+':'+rkTier(rkMMR(g))).join('|')}
+function rkLbStr(){rkMig();return duGameList().map(g=>g.id).filter(g=>P.rkG&&P.rkG[g]&&P.rkG[g].played).map(g=>g+':'+rkTier(rkMMR(g))).join('|')}
 const rkTier=m=>clamp(Math.floor(((m==null?RK_START:m)-RK_BASE)/RK_STEP),0,14);
 const rkName=t=>RANKS[clamp(Math.floor(t/3),0,4)].n+' '+['I','II','III'][clamp(t,0,14)%3];
 const rkLo=t=>t<=0?-Infinity:RK_BASE+t*RK_STEP,rkHi=t=>t>=14?Infinity:RK_BASE+(t+1)*RK_STEP;
@@ -4588,7 +4629,7 @@ function rkCanvas(t,S){const cv=document.createElement('canvas'),d=Math.max(2,de
 function rkDrawAll(){for(const q of rkCv){if(!q.c.canvas.isConnected)continue;q.c.setTransform(q.d,0,0,q.d,0,0);q.c.clearRect(0,0,q.S,q.S);drawRank(q.c,q.S/2,q.S*.46,q.S*.34,q.t)}rkCv=rkCv.filter(q=>q.c.canvas.isConnected)}
 const elx2=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 function rkInit(){try{FD.onValue(FD.ref(RDB,'cfg/ranked'),s=>{RKCFG=s.val()===true;if(!$('gm').hidden)renderGM()},()=>{})}catch(e){}
-  if(P.rkOpen){const R=P.rk=P.rk||{w:0,l:0,t:0};R.l=(R.l||0)+1;if(GAMES[P.rkOpen.g]){const s=rkS(P.rkOpen.g);s.l=(s.l||0)+1}P.rkOpen=null;save();setTimeout(()=>toast('You left a ranked match, so it counted as a loss','#ff6fa8'),2500)}}
+  if(P.rkOpen){const R=P.rk=P.rk||{w:0,l:0,t:0};R.l=(R.l||0)+1;if(rkOK(P.rkOpen.g)){const s=rkS(P.rkOpen.g);s.l=(s.l||0)+1}P.rkOpen=null;save();setTimeout(()=>toast('You left a ranked match, so it counted as a loss','#ff6fa8'),2500)}}
 // ---- the Game Mode screen
 function openGM(){audio();sfx.ui();$('menu').hidden=true;paused=true;$('gm').hidden=false;if(GAMES[gid]&&!RK)rkG=rkG||gid;renderGM()}
 function closeGM(back){$('gm').hidden=true;gmPrev=[];if(back)openMenu();else if(!anyOpen())paused=false}
@@ -4608,12 +4649,12 @@ function renderGM(){const now=Date.now(),F=$('gmFeat');F.textContent='';rkCv=[];
   renderRanked()}
 function renderRanked(){const W=$('gmRanked'),ok=rkAllowed(),signed=!!(UID&&acctReady);W.textContent='';W.classList.toggle('locked',!ok);
   const m=rkMMR(rkG),t=rkTier(m),R=rkS(rkG),lo=rkLo(t),hi=rkHi(t);
-  W.append(elx2('p','rkfor','Your '+(GAMES[rkG]?GAMES[rkG].name:'')+' rank'+(R.played?'':' (not played yet)')));const card=elx2('div','rkcard');card.append(rkCanvas(t,88));const inf=elx2('div','rkinf');inf.append(elx2('b','rkn',rkName(t)),elx2('span','rkm',fmt(Math.round(m))+' MMR'));
+  W.append(elx2('p','rkfor','Your '+duGameName(rkG)+' rank'+(R.played?'':' (not played yet)')));const card=elx2('div','rkcard');card.append(rkCanvas(t,88));const inf=elx2('div','rkinf');inf.append(elx2('b','rkn',rkName(t)),elx2('span','rkm',fmt(Math.round(m))+' MMR'));
   const bar=elx2('div','rkbar'),fill=elx2('i');fill.style.width=(t>=14?100:clamp((m-(lo===-Infinity?RK_BASE+t*RK_STEP:lo))/RK_STEP*100,0,100))+'%';bar.append(fill);inf.append(bar,elx2('span','rksub',t>=14?'Top rank! Keep climbing your MMR.':`${fmt(Math.max(0,Math.ceil(hi-m)))} MMR to ${rkName(t+1)}`),elx2('span','rksub',`${R.w||0} W · ${R.l||0} L${R.t?' · '+R.t+' T':''}`));card.append(inf);W.append(card);
   if(!ok){const lk=elx2('div','rklock');lk.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><b>Ranked is coming soon</b>';W.append(lk)}
-  const modes=elx2('div','tabs rkmodes');for(const g of Object.values(GAMES)){const b=elx2('button','tab'+(g.id===rkG?' on':''),g.name);b.type='button';b.onclick=()=>{if(!ok||RK)return;rkG=g.id;sfx.ui();renderRanked()};modes.append(b)}W.append(modes);
+  const modes=elx2('div','tabs rkmodes');for(const g of duGameList()){const b=elx2('button','tab'+(g.id===rkG?' on':''),g.name);b.type='button';b.onclick=()=>{if(!ok||RK)return;rkG=g.id;sfx.ui();renderRanked()};modes.append(b)}W.append(modes);
   const go=elx2('button','btn rkgo',signed?'Find ranked match':'Sign in to play ranked');go.type='button';go.disabled=!ok;go.onclick=()=>{if(!ok)return;if(!signed){closeGM(false);openAcct('in');return}rkQueue(rkG)};W.append(go);
-  W.append(elx2('p','rknote','Best of 3 games, 1 minute each. We look for a player near your MMR for up to a minute (most matches take 20 to 30 seconds). Leaving a match counts as a loss.'));
+  W.append(elx2('p','rknote',(DUELONLY[rkG]?'Best of 3 Jelly Pong matches, first to 3 points each.':'Best of 3 games, 1 minute each.')+' We look for a player near your MMR for up to a minute (most matches take 20 to 30 seconds). Leaving a match counts as a loss.'));
   const det=elx2('details','rkranks'),sum=elx2('summary',null,'Ranks & rewards');det.append(sum);
   for(let k=4;k>=0;k--){const row=elx2('div','rkrow');row.append(rkCanvas(k*3+2,46));const tx=elx2('div','rkrt');tx.append(elx2('b',null,RANKS[k].n+' I · II · III'),elx2('span',null,k===0?`Start here · up to ${fmt(RK_BASE+3*RK_STEP-1)} MMR`:k===4?`${fmt(RK_BASE+12*RK_STEP)}+ MMR`:`${fmt(RK_BASE+k*3*RK_STEP)} to ${fmt(RK_BASE+(k*3+3)*RK_STEP-1)} MMR`));
     const ttl={1:'Taffy Contender',2:'Caramel Champion',3:'Crystal Ace',4:'Supernova'}[k],rr=rkTierReward(k*3);tx.append(elx2('span','rkrw',k?`Reach it: ${fmt(rr.coins)} coins + ${rr.spins} spins + “${ttl}” title`:'Every new tier you reach pays coins'));row.append(tx);det.append(row)}
@@ -4628,7 +4669,7 @@ async function rkQueue(g){if(!duNeedAcct()||!rkAllowed())return;if(DUEL||RK)retu
   try{await FD.set(ref,{r:Math.round(RK.mmr),n:duName(),s:FD.serverTimestamp(),h:FD.serverTimestamp(),m:''});try{FD.onDisconnect(ref).remove()}catch(e){}}catch(e){RK=null;toast('Could not start ranked. Publish the new database rules first.','#ff6fa8');return}
   if(!RK)return;RK.unq=FD.onValue(fref('rq/'+g),s=>{if(!RK||RK.phase!=='queue')return;RK.q=s.val()||{};rkScan()},()=>{});RK.tick=setInterval(rkQTick,500);rkQUI();sfx.ui()}
 function rkQUI(){const R=RK;if(!R||R.phase!=='queue')return;const el=Math.floor((Date.now()-R.s0)/1000),win=rkWin(el);
-  const box=elx2('div','rkq');const sp=elx2('div','rkspin');for(let i=0;i<3;i++)sp.append(elx2('i'));box.append(elx2('span','lbl','Ranked · '+GAMES[R.g].name),sp,elx2('h3','rkqt','Finding an opponent…'),elx2('span','rkqc',`0:${String(el).padStart(2,'0')} / 1:00`),elx2('span','rksub',win>5000?'Looking for anyone online':`Looking near ${fmt(Math.round(R.mmr))} MMR (±${Math.round(win)})`),elx2('span','rksub','Most matches take 20 to 30 seconds'));
+  const box=elx2('div','rkq');const sp=elx2('div','rkspin');for(let i=0;i<3;i++)sp.append(elx2('i'));box.append(elx2('span','lbl','Ranked · '+duGameName(R.g)),sp,elx2('h3','rkqt','Finding an opponent…'),elx2('span','rkqc',`0:${String(el).padStart(2,'0')} / 1:00`),elx2('span','rksub',win>5000?'Looking for anyone online':`Looking near ${fmt(Math.round(R.mmr))} MMR (±${Math.round(win)})`),elx2('span','rksub','Most matches take 20 to 30 seconds'));
   const x=elx2('button','btn white','Cancel');x.type='button';x.onclick=()=>rkLeaveQ('');box.append(x);rkShow(box)}
 const rkWin=e=>e>=50?1e9:60+14*e;
 function rkQTick(){const R=RK;if(!R||R.phase!=='queue')return;const el=(Date.now()-R.s0)/1000;
@@ -4647,7 +4688,7 @@ function rkFound(id){const R=RK;if(!R||R.phase!=='queue')return;R.phase='found';
   sfx.discover();hap('success');R.unm=FD.onValue(fref('rmatch/'+id),s=>{const v=s.val();if(!RK||RK.id!==id||!v)return;const first=!RK.rec;RK.rec=v;RK.last=Date.now();if(first)rkStart();rkStep()},()=>{});R.tick=setInterval(rkLoop,400)}
 function rkStart(){const R=RK,v=R.rec;R.me=v.a===UID?'a':'b';R.oppN=cleanName(R.me==='a'?v.bn:v.an)||'Opponent';R.oppR=+(R.me==='a'?v.br:v.ar)||RK_START;R.mmr0=rkMMR(R.g);R.dl=rkDelta(R.mmr0,R.oppR);
   rkSetMMR(R.g,R.mmr0-R.dl.loss);P.rkOpen={id:R.id,g:R.g,loss:R.dl.loss,win:R.dl.win};P.rkPlayed=1;rkS(R.g).played=1;save();R.vsUntil=Date.now()+3800;
-  const box=elx2('div','rkvs');box.append(elx2('span','lbl','Match found · '+GAMES[v.g].name));const row=elx2('div','rkvr');
+  const box=elx2('div','rkvs');box.append(elx2('span','lbl','Match found · '+duGameName(v.g)));const row=elx2('div','rkvr');
   const side=(n,m)=>{const s=elx2('div','rkvp');s.append(rkCanvas(rkTier(m),78),elx2('b',null,n),elx2('span','rksub',rkName(rkTier(m))));return s};
   row.append(side('You',R.mmr0),elx2('span','rkvsx','VS'),side(R.oppN,R.oppR));box.append(row,elx2('span','rksub','Best of 3 · Win: +'+R.dl.win+' MMR · Loss: −'+R.dl.loss+' MMR'),elx2('h3','rkqt','Round 1 starts in a moment…'));rkShow(box)}
 function rkScore(v){return{wa:+v.wa||0,wb:+v.wb||0}}
@@ -4661,7 +4702,7 @@ function rkLoop(){const R=RK;if(!R||R.phase==='done')return;const now=Date.now()
   if(!DUEL&&now-R.last>45000&&v.st!=='done'){FD.update(fref('rmatch/'+R.id),{st:'done',win:R.me,ff:R.me==='a'?'b':'a'}).catch(()=>{});R.last=now}}
 // called by duResult when a ranked round ends
 function rkRoundDone(d,res,me,op){const R=RK;clearInterval(duTickI);if(duUnsub)try{duUnsub()}catch(e){}duUnsub=null;DUEL=null;$('dhud').hidden=true;$('dcount').hidden=true;
-  if(!R||!R.rec)return;const v=R.rec,dv=d.rec||{},sa=+dv.sa||0,sb=+dv.sb||0,w=sa>sb?'a':sb>sa?'b':'t',sc=rkScore(v);
+  if(!R||!R.rec)return;const v=R.rec,sc=rkScore(v),w=res==='t'?'t':res==='w'?R.me:(R.me==='a'?'b':'a');
   let wa=sc.wa+(w==='a'?1:0),wb=sc.wb+(w==='b'?1:0);const rn=d.rn||R.cur||1,done=wa>=2||wb>=2||rn>=5;
   const mine=R.me==='a'?wa:wb,theirs=R.me==='a'?wb:wa;
   const box=elx2('div','rkvs');box.append(elx2('span','lbl',`Ranked · Round ${rn}`),elx2('h2','rkres '+res,res==='w'?'You win the round!':res==='l'?R.oppN+' wins the round':'Tie round!'),elx2('span','rksub',`You ${fmt(me)} · ${R.oppN} ${fmt(op)}`));
@@ -4678,7 +4719,7 @@ function rkFinish(){const R=RK;if(!R||R.phase==='done')return;R.phase='done';cle
   for(const t of ups){const tid={3:'rk_taffy',6:'rk_caramel',9:'rk_crystal',12:'rk_nova'}[t];if(tid&&!P.own.includes('prof:title:'+tid)){P.own.push('prof:title:'+tid);P.fresh.push('prof:title:'+tid)}}
   P.coins+=coins;if(spins)P.spins=(P.spins||0)+spins;addXP(res==='w'?60:25);save();refreshCoins();setTimeout(syncMe,0);
   const dm=Math.round(rkMMR()-R.mmr0),sc=rkScore(v),mine=R.me==='a'?sc.wa:sc.wb,theirs=R.me==='a'?sc.wb:sc.wa;
-  const box=elx2('div','rkvs rkfin');box.append(elx2('span','lbl','Ranked · '+GAMES[R.g].name),elx2('h2','rkres '+res,res==='w'?'Victory!':res==='l'?'Defeat':'Draw'),elx2('span','rksub',v.ff&&v.ff!==R.me?R.oppN+' left the match':`You ${mine} – ${theirs} ${R.oppN}`));
+  const box=elx2('div','rkvs rkfin');box.append(elx2('span','lbl','Ranked · '+duGameName(R.g)),elx2('h2','rkres '+res,res==='w'?'Victory!':res==='l'?'Defeat':'Draw'),elx2('span','rksub',v.ff&&v.ff!==R.me?R.oppN+' left the match':`You ${mine} – ${theirs} ${R.oppN}`));
   const rr=elx2('div','rkcard');rr.append(rkCanvas(t1,84));const inf=elx2('div','rkinf');inf.append(elx2('b','rkn',rkName(t1)),elx2('span','rkm '+(dm>=0?'up':'down'),`${fmt(Math.round(rkMMR()))} MMR (${dm>=0?'+':''}${dm})`));rr.append(inf);box.append(rr);
   if(t1>t0)box.append(elx2('div','rkup','Promoted to '+rkName(t1)+'!'));else if(t1<t0)box.append(elx2('div','rkdn','Dropped to '+rkName(t1)));
   const rw=elx2('div','rkrewards');rw.append(elx2('span',null,`+${fmt(coins)} coins`));if(spins)rw.append(elx2('span',null,`+${spins} free spins`));
@@ -4762,24 +4803,34 @@ function renderAch(){const L=$('achList');L.textContent='';const done=ACH.filter
 const presMult=()=>1+.15*Math.min(P.prest|0,10);
 // ================================================= events + battle pass
 const EVENTS={
-  christmas:{n:'Christmas',ic:'🎄',bp:[['prof:title:ev_jolly',5],['squish:board:ev_xmasb',10],['drop:hat:elf',15],['drop:set:ev_xmas',20]],shop:'drop:wall:ev_snoww'},
-  halloween:{n:'Halloween',ic:'🎃',bp:[['prof:title:ev_boo',5],['squish:board:ev_hallb',10],['drop:hat:pumpkin',15],['drop:set:ev_hall',20]],shop:'drop:wall:ev_batw'},
-  valentine:{n:'Valentine’s Day',ic:'💘',bp:[['prof:title:ev_lovebug',5],['squish:board:ev_valb',10],['drop:hat:heartband',15],['drop:set:ev_val',20]],shop:'drop:wall:ev_lovew'},
-  thanks:{n:'Thanksgiving',ic:'🦃',bp:[['prof:title:ev_gobble',5],['squish:board:ev_thxb',10],['drop:hat:pilgrim',15],['drop:set:ev_thx',20]],shop:'drop:wall:ev_leafw'},
-  summer:{n:'Summer',ic:'🏖️',bp:[['prof:title:ev_sunny',5],['squish:board:ev_sumb',10],['drop:hat:sunvisor',15],['drop:set:ev_sum',20]],shop:'drop:wall:ev_sunw'}};
-const BP_XP=250,BP_MAX=20;
+  christmas:{n:'Christmas',ic:'🎄',bp:[['prof:title:ev_jolly',4],['drop:wall:ev_nightw',8],['squish:board:ev_xmasb',12],['prof:title:ev_snowday',16],['drop:hat:elf',20],['prof:frame:ev_hollyring',24],['squish:board:ev_caneb',28],['drop:hat:frosty',32],['prof:title:ev_northstar',36],['drop:set:ev_xmas',40]],shop:'drop:wall:ev_snoww'},
+  halloween:{n:'Halloween',ic:'🎃',bp:[['prof:title:ev_boo',4],['drop:wall:ev_cavew',8],['squish:board:ev_hallb',12],['prof:title:ev_crawler',16],['drop:hat:pumpkin',20],['prof:frame:ev_webring',24],['squish:board:ev_graveb',28],['drop:hat:batbow',32],['prof:title:ev_grim',36],['drop:set:ev_hall',40]],shop:'drop:wall:ev_batw'},
+  valentine:{n:'Valentine’s Day',ic:'💘',bp:[['prof:title:ev_lovebug',4],['drop:wall:ev_rosew',8],['squish:board:ev_valb',12],['prof:title:ev_heartthrob',16],['drop:hat:heartband',20],['prof:frame:ev_cupidring',24],['squish:board:ev_chocb',28],['drop:hat:heartcrown',32],['prof:title:ev_truelove',36],['drop:set:ev_val',40]],shop:'drop:wall:ev_lovew'},
+  thanks:{n:'Thanksgiving',ic:'🦃',bp:[['prof:title:ev_gobble',4],['drop:wall:ev_glowyw',8],['squish:board:ev_thxb',12],['prof:title:ev_leafpeep',16],['drop:hat:pilgrim',20],['prof:frame:ev_leafring',24],['squish:board:ev_tableb',28],['drop:hat:turkey',32],['prof:title:ev_feast',36],['drop:set:ev_thx',40]],shop:'drop:wall:ev_leafw'},
+  summer:{n:'Summer',ic:'🏖️',bp:[['prof:title:ev_sunny',4],['drop:wall:ev_duskw',8],['squish:board:ev_sumb',12],['prof:title:ev_beachbum',16],['drop:hat:sunvisor',20],['prof:frame:ev_shellring',24],['squish:board:ev_poolb',28],['drop:hat:pineapple',32],['prof:title:ev_endless',36],['drop:set:ev_sum',40]],shop:'drop:wall:ev_sunw'}};
+const BP_XP=250,BP_MAX=40,BP_LV=320,BP_CHEST=600,BP_CHESTS=30;
 // XP needed for each pass level: it grows as you go, so the whole pass lasts most of the event (about 12x longer than before)
-const bpNeed=l=>1500+150*(Math.max(1,l)-1);var EVT=null;
+const bpNeed=l=>BP_LV;
+const bpOldNeed=l=>1500+150*(Math.max(1,l)-1);
+// every level pays coins; spins on some levels; a cosmetic every 4 levels; after level 40, bonus chests
+const bpSpins=l=>l===BP_MAX?3:l%8===6?1:0;var EVT=null;
 const evKey=()=>{const e=EVT;if(!e||!EVENTS[e.k])return'';const n=srvNow();return n>=(+e.start||0)&&n<(+e.ends||0)?e.k:''};
-const bpCoins=l=>l%5===0?600+l*40:120+l*20;
-function bpState(){const k=evKey();if(!k)return null;const id=k+':'+EVT.start;if(!P.bp||P.bp.id!==id)P.bp={id,xp:0,lv:0,paid:0,v:2};
-  // a pass from before the longer levels: keep all the XP earned, re-level it on the new curve, never pay a level twice
-  if(P.bp.v!==2){let tot=(P.bp.lv|0)*BP_XP+(+P.bp.xp||0),lv=0;while(lv<BP_MAX&&tot>=bpNeed(lv+1)){tot-=bpNeed(lv+1);lv++}P.bp={id:P.bp.id,xp:lv>=BP_MAX?0:Math.floor(tot),lv,paid:P.bp.lv|0,v:2};save()}
+const bpCoins=l=>l%10===0?900+l*30:l%4===0?250+l*12:150+l*10;
+function bpState(){const k=evKey();if(!k)return null;const id=k+':'+EVT.start;if(!P.bp||P.bp.id!==id)P.bp={id,xp:0,lv:0,paid:0,ch:0,v:3};
+  // a pass from the old 20-level layout: keep every bit of XP, put it on the new 40 levels, and hand over the cosmetics already reached
+  if(P.bp.v!==3){const o=P.bp;let tot=o.v===2?(+o.xp||0):(o.lv|0)*BP_XP+(+o.xp||0);if(o.v===2)for(let l=1;l<=(o.lv|0);l++)tot+=bpOldNeed(l);
+    const lv=Math.min(BP_MAX,Math.floor(tot/BP_LV)),B={id:o.id,xp:lv>=BP_MAX?0:Math.floor(tot-lv*BP_LV),lv,paid:lv,ch:0,v:3};P.bp=B;let n=0;
+    for(const[key,l]of EVENTS[k].bp)if(l<=lv&&bpGive(key))n++;save();if(n)setTimeout(()=>toast(`${EVENTS[k].ic} The battle pass got bigger! You already unlocked ${n} new reward${n>1?'s':''}`,'#ffcf4a'),1500)}
   return P.bp}
-function bpAdd(n){const B=bpState();if(!B||n<=0)return;B.xp+=n;let ups=[];while(B.lv<BP_MAX&&B.xp>=bpNeed(B.lv+1)){B.xp-=bpNeed(B.lv+1);B.lv++;if(B.lv>(B.paid|0)){ups.push(B.lv);B.paid=B.lv}}if(B.lv>=BP_MAX)B.xp=0;
-  for(const l of ups){P.coins+=bpCoins(l);const r=EVENTS[evKey()].bp.find(x=>x[1]===l);if(r&&!P.own.includes(r[0])){const[g,cat,id]=r[0].split(':');P.own.push(...(SHARED[cat]&&g!=='prof'?SHARED[cat].map(x=>x+':'+cat+':'+id):[r[0]]));P.fresh.push(r[0])}
-    setTimeout(()=>{toast(`${EVENTS[evKey()]?EVENTS[evKey()].ic:''} Battle pass level ${l}! +${fmt(bpCoins(l))} coins`+(r?' + '+(itemByKey(r[0])||{}).n:''),'#ffcf4a');sfx.combo(4)},400)}
-  if(ups.length){refreshCoins();if(!$('bp').hidden)renderBP()}evBanner()}
+function bpGive(key){if(!key||P.own.includes(key))return false;const[g,cat,id]=key.split(':');P.own.push(...(SHARED[cat]&&g!=='prof'?SHARED[cat].map(x=>x+':'+cat+':'+id):[key]));P.fresh.push(key);return true}
+function bpAdd(n){const B=bpState();if(!B||n<=0)return;B.xp+=n;let ups=[],chests=0;while(B.lv<BP_MAX&&B.xp>=bpNeed(B.lv+1)){B.xp-=bpNeed(B.lv+1);B.lv++;if(B.lv>(B.paid|0)){ups.push(B.lv);B.paid=B.lv}}
+  if(B.lv>=BP_MAX){while(B.xp>=BP_CHEST&&(B.ch|0)<BP_CHESTS){B.xp-=BP_CHEST;B.ch=(B.ch|0)+1;chests++}if((B.ch|0)>=BP_CHESTS)B.xp=0}
+  const ic=EVENTS[evKey()]?EVENTS[evKey()].ic:'';
+  for(const l of ups){P.coins+=bpCoins(l);const sp=bpSpins(l);if(sp)P.spins=(P.spins||0)+sp;const r=EVENTS[evKey()].bp.find(x=>x[1]===l);if(r)bpGive(r[0]);
+    setTimeout(()=>{toast(`${ic} Pass level ${l}! +${fmt(bpCoins(l))} coins`+(sp?` +${sp} spin${sp>1?'s':''}`:'')+(r?' + '+(itemByKey(r[0])||{}).n:''),'#ffcf4a');sfx.combo(r?6:3)},400)}
+  if(chests){P.coins+=chests*bpChestCoins();setTimeout(()=>{toast(`${ic} Bonus chest${chests>1?' x'+chests:''}! +${fmt(chests*bpChestCoins())} coins`,'#ffcf4a');sfx.coin(6)},500)}
+  if(ups.length||chests){refreshCoins();if(!$('bp').hidden)renderBP()}evBanner()}
+const bpChestCoins=()=>400;
 function evInit(){try{FD.onValue(FD.ref(RDB,'event'),s=>{const v=s.val();EVT=v&&typeof v==='object'&&EVENTS[v.k]?v:null;store.set('ca_evt',EVT);evApply()},()=>{})}catch(e){}}
 try{EVT=store.get('ca_evt',null)}catch(e){}
 function evApply(){const k=evKey();for(const id in EVENTS)document.body.classList.toggle('ev-'+id,id===k);evBanner();if(!$('menu').hidden)renderMenu()}
@@ -4790,11 +4841,12 @@ function openBP(){if(!evKey())return;audio();sfx.ui();$('menu').hidden=true;paus
 var bpPrev=[];
 function renderBP(){const k=evKey();if(!k){$('bp').hidden=true;return}const E=EVENTS[k],B=bpState(),L=$('bpList');bpPrev=[];L.textContent='';
   $('bpT').textContent=E.ic+' '+E.n+' battle pass';$('bpS').textContent=`Ends in ${fmtLeft(+EVT.ends-srvNow()).replace(' left','')} · Earn XP by playing any game`;
-  $('bpLv').textContent=B.lv>=BP_MAX?'Pass complete!':`Level ${B.lv} · ${fmt(B.xp)} / ${fmt(bpNeed(B.lv+1))} XP to level ${B.lv+1}`;$('bpF').style.width=(B.lv>=BP_MAX?100:B.xp/bpNeed(B.lv+1)*100)+'%';
+  $('bpLv').textContent=B.lv>=BP_MAX?((B.ch|0)>=BP_CHESTS?'Pass complete! Every bonus chest opened.':`Pass complete! Bonus chest ${(B.ch|0)+1}/${BP_CHESTS}: ${fmt(B.xp)} / ${fmt(BP_CHEST)} XP`):`Level ${B.lv} of ${BP_MAX} · ${fmt(B.xp)} / ${fmt(bpNeed(B.lv+1))} XP to level ${B.lv+1}`;$('bpF').style.width=(B.lv>=BP_MAX?((B.ch|0)>=BP_CHESTS?100:B.xp/BP_CHEST*100):B.xp/bpNeed(B.lv+1)*100)+'%';
   const shop=itemByKey(E.shop);if(shop)$('bpShop').textContent=`Event shop: ${shop.n} wallpaper is in Shop → Wallpapers until the event ends.`;
   for(let l=1;l<=BP_MAX;l++){const got=B.lv>=l||(B.paid|0)>=l,r=E.bp.find(x=>x[1]===l),row=elx('div','bpr'+(got?' got':'')+(r?' big':''));row.append(elx('b','bpl',String(l)));
-    const m=elx('div','bpm');m.append(elx('span','achcoin',fmt(bpCoins(l))));if(r){const it=itemByKey(r[0]);const cv=document.createElement('canvas');cv.width=cv.height=120;cv.className='bpcv';m.append(cv,elx('span','bpn',it?it.n+' ('+CATL[it.cat].replace(/s$/,'')+')':''));bpPrev.push({c:cv.getContext('2d'),g:it.g,cat:it.cat,id:it.id})}
-    row.append(m,elx('span','bpok',got?'✓':''));L.append(row)}}
+    const m=elx('div','bpm');m.append(elx('span','achcoin',fmt(bpCoins(l))));if(bpSpins(l))m.append(elx('span','achx','+'+bpSpins(l)+' spin'+(bpSpins(l)>1?'s':'')));if(r){const it=itemByKey(r[0]);const cv=document.createElement('canvas');cv.width=cv.height=120;cv.className='bpcv';m.append(cv,elx('span','bpn',it?it.n+' ('+CATL[it.cat].replace(/s$/,'')+')':''));bpPrev.push({c:cv.getContext('2d'),g:it.g,cat:it.cat,id:it.id})}
+    row.append(m,elx('span','bpok',got?'✓':''));L.append(row)}
+  {const row=elx('div','bpr big'+((B.ch|0)>=BP_CHESTS?' got':''));row.append(elx('b','bpl','★'));const m=elx('div','bpm');m.append(elx('span','achcoin',fmt(bpChestCoins())+' each'),elx('span','bpn',`Bonus chests after level ${BP_MAX}: one every ${fmt(BP_CHEST)} XP (${B.ch|0}/${BP_CHESTS} opened)`));row.append(m,elx('span','bpok',(B.ch|0)>=BP_CHESTS?'✓':''));L.append(row)}}
 // dev: set an event (30 days, ends at 3 am)
 function openEvDev(){if(!isAdmin())return;audio();sfx.ui();$('menu').hidden=true;$('evdev').hidden=false;renderEvDev()}
 function renderEvDev(){const L=$('evdList');L.textContent='';const k=evKey();$('evdNow').textContent=k?`Running: ${EVENTS[k].n} · ${fmtLeft(+EVT.ends-srvNow())}`:'No event running';
