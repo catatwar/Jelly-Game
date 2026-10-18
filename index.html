@@ -249,6 +249,8 @@ select{font:600 16px var(--body);color:var(--ink);border:2.5px solid var(--ink);
 #pfAv{width:120px;height:120px}
 .pfn{font-family:var(--display);font-size:30px;line-height:1;word-break:break-word}
 .pft{font-size:12px;font-weight:700;color:#fff;padding:2px 12px;border-radius:999px;border:2.5px solid var(--ink);letter-spacing:.04em}
+.pfdev{width:100%;display:grid;gap:6px;text-align:left;background:#fff6d8;border:2.5px dashed var(--ink);border-radius:14px;padding:8px 10px;box-sizing:border-box}
+.pfdev>.lbl{text-align:center}.pdnow{font:700 12px/1.2 var(--body);opacity:.75}.pdrow{display:flex;gap:6px;flex-wrap:wrap}.pdrow .btn{flex:1 1 auto}.flban{font-weight:800;color:#d23a6c}
 .pfh{width:100%;display:flex;flex-direction:column;gap:6px;align-items:center;background:#f6f0ff;border:2.5px solid var(--ink);border-radius:14px;padding:8px 10px;box-sizing:border-box}
 #pfHist{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
 .pfpast{background:#fff;border:2px solid var(--ink);border-radius:999px;padding:2px 10px;font-weight:600;font-size:13px;text-decoration:line-through;text-decoration-color:rgba(43,35,64,.35)}
@@ -1016,11 +1018,12 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
       <input id="gvTakeOther" type="text" maxlength="40" placeholder="Profile field name, e.g. coins or cap.dust" hidden>
       <button class="btn small danger" id="gvTakeNGo" type="button" disabled>Take it</button>
       <span class="nmsg" id="gvTakeMsg"></span>
-      <h3 class="mh">Set a personal best</h3>
+      <div hidden><h3 class="mh">Set a personal best</h3>
       <div class="frow"><label class="fld"><span class="lbl">Game</span><select id="gvBestG"></select></label><label class="fld"><span class="lbl">New best score</span><input id="gvBestN" type="number" inputmode="numeric" min="0" max="99999999" placeholder="e.g. 12000"></label></div>
       <span class="gvnone" id="gvBestCur"></span>
       <button class="btn small white" id="gvBestGo" type="button" disabled>Set best</button>
-      <span class="nmsg" id="gvBestMsg"></span>
+      <span class="nmsg" id="gvBestMsg"></span></div>
+      <p class="lnote">To set or wipe someone’s PB, open their profile (tap them on a leaderboard).</p>
     </div>
   </div>
 </div>
@@ -1254,6 +1257,13 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
       <label class="fld"><span class="lbl">Background</span><select id="psBg"></select></label>
       <label class="fld" id="psBnF" hidden style="grid-column:1/-1"><span class="lbl">Prestige</span><select id="psBn"><option value="1">Show my BOUNCY badge</option><option value="0">Hide it</option></select></label>
     </div>
+    <div class="pfdev" id="pfDev" hidden><span class="lbl">Developer tools</span>
+      <div class="frow"><label class="fld"><span class="lbl">Game</span><select id="pdG"></select></label><label class="fld"><span class="lbl">New PB</span><input id="pdN" type="number" inputmode="numeric" min="0" max="99999999" placeholder="e.g. 12000"></label></div>
+      <span class="pdnow" id="pdNow"></span>
+      <div class="pdrow"><button class="btn small white" id="pdGo" type="button">Set PB</button><button class="btn small white" id="pdWipe" type="button">Wipe this PB</button></div>
+      <div class="pdrow"><button class="btn small white" id="pdWipeAll" type="button">Wipe all their PBs</button><button class="btn small danger" id="pdBan" type="button">Ban from leaderboards</button></div>
+      <span class="nmsg" id="pdMsg"></span>
+    </div>
     <div class="pfh"><span class="lbl">Past names</span><div id="pfHist"></div></div>
     <p class="lnote" id="pfNote"></p>
     <p class="pfmut" id="pfMut"></p>
@@ -1322,7 +1332,26 @@ const $=id=>document.getElementById(id);
 const rand=(a=1,b)=>b===undefined?Math.random()*a:a+Math.random()*(b-a);
 // gameplay randomness (which jelly comes next, where it spawns): seeded during the daily challenge so everyone gets the same round
 // ---- fair play (Cat At War): game moves only count when they come from a real tap, click or key press
-var INP={ok:0,ts:[],test:false},CHEAT={round:false,why:'',n:0,sent:0};
+var INP={ok:0,ts:[],tp:[],mv:0,ev:0,test:false},CHEAT={round:false,why:'',n:0,sent:0,pend:''};
+// saves are signed: an edited save (localStorage or the cloud copy) is spotted, and best scores fall back to the last real ones
+const SGK='jc~'+(390777*7).toString(36)+'~';
+function sig(s){let a=0x811c9dc5^s.length,b=0x9e3779b9;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);a=Math.imul(a^c,16777619);b=Math.imul(b^c^(a>>>11),2246822519)}a=Math.imul(a^(b>>>15),2654435761);return(a>>>0).toString(36)+(b>>>0).toString(36)}
+function signJ(o){const s=JSON.stringify(o);return s.length>2&&s.charCodeAt(s.length-1)===125?s.slice(0,-1)+',"_s":"'+sig(SGK+s)+'"}':s}
+function unsignJ(raw){let o;try{o=JSON.parse(raw)}catch(e){return{o:null,st:'bad'}}if(!o||typeof o!=='object'||Array.isArray(o)||!('_s' in o))return{o,st:'none'};const g=o._s;delete o._s;return{o,st:sig(SGK+JSON.stringify(o))===g?'ok':'bad'}}
+var SV_MK=0,BK_LAST='',LBBAN={};
+function saveLocal(){try{localStorage.setItem('ca_profile',signJ(P));const b={};for(const g of['drop','squish','doku','catch','combo','memory','slice'])b[g]=Math.floor(+(P.best&&P.best[g])||0);const k=JSON.stringify(b);if(k!==BK_LAST){const s=signJ({b});localStorage.setItem('ca_bk',s);ckSet(s);BK_LAST=k}if(!SV_MK){localStorage.setItem('ca_sv','1');SV_MK=1}}catch(e){}}
+// the backup of your real best scores is kept twice (local storage and a cookie), so wiping one doesn't fool it
+function ckGet(){try{const m=document.cookie.match(/(?:^|;\s*)ca_bk=([^;]*)/);return m?decodeURIComponent(m[1]):null}catch(e){return null}}
+function ckSet(v){try{document.cookie='ca_bk='+encodeURIComponent(v)+';max-age=63072000;path='+location.pathname.replace(/[^/]*$/,'')+';SameSite=Lax'}catch(e){}}
+function loadLocal(){let raw=null,mk=false,bk=null;try{raw=localStorage.getItem('ca_profile');const bc=ckGet();mk=localStorage.getItem('ca_sv')==='1'||bc!=null;
+  const rd=x=>{if(x==null)return null;const r=unsignJ(x);return r.st==='ok'&&r.o&&r.o.b&&typeof r.o.b==='object'?r.o.b:'bad'},A=rd(localStorage.getItem('ca_bk')),C=rd(bc);
+  if(A==='bad'||C==='bad')bk='bad';else if(A&&C){bk={};for(const g of new Set([...Object.keys(A),...Object.keys(C)]))bk[g]=Math.min(+A[g]||0,+C[g]||0)}else bk=A||C||(mk?'bad':null)}catch(e){}
+  if(raw==null)return null;const r=unsignJ(raw),o=r.o;if(!o||typeof o!=='object')return null;
+  const edited=r.st==='bad'||bk==='bad';
+  if(edited||(r.st==='none'&&mk)){const tb=bk&&bk!=='bad'?bk:{};o.best=o.best&&typeof o.best==='object'?o.best:{};for(const g in o.best)o.best[g]=Math.min(+o.best[g]||0,+tb[g]||0);if(edited){o.saves={};CHEAT.pend='edited save file';setTimeout(()=>{try{toast('Your save looked edited, so your best scores went back to your real ones','#ff6fa8')}catch(e){}},2500)}}
+  return o}
+// a cloud copy that was edited by hand loses its best scores and saved rounds (this device's real ones are kept)
+function cloudParse(str){const r=unsignJ(String(str||'')),o=r.o;if(!o||typeof o!=='object')return null;if(r.st==='bad'){o.best={};o.saves={};delete o.bestFix;CHEAT.pend='edited cloud save'}return o}
 function inpRun(fn){INP.ok++;try{return fn()}finally{INP.ok--}}
 function cheatSeen(why){if(INP.test)return;CHEAT.round=true;if(CHEAT.why!==why||!CHEAT.n){CHEAT.why=why}CHEAT.n++}
 var CH=null;const SR=()=>CH&&CH.rnd?CH.rnd():Math.random(),srand=(a=1,b)=>b===undefined?SR()*a:a+SR()*(b-a);
@@ -2113,7 +2142,7 @@ const gotw=()=>GLIST[(CWEEK()*5+2)%7];              // game of the week
 const chGame=()=>GLIST[hash32('ch'+CDAY())%7];      // today's daily challenge
 const mysG=()=>{const a=GLIST[hash32('my'+CDAY())%7];return a===chGame()?GLIST[(GLIST.indexOf(a)+3)%7]:a};   // where the mystery critter hides
 const dhm=ms=>{const m=Math.max(0,Math.round(ms/60000)),d=Math.floor(m/1440),h=Math.floor(m%1440/60);return d?d+'d '+h+'h':h?h+'h '+(m%60)+'m':(m%60)+'m'};
-let P=store.get('ca_profile',null);
+let P=loadLocal();
 if(!P||typeof P!=='object'){const old=store.get('ja_profile',null)||{};P={coins:old.coins||0,xp:old.xp||0,level:old.level||1,streak:old.streak||0,lastDay:old.lastDay||'',giftDay:old.giftDay||'',rounds:old.rounds||0,earned:old.earned||0,name:old.name||'',
   best:{drop:(old.best&&old.best.jar)||store.get('jj_best',0),squish:(old.best&&old.best.squish)||0},found:old.found||store.get('jj_found',[0]),quests:null}}
 // which per-game style slots hold each kind of cosmetic (one shared Shop fills all of them)
@@ -2127,7 +2156,7 @@ function GAMESOK(g){return g==='drop'||g==='squish'||g==='doku'||g==='catch'||g=
 if(!P.name)P.name='Critter Pal';
 if(!P.v2){P.v2=1;for(const g in DEF){if(g==='prof')continue;P.cos[g].set='jelly';P.cos[g].wall&&(P.cos[g].wall='mint');}}}
 norm();
-const save=()=>{P.t=Date.now();store.set('ca_profile',P);if(typeof UID!=='undefined'&&UID)store.set('ca_dirty',1);cloudSoon()};
+const save=()=>{P.t=Date.now();saveLocal();if(typeof UID!=='undefined'&&UID)store.set('ca_dirty',1);cloudSoon()};
 const xpNeed=l=>50+l*40;
 function addXP(n){try{bpAdd(n)}catch(e){}P.xp+=n;let up=0;while(P.xp>=xpNeed(P.level)){P.xp-=xpNeed(P.level);P.level++;up++}if(up)lvGrant();return up}
 // level rewards: coins every level (x3 every 5th), 5 free spins every 10 levels, cosmetics at 25 / 50 / 75 / 100
@@ -2140,7 +2169,7 @@ function lvGrant(silent){if(typeof P.lvClaimed!=='number'){lvInit();return}let c
   if(!top)return;P.coins+=co;P.spins=(P.spins||0)+sp;save();refreshCoins();
   if(!silent){toast(`Level ${top} rewards: +${fmt(co)} coins`+(sp?` · +${sp} free spins`:'')+(its.length?' · '+(its.length>2?its.slice(0,2).join(', ')+' +'+(its.length-2)+' more':its.join(', ')):''),its.length?'#14b88a':sp?'#ff6fa8':'#ffd23f');
     if(its.length||sp)setTimeout(()=>{confetti(fxW/2,fxH*.3,its.length?150:80,950);sfx.discover()},250)}}
-function lvInit(){if(typeof P.lvClaimed!=='number'){let sp=0;for(let L=2;L<=(P.level||1);L++){const r=lvReward(L);sp+=r.spins;for(const k of r.items)if(!P.own.includes(k))P.own.push(k)}P.lvClaimed=P.level||1;P.spins=(P.spins||0)+sp;store.set('ca_profile',P);return}
+function lvInit(){if(typeof P.lvClaimed!=='number'){let sp=0;for(let L=2;L<=(P.level||1);L++){const r=lvReward(L);sp+=r.spins;for(const k of r.items)if(!P.own.includes(k))P.own.push(k)}P.lvClaimed=P.level||1;P.spins=(P.spins||0)+sp;saveLocal();return}
   if(P.lvClaimed<(P.level||1))lvGrant();for(const L in LV_ITEMS)if(+L<=P.lvClaimed)for(const k of lvReward(+L).items)if(!P.own.includes(k))P.own.push(k)}
 function refreshCoins(){document.querySelectorAll('.coinN').forEach(e=>e.textContent=fmt(P.coins))}
 const owns=(g,cat,id)=>g==='prof'||!SHARED[cat]?P.own.includes(g+':'+cat+':'+id):SHARED[cat].some(x=>P.own.includes(x+':'+cat+':'+id));
@@ -2263,9 +2292,9 @@ function drawTile(c,x,y,S,v,set,o={}){
 // ================================================= runtime
 const cv=$('game'),ctx=cv.getContext('2d',{alpha:false}),stage=$('stage');   // opaque: every frame paints the whole board, so phones skip blending it over the page
 const midC=$('midC'),midCtx=midC.getContext('2d'),scoreEl=$('score'),bestEl=$('best');
-let G=null,gid=null,score=0,shown=0,paused=false;
+let G=null,gid=null,score=0,shown=0,paused=false,SCK=0;
 function bumpEl(el,s){el.style.setProperty('--b',s);el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}
-function addScore(n,b=1.2){score+=n;if(n>0)bumpEl(scoreEl,b)}
+function addScore(n,b=1.2){score+=n;SCK+=n;if(n>0)bumpEl(scoreEl,b)}
 function setMid(label,text){$('midL').textContent=label;midC.hidden=true;const t=$('midT');t.hidden=false;if(t.textContent!==String(text)){t.textContent=text;bumpEl(t,1.4)}}
 function setMidCanvas(label){$('midL').textContent=label;midC.hidden=false;$('midT').hidden=true}
 function gbar(html){$('gbar').innerHTML=html.startsWith('<')?html:`<p class="tip">${html}</p>`}
@@ -2331,7 +2360,7 @@ const Drop=(()=>{
   function coSnap(v){if(!v||v.h===co.me||(co.last&&v.t===co.last.t))return;   // only a NEW jar counts as a sign of life
     if(co.host){if((+v.t||0)<=co.sentS)return;co.host=false;toast(co.oppN+' kept the jar going while you were away','#7cc8ff')}
     co.snapAt=performance.now();co.last=v;co.n=v.n|0;co.cd=v.cd?1:0;co.tl=+v.tl||0;co.solo=v.solo||'';if(co.pend>=0&&co.n>co.pend)co.pend=-1;
-    score=Math.max(0,+v.score||0);
+    score=SCK=Math.max(0,+v.score||0);
     if(v.end){if(st==='play')endGame();return}
     if(st!=='play')return;specSync(v)}
   function coPromote(){const v=co.last;co.host=true;co.solo=co.me;co.ts=0;co.pend=-1;co.inQ=null;co.sentS=srvNow();restoreBoard(v);co.n=v.n|0;toast(co.oppN+'’s connection dropped. The jar is all yours now!','#ff6fa8')}
@@ -2361,7 +2390,7 @@ const Drop=(()=>{
   function start(){coStop();reset();cur=randLevel()%3;next=randLevel(cur);bestCombo=0;merges=0;maxLv=0;if(DUEL&&DUEL.g==='coop'&&DUEL.rec){coBegin();bestEl.textContent=fmt(P.coBest||0)}setMidCanvas('Next');restyle()}
   function serialize(){if(st!=='play')return null;return{score,cur,next,merges,bestCombo,maxLv,ax:Math.round(aimX),balls:balls.map(b=>[Math.round(b.x),Math.round(b.y),b.l,+b.ang.toFixed(2),b.id])}}
   function restore(d){coStop();restoreBoard(d)}
-  function restoreBoard(d){reset();cur=d.cur||0;next=d.next||1;merges=d.merges||0;bestCombo=d.bestCombo||0;maxLv=d.maxLv||0;score=shown=d.score||0;scoreEl.textContent=fmt(score);
+  function restoreBoard(d){reset();cur=d.cur||0;next=d.next||1;merges=d.merges||0;bestCombo=d.bestCombo||0;maxLv=d.maxLv||0;score=shown=SCK=d.score||0;scoreEl.textContent=fmt(score);
     balls=(d.balls||[]).map(([x,y,l,a,id])=>{const b=mk(x,y,l);b.age=2;b.ang=a||0;if(id){b.id=id;BID=Math.max(BID,id)}return b});lastSS=0;setMidCanvas('Next');restyle()}
   function restyle(){const w=WALLS[cos('drop').wall];theme(w.bg,w.hud);gbar(`<div class="ladder" id="ladder"></div><p class="tip">${co?`🤝 Co-op with <b>${esc(co.oppN)}</b>: take turns dropping. One jar, one team score!`:'Two of a kind squish into a bigger jelly.'}</p>`);ladder();nextKey='';drawNext()}
   function drop(src){if(st!=='play'||paused)return;
@@ -2469,7 +2498,7 @@ const Squish=(()=>{
   function reset(){tiles=[];grid=emptyGrid();pend=[];st='play'}
   function start(){reset();maxTile=2;moves=0;mergesTot=0;seen=new Set([2,4]);spawn(0);spawn(.12);setMid('Biggest','2');restyle()}
   function serialize(){if(st!=='play')return null;return{score,moves,mergesTot,maxTile,g:grid.map(row=>row.map(t=>t?t.v:0))}}
-  function restore(d){reset();moves=d.moves||0;mergesTot=d.mergesTot||0;maxTile=d.maxTile||2;seen=new Set([2,4]);for(let v=8;v<=maxTile;v*=2)seen.add(v);score=shown=d.score||0;scoreEl.textContent=fmt(score);
+  function restore(d){reset();moves=d.moves||0;mergesTot=d.mergesTot||0;maxTile=d.maxTile||2;seen=new Set([2,4]);for(let v=8;v<=maxTile;v*=2)seen.add(v);score=shown=SCK=d.score||0;scoreEl.textContent=fmt(score);
     (d.g||[]).forEach((row,r)=>row.forEach((v,c)=>{if(v)newTile(r,c,v,(r+c)*.03)}));setMid('Biggest',maxTile);restyle()}
   function restyle(){const B=BOARDS[cos('squish').board];theme(wallOn()?WALLS[wallOn()].bg:B.bg,B.hud);gbar('Swipe or use the arrow keys. Twin jellies squish into a bigger one.')}
   function move(d){
@@ -2646,7 +2675,7 @@ const Doku=(()=>{
     if(st!=='play')return null;
     return{score,lvl,seed,lives,streak,bestStreak,t:Math.round(tLevel),ok:okN,bad:badN,hints,hu:hintsUsed,ld:levelsDone,to:totOk,tb:totBad,lsp:lvlStreakPts,
       j:cells.map((c,k)=>c.j&&!c.j.given?k:-1).filter(k=>k>=0),m:cells.map((c,k)=>c.mark?k*4+c.mark:-1).filter(k=>k>=0),pz:pzKey}}
-  function restore(d){lvl=d.lvl||1;seed=d.seed||1;streak=d.streak||0;bestStreak=d.bestStreak||0;levelsDone=d.ld||0;totOk=d.to||0;totBad=d.tb||0;score=shown=d.score||0;scoreEl.textContent=fmt(score);nextP=null;
+  function restore(d){lvl=d.lvl||1;seed=d.seed||1;streak=d.streak||0;bestStreak=d.bestStreak||0;levelsDone=d.ld||0;totOk=d.to||0;totBad=d.tb||0;score=shown=SCK=d.score||0;scoreEl.textContent=fmt(score);nextP=null;
     setup((d.pz&&pzDec(d.pz))||genNow(lvl));lives=clamp(d.lives||5,1,5);tLevel=d.t||0;okN=d.ok||0;badN=d.bad||0;if(d.hints!=null)hints=d.hints;hintsUsed=d.hu||0;lvlStreakPts=d.lsp||0;
     for(const k of d.j||[])if(cells[k]&&pz.sol[Math.floor(k/N)]===k%N){cells[k].j=mkJ(false);cells[k].j.dy=0;cells[k].j.landed=true}
     for(const v of d.m||[]){const k=v>>2,m=v&3;if(cells[k]&&!cells[k].j)cells[k].mark=m||1}introT=1;restyle()}
@@ -2842,7 +2871,7 @@ const Catch=(()=>{
     if(mult>1||gold>0){outlineText(c,(gold>0?'GOLD ':'')+'x'+(mult*(gold>0?2:1)),W-50,32,22,gold>0?'#ffd23f':'#5be0a6')}}
   function down(p){jt=p.x}function move(p){jt=p.x}function up(p){jt=p.x}
   function serialize(){if(st!=='play')return null;return{score,lives,streak,bestStreak,caught,t:+t.toFixed(1),jx:Math.round(jx),target,gold:+gold.toFixed(1),it:items.map(i=>[Math.round(i.x),Math.round(i.y),i.l,({jelly:'j',spike:'x',star:'t',heart:'h'})[i.type],Math.round(i.vy)])}}
-  function restore(d){reset();lives=d.lives||3;streak=d.streak||0;bestStreak=d.bestStreak||0;caught=d.caught||0;t=d.t||0;jx=jt=d.jx||W/2;target=d.target||0;gold=d.gold||0;score=shown=d.score||0;scoreEl.textContent=fmt(score);mult=Math.min(8,1+Math.floor(streak/6));
+  function restore(d){reset();lives=d.lives||3;streak=d.streak||0;bestStreak=d.bestStreak||0;caught=d.caught||0;t=d.t||0;jx=jt=d.jx||W/2;target=d.target||0;gold=d.gold||0;score=shown=SCK=d.score||0;scoreEl.textContent=fmt(score);mult=Math.min(8,1+Math.floor(streak/6));
     const TY={j:'jelly',x:'spike',t:'star',h:'heart'};items=(d.it||[]).map(a=>{const type=TY[a[3]]||'jelly',l=a[2]||0;return{x:a[0],y:a[1],l,type,r:type==='jelly'?rad(l):17,vy:a[4]||120,vx:0,rot:0,av:0,sq:0,sqv:0,seed:l}});restyle();hearts()}
   function specSync(d){if(st!=='play'){restore(d);return}lives=d.lives||lives;streak=d.streak||0;bestStreak=d.bestStreak||0;caught=d.caught||0;t=d.t||t;target=d.target||0;gold=d.gold||0;mult=Math.min(8,1+Math.floor(streak/6));if(d.jx!=null)jt=d.jx;hearts();
     const TY={j:'jelly',x:'spike',t:'star',h:'heart'},pool=items.slice(),out=[];
@@ -2918,7 +2947,7 @@ const Combo=(()=>{
     if(growT>0){c.save();c.globalAlpha=Math.min(1,growT*2);outlineText(c,N+' × '+N,W/2,BY+BS/2,64,'#fff');c.restore()}}
   function serialize(){if(st!=='play')return null;return{score,t:+t.toFixed(1),hearts,combo,bestCombo,hits,N,c:cells.map(k=>[k.lv,k.state,+k.life.toFixed(2),+k.tot.toFixed(2)])}}
   function restore(d){const nn=clamp(d.N|0||sizeFor(d.t||0),3,5),keep=SPEC&&cells.length===nn*nn&&N===nn;if(!keep){reset();build(nn,false)}else st='play';
-    t=d.t||0;hearts=d.hearts||3;combo=d.combo||0;bestCombo=d.bestCombo||0;hits=d.hits||0;lvShown=lvl();score=shown=d.score||0;scoreEl.textContent=fmt(score);
+    t=d.t||0;hearts=d.hearts||3;combo=d.combo||0;bestCombo=d.bestCombo||0;hits=d.hits||0;lvShown=lvl();score=shown=SCK=d.score||0;scoreEl.textContent=fmt(score);
     (d.c||[]).forEach((a,i)=>{const k=cells[i];if(!k)return;const ns=clamp(a[1]|0,0,4);if(keep&&k.state===0&&ns>0){k.pop=0;k.sqv=-6}else if(keep&&k.state>0&&ns===0){k.hit=.35;k.sqv+=6}else if(!keep)k.pop=1;k.lv=clamp(a[0]|0,0,10);k.state=ns;k.life=+a[2]||0;k.tot=+a[3]||1});if(!keep)restyle();hud()}
   return{start,update,render,bg,down:tap,move(){},up(){},key(){},action(){},restyle,serialize,restore,state:()=>st};
 })();
@@ -3008,7 +3037,7 @@ const Memory=(()=>{
     if(msgT>0){c.save();c.globalAlpha=Math.min(1,msgT*3);outlineText(c,msg,W/2,BY+BS+44,24,phase==='input'?'#5be0a6':phase==='bad'?'#ff8a9a':'#fff');c.restore()}
     else if(phase==='input'&&st==='play'){outlineText(c,(seq.length-pos)+' to go',W/2,BY+BS+44,18,'rgba(255,255,255,.85)')}}
   function serialize(){if(st!=='play')return null;return{score,round,hearts,seq:seq.slice(0,200),pos,phase,taps,bestRound,stepI,cols,rows,sl:pads.map(p=>p.slot)}}
-  function restore(d){st='play';round=d.round||1;hearts=d.hearts||3;taps=d.taps||0;bestRound=d.bestRound||0;seq=Array.isArray(d.seq)?d.seq.map(x=>x|0):[];score=shown=d.score||0;scoreEl.textContent=fmt(score);
+  function restore(d){st='play';round=d.round||1;hearts=d.hearts||3;taps=d.taps||0;bestRound=d.bestRound||0;seq=Array.isArray(d.seq)?d.seq.map(x=>x|0):[];score=shown=SCK=d.score||0;scoreEl.textContent=fmt(score);
     const[c,r]=d.cols&&d.rows?[clamp(d.cols|0,2,3),clamp(d.rows|0,2,3)]:layout(round),sl=Array.isArray(d.sl)&&d.sl.length===c*r?d.sl.map(x=>clamp(x|0,0,c*r-1)):null;
     if(!SPEC||c!==cols||r!==rows||pads.length!==c*r){cols=c;rows=r;pads=[];for(let id=0;id<n();id++)pads.push(mkPad(id,sl?sl[id]:id,SPEC?0:1))}
     else if(sl)pads.forEach((p,i)=>{if(p.slot!==sl[i]&&!p.tw)tweenTo(p,sl[i],{dur:.8,delay:i*.05,arc:50,kick:9})});
@@ -3102,7 +3131,7 @@ const Slice=(()=>{
   function serialize(){if(st!=='play')return null;return{score,lives,t:+t.toFixed(1),sliced,bestCombo,frenzy:+frenzy.toFixed(1),frost:+frost.toFixed(1),it:items.map(i=>[i.id,Math.round(i.x),Math.round(i.y),Math.round(i.vx),Math.round(i.vy),i.l,({jelly:'j',spike:'x',heart:'h',ice:'i',star:'t'})[i.type]]),tr:trail.slice(-8).map(p=>[Math.round(p.x),Math.round(p.y)])}}
   const ty=c=>({j:'jelly',x:'spike',h:'heart',i:'ice',t:'star'})[c]||'jelly';
   function mkItem(a){const type=ty(a[6]);return{id:a[0],type,l:a[5]|0,x:a[1],y:a[2],vx:a[3],vy:a[4],r:type==='jelly'?rad(a[5]|0):type==='spike'?24:22,rot:rand(TAU),av:rand(-3,3),seed:rand(9),born:0}}
-  function restore(d){reset();lives=d.lives||3;t=d.t||0;sp=speedAt(t);sliced=d.sliced||0;bestCombo=d.bestCombo||0;frenzy=d.frenzy||0;frost=d.frost||0;score=shown=d.score||0;scoreEl.textContent=fmt(score);items=(d.it||[]).map(mkItem);nid=items.reduce((m,i)=>Math.max(m,i.id),0)+1000;restyle();hearts()}
+  function restore(d){reset();lives=d.lives||3;t=d.t||0;sp=speedAt(t);sliced=d.sliced||0;bestCombo=d.bestCombo||0;frenzy=d.frenzy||0;frost=d.frost||0;score=shown=SCK=d.score||0;scoreEl.textContent=fmt(score);items=(d.it||[]).map(mkItem);nid=items.reduce((m,i)=>Math.max(m,i.id),0)+1000;restyle();hearts()}
   function specSync(d){if(st!=='play'){restore(d);return}if(d.lives!==lives){lives=d.lives;hearts()}t=d.t||t;sp=speedAt(t);sliced=d.sliced||0;frenzy=d.frenzy||0;frost=d.frost||0;
     const byId=new Map(items.map(i=>[i.id,i])),seen=new Set(),out=[];for(const a of d.it||[]){const m=byId.get(a[0]);seen.add(a[0]);if(m){m.x+=(a[1]-m.x)*.7;m.y+=(a[2]-m.y)*.7;m.vx=a[3];m.vy=a[4];out.push(m)}else out.push(mkItem(a))}
     for(const it of items)if(!seen.has(it.id)&&it.y<H&&it.y>-40&&it.vy<520)sliceFX(it);items=out;
@@ -3152,7 +3181,7 @@ const Pong=(()=>{
       const lag=Math.max(arr,E.t)-E.t;if(lag>4){const o=s==='a'?'b':'a',D=Math.abs((yc(o)-E.y)/E.vy)*1000*.85;wk=clamp(1+lag/Math.max(120,D),1,4)}
       hitFx(s,E.x)}
     else{trail=[];outEv=old&&old.vy&&(E.sa!==pts.a||E.sb!==pts.b)?old:null;if(E.sa!==pts.a||E.sb!==pts.b){const sc=E.sa>pts.a?'a':'b';pointFx(sc)}}
-    pts={a:E.sa|0,b:E.sb|0};score=shown=pts[spec?view:me];scoreEl.textContent=fmt(score);
+    pts={a:E.sa|0,b:E.sb|0};score=shown=SCK=pts[spec?view:me];scoreEl.textContent=fmt(score);
     if(E.k==='end'&&!ended){ended=true;endT=performance.now();if(E.ff&&!spec&&E.ff!==me)setTimeout(()=>toast('Your opponent left, so you win!','#5be0a6'),300)}}
   function post(E){E.d=id;setEv(E,true);if(!spec&&id)FD.set(fref('pong/'+id+'/e'),E).catch(()=>{})}
   // where the ball is drawn: always a point on the real path (never a guess)
@@ -3176,7 +3205,7 @@ const Pong=(()=>{
     const lid=id;unsub=FD.onValue(fref('pong/'+lid),s=>{if(lid!==id)return;const v=s.val()||{};if(v.e&&v.e.d!==lid)return void 0;for(const k of['a','b']){const q=v['p'+k];if(q&&typeof q.x==='number'&&(spec||k!==me)){tgt[k]=clamp(q.x,PW,W-PW);if(!spec)seen=NOW()}}
       if(v.e&&typeof v.e.n==='number')setEv(v.e,false)},()=>{})}
   function begin(o){st='play';id=o.id;me=o.me;view=o.view||o.me;spec=!!o.spec;start0=o.start||NOW();ended=false;done=-1;prev=null;outEv=null;arr=0;wk=1;holdS='';splats=[];trail=[];pts={a:0,b:0};
-    pos={a:W/2,b:W/2};tgt={a:W/2,b:W/2};seen=0;sentX=-1;score=shown=0;scoreEl.textContent='0';
+    pos={a:W/2,b:W/2};tgt={a:W/2,b:W/2};seen=0;sentX=-1;score=shown=SCK=0;scoreEl.textContent='0';
     ev=serveEv(0,start0+DU_CD+500,seedDir(),0,0);restyle();listen()}
   function start(){const d=DUEL;if(d&&d.rec&&(d.g==='pong')){begin({id:d.id,me:d.me,start:+d.rec.start||NOW()});return}
     st='done';ev=null;restyle();gbar('Jelly Pong is a 1v1 game. Open 1v1 battles from the menu to play someone!')}
@@ -3192,7 +3221,7 @@ const Pong=(()=>{
     if(hp.e&&hp.e.vx&&!hp.hold){const p=hp,w=walls(p.raw);if(lastWall===null)lastWall=w;else if(w!==lastWall){lastWall=w;const cr=ball(),wx=p.x<W/2?0:W;splat(wx,p.y,cr.c,9,1);sq=.3;sqv=0;sqa=0;sfx.pop(3)}}
     const bp=renderPos();if(T>=(ev?ev.t:0)){trail.push({x:bp.x,y:bp.y,a:1});if(trail.length>9)trail.shift()}for(const t of trail)t.a-=dt*4;
     if(!spec&&id&&(Math.abs(pos[me]-sentX)>.8&&T-sentT>66||T-sentT>2000)){sentX=pos[me];sentT=T;FD.set(fref('pong/'+id+'/p'+me),{x:Math.round(pos[me]*10)/10,t:Math.round(T)}).catch(()=>{})}
-    if(ended&&performance.now()-endT>1300&&st==='play'){st='done';if(!spec&&DUEL&&DUEL.id===id&&(DUEL.phase==='live'||DUEL.phase==='count')){score=pts[me];duLocalEnd()}}}
+    if(ended&&performance.now()-endT>1300&&st==='play'){st='done';if(!spec&&DUEL&&DUEL.id===id&&(DUEL.phase==='live'||DUEL.phase==='count')){score=SCK=pts[me];duLocalEnd()}}}
   function setX(p){if(spec||st!=='play')return;const x=view==='b'?W-p.x:p.x;pos[me]=tgt[me]=clamp(x,PW,W-PW)}
   function down(p){pressed=true;setX(p)}
   function move(p){setX(p)}
@@ -3371,7 +3400,7 @@ addEventListener('pagehide',()=>saveRun(false));
 let lastSurprise=null;
 var lastFin=null;
 function finishRound(g,s,title,items){
-  if(SPEC||VIEW)return;{const bot=!INP.test&&(CHEAT.round||botTiming());if(bot&&!(DUEL&&DUEL.phase!=='wait')){cheatRound(g);return}if(bot)CHEAT.round=true}try{secRound(g,score)}catch(e){}lastFin={at:Date.now(),g,title:String(title||'').slice(0,40),score:Math.floor(score),items:(items||[]).slice(0,4).map(([k,v])=>[String(k).slice(0,20),String(v).slice(0,20)])};if(DUEL&&DUEL.phase!=='wait'){if(DUEL.phase==='live'||DUEL.phase==='count')duLocalEnd();return}
+  if(SPEC||VIEW)return;{const bot=cheatCheck();if(bot&&!(DUEL&&DUEL.phase!=='wait')){cheatRound(g);return}if(bot)CHEAT.round=true}try{secRound(g,score)}catch(e){}lastFin={at:Date.now(),g,title:String(title||'').slice(0,40),score:Math.floor(score),items:(items||[]).slice(0,4).map(([k,v])=>[String(k).slice(0,20),String(v).slice(0,20)])};if(DUEL&&DUEL.phase!=='wait'){if(DUEL.phase==='live'||DUEL.phase==='count')duLocalEnd();return}
   if(gid!==g)return;delete P.saves[g];
   s.score=score;shown=score;scoreEl.textContent=fmt(score);
   const prev=P.best[g]||0,nb=s.score>prev&&s.score>0;if(nb){P.best[g]=s.score;bestEl.textContent=fmt(s.score)}
@@ -3411,8 +3440,8 @@ function finishRound(g,s,title,items){
 $('oSurEq').onclick=()=>{if(!lastSurprise)return;equip(lastSurprise.g,lastSurprise.cat,lastSurprise.id);$('oSurEq').textContent='Wearing!';$('oSurEq').disabled=true;sfx.pop(6);syncDots()};
 
 // ================================================= play / menu
-function playGame(g,fresh=false){CHEAT.round=false;INP.ts=[];if(RACE&&!RACE.go)RACE=null;if(RACE)RACE.go=0;RT={t:0,pts:[],next:1};PBX.done=0;if(CH&&!CH.go)chEnd();if(CH)CH.go=0;else if(fresh&&chJust===g&&P.saves[g])fresh=false;chJust='';MYS.t=0;MYS.show=0;const def=GAMES[g]||DUELONLY[g]||GAMES.drop;if(!GAMES[g]&&!DUELONLY[g])g='drop';VIEW='';lastFin=null;setTimeout(()=>presenceSet(!document.hidden),200);setTimeout(()=>tutMaybe(g),60);audio();if(G&&G!==def.impl&&G.leave)try{G.leave()}catch(e){}gid=g;G=def.impl;if(GAMES[g])P.last=g;paused=false;['menu','over','style'].forEach(id=>$(id).hidden=true);
-  score=0;shown=0;scoreEl.textContent='0';bestEl.textContent=fmt(P.best[g]||0);clearFX();resize();
+function playGame(g,fresh=false){CHEAT.round=false;INP.ts=[];INP.tp=[];INP.mv=0;INP.ev=0;if(RACE&&!RACE.go)RACE=null;if(RACE)RACE.go=0;RT={t:0,pts:[],next:1};PBX.done=0;if(CH&&!CH.go)chEnd();if(CH)CH.go=0;else if(fresh&&chJust===g&&P.saves[g])fresh=false;chJust='';MYS.t=0;MYS.show=0;const def=GAMES[g]||DUELONLY[g]||GAMES.drop;if(!GAMES[g]&&!DUELONLY[g])g='drop';VIEW='';lastFin=null;setTimeout(()=>presenceSet(!document.hidden),200);setTimeout(()=>tutMaybe(g),60);audio();if(G&&G!==def.impl&&G.leave)try{G.leave()}catch(e){}gid=g;G=def.impl;if(GAMES[g])P.last=g;paused=false;['menu','over','style'].forEach(id=>$(id).hidden=true);
+  score=SCK=0;shown=0;scoreEl.textContent='0';bestEl.textContent=fmt(P.best[g]||0);clearFX();resize();
   if(!fresh&&P.saves[g])G.restore(P.saves[g]);else{delete P.saves[g];G.start()}PBX.done=(P.best[g]||0)>0&&score>(P.best[g]||0)?1:0;save();syncDots()}
 // ---- first-time "how to play" cards with a little looping animation
 const TUT={drop:['Slide your finger to aim, then let go to drop a jelly. The next one pops in after a second.','Two of the same jelly squish into a bigger one. Quick chains of merges make combos.','Don’t let jellies stay above the red line: a countdown starts, and when it hits zero the round ends.'],
@@ -3605,7 +3634,7 @@ async function fbInit(){if(FD||fbTrying)return;fbTrying=true;try{
   const[a,u,d]=await Promise.all([import(FBU+'firebase-app.js'),import(FBU+'firebase-auth.js'),import(FBU+'firebase-database.js')]);
   const app=a.getApps().length?a.getApp():a.initializeApp(FB_CONFIG);FAPP=a;FA=u;FD=d;AUTH=u.getAuth(app);RDB=d.getDatabase(app);
   for(const g of['drop','squish','doku','catch','combo','memory','slice'])d.onValue(d.query(fref('lb'),d.orderByChild(g),d.limitToLast(100)),snap=>{const arr=[];snap.forEach(c=>{arr.push(Object.assign({id:c.key},c.val()))});lbBy[g]=arr;lbReady=true;if(!$('lb').hidden)renderLB()},()=>{lbReady=true;if(!$('lb').hidden)renderLB()});
-  socialInit();betaInit();duelInit();rkInit();evInit();noticeInit();
+  socialInit();betaInit();duelInit();rkInit();evInit();noticeInit();banInit();
   d.onValue(fref('giveaways'),s=>{const v=s.val();GAS=v&&typeof v==='object'?v:{};gaReady=true;if(!$('gw').hidden){gwSub();renderGW()}syncDots();setTimeout(gaAuto,2000);setTimeout(gaFlush,1200)},()=>{gaReady=true});
   u.onAuthStateChanged(AUTH,x=>{MAINU=x;route()});if(ACTIVE==='alt'||store.get('ca_alt',0))initAlt();
   fbDown=false;acctUI();
@@ -3621,12 +3650,12 @@ setInterval(()=>{if(!FD&&navigator.onLine!==false)fbInit()},20000);
 async function onReconnect(first){if(syncing)return;syncing=true;try{
   if(pendUser&&ME===pendUser&&!acctReady){const u=pendUser;pendUser=null;await onUser(u);if(acctReady){await gaFlush();toast('Back online · your account is up to date','#5be0a6')}return}
   if(!UID||!acctReady)return;
-  try{const ps=await FD.get(fref('users/'+UID+'/profile'));if(ps.exists()){let cp=null;try{cp=JSON.parse(ps.val())}catch(e){}if(cp&&typeof cp==='object'&&(cp.t||0)!==(P.t||0))adoptCloud(cp)}}catch(e){}
-  store.set('ca_profile',P);await pushCloud();await syncMe();await gaFlush();refreshAll();if(G&&G.restyle)G.restyle();
+  try{const ps=await FD.get(fref('users/'+UID+'/profile'));if(ps.exists()){let cp=null;cp=cloudParse(ps.val());if(cp&&typeof cp==='object'&&(cp.t||0)!==(P.t||0))adoptCloud(cp)}}catch(e){}
+  saveLocal();await pushCloud();await syncMe();await gaFlush();refreshAll();if(G&&G.restyle)G.restyle();
   if(!first)toast('Back online · progress synced to your account','#5be0a6')}finally{syncing=false}}
 // another device changed this account: pull it in live
-async function pullCloud(){if(!UID||!acctReady||syncing)return;try{const ps=await FD.get(fref('users/'+UID+'/profile'));if(!ps.exists())return;let cp=null;try{cp=JSON.parse(ps.val())}catch(e){}if(!cp||typeof cp!=='object'||(cp.t||0)<=(P.t||0))return;
-  const t=cp.t;adoptCloud(cp);P.t=Math.max(P.t||0,t);store.set('ca_profile',P);refreshAll();if(G&&G.restyle)G.restyle();if(!$('style').hidden)renderStyle()}catch(e){}}
+async function pullCloud(){if(!UID||!acctReady||syncing)return;try{const ps=await FD.get(fref('users/'+UID+'/profile'));if(!ps.exists())return;let cp=null;cp=cloudParse(ps.val());if(!cp||typeof cp!=='object'||(cp.t||0)<=(P.t||0))return;
+  const t=cp.t;adoptCloud(cp);P.t=Math.max(P.t||0,t);saveLocal();refreshAll();if(G&&G.restyle)G.restyle();if(!$('style').hidden)renderStyle()}catch(e){}}
 function cloudWatch(uid){if(cloudUnsub){try{cloudUnsub()}catch(e){}cloudUnsub=null}if(!uid||!FD)return;
   cloudUnsub=FD.onValue(fref('users/'+uid+'/t'),s=>{const t=+s.val()||0;if(!t||t===lastPush||UID!==uid)return;if(t>(P.t||0)+1500)pullCloud()},()=>{})}
 // Every finished round goes through here. Each "sink" (giveaways now, tournaments later) gets the round; if it can't be sent
@@ -3656,7 +3685,7 @@ function route(){if(MAINU===undefined)return;
   if(ACTIVE==='alt'){if(!canAlt()||!AUTH2)setActive('main');else if(ALTU===undefined)return;else if(!ALTU)setActive('main')}
   if(!canAlt()&&AUTH2&&ALTU){FA.signOut(AUTH2).catch(()=>{});store.set('ca_alt',0)}
   const u=ACTIVE==='alt'?ALTU:MAINU;if((u&&u.uid)!==(ME&&ME.uid)){if(ME&&u&&P.owner&&P.owner!==u.uid)freshP();onUser(u)}else acctUI()}
-function freshP(){P={lvClaimed:1,spins:0,coins:0,xp:0,level:1,streak:1,lastDay:today(),giftDay:'',rounds:0,earned:0,name:'Critter Pal',best:{},found:[0],quests:null,v2:1};norm();store.set('ca_profile',P)}
+function freshP(){P={lvClaimed:1,spins:0,coins:0,xp:0,level:1,streak:1,lastDay:today(),giftDay:'',rounds:0,earned:0,name:'Critter Pal',best:{},found:[0],quests:null,v2:1};norm();saveLocal()}
 function dayTick(){streakStep();P.topStreak=Math.max(P.topStreak||0,P.streak);ensureQuests()}
 let swapping=false;
 async function swapAccount(){if(!canAlt()||swapping)return;const to=ACTIVE==='alt'?'main':'alt';if(to==='alt'&&!ALTU){openAcct();return}
@@ -3689,7 +3718,7 @@ async function onUser(user){if(UID&&FD&&fbOnline&&acctReady&&(!user||user.uid!==
   ME=user;UID=user?user.uid:null;myLb=null;acctReady=false;pendUser=null;cloudWatch(null);socialUser(null);if(prizeUnsub){try{prizeUnsub()}catch(e){}prizeUnsub=null}myPrizes={};acctUI();if(!user)return;
   try{const[ps,ls]=await Promise.all([FD.get(fref('users/'+user.uid+'/profile')),FD.get(fref('lb/'+user.uid))]);if(ME!==user)return;
     myLb=ls.exists()?ls.val():null;
-    if(ps.exists()){let cp=null;try{cp=JSON.parse(ps.val())}catch(e){}if(cp&&typeof cp==='object')adoptCloud(cp)}
+    if(ps.exists()){let cp=null;cp=cloudParse(ps.val());if(cp&&typeof cp==='object')adoptCloud(cp)}
     P.owner=user.uid;if(joinedAt()<Date.UTC(2027,0,1))P.early=1;
     if(myLb&&myLb.name)P.name=cleanName(myLb.name);
     else{const base=cleanName(pendingName||P.name)||'Critter Pal';let ok=false;
@@ -3702,9 +3731,9 @@ async function onUser(user){if(UID&&FD&&fbOnline&&acctReady&&(!user||user.uid!==
 
 // merge a cloud profile with what is on this device: keep the newer one, never lose best scores or unlocks
 function adoptCloud(cp){if(P.owner&&P.owner!==UID){P=cp;norm();return}const L=P,mine=L.owner===UID,localNewer=mine&&(L.t||0)>(cp.t||0);
-  const A=localNewer?L:cp,B=localNewer?cp:L;P=A;norm();const aOwn=new Set(P.own||[]);
+  const A=localNewer?L:cp,B=localNewer?cp:L;const A0={best:Object.assign({},A.best||{}),bestFix:Object.assign({},A.bestFix||{})},B0={best:Object.assign({},B.best||{}),bestFix:Object.assign({},B.bestFix||{})};P=A;norm();const aOwn=new Set(P.own||[]);
   for(const g of['drop','squish','doku','catch','combo','memory','slice'])P.best[g]=Math.max(P.best[g]||0,(B.best&&B.best[g])||0);
-  {const Fx=Object.assign({},B.bestFix||{});for(const[k,t]of Object.entries(A.bestFix||{}))Fx[k]=Math.max(+Fx[k]||0,+t||0);P.bestFix=Fx;for(const[g,t]of Object.entries(Fx)){const vals=[A,B].filter(S=>(S.t||0)>=t).map(S=>+(S.best&&S.best[g])||0);if(vals.length)P.best[g]=Math.max(...vals)}}
+  {const Fx=Object.assign({},B.bestFix||{});for(const[k,t]of Object.entries(A.bestFix||{}))Fx[k]=Math.max(+Fx[k]||0,+t||0);P.bestFix=Fx;for(const[g,t]of Object.entries(Fx)){const vals=[A0,B0].filter(S=>(+S.bestFix[g]||0)>=t).map(S=>+S.best[g]||0);if(vals.length)P.best[g]=Math.max(...vals)}}
   {const pa=A.prest|0,pb=B.prest|0;if(pa===pb){P.own=[...new Set([...P.own,...(B.own||[])])];P.perma=[...new Set([...(P.perma||[]),...(B.perma||[])])]}else if(pb>pa){P.own=[...(B.own||[])];P.coins=B.coins|0;P.prest=pb;P.ptok=B.ptok|0;P.perma=[...(B.perma||[])]}}P.found=[...new Set([...P.found,...(B.found||[])])];
   if((B.level||1)>(P.level||1)||((B.level||1)===(P.level||1)&&(B.xp||0)>(P.xp||0))){P.level=B.level;P.xp=B.xp}
   if(!mine)P.coins=Math.max(P.coins||0,B.coins||0);
@@ -3734,8 +3763,8 @@ function pruneP(){try{
   if(Array.isArray(P.fresh))P.fresh=[...new Set(P.fresh)].filter(k=>P.own.includes(k)).slice(-80);
   if(Array.isArray(P.myDu))P.myDu=P.myDu.filter(x=>x&&Date.now()-(+x.t||0)<7*864e5).slice(-30)}catch(e){}}
 function cloudP(){pruneP();const o=Object.assign({},P);o.own=P.own.filter(k=>{const[g,cat]=String(k).split(':');const sh=g!=='prof'&&SHARED[cat];return!sh||sh[0]===g||!P.own.includes(sh[0]+':'+cat+':'+String(k).split(':')[2])});return o}
-async function pushCloud(){clearTimeout(cloudTimer);if(!UID||!RDB||!acctReady||!fbOnline)return;const t=Math.max(Date.now(),P.t||0);lastPush=t;try{await FD.set(fref('users/'+UID),{profile:JSON.stringify(cloudP()),t});store.set('ca_dirty',0)}catch(e){}}
-document.addEventListener('visibilitychange',()=>{if(document.hidden)pushCloud()});
+async function pushCloud(){clearTimeout(cloudTimer);if(!UID||!RDB||!acctReady||!fbOnline)return;const t=Math.max(Date.now(),P.t||0);lastPush=t;try{await FD.set(fref('users/'+UID),{profile:signJ(cloudP()),t});store.set('ca_dirty',0)}catch(e){}}
+document.addEventListener('visibilitychange',()=>{frame.spd=null;if(document.hidden)pushCloud()});
 
 async function claimName(v){const key=nameKey(v),r=fref('names/'+key),s=await FD.get(r);
   if(s.exists()&&s.val()!==UID)return false;
@@ -3781,7 +3810,7 @@ function lbPeriodSubmit(g,s){if(!UID||!acctReady||!fbOnline||!(s>0)||!GAMES[g])r
 // your old daily / weekly / challenge entries are removed after they reset, so the database stays small
 function lbJanitor(){if(!UID||!acctReady||!fbOnline)return;const d=CDAY(),w=CWEEK(),keep=[];for(const pk of(P.lbk||[])){const[pre,key]=String(pk).split('/');const old=(pre==='lbd'||pre==='lbc')?+key<d-2:pre==='lbw'?+key<w-2:false;if(old)FD.remove(fref(pk+'/'+UID)).catch(()=>{});else keep.push(pk)}if(keep.length!==(P.lbk||[]).length){P.lbk=keep;save()}}
 setTimeout(lbJanitor,26000);setInterval(lbJanitor,30*60000);
-function rankRows(arr,g){return arr.filter(d=>+d[g]>0).map(d=>({id:d.id,name:cleanName(d.name)||'Someone',score:Math.floor(+d[g]),k:KINDS.has(d.k)?d.k:'jelly',c:okCol(d.c),fx:FXS.has(d.fx)?d.fx:undefined,h:HAT_IDS.has(d.h)?d.h:'none',fr:FRAME_IDS.has(d.fr)?d.fr:'none',tt:TITLE_IDS.has(d.tt)?d.tt:'none',raw:d})).sort((a,b)=>b.score-a.score)}
+function rankRows(arr,g){return arr.filter(d=>+d[g]>0&&!LBBAN[d.id]).map(d=>({id:d.id,name:cleanName(d.name)||'Someone',score:Math.floor(+d[g]),k:KINDS.has(d.k)?d.k:'jelly',c:okCol(d.c),fx:FXS.has(d.fx)?d.fx:undefined,h:HAT_IDS.has(d.h)?d.h:'none',fr:FRAME_IDS.has(d.fr)?d.fr:'none',tt:TITLE_IDS.has(d.tt)?d.tt:'none',raw:d})).sort((a,b)=>b.score-a.score)}
 function myRank(g){if(!UID)return 0;return rankRows(lbBy[g]||[],g).findIndex(d=>d.id===UID)+1}
 function openLB(g){audio();sfx.ui();lbGame=g||gid||'drop';paused=true;$('lbName').value=cleanName(P.name);const w=nameWait();$('lbMsg').textContent=UID&&w>0?'Next name change in '+fmtWait(w)+'.':'';$('lbMsg').className='nmsg';$('lb').hidden=false;renderLB()}
 const anyOpen=()=>!['racei','menu','over','style','lb','acct','gw','prof','mail','fr','news','comp','beta','devg','who','lvp','pick','duel','capo','capi','dinv','dres','tut','tagi','dm','sres','pres','gm','rk','pl','set','ach','bp','evdev','cfm','hsr','ntc'].every(id=>$(id).hidden);
@@ -3832,7 +3861,7 @@ function openProfile(d){if(!d)return;audio();sfx.ui();pfD={k:KINDS.has(d.k)?d.k:
   else h.forEach((n,i)=>{const s=document.createElement('span');s.className='pfpast';s.textContent=n;s.title=i===0?'Most recent':'';hl.appendChild(s)});
   let note=d.j?'Playing since '+new Date(+d.j).toLocaleDateString(undefined,{month:'short',year:'numeric'}):'';
   if(d.id===UID&&UID){const w=nameWait();note+=(note?' · ':'')+(w>0?'Next name change in '+fmtWait(w):'You can change your name now')}
-  $('pfNote').textContent=note;pfSocial(d);$('prof').hidden=false;setTimeout(()=>$('pfClose').focus({preventScroll:true}),60)}
+  $('pfNote').textContent=note;pfSocial(d);try{pfDevUI(d)}catch(e){}$('prof').hidden=false;setTimeout(()=>$('pfClose').focus({preventScroll:true}),60)}
 // ================================================= prestige: collect everything, reset, earn tokens, unlock items forever
 const PRES_COST={c:1,r:1,e:1,l:2,m:3,u:4,p:5};
 function presKeep(it,cat){const[,,p,r,q]=it;if(q&&q.cap)return true;if(cat&&CAP_ITEMS.some(c=>c[0]===cat&&c[1]===it[0]))return true;if(it[0]==='none')return true;if(p===0&&!q)return true;if(r==='d'||r==='x'||r==='v')return true;if(q&&(q.dev||q.beta||q.lvr||q.win||q.early||q.rk!=null||q.bp||q.ach||q.ev||q.cal))return true;return false}
@@ -3930,7 +3959,7 @@ $('aForm').addEventListener('submit',async e=>{e.preventDefault();if(!AUTH){aSay
 $('aForgot').onclick=async()=>{const em=$('aEmail').value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){aSay('Type your email above first.',1);return}
   if(!AUTH){aSay('Still connecting. Try again in a second.',1);return}
   try{await FA.sendPasswordResetEmail(AUTH,em);aSay('If that email has an account, a reset link is on its way.')}catch(err){aSay(authMsg(err),1)}};
-function wipeLocal(){try{for(const k of['ca_profile','ja_profile','jj_best','jj_found'])localStorage.removeItem(k)}catch(e){}}
+function wipeLocal(){try{for(const k of['ca_profile','ca_bk','ja_profile','jj_best','jj_found'])localStorage.removeItem(k)}catch(e){}}
 $('aSignOut').onclick=async()=>{const b=$('aSignOut');b.disabled=true;$('aMsg2').textContent='Saving…';
   try{saveRun(false);await pushCloud();if(ACTIVE==='alt'){await FA.signOut(AUTH2);store.set('ca_alt',0);setActive('main')}else{if(AUTH2)await FA.signOut(AUTH2).catch(()=>{});store.set('ca_alt',0);await FA.signOut(AUTH)}}catch(e){}
   wipeLocal();location.reload()};
@@ -4773,7 +4802,7 @@ function duelUser(user){if(!user)return;const uid=user.uid;
 // ---- hub
 const DUELONLY={pong:{id:'pong',name:'Jelly Pong',impl:Pong,duelOnly:true},coop:{id:'coop',name:'Co-op Jelly Jar',impl:Drop,duelOnly:true,coop:true}};
 const duGameList=()=>[...Object.values(GAMES),...Object.values(DUELONLY)];
-(()=>{const done=new Set();for(const g of duGameList()){const m=g.impl;if(!m||done.has(m))continue;done.add(m);for(const k of['down','move','up','key','action']){const f=m[k];if(typeof f!=='function')continue;m[k]=function(){if(!INP.ok&&!INP.test){cheatSeen('injected moves');return}return f.apply(this,arguments)}}}})();
+(()=>{const done=new Set();for(const g of duGameList()){const m=g.impl;if(!m||done.has(m))continue;done.add(m);for(const k of['down','move','up','key','action']){const f=m[k];if(typeof f!=='function')continue;m[k]=function(){if(!INP.ok&&!INP.test){cheatSeen('injected moves');return}if(k!=='move')INP.mv++;return f.apply(this,arguments)}}}})();
 const duVsList=()=>duGameList().filter(g=>!g.coop);   // games you can play against someone (not co-op)
 const isCoop=g=>g==='coop';
 const duGameName=g=>(GAMES[g]||DUELONLY[g]||{}).name||'Jelly Jar';
@@ -4841,7 +4870,7 @@ function duLoop(){const d=DUEL;if(!d)return;const now=Date.now(),v=d.rec||{};
     if(left<=0)duLocalEnd();return}
   if(d.phase==='end'){const of=d.me==='a'?v.fb:v.fa;if(of||now>d.endAt+8000||(d.nl&&now-(d.lastOpT||now)>150000)||(DUELONLY[d.g]&&now-(d.endT||now)>3500)){duResult();return}
     if(d.nl&&!of&&!d.specTried&&d.opp&&now-(d.endT||now)>900){d.specTried=1;$('dhud').hidden=true;specStart(d.opp,d.oppN,d.id,{inDuel:true})}}}
-function duLocalEnd(){const d=DUEL;if(!d||(d.phase!=='live'&&d.phase!=='count'))return;d.phase='end';d.endT=Date.now();paused=true;if(!INP.test&&(CHEAT.round||botTiming())){CHEAT.round=true;score=0;cheatReport();setTimeout(()=>toast('🤖 Automated play detected, so this match counts as 0','#ff6fa8'),600)}d.final=Math.floor(score);
+function duLocalEnd(){const d=DUEL;if(!d||(d.phase!=='live'&&d.phase!=='count'))return;d.phase='end';d.endT=Date.now();paused=true;if(cheatCheck()){CHEAT.round=true;score=SCK=0;cheatReport();setTimeout(()=>toast('🤖 Automated play detected, so this match counts as 0','#ff6fa8'),600)}d.final=Math.floor(score);
   if(GAMES[d.g]&&d.final>(P.best[d.g]||0)){P.best[d.g]=d.final;bestEl.textContent=fmt(d.final);save();setTimeout(syncMe,0);setTimeout(()=>toast('New best in '+GAMES[d.g].name+': '+fmt(d.final)+'!','#ffd23f'),400)}$('dhBet').hidden=true;$('dhT').textContent=d.nl||DUELONLY[d.g]?'Done':'0:00';$('dhMsg').textContent=isCoop(d.g)?'Jar’s full!':DUELONLY[d.g]?'Match over!':d.nl?'Your game is over! Watching '+d.oppN+'…':'Time! Waiting for '+d.oppN+'…';
   FD.update(fref('duels/'+d.id),{[d.me==='a'?'sa':'sb']:d.final,[d.me==='a'?'fa':'fb']:true}).catch(()=>{});sfx.discover()}
 function duResult(){const d=DUEL;if(!d||d.phase==='done')return;d.phase='done';const v=d.rec||{};let op=+(d.me==='a'?v.sb:v.sa)||0,me=d.final||0;
@@ -5252,7 +5281,7 @@ $('gvBestG').onchange=gvBestUI;$('gvBestN').addEventListener('keydown',e=>e.stop
 $('gvBestGo').onclick=async()=>{if(!isAdmin()||!gvUid)return;const g=$('gvBestG').value,raw=$('gvBestN').value,n=Math.floor(+raw),m=$('gvBestMsg'),b=$('gvBestGo');
   if(raw===''||!Number.isFinite(n)||n<0||n>99999999){m.textContent='Type a score from 0 to 99,999,999.';m.className='nmsg bad';sfx.nope();return}
   const arm=g+':'+n;if(b.dataset.arm!==arm){b.dataset.arm=arm;b.textContent='Tap again: '+fmt(n);setTimeout(()=>{b.dataset.arm='';b.textContent='Set best'},3000);return}b.dataset.arm='';b.textContent='Set best';b.disabled=true;
-  try{await FD.set(fref('takes/'+gvUid+'/b'+Date.now().toString(36)),{k:'best',g,n,t:FD.serverTimestamp()});m.textContent=`${gvNm}’s ${GAMES[g].name} best will be set to ${fmt(n)} as soon as they’re online.`;m.className='nmsg';sfx.ui();$('gvBestN').value=''}
+  try{const r=await devSetBest(gvUid,g,n);m.textContent=devSetMsg(gvNm,g,n,r);m.className='nmsg';sfx.ui();$('gvBestN').value='';if(gvBestLb)gvBestLb[g]=n;gvBestUI()}
   catch(e){m.textContent='Could not do it. Publish the new database rules first.';m.className='nmsg bad';sfx.nope()}b.disabled=false};
 async function gvTake(body,msg){const m=$('gvTakeMsg');try{await FD.set(fref('takes/'+gvUid+'/t'+Date.now().toString(36)),Object.assign(body,{t:FD.serverTimestamp()}));m.textContent=msg+' It happens as soon as they’re online.';m.className='nmsg';sfx.ui()}catch(e){m.textContent='Could not do it. Publish the new database rules first.';m.className='nmsg bad';sfx.nope()}}
 $('gvTakeGo').onclick=async()=>{if(!isAdmin()||!gvUid)return;const k=$('gvTake').value,b=$('gvTakeGo');if(!k)return;if(b.dataset.arm!==k){b.dataset.arm=k;b.textContent='Tap again to take it';setTimeout(()=>{b.dataset.arm='';b.textContent='Take item'},3000);return}b.dataset.arm='';b.textContent='Take item';
@@ -5269,7 +5298,7 @@ function takeWatch(uid){if(takeUnsub){try{takeUnsub()}catch(e){}takeUnsub=null}i
     try{if(x.k==='item'&&typeof x.key==='string'){const[,cat,iid]=x.key.split(':');rmvMark(P.own.filter(k=>{const p=String(k).split(':');return p[1]===cat&&p[2]===iid}));P.own=P.own.filter(k=>{const p=String(k).split(':');return!(p[1]===cat&&p[2]===iid)});if(P.perma)P.perma=P.perma.filter(k=>k!==cat+':'+iid);P.gk=(P.gk||[]).filter(k=>!k.endsWith(':'+cat+':'+iid));P.taken=[...new Set([...(P.taken||[]),cat+':'+iid])];
         for(const g in P.cos)if(P.cos[g][cat]===iid)P.cos[g][cat]=(DEF[g]&&DEF[g][cat])||'none';if(P.show){if(Array.isArray(P.show.sc))P.show.sc=P.show.sc.map(k=>k&&k.endsWith(':'+cat+':'+iid)?'':k);if(cat==='set'&&P.show.sk===iid)delete P.show.sk;if(cat==='hat'&&P.show.ht===iid)delete P.show.ht}
         const it=itemByKey(x.key);toast('The developer removed '+(it?it.n:'an item')+' from your account','#ff6fa8')}
-      else if(x.k==='best'&&GAMES[x.g]&&Number.isFinite(+x.n)){const n=clamp(Math.floor(+x.n),0,99999999);P.best[x.g]=n;P.bestFix=P.bestFix&&typeof P.bestFix==='object'?P.bestFix:{};P.bestFix[x.g]=Date.now();if(gid===x.g)bestEl.textContent=fmt(n);toast('The developer set your '+GAMES[x.g].name+' best to '+fmt(n),'#7cc8ff')}
+      else if(x.k==='best'&&GAMES[x.g]&&Number.isFinite(+x.n)){const n=clamp(Math.floor(+x.n),0,99999999);P.best[x.g]=n;if(P.pb&&typeof P.pb==='object')for(const k in P.pb)if(k.endsWith('/'+x.g))P.pb[k]=Math.min(+P.pb[k]||0,n);P.bestFix=P.bestFix&&typeof P.bestFix==='object'?P.bestFix:{};P.bestFix[x.g]=Date.now();if(gid===x.g)bestEl.textContent=fmt(n);toast('The developer set your '+GAMES[x.g].name+' best to '+fmt(n),'#7cc8ff')}
       else if((x.k==='num'||x.k==='all')&&typeof x.f==='string'&&/^[A-Za-z_][\w.]{0,39}$/.test(x.f)){const path=x.f.split('.');let o=P;for(const p of path.slice(0,-1)){if(!o[p]||typeof o[p]!=='object')o[p]={};o=o[p]}const last=path[path.length-1],cur=+o[last]||0,amt=x.k==='all'?cur:Math.floor(+x.n||0);
         o[last]=x.f==='level'?Math.max(1,cur-amt):Math.max(0,cur-amt);toast('The developer removed '+(x.k==='all'?'all your ':fmt(amt)+' ')+x.f.replace('cap.dust','jelly dust'),'#ff6fa8')}}catch(e){}
     FD.remove(fref('takes/'+uid+'/'+id)).catch(()=>{})}
@@ -5348,7 +5377,7 @@ function specPlay(v,d){const S=SPEC;if(!S)return;S.live=v;const o=v&&(v.o===true
   if(v&&!S.d){if(o){if(!S.endAt)S.endAt=Date.now();if(f){S.finF=f;if(!S.finQ){S.finQ=1;setTimeout(()=>{if(SPEC===S)specFinish()},1200)}}}else if(v.snap)S.endAt=0}
   if(v&&v.g&&(GAMES[v.g]||DUELONLY[v.g])){if(S.g!==v.g){S.g=v.g;if(G&&G.leave&&G!==(GAMES[v.g]||DUELONLY[v.g]).impl)try{G.leave()}catch(e){}gid=v.g;G=(GAMES[v.g]||DUELONLY[v.g]).impl;S.synced=null;clearFX();resize();try{if(G.restyle)G.restyle()}catch(e){}}
     const has=d&&(d._n===1||d._n==null);if(o&&!has&&G.specEnd&&S.synced===v.g&&!S.endPlayed){S.endPlayed=1;try{G.specEnd()}catch(e){}}
-    if(has&&v.snap!==S.lastSnap){S.lastSnap=v.snap;try{if(G.specSync&&S.synced===v.g)G.specSync(d);else{G.restore(d);S.synced=v.g}}catch(e){}}score=shown=+v.s||0;scoreEl.textContent=fmt(score);paused=true}specUI()}
+    if(has&&v.snap!==S.lastSnap){S.lastSnap=v.snap;try{if(G.specSync&&S.synced===v.g)G.specSync(d);else{G.restore(d);S.synced=v.g}}catch(e){}}score=shown=SCK=+v.s||0;scoreEl.textContent=fmt(score);paused=true}specUI()}
 function specUI(){const S=SPEC;if(!S)return;const v=S.live,r=S.rec,now=srvNow(),nm=S.watchU===(r&&r.b)?cleanName(r.bn):S.watchU===(r&&r.a)?cleanName(r.an):S.name;
   $('specT').textContent=`Watching ${nm}`+(v&&v.g&&(GAMES[v.g]||DUELONLY[v.g])?' · '+duGameName(v.g):'');$('specW').hidden=!!(v&&v.snap)&&!S.wait;$('specW').textContent=S.wait?'Waiting for their next game…':v&&v.g?'Loading their board…':'Waiting for them to play…';if(S.ver&&!S.wait&&!S.verT){S.verT=1;toast('They’re on a different version, so the view may not match exactly','#ffd23f')}
   const D=$('specDuel');D.hidden=!r;if(!r)return;if(isCoop(r.g)){const tm=Math.max(+r.sa||0,+r.sb||0);$('specA').textContent=cleanName(r.an);$('specB').textContent=cleanName(r.bn||'…');$('specTime').textContent='Team '+fmt(tm);$('specPool').textContent='Co-op · they share one jar';$('specBetRow').hidden=true;$('specBetMsg').textContent='';
@@ -5494,7 +5523,14 @@ function gmAdd(g,xp){if(!GAMES[g])return'';const s=gmS(g);if(s.l>=GM_MAX)return'
 // A caught round gives no coins, XP, best score or leaderboard spot, and the developer sees who was caught.
 function botTiming(){const t=INP.ts;if(t.length<40)return false;const d=[];for(let i=1;i<t.length;i++){const x=t[i]-t[i-1];if(x>0&&x<4000)d.push(x)}if(d.length<35)return false;
   const m=d.reduce((a,b)=>a+b,0)/d.length,sd=Math.sqrt(d.reduce((a,b)=>a+(b-m)*(b-m),0)/d.length),s=d.slice().sort((a,b)=>a-b),med=s[s.length>>1],near=d.filter(x=>Math.abs(x-med)<=2).length/d.length;
-  if(sd<5||near>.6){CHEAT.why='robot-perfect timing';return true}return false}
+  if(sd<5||near>.6){CHEAT.why='robot-perfect timing';return true}
+  for(let i=0;i+30<=d.length;i+=5){let lo=1e9,hi=0,su=0;for(let j=i;j<i+30;j++){const x=d[j];if(x<lo)lo=x;if(x>hi)hi=x;su+=x}const mu=su/30;let v=0;for(let j=i;j<i+30;j++)v+=(d[j]-mu)*(d[j]-mu);if(hi-lo<30&&Math.sqrt(v/30)<7){CHEAT.why='auto-clicker';return true}}
+  return false}
+function cheatCheck(){if(INP.test)return false;if(CHEAT.round)return true;
+  if(Math.abs(score-SCK)>.5){CHEAT.why='score edited';return true}
+  if(INP.mv>INP.ev*2+6){CHEAT.why='moves without taps';return true}
+  {let run=1,top=1;for(let i=1;i<INP.tp.length;i++){run=INP.tp[i]&&INP.tp[i]===INP.tp[i-1]?run+1:1;if(run>top)top=run}if(top>=20){CHEAT.why='auto-clicker';return true}}
+  return botTiming()}
 function cheatReport(){CHEAT.n=Math.max(1,CHEAT.n);P.cheat=(P.cheat|0)+1;save();if(!UID||!acctReady||!fbOnline||Date.now()-CHEAT.sent<60000)return;CHEAT.sent=Date.now();
   FD.set(fref('flags/'+UID),{n:P.cheat|0,why:String(CHEAT.why||'automated play').slice(0,40),name:duName(),g:String(gid||''),t:FD.serverTimestamp()}).catch(()=>{})}
 function cheatRound(g){const sc=Math.floor(score);cheatReport();CHEAT.round=false;INP.ts=[];delete P.saves[g];save();paused=true;lastFin=null;
@@ -5502,15 +5538,49 @@ function cheatRound(g){const sc=Math.floor(score);cheatReport();CHEAT.round=fals
   $('oChips').innerHTML='<span class="chip">🤖 Automated play detected</span>';$('oNudge').innerHTML='Scores made by bots, scripts or auto-clickers don’t count: no coins, no XP and nothing on the leaderboards. Play it yourself and it all counts!';
   $('over').hidden=false;sfx.nope()}
 // known cheat tools: the "Jelly Bot" helpers and anything that names itself a bot or cheat on the page
+const NATIVE=(()=>{try{const f=document.createElement('iframe');f.style.display='none';f.setAttribute('aria-hidden','true');f.tabIndex=-1;document.documentElement.appendChild(f);const ts=f.contentWindow.Function.prototype.toString;return(fn,nm)=>{try{return new RegExp('^function '+nm+'\\(\\) \\{\\s*\\[native code\\]\\s*\\}$').test(ts.call(fn))}catch(e){return false}}}catch(e){return()=>true}})();
 const BOT_KEY=/jellybot|botbridge|__bot[A-Z]|cheat|autoplay|aimbot|hackbot/i,BOT_TXT=/jelly\s*bot|auto-?play|farm to|solve level|stop at score/i,PAGE0=new WeakSet();
 setTimeout(()=>{for(const n of document.body.children)PAGE0.add(n);for(const n of document.documentElement.children)PAGE0.add(n)},0);
-function botScan(){if(INP.test)return;try{for(const k of Object.getOwnPropertyNames(window))if(BOT_KEY.test(k)){cheatSeen('cheat tool on the page');return}
+function botScan(){if(INP.test)return;try{if(CHEAT.pend&&UID&&acctReady&&fbOnline){CHEAT.why=CHEAT.pend;CHEAT.pend='';CHEAT.sent=0;cheatReport()}
+  if(navigator.webdriver===true){cheatSeen('automated browser');return}
+  if(!NATIVE(Math.random,'random')){cheatSeen('rigged random numbers');return}for(const k of Object.getOwnPropertyNames(window))if(BOT_KEY.test(k)){cheatSeen('cheat tool on the page');return}
   for(const root of[document.documentElement,document.body])for(const n of root.children){if(PAGE0.has(n)||n.id==='cwmark'||n.tagName==='SCRIPT'||n.tagName==='STYLE')continue;const tx=(n.textContent||'')+' '+((n.shadowRoot&&n.shadowRoot.textContent)||'');if(BOT_TXT.test(tx)){cheatSeen('cheat tool on the page');return}}}catch(e){}}
 setInterval(botScan,2500);
 // developer: who got caught
 async function cpFlagsUI(){const L=$('flList');if(!L||!isAdmin())return;L.textContent='Loading…';let v={};try{v=(await FD.get(FD.ref(RDB,'flags'))).val()||{}}catch(e){L.textContent='Could not load. Publish the new database rules first.';return}
   const rows=Object.entries(v).filter(([,x])=>x&&typeof x==='object').sort((a,b)=>(+b[1].t||0)-(+a[1].t||0)).slice(0,40);L.textContent='';if(!rows.length){L.append(elx('small',null,'Nobody has been caught yet.'));return}
-  for(const[uid,x]of rows){const r=elx('div','flrow');r.append(elx('span','fln',`${cleanName(x.name)||'Player'} · caught ${x.n|0}× · ${x.why||''}${x.g&&GAMES[x.g]?' in '+GAMES[x.g].name:''} · ${fmtDay(+x.t)}`));const b=bt('white','Profile',()=>{closeComp();openProfile({id:uid,name:x.name})});r.append(b);L.append(r)}}
+  for(const[uid,x]of rows){const r=elx('div','flrow');r.append(elx('span','fln',`${cleanName(x.name)||'Player'} · caught ${x.n|0}× · ${x.why||''}${x.g&&GAMES[x.g]?' in '+GAMES[x.g].name:''} · ${fmtDay(+x.t)}`));if(LBBAN[uid])r.firstChild.append(elx('span','flban',' · banned'));const b=bt('white','Fix',async()=>{let lb={};try{lb=(await FD.get(fref('lb/'+uid))).val()||{}}catch(e){}closeComp();pfDevG=GAMES[x.g]?x.g:'';openProfile(Object.assign({name:x.name},lb,{id:uid}))});r.append(b);L.append(r)}}
+// ---- developer: set any player's best score (fixes the leaderboards right away, and their game the next time it's open)
+async function devSetBest(uid,g,n){const out={lb:false,boards:0,err:false};if(!isAdmin()||!uid||!GAMES[g])return out;
+  await FD.set(fref('takes/'+uid+'/b'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)),{k:'best',g,n,t:FD.serverTimestamp()});
+  try{const s=await FD.get(fref('lb/'+uid));if(s.exists()){if(+(s.val()||{})[g]!==n)await FD.set(fref('lb/'+uid+'/'+g),n);out.lb=true;const r=(lbBy[g]||[]).find(x=>x.id===uid);if(r)r[g]=n}}catch(e){out.err=true}
+  const d=CDAY(),w=CWEEK();for(const pk of['lbd/'+d+'/'+g,'lbw/'+w+'/'+g,'lbc/'+d]){try{const v=(await FD.get(fref(pk+'/'+uid))).val();if(!v||(pk[2]==='c'&&v.g!==g)||!(+v.s>n))continue;if(n>0)await FD.set(fref(pk+'/'+uid+'/s'),n);else await FD.remove(fref(pk+'/'+uid));out.boards++}catch(e){out.err=true}}
+  if(!$('lb').hidden)renderLB();return out}
+function devSetMsg(nm,g,n,r){const who=cleanName(nm)||'Their';return r.err&&!r.lb?`Their game will change it to ${fmt(n)} next time it's open. Publish the new database rules so the leaderboard changes right away too.`:`Done: ${who}’s ${GAMES[g].name} PB is ${n?'now '+fmt(n):'wiped'}${r.lb?' on the leaderboard':''}${r.boards?' and today’s / this week’s boards':''}. Their game updates the next time it's open.`}
+var pfDevD=null,pfDevG='';
+function banInit(){try{FD.onValue(FD.ref(RDB,'lbban'),s=>{const v=s.val();LBBAN=v&&typeof v==='object'?v:{};if(!$('lb').hidden)renderLB();if(!$('prof').hidden&&pfDevD)pdBanUI()},()=>{})}catch(e){}}
+function pfDevUI(d){const on=isAdmin()&&!!d&&!!d.id&&d.id!=='local';$('pfDev').hidden=!on;if(!on){pfDevD=null;return}pfDevD=d;const s=$('pdG');if(!s.options.length)s.innerHTML=GLIST.map(g=>`<option value="${g}">${esc(GAMES[g].name)}</option>`).join('');
+  let top=GLIST[0];for(const g of GLIST)if((+d[g]||0)>(+d[top]||0))top=g;s.value=GAMES[pfDevG]?pfDevG:top;pfDevG='';$('pdN').value='';$('pdMsg').textContent='';$('pdMsg').className='nmsg';const b=$('pdGo');b.dataset.arm='';b.textContent='Set PB';for(const[id,t]of[['pdWipe','Wipe this PB'],['pdWipeAll','Wipe all their PBs']]){$(id).dataset.arm='';$(id).textContent=t}pdCur();pdBanUI()}
+function pdCur(){const d=pfDevD,g=$('pdG').value;$('pdNow').textContent=d&&GAMES[g]?'Their '+GAMES[g].name+' best now: '+fmt(+d[g]||0):''}
+function pdBanUI(){const b=$('pdBan'),on=!!(pfDevD&&LBBAN[pfDevD.id]);b.textContent=on?'Unban from leaderboards':'Ban from leaderboards';b.className='btn small '+(on?'mint':'danger');b.dataset.arm=''}
+$('pdG').onchange=pdCur;$('pdN').addEventListener('keydown',e=>e.stopPropagation());
+// set (or wipe) one game's PB, or wipe every game's PB; each asks for a second tap
+function pdArm(b,key,label,txt){if(b.dataset.arm!==key){b.dataset.arm=key;b.textContent=label;setTimeout(()=>{if(b.dataset.arm===key){b.dataset.arm='';b.textContent=txt}},3000);return false}b.dataset.arm='';b.textContent=txt;return true}
+async function pdApply(games,n,b){const d=pfDevD,m=$('pdMsg');if(!isAdmin()||!d)return;b.disabled=true;let last={lb:false,boards:0,err:false},bad=false;
+  try{for(const g of games){const r=await devSetBest(d.id,g,n);last={lb:last.lb||r.lb,boards:last.boards+r.boards,err:last.err||r.err};d[g]=n;for(const box of $('pfStats').children){const k=box.querySelector('.k'),v=box.querySelector('.v');if(k&&v&&k.textContent===GAMES[g].name)v.textContent=fmt(n)}}}catch(e){bad=true}
+  b.disabled=false;pdCur();const nm=cleanName(d.name)||'They';
+  if(bad){m.textContent='Could not do it. Check you are signed in as the developer and that the new database rules are published.';m.className='nmsg bad';sfx.nope();return}
+  m.textContent=games.length>1?(last.err&&!last.lb?nm+'’s PBs will be wiped next time their game is open. Publish the new database rules so the leaderboards change right away too.':'Done: all of '+nm+'’s PBs are wiped'+(last.lb?' on the leaderboards':'')+'. Their game updates the next time it’s open.'):devSetMsg(d.name,games[0],n,last);m.className=last.err&&!last.lb?'nmsg bad':'nmsg';sfx.ui()}
+$('pdGo').onclick=()=>{const g=$('pdG').value,raw=$('pdN').value.trim(),n=Math.floor(+raw),m=$('pdMsg'),b=$('pdGo');
+  if(raw===''||!Number.isFinite(n)||n<0||n>99999999){m.textContent='Type a score from 0 to 99,999,999.';m.className='nmsg bad';sfx.nope();return}
+  if(!pdArm(b,g+':'+n,'Tap again: '+fmt(n),'Set PB'))return;$('pdN').value='';pdApply([g],n,b)};
+$('pdWipe').onclick=()=>{const g=$('pdG').value,b=$('pdWipe');if(!pdArm(b,g,'Tap again to wipe '+GAMES[g].name,'Wipe this PB'))return;pdApply([g],0,b)};
+$('pdWipeAll').onclick=()=>{const b=$('pdWipeAll');if(!pdArm(b,'all','Tap again to wipe ALL','Wipe all their PBs'))return;pdApply(GLIST.slice(),0,b)};
+$('pdBan').onclick=async()=>{const d=pfDevD;if(!isAdmin()||!d)return;const b=$('pdBan'),m=$('pdMsg'),on=!!LBBAN[d.id];
+  if(!on&&b.dataset.arm!=='1'){b.dataset.arm='1';b.textContent='Tap again to ban';setTimeout(()=>{if(b.dataset.arm==='1')pdBanUI()},3000);return}
+  try{if(on)await FD.remove(fref('lbban/'+d.id));else await FD.set(fref('lbban/'+d.id),true);if(on)delete LBBAN[d.id];else LBBAN[d.id]=true;pdBanUI();sfx.ui();
+    m.textContent=on?(cleanName(d.name)||'They')+' can be on the leaderboards again.':(cleanName(d.name)||'They')+' is hidden from every leaderboard and can’t post scores or enter giveaways.';m.className='nmsg';if(!$('lb').hidden)renderLB()}
+  catch(e){m.textContent='Could not do it. Publish the new database rules first.';m.className='nmsg bad';sfx.nope()}};
 
 // ================================================= friend streaks: play a 1v1 or co-op with the same friend on days in a row
 const fsOf=uid=>{const e=P.fst&&P.fst[uid];return e&&e.d>=CDAY()-1?e.n|0:0};
@@ -5643,7 +5713,7 @@ var CHLB={},chLbDay=-1,chLbUn=null;
 function chLbSub(){const d=CDAY();if(!FD||!RDB||chLbDay===d)return;chLbDay=d;if(chLbUn)try{chLbUn()}catch(e){}CHLB={};
   chLbUn=FD.onValue(FD.query(FD.ref(RDB,'lbc/'+d),FD.orderByChild('s'),FD.limitToLast(100)),s=>{CHLB=s.val()||{};if(!$('menu').hidden)todayUI();if(!$('lb').hidden&&lbScope==='chal')renderLB()},()=>{})}
 setInterval(()=>{try{chLbSub()}catch(e){}},30000);
-function chRows(){return Object.entries(CHLB).filter(([,v])=>v&&+v.s>0).map(([id,v])=>Object.assign({id},v)).sort((a,b)=>b.s-a.s)}
+function chRows(){return Object.entries(CHLB).filter(([id,v])=>v&&+v.s>0&&!LBBAN[id]).map(([id,v])=>Object.assign({id},v)).sort((a,b)=>b.s-a.s)}
 function chMine(){const d=CDAY(),c=P.ch&&P.ch.d===d?P.ch:null,best=c?c.b|0:0,rows=chRows(),i=rows.findIndex(r=>r.id===UID);return{best,rank:i>=0?i+1:0,of:rows.length}}
 function chStart(){if(DUEL||SPEC)return toast('Finish your match first','#ff6fa8');const g=chGame(),d=CDAY();if(CH)chEnd();saveRun(false);
   P.chStash={g,s:P.saves[g]?JSON.parse(JSON.stringify(P.saves[g])):null};save();
@@ -5695,6 +5765,9 @@ addEventListener('keydown',e=>{if(!e.isTrusted){if(G&&!paused&&$('menu').hidden)
   if(!e.repeat){INP.ts.push(e.timeStamp);if(INP.ts.length>240)INP.ts.splice(0,40)}
   if(e.key===' '||e.key==='Enter'){audio();if(G.action)inpRun(()=>G.action())}if(G.key&&!e.repeat)inpRun(()=>G.key(e.key))});
 addEventListener('keyup',e=>{if(!e.isTrusted)return;keys[e.key]=false});
+stage.addEventListener('pointerdown',e=>{if(!e.isTrusted)return;INP.ev++;INP.tp.push(e.pointerType==='touch'?e.clientX.toFixed(2)+','+e.clientY.toFixed(2):'');if(INP.tp.length>240)INP.tp.splice(0,40)},true);
+stage.addEventListener('pointerup',e=>{if(e.isTrusted)INP.ev++},true);
+addEventListener('keydown',e=>{if(e.isTrusted&&!e.repeat)INP.ev++},true);
 function drawGame(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cw,ch);const sk=shake*shake*14;ctx.translate(offX+(Math.random()*2-1)*sk,offY+(Math.random()*2-1)*sk);ctx.scale(sc,sc);
   const ex=extent();G.bg(ctx,ex);glowSync();DRAW_ME=!SPEC;try{G.render(ctx,ex)}finally{DRAW_ME=false}boomDraw(ctx);drawBig(ctx);try{drawOver(ctx)}catch(e){}if(flash>0){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle=`rgba(255,255,255,${flash*.4})`;ctx.fillRect(0,0,cw,ch)}}
 let last=performance.now(),acc=0;
@@ -5702,6 +5775,8 @@ const prevIO=typeof IntersectionObserver==='function'?new IntersectionObserver(e
 // true if a small preview canvas is worth redrawing this frame (visible on screen)
 function pvOK(c){const cv=c&&c.canvas;if(!cv)return false;if(prevIO&&!cv.__obs){cv.__obs=1;prevIO.observe(cv)}return cv.__vis!==false}
 function frame(now){const gap=SAVER?32:paused&&!SPEC&&anyOpen()?40:15.2;if(now-(frame.t0||0)<gap){requestAnimationFrame(frame);return}frame.t0=now;
+  if(!INP.test){const dn=Date.now(),pn=performance.now(),S=frame.spd;if(!S||dn-S.d0>12000||dn<S.d0)frame.spd={n0:now,d0:dn,p0:pn,bad:0};else if(dn-S.d0>=3000){const dd=dn-S.d0,off=Math.abs((now-S.n0)/dd-1)>.12||Math.abs((pn-S.p0)/dd-1)>.12,bad=off?S.bad+1:0;if(bad>=3)cheatSeen('game speed changed');frame.spd={n0:now,d0:dn,p0:pn,bad}}
+    if(score!==SCK&&!SPEC)cheatSeen('score edited')}
   const pv=now-(frame.pv||0)>=(SAVER?95:48);if(pv)frame.pv=now;
   let dt=(now-last)/1000;last=now;if(dt>.1)dt=.1;acc+=dt;BNC=isBouncy()?1:0;SPK=BNC?1.2:1;SPD=BNC?.6:1;
   if(SPEC)try{specPump()}catch(e){}
