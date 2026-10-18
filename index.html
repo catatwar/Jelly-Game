@@ -2304,6 +2304,8 @@ function drawTile(c,x,y,S,v,set,o={}){
 const cv=$('game'),ctx=cv.getContext('2d',{alpha:false}),stage=$('stage');   // opaque: every frame paints the whole board, so phones skip blending it over the page
 const midC=$('midC'),midCtx=midC.getContext('2d'),scoreEl=$('score'),bestEl=$('best');
 let G=null,gid=null,score=0,shown=0,paused=false,SCK=0;
+// a round is still going while it's being played, or (in Jellydoku) while the "Level clear" card is up between levels
+const roundOn=()=>!!(G&&G.state&&(G.state()==='play'||G.state()==='clear'));
 // how far behind live to draw someone else's board: enough to cover how jumpy their connection is (most of the last 30 delays), eased so it never jerks
 function bufFor(offs,cur,lo){const a=offs.slice().sort((x,y)=>x-y),j=a[Math.floor((a.length-1)*.9)]-a[0],want=clamp(j+70,lo,700);return cur?cur+(want-cur)*(want>cur?.25:.03):want}
 // when the current round started (server time). Rounds started before a giveaway began don't earn its tickets.
@@ -3538,13 +3540,13 @@ function drawTut(){const c=$('tutC').getContext('2d');c.setTransform(2,0,0,2,0,0
     tutHand(c,jx,198,0)}}
 function syncDots(){$('styleDot').hidden=!(gid&&P.fresh.length>0);$('mStyleDot').hidden=!(P.fresh.length>0);ensureQuests();const gn=gwNew();$('pauseDot').hidden=!(gn||giftReady()||voteOpenForMe()||P.quests.list.some(q=>!q.c&&q.p>=qdef(q.id).goal)||dmUnread()>0);$('frDot').hidden=!(dmUnread()>0);$('gwDot').hidden=!gn}
 function openMenu(){setTimeout(()=>{try{hsrShow()}catch(e){}},450);if(!$('over').hidden)$('over').hidden=true;audio();sfx.ui();paused=true;saveRun(false);restartArm=0;($('mRestart').querySelector('span').textContent='Restart',$('mRestart').classList.remove('armed'));$('menu').hidden=false;renderMenu();try{syncDots();mailSync()}catch(e){}}
-function closeMenu(){$('menu').hidden=true;if(G&&G.state()!=='play'){if(G.state()==='ending'){paused=false;syncDots();return}playGame(gid,true);return}paused=false;syncDots()}
+function closeMenu(){$('menu').hidden=true;if(G&&!roundOn()){if(G.state()==='ending'){paused=false;syncDots();return}playGame(gid,true);return}paused=false;syncDots()}
 let restartArm=0,mPrev=[];
 function renderMenu(){ensureQuests();refreshCoins();try{voteUI()}catch(e){}try{achRowUI();evBanner();$('mEvDev').hidden=!isAdmin()}catch(e){}
   $('lvlN').textContent=P.level;$('xpFill').style.width=(P.xp/xpNeed(P.level)*100)+'%';$('xpTx').textContent=`${P.xp} / ${xpNeed(P.level)} XP`;
   if(document.activeElement!==$('pname'))$('pname').value=P.name;$('streakN').textContent=P.streak;{const n=$('napN'),k=P.naps|0;n.hidden=!k;n.textContent=' · 😴 '+k+' nap'+(k>1?'s':'');n.title='Jelly Naps save your streak if you miss a day. You earn one every 7 days of streak (hold up to 2).'}try{todayUI()}catch(e){}
   const gb=$('giftBtn'),ready=giftReady();gb.disabled=!ready;gb.classList.toggle('gift-ready',ready);gb.classList.toggle('wait',!ready);gb.textContent=ready?'Daily gift':'Next in '+fmtCd(nextReset());$('rstTx').textContent='New in '+fmtCd(nextReset());
-  $('mResume').textContent=G&&G.state()==='play'?'Resume':'New round';
+  $('mResume').textContent=roundOn()?'Resume':'New round';
   mPrev=[];if(!$('mGames').hidden){$('mGames').innerHTML=Object.values(GAMES).map(g=>{const curG=g.id===gid,sv=P.saves[g.id],cnt=styleCount(SG(g.id));return`<button class="mg${curG?' cur':''}" data-g="${g.id}" type="button"><canvas width="240" height="180"></canvas><span class="badge">${curG?'Playing':sv?'Saved':'New'}</span><span class="gb"><span class="gn">${g.name}</span><span class="gs">Best ${fmt(P.best[g.id]||0)}${sv&&!curG?' · saved '+fmt(sv.score||0):''}</span></span></button>`}).join('');
   mPrev=[...$('mGames').querySelectorAll('.mg')].map(b=>({g:b.dataset.g,c:b.querySelector('canvas').getContext('2d')}));
   $('mGames').querySelectorAll('.mg').forEach(b=>b.onclick=()=>{const g=b.dataset.g;if(g===gid){closeMenu();return}saveRun(false);sfx.ui();playGame(g);toast(P.saves[g]?'Welcome back!':'Switched to '+GAMES[g].name,'#7cc8ff')});}
@@ -5565,15 +5567,19 @@ function gmAdd(g,xp){if(!GAMES[g])return'';const s=gmS(g);if(s.l>=GM_MAX)return'
 // 3) machine-perfect timing between taps (an auto-clicker or a remote-controlled browser) is caught at the end of a round
 // 4) known cheat tools are spotted on the page
 // A caught round gives no coins, XP, best score or leaderboard spot, and the developer sees who was caught.
-function botTiming(){const t=INP.ts;if(t.length<40)return false;const d=[];for(let i=1;i<t.length;i++){const x=t[i]-t[i-1];if(x>0&&x<4000)d.push(x)}if(d.length<35)return false;
-  const m=d.reduce((a,b)=>a+b,0)/d.length,sd=Math.sqrt(d.reduce((a,b)=>a+(b-m)*(b-m),0)/d.length),s=d.slice().sort((a,b)=>a-b),med=s[s.length>>1],near=d.filter(x=>Math.abs(x-med)<=2).length/d.length;
-  if(sd<5||near>.6){CHEAT.why='robot-perfect timing';return true}
-  for(let i=0;i+30<=d.length;i+=5){let lo=1e9,hi=0,su=0;for(let j=i;j<i+30;j++){const x=d[j];if(x<lo)lo=x;if(x>hi)hi=x;su+=x}const mu=su/30;let v=0;for(let j=i;j<i+30;j++)v+=(d[j]-mu)*(d[j]-mu);if(hi-lo<30&&Math.sqrt(v/30)<7){CHEAT.why='auto-clicker';return true}}
+// How steady a run of gaps between taps is. A person tapping as fast and evenly as they can still wobbles by 10+ ms,
+// and even when a phone rounds tap times to its frames (every 8 or 17 ms) their gaps land in two or three of those
+// steps. A machine's gaps all land in the same step. So only that counts as proof.
+const sdOf=a=>{const m=a.reduce((x,y)=>x+y,0)/a.length;return Math.sqrt(a.reduce((x,y)=>x+(y-m)*(y-m),0)/a.length)};
+function botTiming(){const t=INP.ts;if(t.length<50)return false;const d=[];for(let i=1;i<t.length;i++){const x=t[i]-t[i-1];if(x>0&&x<1500)d.push(x)}if(d.length<45)return false;
+  if(sdOf(d)<2.5){CHEAT.why='robot-perfect timing';return true}
+  for(let i=0;i+40<=d.length;i+=5){const w=d.slice(i,i+40);if(Math.max(...w)-Math.min(...w)<12&&sdOf(w)<2.5){CHEAT.why='auto-clicker';return true}}
   return false}
 function cheatCheck(){if(INP.test)return false;if(CHEAT.round)return true;
   if(Math.abs(score-SCK)>.5){CHEAT.why='score edited';return true}
-  if(INP.mv>INP.ev*2+6){CHEAT.why='moves without taps';return true}
-  {let run=1,top=1;for(let i=1;i<INP.tp.length;i++){run=INP.tp[i]&&INP.tp[i]===INP.tp[i-1]?run+1:1;if(run>top)top=run}if(top>=20){CHEAT.why='auto-clicker';return true}}
+  if(INP.mv>INP.ev*2+20){CHEAT.why='moves without taps';return true}
+  // the same exact spot over and over only counts if the timing is machine-steady too (a still thumb hits the same pixel)
+  {const T=INP.tp;let i0=0;for(let i=1;i<=T.length;i++){if(i<T.length&&T[i].k&&T[i].k===T[i-1].k)continue;if(i-i0>=25){const g=[];for(let j=i0+1;j<i;j++){const x=T[j].t-T[j-1].t;if(x>0&&x<1500)g.push(x)}if(g.length>=20&&sdOf(g)<2.5){CHEAT.why='auto-clicker';return true}}i0=i}}
   return botTiming()}
 function cheatReport(){CHEAT.n=Math.max(1,CHEAT.n);P.cheat=(P.cheat|0)+1;save();if(!UID||!acctReady||!fbOnline||Date.now()-CHEAT.sent<60000)return;CHEAT.sent=Date.now();
   FD.set(fref('flags/'+UID),{n:P.cheat|0,why:String(CHEAT.why||'automated play').slice(0,40),name:duName(),g:String(gid||''),t:FD.serverTimestamp()}).catch(()=>{})}
@@ -5593,7 +5599,7 @@ setInterval(botScan,2500);
 // developer: who got caught
 async function cpFlagsUI(){const L=$('flList');if(!L||!isAdmin())return;L.textContent='Loading…';let v={};try{v=(await FD.get(FD.ref(RDB,'flags'))).val()||{}}catch(e){L.textContent='Could not load. Publish the new database rules first.';return}
   const rows=Object.entries(v).filter(([,x])=>x&&typeof x==='object').sort((a,b)=>(+b[1].t||0)-(+a[1].t||0)).slice(0,40);L.textContent='';if(!rows.length){L.append(elx('small',null,'Nobody has been caught yet.'));return}
-  for(const[uid,x]of rows){const r=elx('div','flrow');r.append(elx('span','fln',`${cleanName(x.name)||'Player'} · caught ${x.n|0}× · ${x.why||''}${x.g&&GAMES[x.g]?' in '+GAMES[x.g].name:''} · ${fmtDay(+x.t)}`));if(LBBAN[uid])r.firstChild.append(elx('span','flban',' · banned'));const b=bt('white','Fix',async()=>{let lb={};try{lb=(await FD.get(fref('lb/'+uid))).val()||{}}catch(e){}closeComp();pfDevG=GAMES[x.g]?x.g:'';openProfile(Object.assign({name:x.name},lb,{id:uid}))});r.append(b);L.append(r)}}
+  for(const[uid,x]of rows){const r=elx('div','flrow');r.append(elx('span','fln',`${cleanName(x.name)||'Player'} · caught ${x.n|0}× · ${x.why||''}${x.g&&GAMES[x.g]?' in '+GAMES[x.g].name:''} · ${fmtDay(+x.t)}`));if(LBBAN[uid])r.firstChild.append(elx('span','flban',' · banned'));const clr=bt('white','Clear',async()=>{if(clr.dataset.arm!=='1'){clr.dataset.arm='1';clr.textContent='Sure?';setTimeout(()=>{clr.dataset.arm='';clr.textContent='Clear'},2500);return}try{await FD.remove(FD.ref(RDB,'flags/'+uid));r.remove();toast('Flag cleared','#5be0a6')}catch(e){toast('Could not clear it','#ff6fa8')}});clr.title='Remove this flag (for a false alarm)';r.append(clr);const b=bt('white','Fix',async()=>{let lb={};try{lb=(await FD.get(fref('lb/'+uid))).val()||{}}catch(e){}closeComp();pfDevG=GAMES[x.g]?x.g:'';openProfile(Object.assign({name:x.name},lb,{id:uid}))});r.append(b);L.append(r)}}
 // ---- developer: set any player's best score (fixes the leaderboards right away, and their game the next time it's open)
 async function devSetBest(uid,g,n){const out={lb:false,boards:0,err:false};if(!isAdmin()||!uid||!GAMES[g])return out;
   await FD.set(fref('takes/'+uid+'/b'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)),{k:'best',g,n,t:FD.serverTimestamp()});
@@ -5681,7 +5687,9 @@ function voteUI(){const B=$('voteBox');if(!B)return;if(!voteLive()){if(!B.hidden
   VOTE.o.forEach((o,i)=>{const pc=tot?Math.round(cnt[i]/tot*100):0;h+=my==null?`<button class="vopt" data-i="${i}" type="button">${esc(o)}</button>`:`<div class="vres${my===i?' mine':''}"><span class="vfill" style="width:${pc}%"></span><span class="vt">${my===i?'✓ ':''}${esc(o)}</span><span class="vp">${pc}%</span></div>`});
   h+=`</div><small class="vfoot">${my==null?(UID&&acctReady?'Tap one to vote. Everyone gets one vote.':'Sign in to vote.'):`Thanks for voting! ${fmt(tot)} vote${tot===1?'':'s'} so far.`}</small>`;
   if(B.dataset.h!==h){B.dataset.h=h;B.innerHTML=h;B.querySelectorAll('.vopt').forEach(b=>b.onclick=()=>voteCast(+b.dataset.i))}B.hidden=false}
-async function voteCast(i){if(!voteLive())return;audio();if(!UID||!acctReady){closeAllO();openAcct('in');return}if(myVote()!=null)return;const id=VOTE.id;
+function voteCast(i){if(!voteLive())return;audio();if(!UID||!acctReady){closeAllO();openAcct('in');return}if(myVote()!=null)return;const o=VOTE.o[i];if(o==null)return;
+  askConfirm('Vote for “'+o+'”?','You only get one vote, and you can’t change it after.','Vote for this','pink',()=>voteSend(i))}
+async function voteSend(i){if(!voteLive()||myVote()!=null)return;const id=VOTE.id;
   P.voted=P.voted&&typeof P.voted==='object'?P.voted:{};P.voted[id]=i;const ks=Object.keys(P.voted);if(ks.length>10)delete P.voted[ks[0]];save();VOTES[UID]=i;voteUI();syncDots();sfx.pop(7);hap('tap');confAt($('voteBox'),40,500);secBump('voter',1);
   try{await FD.set(fref('votes/'+id+'/'+UID),i)}catch(e){toast('Could not send your vote. Try again soon.','#ff6fa8');delete P.voted[id];delete VOTES[UID];save();voteUI()}}
 // developer side: start a vote, watch the results, end it early
@@ -5809,9 +5817,9 @@ addEventListener('keydown',e=>{if(!e.isTrusted){if(G&&!paused&&$('menu').hidden)
   if(!e.repeat){INP.ts.push(e.timeStamp);if(INP.ts.length>240)INP.ts.splice(0,40)}
   if(e.key===' '||e.key==='Enter'){audio();if(G.action)inpRun(()=>G.action())}if(G.key&&!e.repeat)inpRun(()=>G.key(e.key))});
 addEventListener('keyup',e=>{if(!e.isTrusted)return;keys[e.key]=false});
-stage.addEventListener('pointerdown',e=>{if(!e.isTrusted)return;INP.ev++;INP.tp.push(e.pointerType==='touch'?e.clientX.toFixed(2)+','+e.clientY.toFixed(2):'');if(INP.tp.length>240)INP.tp.splice(0,40)},true);
+stage.addEventListener('pointerdown',e=>{if(!e.isTrusted)return;INP.ev++;INP.tp.push({k:e.pointerType==='touch'?e.clientX.toFixed(2)+','+e.clientY.toFixed(2):'',t:e.timeStamp});if(INP.tp.length>240)INP.tp.splice(0,40)},true);
 stage.addEventListener('pointerup',e=>{if(e.isTrusted)INP.ev++},true);
-addEventListener('keydown',e=>{if(e.isTrusted&&!e.repeat)INP.ev++},true);
+addEventListener('keydown',e=>{if(e.isTrusted)INP.ev+=(e.key===' '||e.key==='Enter')?2:1},true);
 function drawGame(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cw,ch);const sk=shake*shake*14;ctx.translate(offX+(Math.random()*2-1)*sk,offY+(Math.random()*2-1)*sk);ctx.scale(sc,sc);
   const ex=extent();G.bg(ctx,ex);glowSync();DRAW_ME=!SPEC;try{G.render(ctx,ex)}finally{DRAW_ME=false}boomDraw(ctx);drawBig(ctx);try{drawOver(ctx)}catch(e){}if(flash>0){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.fillStyle=`rgba(255,255,255,${flash*.4})`;ctx.fillRect(0,0,cw,ch)}}
 let last=performance.now(),acc=0;
@@ -5819,7 +5827,7 @@ const prevIO=typeof IntersectionObserver==='function'?new IntersectionObserver(e
 // true if a small preview canvas is worth redrawing this frame (visible on screen)
 function pvOK(c){const cv=c&&c.canvas;if(!cv)return false;if(prevIO&&!cv.__obs){cv.__obs=1;prevIO.observe(cv)}return cv.__vis!==false}
 function frame(now){const gap=SAVER?32:paused&&!SPEC&&anyOpen()?40:15.2;if(now-(frame.t0||0)<gap){requestAnimationFrame(frame);return}frame.t0=now;
-  if(!INP.test){const dn=Date.now(),pn=performance.now(),S=frame.spd;if(!S||dn-S.d0>12000||dn<S.d0)frame.spd={n0:now,d0:dn,p0:pn,bad:0};else if(dn-S.d0>=3000){const dd=dn-S.d0,off=Math.abs((now-S.n0)/dd-1)>.12||Math.abs((pn-S.p0)/dd-1)>.12,bad=off?S.bad+1:0;if(bad>=3)cheatSeen('game speed changed');frame.spd={n0:now,d0:dn,p0:pn,bad}}
+  if(!INP.test){const dn=Date.now(),pn=performance.now(),S=frame.spd;if(!S||dn-S.d0>12000||dn<S.d0)frame.spd={n0:now,d0:dn,p0:pn,bad:0};else if(dn-S.d0>=3000){const dd=dn-S.d0,off=Math.abs((now-S.n0)/dd-1)>.2||Math.abs((pn-S.p0)/dd-1)>.2,bad=off?S.bad+1:0;if(bad>=4)cheatSeen('game speed changed');frame.spd={n0:now,d0:dn,p0:pn,bad}}
     if(score!==SCK&&!SPEC)cheatSeen('score edited')}
   const pv=now-(frame.pv||0)>=(SAVER?95:48);if(pv)frame.pv=now;
   let dt=(now-last)/1000;last=now;if(dt>.1)dt=.1;acc+=dt;BNC=isBouncy()?1:0;SPK=BNC?1.2:1;SPD=BNC?.6:1;
@@ -5841,7 +5849,7 @@ function frame(now){const gap=SAVER?32:paused&&!SPEC&&anyOpen()?40:15.2;if(now-(
     if(!SPEC&&!(DUEL&&DUEL.phase==='count')&&!$('specShield').hidden)$('specShield').hidden=true;
     // a finished round with nothing on screen (e.g. a menu closed by tapping outside it) goes back to its results card
     if(quiet&&lastFin&&lastFin.g===gid&&!SPEC&&!DUEL&&!VIEW&&!RK&&G&&G.state&&G.state()==='done'){$('over').hidden=false;paused=true}
-    if(paused&&quiet&&!SPEC&&!DUEL&&!RK&&!VIEW&&G&&G.state&&G.state()==='play'){frame.stuck=(frame.stuck||0)+1;if(frame.stuck>45){paused=false;frame.stuck=0}}else frame.stuck=0}if(!$('maint').hidden)drawMaint();
+    if(paused&&quiet&&!SPEC&&!DUEL&&!RK&&!VIEW&&roundOn()){frame.stuck=(frame.stuck||0)+1;if(frame.stuck>45){paused=false;frame.stuck=0}}else frame.stuck=0}if(!$('maint').hidden)drawMaint();
   const sp=$('splashC');if(sp)drawSplash(sp,now/1000);
   if(pfD&&pv){drawProfileAv();for(const p of slotPrev)if(p.r&&pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id,p.S||120)}if(!$('pick').hidden&&pv)for(const p of sPrevPick)if(pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id);if(!$('cd').hidden)drawCd();if(!$('beta').hidden)drawBetaCard();if(!$('devg').hidden)drawDevCard();if(!$('who').hidden)drawWho();if(!$('lvp').hidden){drawSpin();if(pv)for(const p of lvPrev)if(pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id,96)}if(pv&&sPrev.length&&!$('style').hidden)for(const p of sPrev)if(pvOK(p.c))drawItem(p.c,p.g,p.cat,p.id);
   confUpdate(dt);requestAnimationFrame(frame)}
