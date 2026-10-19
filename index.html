@@ -498,6 +498,8 @@ textarea{font:500 16px/1.4 var(--body);color:var(--ink);border:2.5px solid var(-
 .cbprev{display:flex;gap:4px;width:100%}.cbprev i{flex:1;height:22px;border-radius:6px;border:2px solid var(--ink)}
 .achrow{margin-top:4px}.achtop{width:100%}.achlist{display:flex;flex-direction:column;gap:6px;width:100%}.achc{display:flex;gap:10px;align-items:flex-start;border:2.5px solid var(--ink);border-radius:14px;background:#fff;padding:8px 10px;text-align:left}.achc.got{background:#eafff4}.achc.secret:not(.got){background:repeating-linear-gradient(135deg,#f4f1ff 0 10px,#ebe6ff 10px 20px)}.achc.secret:not(.got) b{letter-spacing:3px}.achsec{margin-left:6px;font-size:10px;font-weight:900;color:#fff;background:#7a3cff;border-radius:99px;padding:1px 6px;vertical-align:2px}.achi{font-size:24px;line-height:1.2}.achm{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}.achm b{font-size:15px}.achd{font-size:12px;color:var(--muted);font-weight:600}
 .achr{display:flex;flex-wrap:wrap;gap:4px;align-items:center}.achcoin{font-size:12px;font-weight:800;background:#fff3c4;border:2px solid #7a5200;border-radius:99px;padding:0 8px}.achcoin::before{content:'● ';color:#ffb000}.achx{font-size:11px;font-weight:800;background:#efe8ff;border-radius:99px;padding:1px 8px}.achok{font-size:12px;font-weight:800;color:#1f9e68}
+.mmatch{display:flex;align-items:center;gap:10px;padding:9px 10px 9px 12px;border:3px solid var(--ink);border-radius:16px;background:linear-gradient(135deg,#e7f9ff,#ffe9f3);box-shadow:0 4px 0 var(--ink)}.mmatch[hidden]{display:none}.mmatch .mmt{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}.mmatch b{font-family:var(--display);font-size:17px;font-weight:400;line-height:1.15}.mmatch small{font:600 12px/1.25 var(--body);opacity:.75}.mmatch .btn{flex:none;min-width:0}
+.menu.inmatch>*:not(.mtop):not(.mmatch):not(#mResume):not(#mSet){display:none!important}
 .dcjoin{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:8px 12px 9px;border:3px solid var(--ink);border-radius:16px;background:#5865f2;color:#fff;text-decoration:none;box-shadow:0 4px 0 var(--ink);transition:transform .07s,box-shadow .07s;-webkit-tap-highlight-color:transparent}.dcjoin:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}.dcjoin .dcico{flex:none;width:36px;height:36px;border-radius:11px;background:#fff;color:#5865f2;border:2.5px solid var(--ink);display:grid;place-items:center}.dcjoin .dcico svg{width:24px;height:24px}.dcjoin .dctx{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}.dcjoin b{font-family:var(--display);font-size:17px;line-height:1.1;font-weight:400}.dcjoin small{font:600 12px/1.25 var(--body);opacity:.95}.dcjoin .dcgo{flex:none;font:400 26px/1 var(--display);margin-top:-3px}
 .evban{width:100%;border:3px solid var(--ink);border-radius:16px;padding:8px 12px;display:flex;flex-direction:column;align-items:flex-start;gap:3px;font:inherit;cursor:pointer;text-align:left;background:linear-gradient(135deg,#fff3c4,#ffd6e6);box-shadow:0 4px 0 var(--ink);color:var(--ink)}.evban b{font-family:var(--display);font-size:20px}.evban span{font-size:12px;font-weight:700}.evbar{width:100%;height:9px;border-radius:99px;background:rgba(0,0,0,.12);overflow:hidden}.evbar i{display:block;height:100%;background:linear-gradient(90deg,#ff6fa8,#ffd23f)}
 .bplist{display:flex;flex-direction:column;gap:6px;width:100%;max-height:52vh;overflow:auto}.bpr{display:flex;align-items:center;gap:10px;border:2.5px solid var(--ink);border-radius:12px;background:#fff;padding:6px 10px}.bpr.big{background:#fff8dc}.bpr.got{opacity:.6}.bpl{font-family:var(--display);font-size:20px;width:28px;text-align:center}.bpm{display:flex;align-items:center;gap:8px;flex:1;flex-wrap:wrap}.bpcv{width:54px;height:54px;border-radius:10px;border:2px solid var(--ink)}.bpn{font-size:13px;font-weight:700}.bpok{font-weight:900;color:#1f9e68;font-size:18px}
@@ -830,6 +832,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     <div id="evDeco" class="evdeco" aria-hidden="true"></div>
     <a class="dcjoin" id="mDisc" href="https://discord.gg/UxhDNvksFb" target="_blank" rel="noopener"><span class="dcico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4z"/><path d="M10 21a2.2 2.2 0 0 0 4 0"/><path d="M12 3v2"/></svg></span><span class="dctx"><b>Join the Discord</b><small>Get notified about updates, giveaways, tournaments and announcements</small></span><span class="dcgo" aria-hidden="true">›</span></a>
     <div class="vote" id="voteBox" hidden></div>
+    <div class="mmatch" id="mMatch" hidden><span class="mmt"><b id="mMatchT"></b><small id="mMatchS"></small></span><button class="btn small danger" id="mLeave" type="button">Leave match</button></div>
     <div class="mtop"><span class="mtitle" id="mTitle">Paused<span class="betapill" id="mBeta">BETA</span></span><span class="coins" id="mCoins"><i class="coin"></i><span class="coinN">0</span></span></div>
     <div class="mhead">
       <canvas id="mAv" width="120" height="120" role="button" aria-label="Open your profile" title="Your profile"></canvas>
@@ -3491,7 +3494,7 @@ function finishRound(g,s,title,items){
 $('oSurEq').onclick=()=>{if(!lastSurprise)return;equip(lastSurprise.g,lastSurprise.cat,lastSurprise.id);$('oSurEq').textContent='Wearing!';$('oSurEq').disabled=true;sfx.pop(6);syncDots()};
 
 // ================================================= play / menu
-function playGame(g,fresh=false){CHEAT.round=false;INP.ts=[];INP.tp=[];INP.mv=0;INP.ev=0;if(RACE&&!RACE.go)RACE=null;if(RACE)RACE.go=0;RT={t:0,pts:[],next:1};PBX.done=0;if(CH&&!CH.go)chEnd();if(CH)CH.go=0;else if(fresh&&chJust===g&&P.saves[g])fresh=false;chJust='';MYS.t=0;MYS.show=0;const def=GAMES[g]||DUELONLY[g]||GAMES.drop;if(!GAMES[g]&&!DUELONLY[g])g='drop';VIEW='';lastFin=null;setTimeout(()=>presenceSet(!document.hidden),200);setTimeout(()=>tutMaybe(g),60);audio();if(G&&G!==def.impl&&G.leave)try{G.leave()}catch(e){}gid=g;G=def.impl;if(GAMES[g])P.last=g;paused=false;['menu','over','style'].forEach(id=>$(id).hidden=true);
+function playGame(g,fresh=false){if(!duBoot&&duActive())duLeave();CHEAT.round=false;INP.ts=[];INP.tp=[];INP.mv=0;INP.ev=0;if(RACE&&!RACE.go)RACE=null;if(RACE)RACE.go=0;RT={t:0,pts:[],next:1};PBX.done=0;if(CH&&!CH.go)chEnd();if(CH)CH.go=0;else if(fresh&&chJust===g&&P.saves[g])fresh=false;chJust='';MYS.t=0;MYS.show=0;const def=GAMES[g]||DUELONLY[g]||GAMES.drop;if(!GAMES[g]&&!DUELONLY[g])g='drop';VIEW='';lastFin=null;setTimeout(()=>presenceSet(!document.hidden),200);setTimeout(()=>tutMaybe(g),60);audio();if(G&&G!==def.impl&&G.leave)try{G.leave()}catch(e){}gid=g;G=def.impl;if(GAMES[g])P.last=g;paused=false;['menu','over','style'].forEach(id=>$(id).hidden=true);
   score=SCK=0;shown=0;scoreEl.textContent='0';bestEl.textContent=fmt(P.best[g]||0);clearFX();resize();
   {const sv=!fresh&&P.saves[g];RST=sv?{loc:Date.now(),srv:+sv._t0||0}:{loc:Date.now(),srv:null}}
   if(!fresh&&P.saves[g])G.restore(P.saves[g]);else{delete P.saves[g];G.start()}PBX.done=(P.best[g]||0)>0&&score>(P.best[g]||0)?1:0;save();syncDots()}
@@ -3559,13 +3562,16 @@ function drawTut(){const c=$('tutC').getContext('2d');c.setTransform(2,0,0,2,0,0
     tutHand(c,jx,198,0)}}
 function syncDots(){$('styleDot').hidden=!(gid&&P.fresh.length>0);$('mStyleDot').hidden=!(P.fresh.length>0);ensureQuests();const gn=gwNew();$('pauseDot').hidden=!(gn||giftReady()||voteOpenForMe()||P.quests.list.some(q=>!q.c&&q.p>=qdef(q.id).goal)||dmUnread()>0);$('frDot').hidden=!(dmUnread()>0);$('gwDot').hidden=!gn}
 function openMenu(){setTimeout(()=>{try{hsrShow()}catch(e){}},450);if(!$('over').hidden)$('over').hidden=true;audio();sfx.ui();paused=true;saveRun(false);restartArm=0;($('mRestart').querySelector('span').textContent='Restart',$('mRestart').classList.remove('armed'));$('menu').hidden=false;renderMenu();try{syncDots();mailSync()}catch(e){}}
-function closeMenu(){$('menu').hidden=true;if(G&&!roundOn()){if(G.state()==='ending'){paused=false;syncDots();return}playGame(gid,true);return}paused=false;syncDots()}
+function closeMenu(){$('menu').hidden=true;if(duActive()){paused=DUEL.phase!=='live';syncDots();return}if(G&&!roundOn()){if(G.state()==='ending'){paused=false;syncDots();return}playGame(gid,true);return}paused=false;syncDots()}
 let restartArm=0,mPrev=[];
+function menuMatch(){const on=duActive(),card=$('menu').querySelector('.menu');card.classList.toggle('inmatch',on);$('mMatch').hidden=!on;if(!on)return;
+  const d=DUEL,cp=isCoop(d.g),nm=d.oppN||'your opponent';$('mMatchT').textContent=d.rk?'🏆 Ranked vs '+nm:cp?'🤝 Co-op with '+nm:'⚔️ 1v1 vs '+nm;
+  $('mMatchS').textContent=d.phase==='end'?'Waiting for the result':cp?'Leave to play something else':'The clock keeps going while you’re paused';$('mResume').textContent='Back to the match';$('mLeave').textContent=d.rk?'Forfeit':'Leave match'}
 function renderMenu(){ensureQuests();refreshCoins();try{voteUI()}catch(e){}try{achRowUI();evBanner();$('mEvDev').hidden=!isAdmin()}catch(e){}
   $('lvlN').textContent=P.level;$('xpFill').style.width=(P.xp/xpNeed(P.level)*100)+'%';$('xpTx').textContent=`${P.xp} / ${xpNeed(P.level)} XP`;
   if(document.activeElement!==$('pname'))$('pname').value=P.name;$('streakN').textContent=P.streak;{const n=$('napN'),k=P.naps|0;n.hidden=!k;n.textContent=' · 😴 '+k+' nap'+(k>1?'s':'');n.title='Jelly Naps save your streak if you miss a day. You earn one every 7 days of streak (hold up to 2).'}try{todayUI()}catch(e){}
   const gb=$('giftBtn'),ready=giftReady();gb.disabled=!ready;gb.classList.toggle('gift-ready',ready);gb.classList.toggle('wait',!ready);gb.textContent=ready?'Daily gift':'Next in '+fmtCd(nextReset());$('rstTx').textContent='New in '+fmtCd(nextReset());
-  $('mResume').textContent=roundOn()?'Resume':'New round';
+  $('mResume').textContent=roundOn()?'Resume':'New round';try{menuMatch()}catch(e){}
   mPrev=[];if(!$('mGames').hidden){$('mGames').innerHTML=Object.values(GAMES).map(g=>{const curG=g.id===gid,sv=P.saves[g.id],cnt=styleCount(SG(g.id));return`<button class="mg${curG?' cur':''}" data-g="${g.id}" type="button"><canvas width="240" height="180"></canvas><span class="badge">${curG?'Playing':sv?'Saved':'New'}</span><span class="gb"><span class="gn">${g.name}</span><span class="gs">Best ${fmt(P.best[g.id]||0)}${sv&&!curG?' · saved '+fmt(sv.score||0):''}</span></span></button>`}).join('');
   mPrev=[...$('mGames').querySelectorAll('.mg')].map(b=>({g:b.dataset.g,c:b.querySelector('canvas').getContext('2d')}));
   $('mGames').querySelectorAll('.mg').forEach(b=>b.onclick=()=>{const g=b.dataset.g;if(g===gid){closeMenu();return}saveRun(false);sfx.ui();playGame(g);toast(P.saves[g]?'Welcome back!':'Switched to '+GAMES[g].name,'#7cc8ff')});}
@@ -4962,7 +4968,7 @@ async function duCancel(){if(!DUEL||DUEL.phase!=='wait')return;const d=DUEL,v=d.
 function duStep(){const d=DUEL,v=d&&d.rec;if(!v)return;
   if(d.phase==='wait'){if(v.st==='cancel')return duStop(v.to?'Your challenge was declined':'The match was cancelled');if(v.st==='live'&&v.start&&v.b)duBegin();else if(!$('duel').hidden)renderDuel()}}
 function duBegin(){const d=DUEL,v=d.rec;if(SPEC)specStop(true);d.g=GAMES[v.g]||DUELONLY[v.g]?v.g:'drop';d.opp=d.me==='a'?v.b:v.a;d.oppN=cleanName(d.me==='a'?v.bn:v.an)||'Opponent';d.t0=(+v.start)-SKEW;d.goAt=d.t0+DU_CD;d.nl=!!v.nl&&!DUELONLY[d.g];d.endAt=d.nl||DUELONLY[d.g]?Infinity:d.goAt+DU_LEN;d.lastOpT=Date.now();
-  if(d.rk&&RK){if(!RK.saved){saveRun(false);RK.saved=1;RK.prev=gid;RK.stash=P.saves[d.g]?JSON.parse(JSON.stringify(P.saves[d.g])):null}d.prev=RK.prev;d.stash=RK.stash}else{saveRun(false);d.prev=gid;d.stash=P.saves[d.g]?JSON.parse(JSON.stringify(P.saves[d.g])):null}d.phase='count';closeAllO();playGame(d.g,true);paused=true;$('specShield').hidden=false;
+  if(d.rk&&RK){if(!RK.saved){saveRun(false);RK.saved=1;RK.prev=gid;RK.stash=P.saves[d.g]?JSON.parse(JSON.stringify(P.saves[d.g])):null}d.prev=RK.prev;d.stash=RK.stash}else{saveRun(false);d.prev=gid;d.stash=P.saves[d.g]?JSON.parse(JSON.stringify(P.saves[d.g])):null}d.phase='count';closeAllO();duBoot=true;try{playGame(d.g,true)}finally{duBoot=false}paused=true;$('specShield').hidden=false;
   {const cp=isCoop(d.g);$('dhMeN').textContent=cp?'Team':'You';$('dhOpN').textContent=cp?'with '+d.oppN:d.oppN;$('dhMe').textContent='0';$('dhOp').textContent=cp?'🤝':'0';const vs=document.querySelector('#dhud .dh-vs');if(vs)vs.textContent=cp?'+':'vs';$('dhud').classList.toggle('coop',cp);$('dresL').textContent=cp?'Co-op result':'1v1 result';$('dresAgain').textContent=cp?'Another co-op':'Another 1v1'}$('dhMsg').textContent=d.rk&&RK&&RK.rec?`Ranked · Round ${d.rn} · ${RK.me==='a'?(+RK.rec.wa||0)+'–'+(+RK.rec.wb||0):(+RK.rec.wb||0)+'–'+(+RK.rec.wa||0)}`:'';$('dhud').hidden=false;$('dcount').hidden=false;$('dhBet').hidden=true;$('rk').hidden=true;
   sfx.discover();hap('success');presenceSet(!document.hidden)}
 function duLoop(){const d=DUEL;if(!d)return;const now=Date.now(),v=d.rec||{};
@@ -4971,6 +4977,7 @@ function duLoop(){const d=DUEL;if(!d)return;const now=Date.now(),v=d.rec||{};
   $('dhud').classList.toggle('ahead',!cp&&mine>op);$('dhud').classList.toggle('behind',!cp&&mine<op);
   if(d.phase==='count'){const n=Math.ceil((d.goAt-now)/1000);$('dcount').textContent=n>0?String(n):'GO!';$('dhT').textContent=isCoop(d.g)?'Co-op':DUELONLY[d.g]?'First to 3':d.nl?'No limit':'1:00';if(now>=d.goAt){d.phase='live';paused=false;$('specShield').hidden=true;sfx.pop(8);setTimeout(()=>{$('dcount').hidden=true},500)}return}
   if(op!==d.lastOp){d.lastOp=op;d.lastOpT=now}
+  if((d.phase==='live'||d.phase==='count')&&(d.me==='a'?v.lb:v.la)&&!d.oppLeft){d.oppLeft=1;toast(isCoop(d.g)?d.oppN+' left, so the match is over':d.oppN+' left the match. You win!','#ffd23f');duLocalEnd();return}
   if(d.phase==='live'){const left=Math.max(0,d.endAt-now);$('dhT').textContent=isCoop(d.g)?'Co-op':DUELONLY[d.g]?'First to 3':d.nl?'No limit':`0:${String(Math.ceil(left/1000)).padStart(2,'0')}`;$('dhT').classList.toggle('hurry',!d.nl&&left<10000);
     $('dhBet').hidden=!!d.rk||cp||!(now<d.goAt+DU_BET&&!(P.bets&&P.bets[d.id]));if(!$('dhBet').hidden)$('dhBetT').textContent=`Bet on yourself (${Math.ceil((d.goAt+DU_BET-now)/1000)}s):`;
     if(now-duSent>300&&mine!==d.lastSent){duSent=now;d.lastSent=mine;FD.update(fref('duels/'+d.id),{[d.me==='a'?'sa':'sb']:mine}).catch(()=>{})}
@@ -4985,7 +4992,7 @@ function duResult(){const d=DUEL;if(!d||d.phase==='done')return;d.phase='done';c
   // Jelly Pong: both players saw the exact same points, so use those instead of waiting on the score fields
   {const pp=DUELONLY[d.g]&&G&&G.points?G.points():null;if(pp&&pp.id===d.id){me=pp[d.me];op=pp[d.me==='a'?'b':'a'];d.final=me}}
   if(isCoop(d.g)){coopResult(d,v);return}
-  const res=me>op?'w':me<op?'l':'t';if(res==='t')secBump('tie',1);if(res==='w'&&d.nl&&d.specTried)secBump('underdog',1);
+  const res=(d.me==='a'?v.lb:v.la)?'w':me>op?'w':me<op?'l':'t';if(res==='t')secBump('tie',1);if(res==='w'&&d.nl&&d.specTried)secBump('underdog',1);
   if(SPEC&&SPEC.inDuel)specStop(true);if(d.rk){rkRoundDone(d,res,me,op);return}
   try{fsBump(d.opp,d.oppN)}catch(e){}
   const R=P.duel=P.duel||{w:0,l:0,t:0};R[res]=(R[res]||0)+1;const co=Math.round((res==='w'?150:res==='t'?75:25)*presMult());lastDu={opp:d.opp,oppN:d.oppN,g:d.g,nl:!!d.nl};P.coins+=co;addXP(res==='w'?30:10);save();refreshCoins();
@@ -4998,6 +5005,30 @@ function coopResult(d,v){try{fsBump(d.opp,d.oppN)}catch(e){}const team=Math.max(
   if(d.me==='a'){FD.update(fref('duels/'+d.id),{st:'done'}).catch(()=>{});const cid=d.id;setTimeout(()=>FD.remove(fref('coop/'+cid)).catch(()=>{}),20000)}
   $('dresT').textContent=nb?'New team best!':'Teamwork!';$('dresS').textContent=`Team score ${fmt(team)} with ${d.oppN}`+(nb?'':` · best ${fmt(P.coBest)}`);$('dresR').textContent=`+${co} coins`;$('dresB').textContent='';
   $('dhud').hidden=true;$('dres').hidden=false;confetti(fxW/2,fxH*.3,nb?160:90,1000);hap('success');sfx.discover()}
+// ---- leaving a co-op or 1v1 before it's over (pause menu → Leave match, or starting something else mid-match).
+// The other player is told (so their match ends with a proper result), the save that was there before the match is put back,
+// and the match HUD stops. Before this, the match kept running in the background and later restarted whatever you were
+// playing, wiping it.
+const duActive=()=>!!(DUEL&&(DUEL.phase==='count'||DUEL.phase==='live'||DUEL.phase==='end'));
+var duBoot=false;
+function duLeave(quiet){const d=DUEL;if(!duActive())return null;const side=d.me==='a'?'a':'b',cp=isCoop(d.g),done=d.phase==='end';
+  if(!done){const fin=CHEAT.round?0:Math.floor(score);
+    // two writes: the score + "finished" always works; the "left" mark needs the new database rules
+    FD.update(fref('duels/'+d.id),{['s'+side]:fin,['f'+side]:true}).catch(()=>{});FD.update(fref('duels/'+d.id),{['l'+side]:true}).catch(()=>{});
+    if(!cp&&!d.rk){const R=P.duel=P.duel||{w:0,l:0,t:0};R.l=(R.l||0)+1}}
+  if(d.rk&&RK&&RK.id&&!(RK.rec&&RK.rec.st==='done'))FD.update(fref('rmatch/'+RK.id),{st:'done',win:RK.me==='a'?'b':'a',ff:RK.me}).catch(()=>{});
+  if(cp){const cid=d.id;setTimeout(()=>FD.remove(fref('coop/'+cid)).catch(()=>{}),20000)}
+  if(SPEC&&SPEC.inDuel)specStop(true);
+  clearInterval(duTickI);if(duUnsub)try{duUnsub()}catch(e){}duUnsub=null;
+  if(d.stash)P.saves[d.g]=d.stash;else delete P.saves[d.g];
+  DUEL=null;$('dhud').hidden=true;$('dcount').hidden=true;$('dres').hidden=true;$('dhBet').hidden=true;$('specShield').hidden=true;
+  save();presenceSet(!document.hidden);try{chatSync()}catch(e){}
+  if(!quiet)toast(d.rk?'You forfeited the ranked match':cp?'You left the co-op match':'You left the 1v1'+(done?'':' (counts as a loss)'),'#ff6fa8');
+  return d}
+$('mLeave').onclick=()=>{const d=DUEL;if(!duActive())return closeMenu();const cp=isCoop(d.g),nm=d.oppN||'your opponent';
+  askConfirm(d.rk?'Forfeit the ranked match?':cp?'Leave the co-op match?':'Leave the 1v1?',
+    d.rk?nm+' wins the match, and it counts as a loss for your rank.':cp?nm+' keeps the team score so far. You won’t get the co-op rewards.':d.phase==='end'?'You’ll miss the result and the coins for this match.':nm+' wins, and it counts as a loss for you.',
+    d.rk?'Forfeit':'Leave','danger',()=>{const left=duLeave();closeAllO();if(left&&left.rk&&RK)return;playGame(left&&left.prev&&GAMES[left.prev]?left.prev:(P.last||'drop'))})};
 function duExit(again){clearInterval(duTickI);if(duUnsub)try{duUnsub()}catch(e){}duUnsub=null;const prev=DUEL&&DUEL.prev;if(DUEL){if(DUEL.stash)P.saves[DUEL.g]=DUEL.stash;else delete P.saves[DUEL.g]}$('specShield').hidden=true;DUEL=null;$('dres').hidden=true;$('dhud').hidden=true;$('dcount').hidden=true;playGame(prev&&GAMES[prev]?prev:(P.last||'drop'));presenceSet(!document.hidden);if(again)openDuel()}
 $('dresOk').onclick=()=>duExit(false);$('dresAgain').onclick=()=>{if(lastDu&&isCoop(lastDu.g)){duMode='coop';duPicked=true}duExit(true)};
 document.querySelectorAll('#dhBet button').forEach(b=>b.onclick=()=>{if(DUEL)betPlace(DUEL.id,DUEL.me,+b.dataset.a,DUEL.rec)});
