@@ -662,7 +662,8 @@ body.cbon>*:not(#playView):not(#fxc):not(script):not(svg){filter:var(--cbf)}body
 .coquick button{font:700 12.5px var(--body);border:2px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink);padding:3px 10px;cursor:pointer;box-shadow:0 2px 0 var(--ink)}
 .coquick button:active{transform:translateY(2px);box-shadow:none}
 .cotip{margin:0;font-size:12px;font-weight:600;opacity:.8;text-align:center}
-#chatBar.co.on{max-height:96px}#chatBar.co .cm{font-size:13.5px}
+#chatBar.co.on{max-height:96px}
+.cpdisc textarea,.cpdisc select{font:600 13px var(--body);border:2.5px solid var(--ink);border-radius:10px;padding:6px 8px;min-width:0}.cpdisc .dcl{font:800 12px var(--body);margin-top:4px}.dcstat{font:700 13px var(--body);background:#fff;border:2.5px solid var(--ink);border-radius:10px;padding:7px 9px;line-height:1.35}.dcstat div+div{margin-top:3px;font-weight:600}.dcstat .bad{color:#d43d75}#chatBar.co .cm{font-size:13.5px}
 .cm{max-width:100%;box-sizing:border-box;background:rgba(255,255,255,.94);color:var(--ink);border:2px solid var(--ink);border-radius:999px;padding:2px 11px 3px;font-size:12.5px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;animation:cmIn .35s cubic-bezier(.3,1.5,.5,1)}
 .cm b{color:#7a3fd0;margin-right:5px}.cm.me b{color:#1f9f6a}
 #specLog .cm{background:#f6f0ff}
@@ -1103,6 +1104,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
     <label class="chk"><input type="checkbox" id="cpSave" checked> Save it to the update logs (everyone can scroll back to it)</label>
     <label class="chk"><input type="checkbox" id="cpNotify"> Send it as a notification to everyone online right now</label>
     <label class="chk"><input type="checkbox" id="cpPop"> Pop up on everyone's screen (shows the post the next time each player is in the game)</label>
+    <label class="chk"><input type="checkbox" id="cpDisc" checked> Also post it in the Discord server (game updates go to the updates channel, other posts to announcements)</label>
     <label class="chk"><input type="checkbox" id="cpPush" checked> Update everyone’s game to the files on GitHub right now (no countdown). Players only update when you post this.</label>
     <span class="nmsg" id="cpLive"></span>
     <label class="switch" id="cpLaunchRow"><input type="checkbox" id="cpLaunch"><span>End beta and launch the game<small>Every account that exists right now becomes a Beta Tester: exclusive aura cosmetics, a Beta Tester title and 1,000 coins.</small></span></label>
@@ -1113,6 +1115,21 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
       <input id="vQ" type="text" maxlength="100" placeholder="What should I add next?">
       <div class="vgrid"><input class="vO" type="text" maxlength="40" placeholder="Option 1"><input class="vO" type="text" maxlength="40" placeholder="Option 2"><input class="vO" type="text" maxlength="40" placeholder="Option 3 (optional)"><input class="vO" type="text" maxlength="40" placeholder="Option 4 (optional)"></div>
       <button class="btn small" id="vStart" type="button">Start the vote</button><div id="vNow"></div><button class="btn small danger" id="vEnd" type="button" hidden>End the vote now</button></div>
+    <div class="cpmaint cpdisc"><span class="lbl">🤖 Discord bot</span>
+      <div class="dcstat" id="dcStat">Checking the bot…</div>
+      <small>To copy an ID: in Discord, turn on Settings → Advanced → Developer Mode, then right-click a channel or role → Copy ID. Only this dev account can see these settings.</small>
+      <span class="dcl">Game updates</span><input id="dcUpdC" type="text" inputmode="numeric" placeholder="Channel ID"><input id="dcUpdR" type="text" inputmode="numeric" placeholder="Role ID to ping (optional)">
+      <span class="dcl">Giveaways</span><input id="dcGwC" type="text" inputmode="numeric" placeholder="Channel ID (blank = updates channel)"><input id="dcGwR" type="text" inputmode="numeric" placeholder="Role ID to ping (optional)">
+      <span class="dcl">Announcements</span><input id="dcAnnC" type="text" inputmode="numeric" placeholder="Channel ID (blank = updates channel)"><input id="dcAnnR" type="text" inputmode="numeric" placeholder="Role ID to ping (optional)">
+      <span class="dcl">Tournaments</span><input id="dcTourC" type="text" inputmode="numeric" placeholder="Channel ID (blank = announcements channel)"><input id="dcTourR" type="text" inputmode="numeric" placeholder="Role ID to ping (optional)">
+      <span class="dcl">GitHub key (makes posts go out in about a minute instead of up to 15)</span><input id="dcGh" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…">
+      <div class="pdrow"><button class="btn small mint" id="dcSave" type="button">Save</button><button class="btn small white" id="dcTest" type="button">Send a test message</button></div>
+      <span class="lbl">Post to Discord only</span>
+      <select id="dcKind"><option value="ann">📣 Announcement</option><option value="tour">🏆 Tournament</option></select>
+      <input id="dcTitle" type="text" maxlength="200" placeholder="Title">
+      <textarea id="dcBody" rows="3" maxlength="3500" placeholder="What's happening? (for a tournament: game, prizes, when it starts)"></textarea>
+      <button class="btn small pink" id="dcPostGo" type="button">Post in Discord</button>
+      <span class="nmsg" id="dcMsg"></span></div>
     <div class="cpflags"><span class="lbl">🤖 Caught using bots or cheats</span><div id="flList"></div></div>
     <div class="cpmaint"><span class="lbl">Maintenance</span><input id="cpMaintMsg" type="text" maxlength="140" placeholder="Message for players (optional)"><button class="btn small danger" id="cpMaint" type="button">Turn on maintenance</button>
       <small>Stops everyone’s game on a waiting screen. When you end it, every game refreshes and shows your newest update post.</small></div>
@@ -4084,11 +4101,12 @@ async function gaSend(e){if(!scoreCan())return{ok:false};const now=srvNow(),at=+
   return{ok,got}}
 function gaTiers(ga){const t=ga&&ga.tiers;return(Array.isArray(t)?t:t&&typeof t==='object'?Object.values(t):[]).filter(x=>x&&+x.n>=1).map(x=>({n:Math.floor(+x.n),p:String(x.p||'').slice(0,60),c:clamp(Math.floor(+x.c||0),0,100000)})).sort((a,b)=>a.n-b.n)}
 async function gaAward(id,btn,auto){const ga=GAS[id];if(!ga||!isAdmin())return;const TR=gaTiers(ga);if(!TR.length)return;if(btn)btn.disabled=true;
-  try{const s=await FD.get(fref('entries/'+id)),arr=[];s.forEach(c=>{const v=c.val()||{};arr.push({uid:c.key,best:+v.best||0,tix:+v.tix||0})});arr.sort((a,b)=>b.best-a.best||b.tix-a.tix);
+  try{const s=await FD.get(fref('entries/'+id)),arr=[];s.forEach(c=>{const v=c.val()||{};arr.push({uid:c.key,best:+v.best||0,tix:+v.tix||0,name:cleanName(v.name)})});arr.sort((a,b)=>b.best-a.best||b.tix-a.tix);
     const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',u={};let n=0;
     arr.forEach((e,i)=>{const rank=i+1,tr=TR.slice().sort((p,q)=>p.n-q.n).find(x=>rank<=x.n);if(!tr)return;const code='JELLY-'+Array.from(crypto.getRandomValues(new Uint8Array(5)),b=>A[b%32]).join('');
       u[`prizes/${e.uid}/${id}_t`]={code,title:String(ga.title||'').slice(0,40),prize:tr.p,coins:clamp(Math.floor(+tr.c||+ga.coins||0),0,100000),rank,tier:tr.n,t:FD.serverTimestamp()};n++});
     u[`giveaways/${id}/awarded`]=true;u[`giveaways/${id}/ends`]=Math.min(+ga.ends||Date.now(),Date.now());await FD.update(FD.ref(RDB),u);
+    if(n)dcPost('gw',{title:'🏆 Giveaway results: '+String(ga.title||'Giveaway').slice(0,40),body:arr.slice(0,10).map((e,i)=>`**#${i+1}** ${e.name||'Someone'} · ${fmt(e.best)}`).join('\n')+(arr.length>10?`\n…and ${arr.length-10} more`:'')+'\n\nWinners: your prize code is waiting in the Giveaways menu in the game.',color:0xffd23f});
     if(btn)confAt(btn,90,850);if(!auto)sfx.discover();toast((auto?String(ga.title||'Giveaway').slice(0,24)+' ended: ':'')+(n?`prizes sent to ${n} player${n>1?'s':''}`:'no qualifying players'),'#ffd23f');return true}
   catch(e){toast('Could not award prizes','#ff6fa8');if(btn)btn.disabled=false;return false}}
 async function gaDraw(id,btn,auto){const ga=GAS[id];if(!ga||!isAdmin())return;if(btn)btn.disabled=true;
@@ -4099,6 +4117,7 @@ async function gaDraw(id,btn,auto){const ga=GAS[id];if(!ga||!isAdmin())return;if
     let name=w.name;try{const l=await FD.get(fref('lb/'+w.uid));if(l.exists()&&l.val().name)name=cleanName(l.val().name)}catch(e){}
     await FD.set(fref('prizes/'+w.uid+'/'+id),{code,title:String(ga.title||'').slice(0,40),prize:String(ga.prize||'').slice(0,80),coins:clamp(Math.floor(+ga.coins||0),0,100000),t:FD.serverTimestamp()});
     await FD.update(fref('giveaways/'+id),{winner:{uid:w.uid,name:name||'Someone'},drawn:FD.serverTimestamp(),ends:Math.min(+ga.ends||Date.now(),Date.now())});
+    dcPost('gw',{title:'🎟️ Raffle winner: '+String(ga.title||'Giveaway').slice(0,40),body:`Congrats **${name||'Someone'}**! Your prize code is waiting in the Giveaways menu in the game.`,color:0xffd23f});
     if(btn)confAt(btn,90,850);if(!auto)sfx.discover();toast((auto?String(ga.title||'Giveaway').slice(0,24)+' ended. Raffle winner: ':'Winner: ')+(name||'Someone'),'#ffd23f');return true}
   catch(e){toast('Could not draw a winner','#ff6fa8');if(btn)btn.disabled=false;return false}}
 // ended giveaways settle themselves: top prizes go out, the raffle is drawn, and a week later the giveaway is cleared away.
@@ -4123,6 +4142,7 @@ $('gaGo').onclick=async()=>{if(!isAdmin())return;const m=$('gaMsg'),bad=t=>{m.te
   try{if(gaEditId){const id=gaEditId;if(!GAS[id])throw new Error('gone');const u={title:t,prize:pz,coins:co,game:gm,min:mn,tiers:tiers.length?tiers:null};if($('gaLen').value!=='keep'){u.ends=Date.now()+len;if(!GAS[id].winner&&!GAS[id].awarded){u.claim=null;u.drawn=null}}
       await FD.update(fref('giveaways/'+id),u);gaEditEnd();m.textContent='Changes saved!';m.className='nmsg';sfx.discover();confAt($('gaGo'),40,500);$('gaGo').disabled=false;return}
     const r=FD.push(fref('giveaways')),data={title:t,prize:pz,coins:co,game:gm,min:mn,ends:Date.now()+len,made:FD.serverTimestamp()};if(tiers.length)data.tiers=tiers;await FD.set(r,data);gaTierReset();
+    dcPost('gw',{title:'🎁 New giveaway: '+t,body:'A giveaway just started in Jelly Critters! Play to earn tickets.',color:0xffd23f,fields:gaFields(Object.assign({},data,{ends:Date.now()+len}))}).then(x=>{const s2=dcSay(x);if(s2)m.textContent+=s2});
     m.textContent='Giveaway is live!';m.className='nmsg';$('gaTitle').value='';$('gaPrize').value='';sfx.discover();confAt($('gaGo'),50,600)}
   catch(e){bad('Could not create it. Check the database rules are published.')}
   $('gaGo').disabled=false};
@@ -4379,7 +4399,7 @@ async function cpLiveInfo(){const e=$('cpLive');if(!e||$('comp').hidden)return;c
 setInterval(cpLiveInfo,10000);
 function compMode(){const ed=!!compEdit;$('cpHead').textContent=ed?'Edit update':'New update';for(const id of['cpPop','cpPush','cpLaunch'])$(id).closest('label').hidden=ed;document.querySelector('.cpmaint').hidden=ed;$('cpUnlaunch').dataset.ed=ed?'1':'';if(ed)$('cpUnlaunch').hidden=true;else betaUI()}
 // MadeByCatAtWar
-function openComp(){if(!isAdmin())return;sfx.ui();setTimeout(()=>{try{cpVoteUI();cpFlagsUI()}catch(e){}},50);setTimeout(cpLiveInfo,100);if(compEdit){compEdit=null;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg=''}$('cpPush').checked=true;$('cpMsg').textContent='';compMode();$('comp').hidden=false;compPrev();setTimeout(()=>$('cpTitle').focus({preventScroll:true}),60)}
+function openComp(){if(!isAdmin())return;sfx.ui();setTimeout(()=>{try{cpVoteUI();cpFlagsUI();dcLoad(true).then(dcFillUI)}catch(e){}},50);setTimeout(cpLiveInfo,100);if(compEdit){compEdit=null;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg=''}$('cpPush').checked=true;$('cpMsg').textContent='';compMode();$('comp').hidden=false;compPrev();setTimeout(()=>$('cpTitle').focus({preventScroll:true}),60)}
 function editNews(id){const n=NEWS[id];if(!isAdmin()||!n)return;sfx.ui();compEdit=id;$('cpTitle').value=String(n.title||'');$('cpBody').value=String(n.body||'');const im=okImg(n.img)?n.img:'';if(im.startsWith('data:')){compImg=im;$('cpImgUrl').value=''}else{compImg='';$('cpImgUrl').value=im}
   $('cpMsg').textContent='';closeNews();compMode();$('comp').hidden=false;paused=true;compPrev();setTimeout(()=>$('cpTitle').focus({preventScroll:true}),60)}
 $('nwEdit').onclick=()=>editNews($('nwEdit').dataset.id);
@@ -4416,7 +4436,8 @@ $('cpGo').onclick=async()=>{if(!isAdmin())return;const m=$('cpMsg'),bad=t=>{m.te
     const keep=$('cpSave').checked,notify=$('cpNotify').checked||!keep,pop=$('cpPop').checked,r=FD.push(FD.ref(RDB,'news')),id=r.key,data={title,body,t:FD.serverTimestamp(),push};if(pop)data.pop=true;if(img)data.img=img;if(keep)await FD.set(FD.ref(RDB,'news/'+id),data);
     if(notify)await FD.set(FD.ref(RDB,'notice'),{id,title,body:String(body).slice(0,2000),t:FD.serverTimestamp()});
     if(push)await FD.set(FD.ref(RDB,'deploy'),{id,t:FD.serverTimestamp(),h:pushH});
-    m.textContent=push?'Posted! Everyone is updating to these files now.':!keep?'Sent! Everyone online sees it now (not saved to the update logs).':notify?'Posted and sent to everyone online!':data.pop?'Posted! It is popping up on everyone’s screen.':'Posted to everyone’s mailbox.';$('cpSave').checked=true;$('cpNotify').checked=false;$('cpPop').checked=false;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg='';compPrev();sfx.discover();if(!push)setTimeout(closeComp,900)}
+    const dcP=$('cpDisc').checked?dcPost(push?'upd':'ann',{title:(push?'✨ Update: ':'📣 ')+title,body,img,color:push?0x5be0a6:0x7cc8ff}):Promise.resolve('off');
+    m.textContent=push?'Posted! Everyone is updating to these files now.':!keep?'Sent! Everyone online sees it now (not saved to the update logs).':notify?'Posted and sent to everyone online!':data.pop?'Posted! It is popping up on everyone’s screen.':'Posted to everyone’s mailbox.';$('cpSave').checked=true;$('cpNotify').checked=false;$('cpPop').checked=false;$('cpTitle').value='';$('cpBody').value='';$('cpImgUrl').value='';compImg='';compPrev();sfx.discover();dcP.then(r=>{const t=dcSay(r);if(t)m.textContent+=t});if(!push)setTimeout(closeComp,900)}
   catch(e){bad('Could not post. Check the database rules are published.')}
   $('cpGo').disabled=false};
 
@@ -4501,6 +4522,56 @@ function renderFriends(){const signed=!!(UID&&acctReady);$('frAdd').hidden=!sign
     const ex=elx('span','fmx'),fsn=fsOf(f),mm=elx('span','fmu',(fsn>1?'🔥'+fsn+' ':'')+(mu.length?mu.length+' mutual':'')),cb=elx('button','frchat');cb.type='button';cb.setAttribute('aria-label','Message '+(cleanName(d.name)||'friend'));cb.innerHTML='<svg viewBox="0 0 24 24" width="24" height="24" fill="#fff" stroke="#2b2340" stroke-width="2.3" stroke-linejoin="round"><path d="M4 5.5h16a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 3.5V17.5H4A1.5 1.5 0 0 1 2.5 16V7A1.5 1.5 0 0 1 4 5.5z"/></svg>';const un=dmUnreadWith(f);if(un){const b=elx('span','mcount',un>9?'9+':String(un));cb.append(b)}cb.onclick=e=>{e.stopPropagation();openDM(f)};ex.append(mm,cb);L.append(friendRow(d,ex))}}
 // ---- invite links + sharing the game
 const SITE_URL='https://catatwar.github.io/Jelly-Game/';
+// ================================================= Discord bot (Cat At War): runs free on GitHub Actions in the Jelly-Game repo.
+// Only the developer account's game can hand it posts: they go into botq/, which only test@gmail.com can write.
+// Then the game starts the workflow right away (with the GitHub key, if saved), and it also checks every 15 minutes.
+// Its settings live in devcfg/discord and its last run in botstat/, both readable by this dev account only.
+var DCF=null,DST=null,GHB=null,ghLast='',dcKickP=null;
+const GH_REPO='catatwar/Jelly-Game',GH_WF='discord.yml',DC_TYPES=[['upd','Upd','Game updates'],['gw','Gw','Giveaways'],['ann','Ann','Announcements'],['tour','Tour','Tournaments']];
+const DC_ID=v=>/^\d{17,21}$/.test(String(v||'').trim())?String(v).trim():'';
+async function dcLoad(){if(!isAdmin()||!FD||!RDB)return;try{const[a,b]=await Promise.all([FD.get(FD.ref(RDB,'devcfg/discord')),FD.get(FD.ref(RDB,'botstat'))]);DCF=a.val()||{};DST=b.val()}catch(e){DCF=DCF||{};DST=null}}
+async function ghKick(){const tok=DCF&&DCF.gh;if(!tok)return'nokey';const H={Authorization:'Bearer '+tok,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  try{if(!GHB){const r=await fetch('https://api.github.com/repos/'+GH_REPO,{headers:H,cache:'no-store'});if(!r.ok){ghLast=r.status===401?'GitHub refused the key (wrong or expired). Make a new one and save it.':'The GitHub key can’t see '+GH_REPO+'. Give it access to that repo.';return'bad'}GHB=(await r.json()).default_branch||'main'}
+    const r=await fetch(`https://api.github.com/repos/${GH_REPO}/actions/workflows/${GH_WF}/dispatches`,{method:'POST',headers:Object.assign({'Content-Type':'application/json'},H),body:JSON.stringify({ref:GHB})});
+    if(r.status===204){ghLast='';return'ok'}
+    ghLast=r.status===404?'GitHub can’t find .github/workflows/discord.yml, or the key is missing “Actions: Read and write”.':r.status===401?'GitHub refused the key (wrong or expired). Make a new one and save it.':r.status===403?'The GitHub key needs “Actions: Read and write” on '+GH_REPO+'.':'GitHub said '+r.status+'.';return'bad'}
+  catch(e){ghLast='Couldn’t reach GitHub.';return'bad'}}
+// posts made a moment apart share one run (each run sends everything that's waiting)
+const dcKick=()=>dcKickP||(dcKickP=new Promise(r=>setTimeout(r,700)).then(ghKick).then(x=>{if(x==='ok')setTimeout(()=>{dcKickP=null},4000);else dcKickP=null;return x},e=>{dcKickP=null;return'bad'}));
+async function dcPost(kind,o){if(!isAdmin()||!FD||!RDB)return'off';if(!DCF)await dcLoad();
+  const j={k:kind,t:String(o.title||'').slice(0,250),b:String(o.body||'').slice(0,3900),c:o.color||0xff6fa8,at:FD.serverTimestamp()};
+  if(o.fields&&o.fields.length)j.f=o.fields.filter(f=>f&&f.value).slice(0,10).map(f=>({name:String(f.name).slice(0,250),value:String(f.value).slice(0,1000),inline:!!f.inline}));
+  const im=String(o.img||'');if(/^https:\/\//.test(im)||(im.startsWith('data:image/')&&im.length<9e6))j.img=im;
+  try{const id=FD.push(FD.ref(RDB,'botq')).key;await FD.set(FD.ref(RDB,'botq/'+id),j)}catch(e){return'fail'}
+  return(await dcKick())==='ok'?'ok':'queued'}
+const dcSay=r=>r==='ok'?' Sent to the Discord bot too (shows up in about a minute).':r==='queued'?' The Discord bot posts it on its next check (within about 15 minutes).':r==='off'?'':' (Couldn’t hand it to the Discord bot. Publish the new database rules.)';
+const gaFields=ga=>{const TR=gaTiers(ga),gn=ga.game==='any'?'any game':(GAMES[ga.game]||{}).name||'any game';return[
+  {name:'🎟️ Raffle prize',value:[ga.prize,+ga.coins>0?fmt(+ga.coins)+' coins':''].filter(Boolean).join(' + '),inline:true},
+  {name:'🏆 Top players',value:TR.slice().reverse().map(t=>`Top ${t.n}: ${[t.p,t.c?fmt(t.c)+' coins':''].filter(Boolean).join(' + ')}`).join('\n'),inline:true},
+  {name:'🎮 How to enter',value:`Score ${fmt(+ga.min||0)}+ in ${gn} in one round, while signed in. Each round that hits it is a ticket (up to 10). Only rounds started after the giveaway begins count.`},
+  {name:'⏰ Ends',value:`<t:${Math.floor((+ga.ends||Date.now())/1000)}:F> (<t:${Math.floor((+ga.ends||Date.now())/1000)}:R>)`}]};
+function dcFillUI(){const e=$('dcStat');if(!e)return;const D=DST,C=DCF||{};e.textContent='';const line=(t,c)=>e.append(elx('div',c||'',t));
+  if(!D||!D.at)line('⚪ The bot hasn’t run yet. Finish the setup, then tap “Send a test message”.');
+  else{const ago=Date.now()-D.at;if(ago<45*6e4)line('🟢 '+(D.tag||'The bot')+' last checked '+(ago<6e4?'just now':agoTxt(ago)+' ago')+(D.sent?' and sent '+D.sent+' post'+(D.sent===1?'':'s'):''));
+    else line('🟠 The bot last ran '+agoTxt(ago)+' ago. Check the Actions tab of the Jelly-Game repo on GitHub (GitHub pauses the 15-minute check after 60 days with no commits).','bad')}
+  line(C.gh?(ghLast?'⚠️ '+ghLast:'⚡ GitHub key saved: posts go out in about a minute.'):'🐢 No GitHub key: posts go out on the next 15-minute check.',ghLast?'bad':'');
+  if(!DC_ID(C.upd&&C.upd.ch))line('Add the Game updates channel ID below (the others fall back to it).','bad');
+  if(D&&D.err&&D.err.msg&&Date.now()-(+D.err.at||0)<864e5)line('⚠️ '+D.err.msg+' ('+agoTxt(Date.now()-(+D.err.at||Date.now()))+' ago)','bad');
+  if(!e.dataset.filled){e.dataset.filled='1';for(const[k,id]of DC_TYPES){$('dc'+id+'C').value=(C[k]&&C[k].ch)||'';$('dc'+id+'R').value=(C[k]&&C[k].r)||''}}
+  $('dcGh').value='';$('dcGh').placeholder=C.gh?'Saved ✓ (paste a new one to replace it)':'github_pat_…'}
+setInterval(()=>{if(isAdmin()&&$('comp')&&!$('comp').hidden)dcLoad().then(dcFillUI)},20000);
+$('dcSave').onclick=async()=>{if(!isAdmin())return;const m=$('dcMsg'),out={};let bad='';
+  for(const[k,id,nm]of DC_TYPES){const c=$('dc'+id+'C').value.trim(),r=$('dc'+id+'R').value.trim();if(c&&!DC_ID(c))bad=bad||nm+' channel ID should be a long number (17 to 21 digits).';if(r&&!DC_ID(r))bad=bad||nm+' role ID should be a long number (17 to 21 digits).';if(DC_ID(c)||DC_ID(r))out[k]={ch:DC_ID(c),r:DC_ID(r)}}
+  const g=$('dcGh').value.trim();if(g&&!/^(github_pat_|ghp_)[\w]{20,}$/.test(g))bad=bad||'That GitHub key doesn’t look right. It starts with github_pat_.';
+  if(bad){m.textContent=bad;m.className='nmsg bad';sfx.nope();return}
+  out.gh=g||(DCF&&DCF.gh)||null;if(!out.gh)delete out.gh;
+  try{await FD.set(FD.ref(RDB,'devcfg/discord'),out);DCF=out;GHB=null;ghLast='';dcKickP=null;m.textContent='Saved! Tap “Send a test message” to check it.';m.className='nmsg';sfx.ui();dcFillUI()}catch(e){m.textContent='Could not save. Publish the new database rules first.';m.className='nmsg bad'}};
+$('dcTest').onclick=async()=>{const m=$('dcMsg');m.textContent='Sending…';m.className='nmsg';const r=await dcPost('test',{title:'Test'});dcFillUI();
+  m.textContent=r==='ok'?'Test started! It shows up in each channel you set in about a minute.':r==='queued'?(ghLast?'Saved for the bot, but: '+ghLast+' So it goes out on the next 15-minute check.':'Saved for the bot. It goes out on the next 15-minute check (add a GitHub key to make it instant).'):'Couldn’t reach the database. Publish the new database rules first.';m.className='nmsg'+(r==='ok'?'':' bad')};
+$('dcPostGo').onclick=async()=>{const m=$('dcMsg'),k=$('dcKind').value,t=$('dcTitle').value.trim(),b=$('dcBody').value.trim();if(t.length<2){m.textContent='Add a title.';m.className='nmsg bad';return}
+  $('dcPostGo').disabled=true;const r=await dcPost(k,{title:(k==='tour'?'🏆 ':'📣 ')+t,body:b,color:k==='tour'?0xffd23f:0x7cc8ff});$('dcPostGo').disabled=false;dcFillUI();
+  if(r==='ok'||r==='queued'){m.textContent=r==='ok'?'Sent! It shows up in Discord in about a minute.':'Saved. The bot posts it on its next check (within about 15 minutes).';m.className='nmsg';$('dcTitle').value='';$('dcBody').value='';sfx.discover()}else{m.textContent='Couldn’t reach the database. Publish the new database rules first.';m.className='nmsg bad'}};
+for(const id of['dcUpdC','dcUpdR','dcGwC','dcGwR','dcAnnC','dcAnnR','dcTourC','dcTourR','dcGh','dcTitle','dcBody'])$(id).addEventListener('keydown',e=>e.stopPropagation());
 const siteUrl=()=>/^https?:$/.test(location.protocol)&&!/localhost|127\.0\.0\.1/.test(location.host)?location.origin+location.pathname:SITE_URL;
 async function shareOut(title,text,url){const full=text+' '+url;
   try{if(navigator.share){await navigator.share({title,text,url});return'shared'}}catch(e){if(e&&e.name==='AbortError')return'cancel'}
