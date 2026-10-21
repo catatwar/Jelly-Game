@@ -3221,126 +3221,199 @@ function menuSlice(c,t){const cs=P.cos.drop,w=cs.wall;wallpaper(c,w,0,0,240,180,
 // ================================================= GAME 9: Jelly Invaders (Space Invaders meets Galaga, with jellies). By Cat At War.
 // Your critter (wearing your Jelly Jar style) slides along the bottom and fires jelly beans on its own. Rows of alien jellies
 // march side to side, step down at the walls and drip sour goo. Every few seconds some peel off and swoop at you in a
-// Galaga-style dive, then loop back into formation. Jelly bunkers soak up shots from both sides. Clear a wave for a
-// bonus (more for a perfect wave), and the next one marches faster. 3 lives.
+// Galaga-style dive, then come back in from the top and rejoin the formation. Jelly bunkers soak up the goo.
+// Between waves you pick 1 of 3 perks. A chain of 10 kills sets off OVERDRIVE. Near misses score GRAZE points.
+// Every 5th wave is a milestone. 3 lives.
 const Invaders=(()=>{
-  const PY=H-62,PR=21,SPX=46,SPY=40,TOP=74,COLS=7,FR=16,BCELL=8,BW=7,BH=3,BY=PY-82;
+  const PY=H-62,PR=21,SPX=46,SPY=40,TOP=74,COLS=7,FR=16,BCELL=8,BW=7,BH=3,BY=PY-82,CARD_Y=196,CARD_H=88,CARD_G=102;
   const ROWS=[{k:'trialien',c:'#ff6fa8',p:40},{k:'cyclops',c:'#b07aff',p:30},{k:'alien',c:'#5be0a6',p:20},{k:'alien',c:'#7cc8ff',p:15},{k:'jelly',c:'#ffd23f',p:10}];
-  let st='done',px,ptx,lives,wave,t,kills,beans,goo,foes,fx,fy,fdir,fireT,divT,shotT,nid,combo,lastKill,bestCombo,hitWave,inv,shield,pw,pwT,drops,bunk,waveT,endT,stars,pop,spec;
-  const S=()=>cos('drop'),C=i=>critter(S().set,i);
+  // perks you can pick between waves (most stack a few times)
+  const PERKS={
+    rate:{n:'Quick Shots',i:'⚡',d:'Fire 15% faster',max:2},
+    cap:{n:'Extra Bean',i:'🫘',d:'One more bean in the air at once',max:1},
+    speed:{n:'Zippy',i:'💨',d:'Move faster, and beans fly faster',max:2},
+    pierce:{n:'Piercing',i:'🎯',d:'Beans go through one more alien',max:1},
+    spread:{n:'Side Shots',i:'🔱',d:'Every 4th shot is a 3-way spread',max:1},
+    magnet:{n:'Magnet',i:'🧲',d:'Pickups fly to you and drop more',max:1},
+    bubble:{n:'Bubble',i:'🫧',d:'Start every wave with a shield',max:1},
+    big:{n:'Big Beans',i:'🍬',d:'Bigger beans that land easier',max:1},
+    graze:{n:'Daredevil',i:'😎',d:'Near misses score triple',max:1},
+    hyper:{n:'Hyperdrive',i:'🔥',d:'Overdrive lasts longer (5 seconds)',max:1},
+    chain:{n:'Chain Keeper',i:'⛓',d:'More time between kills in a chain',max:1},
+    heart:{n:'Patch Up',i:'❤️',d:'Get one life back',max:99}};
+  const OD_EVERY=15,OD_LEN=3,MILE=5;
+  let st='done',px,ptx,lives,wave,t,kills,beans,goo,foes,fx,fy,fdir,fireT,divT,shotT,nid,combo,lastKill,bestCombo,hitWave,inv,shield,pw,pwT,drops,bunk,waveT,endT,stars,pop,spec,
+    pk,pick,pickT,od,odAt,grazes,vol,shotN,bestW,bestSaid;
+  const S=()=>cos('drop'),C=i=>critter(S().set,i),lv=k=>pk[k]|0;
   function hearts(){setMid('Lives','♥'.repeat(Math.max(0,lives))+'♡'.repeat(Math.max(0,3-lives)))}
   function reset(){st='play';px=ptx=W/2;lives=3;wave=0;t=0;kills=0;beans=[];goo=[];foes=[];fx=0;fy=0;fdir=1;fireT=.4;divT=3;shotT=1.4;nid=0;combo=0;lastKill=-9;bestCombo=0;hitWave=0;inv=0;shield=0;pw='';pwT=0;drops=[];bunk=[];waveT=0;endT=0;pop=[];spec={};
+    pk={};pick=null;pickT=0;od=0;odAt=OD_EVERY;grazes=0;vol=0;shotN=0;bestW=SPEC?0:(P.invWave|0);bestSaid=false;
     stars=[];for(let i=0;i<46;i++)stars.push({x:rand(W),y:rand(H),s:rand(.6,2.2),p:rand(TAU)})}
   function start(){reset();buildBunkers();nextWave();restyle();hearts()}
-  function restyle(){const w=WALLS[S().wall]||WALLS.mint;theme(w.bg,w.hud);gbar('Drag left and right to move. You fire on your own. Blast the alien jellies before they reach you!');if(lives!==undefined)hearts()}
+  function restyle(){const w=WALLS[S().wall]||WALLS.mint;theme(w.bg,w.hud);gbar('Drag left and right to move. You fire on your own. Chain 15 kills for OVERDRIVE, and pick a perk after every wave!');if(lives!==undefined)hearts()}
   function buildBunkers(){bunk=[];for(let b=0;b<3;b++){const x0=W*(b+1)/4-BW*BCELL/2;for(let r=0;r<BH;r++)for(let q=0;q<BW;q++){if(r===BH-1&&(q===2||q===3||q===4))continue;bunk.push({x:x0+q*BCELL,y:BY+r*BCELL,hp:2})}}}
   // the formation: wave 1 is 4 rows; later waves get 5 rows, tougher top rows and faster marching
   function nextWave(){wave++;hitWave=0;const rows=wave<2?4:5;fx=0;fy=0;fdir=SR()<.5?1:-1;foes=[];
-    for(let r=0;r<rows;r++)for(let q=0;q<COLS;q++){const R=ROWS[r+(5-rows)],hp=r===0&&wave>=3?2:1;
-      foes.push({id:++nid,r:r+(5-rows),q,k:R.k,c:R.c,p:R.p,hp,mx:hp,st:'in',x:W/2,y:-40-r*30,dl:(r*COLS+q)*.035,fl:0,seed:rand(9),blink:rand(1,4),bt:0})}
-    divT=Math.max(1.2,3.4-wave*.25);shotT=1.2;waveT=0;if(wave>1){big('WAVE '+wave,'#ffd23f');sfx.discover()}}
+    for(let r=0;r<rows;r++)for(let q=0;q<COLS;q++){const R=ROWS[r+(5-rows)],hp=Math.min(5,1+Math.floor((wave-1)/4)+(wave>=3&&r===0?1:0));
+      foes.push({id:++nid,r:r+(5-rows),q,k:R.k,c:R.c,p:R.p,hp,mx:hp,st:'in',x:W/2,y:-40-r*30,dl:(r*COLS+q)*.035,fl:0,seed:rand(9),bk:0})}
+    divT=Math.max(1.1,3.4-wave*.25);shotT=1.2;waveT=0;if(lv('bubble'))shield=1;
+    if(SPEC||wave<2)return;
+    // milestones and your best wave
+    if(wave%MILE===0){const b=100*wave;addScore(b,1.6);big('🏁 WAVE '+wave+' MILESTONE! +'+fmt(b),'#ffd23f');sfx.discover();sfx.combo(6);hap('success');try{confetti(fxW/2,fxH*.3,120,900)}catch(e){}}
+    else big('WAVE '+wave,'#ffd23f');
+    if(wave>bestW){if(!bestSaid&&bestW>=2){bestSaid=true;setTimeout(()=>{if(st==='play')big('NEW BEST WAVE!','#5be0a6')},900)}P.invWave=Math.max(P.invWave|0,wave);bestW=wave;save()}
+    sfx.discover()}
   const homeX=f=>W/2+(f.q-(COLS-1)/2)*SPX+fx,homeY=f=>TOP+(f.r-(5-rowsNow()))*SPY+fy;
   const rowsNow=()=>wave<2?4:5;
   const alive=()=>foes.filter(f=>!f.dead);
   function marchSpeed(){const a=alive().filter(f=>f.st==='form').length,tot=rowsNow()*COLS;return(26+wave*7)*(1+(1-a/Math.max(1,tot))*1.7)}
-  function killFoe(f,how){f.dead=1;kills++;const cr={c:f.c};burst(f.x,f.y,f.c,16,280,.25);ring(f.x,f.y,FR*1.6,'#fff');addShake(.06);
-    combo=t-lastKill<.9?combo+1:1;lastKill=t;bestCombo=Math.max(bestCombo,combo);
-    const m=1+Math.min(6,combo-1)*.25,dive=f.st==='dive'?2:1,pts=Math.round(f.p*dive*m*(1+(wave-1)*.15));addScore(pts,1.1+Math.min(.4,combo*.05));
-    float(f.x,f.y-18,(dive>1?'DIVE ':'')+'+'+pts,dive>1?'#ffd23f':'#fff',16+Math.min(8,combo));sfx.merge(Math.min(10,2+combo),0);
-    if(combo>=5&&combo%5===0){big('CHAIN x'+combo+'!','#5be0a6');sfx.combo(Math.min(6,combo/3))}
-    if(SR()<.07)drops.push({x:f.x,y:f.y,k:lives<3&&SR()<.3?'heart':['double','rapid','shield'][Math.floor(SR()*3)],t:0})}
-  function hitMe(){if(inv>0||st!=='play')return;if(shield>0){shield=0;inv=1;ring(px,PY,PR*2,'#7cc8ff');sfx.pop(4);float(px,PY-40,'Shield!','#7cc8ff',18);return}
-    lives--;hitWave++;inv=2;pw='';pwT=0;burst(px,PY,'#ff6fa8',26,360,.2);addShake(.6);flash=.7;sfx.thud();hap('heavy');big(lives>0?'OUCH!':'OUT OF LIVES!','#ff5f6d');hearts();if(lives<=0)over()}
-  function over(){if(st!=='play')return;st='ending';endT=1.3;sfx.over();
+  const chainWin=()=>.9+(lv('chain')?.5:0);
+  function killFoe(f){f.dead=1;kills++;burst(f.x,f.y,f.c,16,280,.25);ring(f.x,f.y,FR*1.6,'#fff');addShake(.06);
+    combo=t-lastKill<chainWin()?combo+1:1;lastKill=t;bestCombo=Math.max(bestCombo,combo);
+    const m=1+Math.min(4,combo-1)*.2,dive=f.st==='dive'?2:1,pts=Math.round(f.p*Math.sqrt(f.mx)*dive*m*(1+(wave-1)*.06)*(od>0?2:1));addScore(pts,1.1+Math.min(.4,combo*.05));
+    float(f.x,f.y-18,(dive>1?'DIVE ':'')+'+'+pts,od>0?'#ff9f1c':dive>1?'#ffd23f':'#fff',16+Math.min(8,combo));sfx.merge(Math.min(10,2+Math.floor(combo/2)),0);
+    if(combo>=odAt&&od<=0)overdrive();else if(combo>=5&&combo%5===0&&combo<odAt)big('CHAIN x'+combo+'!','#5be0a6');
+    if(SR()<(lv('magnet')?.12:.07))drops.push({x:f.x,y:f.y,k:lives<3&&SR()<.3?'heart':['double','rapid','shield'][Math.floor(SR()*3)],t:0})}
+  function overdrive(){od=lv('hyper')?5:OD_LEN;odAt=(Math.floor(combo/OD_EVERY)+1)*OD_EVERY;big('OVERDRIVE!','#ff9f1c');sfx.combo(7);sfx.discover();hap('success');flash=.35;addShake(.3);ring(px,PY,PR*3,'#ff9f1c')}
+  function hitMe(){if(inv>0||st!=='play'||pick)return;if(shield>0){shield=0;inv=1;ring(px,PY,PR*2,'#7cc8ff');sfx.pop(4);float(px,PY-40,'Shield!','#7cc8ff',18);return}
+    lives--;hitWave++;inv=2;pw='';pwT=0;combo=0;burst(px,PY,'#ff6fa8',26,360,.2);addShake(.6);flash=.7;sfx.thud();hap('heavy');big(lives>0?'OUCH!':'OUT OF LIVES!','#ff5f6d');hearts();if(lives<=0)over()}
+  function over(){if(st!=='play')return;st='ending';endT=1.3;pick=null;sfx.over();
     if(endKind()!=='none'){const ps=alive().map(f=>({x:f.x,y:f.y,r:FR,draw:c=>drawAnimal(c,0,0,FR,f.k,f.c,{mood:3})}));endT=endBoom(ps);foes=[]}}
   function bunkHit(x,y,r){for(const b of bunk){if(b.hp<=0)continue;if(x+r>b.x&&x-r<b.x+BCELL&&y+r>b.y&&y-r<b.y+BCELL){b.hp--;burst(b.x+4,b.y+4,'#5be0a6',3,120,0);return true}}return false}
-  function fire(){const cr=C(3),dbl=pw==='double';for(const o of dbl?[-11,11]:[0])beans.push({x:px+o,y:PY-PR-4,vy:-640});
+  // firing: how many volleys can be in the air, how fast, and what shape
+  const fireGap=()=>.32*Math.pow(.85,lv('rate'))*(pw==='rapid'?.5:1)*(od>0?.55:1);
+  const capNow=()=>2+lv('cap')+(pw==='rapid'?1:0)+(od>0?3:0);
+  const beanV=()=>-640*(1+.18*lv('speed'));
+  function fire(){vol++;shotN++;const v=beanV(),pierce=lv('pierce'),spread=od>0||(lv('spread')&&shotN%4===0),dbl=pw==='double';
+    const shots=[];for(const o of dbl?[-11,11]:[0])shots.push([o,0]);if(spread){shots.push([-8,-150],[8,150])}
+    for(const[o,vx]of shots)beans.push({x:px+o,y:PY-PR-4,vy:v,vx,v:vol,p:pierce,hit:new Set()});
     if(Math.random()<.5)tone(rand(1100,1300),.04,'triangle',.008,rand(1700,1900))}
   // a dive: swoop out of formation in a loop, then sweep down at you with a wiggle, and come back in from the top
-  function dive(f){f.st='dive';f.dt=0;f.sx=f.x;f.sy=f.y;f.side=f.x<W/2?-1:1;f.tx=clamp(px+srand(-50,50),30,W-30);f.vy=170+wave*14;f.shots=wave>=2?2:1;f.sT=srand(.5,1.1);sfx.pop(2)}
+  function dive(f){f.st='dive';f.dt=0;f.sx=f.x;f.sy=f.y;f.side=f.x<W/2?-1:1;f.tx=clamp(px+srand(-50,50),30,W-30);f.vy=170+wave*14;f.shots=wave>=2?2:1;f.sT=srand(.5,1.1);f.gz=0;sfx.pop(2)}
+  function graze(x,y,pts){grazes++;const n=Math.round(pts*(lv('graze')?3:1));addScore(n,1.05);float(x,y,'GRAZE +'+n,'#9ff0ff',15);ring(px,PY,PR*1.5,'#9ff0ff');tone(1600,.05,'sine',.012,2200)}
+  // ---- perk picks between waves
+  function offerPerks(){const can=Object.keys(PERKS).filter(k=>k==='heart'?lives<3:lv(k)<PERKS[k].max),out=[];
+    while(out.length<3&&can.length)out.push(can.splice(Math.floor(SR()*can.length),1)[0]);
+    if(!out.length){pick=null;nextWave();return}pick=out;pickT=DUEL?8:0;sfx.discover()}
+  function takePerk(k){if(!pick||!PERKS[k])return;pick=null;if(k==='heart'){lives=Math.min(3,lives+1);hearts()}else pk[k]=lv(k)+1;
+    big(PERKS[k].i+' '+PERKS[k].n.toUpperCase()+'!','#5be0a6');sfx.coin(6);hap('success');if(wave%3===0)buildBunkers();nextWave()}
+  function cardAt(p){if(!pick)return-1;for(let i=0;i<pick.length;i++){const y=CARD_Y+i*CARD_G;if(p.x>30&&p.x<W-30&&p.y>y&&p.y<y+CARD_H)return i}return-1}
   function update(dt){if(st==='done')return;
-    for(const s of stars){s.y+=dt*(14+s.s*10);if(s.y>H+4){s.y=-4;s.x=rand(W)}}
+    for(const s of stars){s.y+=dt*(14+s.s*(od>0?60:10));if(s.y>H+4){s.y=-4;s.x=rand(W)}}
     for(const p of pop)p.t+=dt;pop=pop.filter(p=>p.t<.5);
-    if(st==='ending'){endT-=dt;for(const g of goo)g.y+=g.vy*dt;if(endT<=0){st='done';finishRound('inv',{kills,wave,combo:bestCombo},'Out of lives!',[['Invaders',kills],['Wave',wave],['Best chain','x'+bestCombo]])}return}
+    if(st==='ending'){endT-=dt;for(const g of goo)g.y+=g.vy*dt;if(endT<=0){st='done';finishRound('inv',{kills,wave,combo:bestCombo,grazes},'Out of lives!',[['Invaders',kills],['Wave',wave],['Best chain','x'+bestCombo],['Grazes',grazes]])}return}
     if(SPEC){specStep(dt);return}
-    t+=dt;if(inv>0)inv-=dt;if(pwT>0){pwT-=dt;if(pwT<=0)pw=''}
+    // picking a perk: the game waits (in a 1v1 your clock keeps going, so it picks for you after 8 seconds)
+    if(pick){if(pickT>0){pickT-=dt;if(pickT<=0)takePerk(pick[0])}return}
+    t+=dt;if(inv>0)inv-=dt;if(pwT>0){pwT-=dt;if(pwT<=0)pw=''}if(od>0){od-=dt;if(od<=0){od=0;float(px,PY-50,'Overdrive over','#ff9f1c',16)}}
+    if(combo>0&&t-lastKill>chainWin()){combo=0;odAt=OD_EVERY}
     // you
-    if(keys.ArrowLeft||keys.a)ptx-=520*dt;if(keys.ArrowRight||keys.d)ptx+=520*dt;ptx=clamp(ptx,PR+4,W-PR-4);const mv=clamp(ptx-px,-900*dt,900*dt);px+=mv;
-    fireT-=dt;if(fireT<=0&&waveT<=0&&beans.length<(pw==='rapid'?3:pw==='double'?2:1)){fire();fireT=pw==='rapid'?.16:.3}
-    for(const b of beans){b.y+=b.vy*dt}
-    // the formation marches; at a wall it turns around and steps down
-    const allIn=!foes.some(f=>!f.dead&&f.st==='in'),sp=allIn?marchSpeed()*dt*fdir:0;let edge=false;for(const f of foes)if(!f.dead&&f.st==='form'){const nx=homeX(f)+sp;if(nx<FR+8||nx>W-FR-8)edge=true}
+    const mvS=1+.25*lv('speed');if(keys.ArrowLeft||keys.a)ptx-=520*mvS*dt;if(keys.ArrowRight||keys.d)ptx+=520*mvS*dt;ptx=clamp(ptx,PR+4,W-PR-4);px+=clamp(ptx-px,-900*mvS*dt,900*mvS*dt);
+    fireT-=dt;if(fireT<=0&&waveT<=0&&new Set(beans.map(b=>b.v)).size<capNow()){fire();fireT=fireGap()}
+    for(const b of beans){b.y+=b.vy*dt;b.x+=b.vx*dt}
+    // the formation waits until everyone has flown in, then marches; at a wall it turns around and steps down
+    const allIn=!foes.some(f=>!f.dead&&f.st==='in'),sp=allIn?marchSpeed()*dt*fdir:0;let edge=false;
+    for(const f of foes)if(!f.dead&&f.st==='form'){const nx=homeX(f)+sp;if(nx<FR+8||nx>W-FR-8)edge=true}
     if(edge){fdir*=-1;fy+=14;sfx.pop(1)}else if(allIn)fx+=sp;
-    for(const f of foes){if(f.dead)continue;f.bt-=dt;if(f.bt<=0){f.bt=rand(2,5)}if(f.fl>0)f.fl-=dt;
-      if(f.st==='in'){f.dl-=dt;if(f.dl<=0){const hx=homeX(f),hy=homeY(f);f.x+=(hx-f.x)*Math.min(1,dt*5);f.y+=(hy-f.y)*Math.min(1,dt*5);if(Math.hypot(hx-f.x,hy-f.y)<6||f.dl<-1.6){f.st='form'}}}
+    for(const f of foes){if(f.dead)continue;if(f.fl>0)f.fl-=dt;
+      if(f.st==='in'){f.dl-=dt;if(f.dl<=0){const hx=homeX(f),hy=homeY(f);f.x+=(hx-f.x)*Math.min(1,dt*5);f.y+=(hy-f.y)*Math.min(1,dt*5);if(Math.hypot(hx-f.x,hy-f.y)<6||f.dl<-1.6)f.st='form'}}
       else if(f.st==='form'){f.x=homeX(f);f.y=homeY(f)+Math.sin(t*3+f.q)*2}
       else if(f.st==='dive'){f.dt+=dt;const k=f.dt;if(k<.7){const a=k/.7*Math.PI;f.x=f.sx+f.side*Math.sin(a)*60;f.y=f.sy-Math.sin(a)*40+k*30}
         else{f.y+=f.vy*dt;f.x+=(f.tx-f.x)*Math.min(1,dt*1.6)+Math.sin(f.dt*6+f.seed)*90*dt}
-        f.sT-=dt;if(f.sT<=0&&f.shots>0&&f.y<PY-120){f.shots--;f.sT=srand(.4,.8);goo.push({x:f.x,y:f.y+FR,vy:250+wave*12,vx:clamp((px-f.x)*.35,-90,90)})}
-        if(f.y>H+30){f.st='back';f.x=homeX(f);f.y=-30}}
-      else if(f.st==='back'){const hx=homeX(f),hy=homeY(f);f.x+=(hx-f.x)*Math.min(1,dt*3);f.y+=(hy-f.y)*Math.min(1,dt*3);if(Math.hypot(hx-f.x,hy-f.y)<3)f.st='form'}
+        f.x=clamp(f.x,FR,W-FR);f.sT-=dt;if(f.sT<=0&&f.shots>0&&f.y<PY-120){f.shots--;f.sT=srand(.4,.8);goo.push({x:f.x,y:f.y+FR,vy:250+wave*12,vx:clamp((px-f.x)*.35,-90,90)})}
+        // a diver that swooped right past you without touching: graze
+        if(!f.gz&&f.y>PY-6){const d=Math.hypot(f.x-px,f.y-PY);if(d<FR+PR+26&&d>=FR+PR-4){f.gz=1;graze(f.x,f.y-24,6+wave*2)}}
+        if(f.y>H+30||f.dt>7){f.st='back';f.bk=0;f.x=homeX(f);f.y=-30}}
+      // back in from the top: it flies straight at its spot fast enough to catch up with the marching formation
+      else if(f.st==='back'){f.bk+=dt;const hx=homeX(f),hy=homeY(f),dx=hx-f.x,dy=hy-f.y,d=Math.hypot(dx,dy),step=Math.max(320,marchSpeed()*2)*dt;
+        if(d<=step||d<8||f.bk>2.5){f.x=hx;f.y=hy;f.st='form'}else{f.x+=dx/d*step;f.y+=dy/d*step}}
       if(f.st!=='in'&&Math.hypot(f.x-px,f.y-PY)<FR+PR-4){killFoe(f);hitMe()}}
     // the formation got all the way down: you lose a life and they get pushed back up
     {const low=Math.max(-1e9,...alive().filter(f=>f.st==='form').map(f=>f.y));if(low>BY-6){fy-=150;hitMe();big('TOO CLOSE!','#ff5f6d')}}
     // shooting and diving (only once everyone has flown in)
-    const ready=alive().length&&alive().every(f=>f.st!=='in');
-    if(ready){shotT-=dt;if(shotT<=0){const cols=new Map();for(const f of alive())if(f.st==='form'){const o=cols.get(f.q);if(!o||f.y>o.y)cols.set(f.q,f)}const L=[...cols.values()];
-        if(L.length){const f=L[Math.floor(SR()*L.length)];goo.push({x:f.x,y:f.y+FR,vy:210+wave*12,vx:0});sfx.pop(1)}shotT=Math.max(.45,1.8-wave*.12)*srand(.7,1.3)}
-      divT-=dt;if(divT<=0){const can=alive().filter(f=>f.st==='form');const n=Math.min(can.length,wave>=4?3:wave>=2?2:1);for(let i=0;i<n;i++){const f=can.splice(Math.floor(SR()*can.length),1)[0];if(f)dive(f)}divT=Math.max(1.1,3.4-wave*.25)*srand(.8,1.2)}}
+    if(alive().length&&allIn){shotT-=dt;if(shotT<=0){const cols=new Map();for(const f of alive())if(f.st==='form'){const o=cols.get(f.q);if(!o||f.y>o.y)cols.set(f.q,f)}const L=[...cols.values()];
+        for(let n=Math.min(L.length,1+Math.floor(wave/5));n>0;n--){const f=L.splice(Math.floor(SR()*L.length),1)[0];goo.push({x:f.x,y:f.y+FR,vy:Math.min(420,210+wave*12),vx:0})}if(L)sfx.pop(1);shotT=Math.max(.38,1.8-wave*.1)*srand(.7,1.3)}
+      divT-=dt;if(divT<=0){const can=alive().filter(f=>f.st==='form');const n=Math.min(can.length,wave>=8?4:wave>=4?3:wave>=2?2:1);for(let i=0;i<n;i++){const f=can.splice(Math.floor(SR()*can.length),1)[0];if(f)dive(f)}divT=Math.max(1.1,3.4-wave*.25)*srand(.8,1.2)}}
     for(const g of goo){g.y+=g.vy*dt;g.x+=g.vx*dt}
     // hits
+    const bR=lv('big')?10:4;
     for(const b of beans){if(b.dead)continue;
-      for(const f of foes){if(f.dead||f.st==='in')continue;if(Math.hypot(b.x-f.x,b.y-f.y)<FR+4){b.dead=1;f.hp--;if(f.hp<=0)killFoe(f);else{f.fl=.15;sfx.pop(3);pop.push({x:f.x,y:f.y,t:0})}break}}}
-    for(const g of goo){if(g.dead)continue;if(bunkHit(g.x,g.y,4)){g.dead=1;continue}if(Math.abs(g.x-px)<PR*.8&&Math.abs(g.y-PY)<PR){g.dead=1;hitMe()}}
-    for(const d of drops){d.t+=dt;d.y+=120*dt;if(!d.dead&&Math.abs(d.x-px)<PR+10&&Math.abs(d.y-PY)<PR+10){d.dead=1;sfx.coin(5);
-      if(d.k==='heart'){lives=Math.min(3,lives+1);hearts();big('+1 LIFE','#ff6fa8')}else if(d.k==='shield'){shield=1;big('SHIELD!','#7cc8ff')}else{pw=d.k;pwT=8;big(d.k==='double'?'DOUBLE SHOT!':'RAPID FIRE!','#ffd23f')}}}
-    beans=beans.filter(b=>!b.dead&&b.y>-20);goo=goo.filter(g=>!g.dead&&g.y<H+20);drops=drops.filter(d=>!d.dead&&d.y<H+20);bunk=bunk.filter(b=>b.hp>0);foes=foes.filter(f=>!f.dead);
-    // wave cleared
-    if(st==='play'&&!foes.length){if(waveT<=0){waveT=1.4;const bonus=100*wave,perfect=hitWave===0;addScore(bonus+(perfect?150*wave:0),1.5);big(perfect?'PERFECT WAVE! +'+(bonus+150*wave):'WAVE CLEAR! +'+bonus,'#5be0a6');sfx.combo(5);hap('success');goo=[]}
-      else{waveT-=dt;if(waveT<=0){if(wave%3===0)buildBunkers();nextWave()}}}}
+      for(const f of foes){if(f.dead||f.st==='in'||b.hit.has(f.id))continue;if(Math.hypot(b.x-f.x,b.y-f.y)<FR+bR){b.hit.add(f.id);f.hp--;if(f.hp<=0)killFoe(f);else{f.fl=.15;sfx.pop(3);pop.push({x:f.x,y:f.y,t:0})}if(b.p>0)b.p--;else{b.dead=1;break}}}}
+    for(const g of goo){if(g.dead)continue;if(bunkHit(g.x,g.y,4)){g.dead=1;continue}if(Math.abs(g.x-px)<PR*.8&&Math.abs(g.y-PY)<PR){g.dead=1;hitMe();continue}
+      if(!g.gz&&g.y>PY){g.gz=1;if(Math.abs(g.x-px)<PR+18&&inv<=0)graze(g.x,PY-30,3+wave)}}
+    for(const d of drops){d.t+=dt;d.y+=120*dt;if(lv('magnet')&&d.y>PY-260){d.x+=(px-d.x)*Math.min(1,dt*4);d.y+=(PY-d.y)*Math.min(1,dt*2)}
+      if(!d.dead&&Math.abs(d.x-px)<PR+10&&Math.abs(d.y-PY)<PR+10){d.dead=1;sfx.coin(5);
+        if(d.k==='heart'){lives=Math.min(3,lives+1);hearts();big('+1 LIFE','#ff6fa8')}else if(d.k==='shield'){shield=1;big('SHIELD!','#7cc8ff')}else{pw=d.k;pwT=8;big(d.k==='double'?'DOUBLE SHOT!':'RAPID FIRE!','#ffd23f')}}}
+    beans=beans.filter(b=>!b.dead&&b.y>-20&&b.x>-20&&b.x<W+20);goo=goo.filter(g=>!g.dead&&g.y<H+20);drops=drops.filter(d=>!d.dead&&d.y<H+20);bunk=bunk.filter(b=>b.hp>0);foes=foes.filter(f=>!f.dead);
+    // wave cleared: bonus, then pick a perk, then the next wave
+    if(st==='play'&&!foes.length){if(waveT<=0){waveT=1.2;const bonus=40*wave,perfect=hitWave===0;addScore(bonus+(perfect?60*wave:0),1.5);big(perfect?'PERFECT WAVE! +'+(bonus+60*wave):'WAVE CLEAR! +'+bonus,'#5be0a6');sfx.combo(5);hap('success');goo=[];beans=[]}
+      else{waveT-=dt;if(waveT<=0)offerPerks()}}}
   // ---- watching someone (spectating, or your 1v1 opponent): glide everything toward the last update
   function specStep(dt){px+=(spec.px!=null?spec.px-px:0)*Math.min(1,dt*12);
     for(const f of foes){if(f.tx!=null){f.x+=(f.tx-f.x)*Math.min(1,dt*10);f.y+=(f.ty-f.y)*Math.min(1,dt*10)}if(f.fl>0)f.fl-=dt}
-    for(const b of beans)b.y+=b.vy*dt;for(const g of goo){g.y+=g.vy*dt;g.x+=(g.vx||0)*dt}for(const d of drops)d.y+=120*dt;
+    for(const b of beans){b.y+=b.vy*dt;b.x+=(b.vx||0)*dt}for(const g of goo){g.y+=g.vy*dt;g.x+=(g.vx||0)*dt}for(const d of drops)d.y+=120*dt;if(od>0)od-=dt;
     beans=beans.filter(b=>b.y>-20);goo=goo.filter(g=>g.y<H+20)}
   // ---- drawing
-  function bean(c,x,y,col){c.save();c.translate(x,y);rr(c,-4,-9,8,18,4);c.fillStyle=col;c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.fillStyle='rgba(255,255,255,.7)';c.fillRect(-2,-6,2,6);c.restore()}
+  function bean(c,x,y,col,big){c.save();c.translate(x,y);const s=big?1.5:1;c.scale(s,s);rr(c,-4,-9,8,18,4);c.fillStyle=col;c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.fillStyle='rgba(255,255,255,.7)';c.fillRect(-2,-6,2,6);c.restore()}
   function gooDrop(c,x,y){c.save();c.translate(x,y);c.beginPath();c.moveTo(0,-9);c.quadraticCurveTo(7,2,0,7);c.quadraticCurveTo(-7,2,0,-9);c.fillStyle='#8a3fd0';c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.fillStyle='rgba(255,255,255,.55)';circ(c,-2,1,1.6);c.fill();c.restore()}
   function dropIcon(c,d){const s=1+.1*Math.sin(d.t*8);c.save();c.translate(d.x,d.y);c.scale(s,s);circ(c,0,0,13);c.fillStyle=d.k==='heart'?'#ffd6e6':d.k==='shield'?'#d7f0ff':'#fff3c4';c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();
     if(d.k==='heart'){heartPath(c,0,2,9);c.fillStyle='#ff4f8f';c.fill()}else if(d.k==='shield'){circ(c,0,0,7);c.lineWidth=3;c.strokeStyle='#3aa0e8';c.stroke()}else{c.fillStyle='#ff9f1c';c.font=`15px ${FAM}`;c.textAlign='center';c.textBaseline='middle';c.fillText(d.k==='double'?'2x':'⚡',0,1)}c.restore()}
   function bg(c,ex){wallpaper(c,S().wall,ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(22,12,48,.42)';c.fillRect(ex.x0,ex.y0,ex.w,ex.h);
-    for(const s of stars){c.globalAlpha=.45+.45*Math.sin(time*3+s.p);c.fillStyle='#fff';c.fillRect(s.x,s.y,s.s,s.s)}c.globalAlpha=1}
+    if(od>0){c.fillStyle=`rgba(255,140,40,${.1+.06*Math.sin(time*14)})`;c.fillRect(ex.x0,ex.y0,ex.w,ex.h)}
+    for(const s of stars){c.globalAlpha=.45+.45*Math.sin(time*3+s.p);c.fillStyle='#fff';c.fillRect(s.x,s.y,s.s,od>0?s.s*5:s.s)}c.globalAlpha=1}
+  function perkRow(c){const ks=Object.keys(pk).filter(k=>pk[k]>0);if(!ks.length)return;c.save();c.font=`14px ${FAM}`;c.textAlign='left';c.textBaseline='middle';let x=12;
+    for(const k of ks){const tx=PERKS[k].i+(pk[k]>1?pk[k]:'');c.globalAlpha=.95;c.fillText(tx,x,H-14);x+=c.measureText(tx).width+8}c.restore()}
+  function cards(c){c.save();c.fillStyle='rgba(20,10,40,.62)';c.fillRect(-60,-60,W+120,H+120);c.restore();
+    outlineText(c,'WAVE '+wave+' CLEAR!',W/2,CARD_Y-62,26,'#5be0a6');outlineText(c,SPEC?'Picking a perk…':'Pick a perk',W/2,CARD_Y-30,18,'#fff');
+    pick.forEach((k,i)=>{const p=PERKS[k],y=CARD_Y+i*CARD_G,bob=Math.sin(time*3+i)*2;c.save();c.translate(0,bob);
+      rr(c,30,y+5,W-60,CARD_H,18);c.fillStyle=INK;c.fill();rr(c,30,y,W-60,CARD_H,18);c.fillStyle='#fff';c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();
+      circ(c,76,y+CARD_H/2,28);c.fillStyle='#fff3c4';c.fill();c.lineWidth=2.5;c.stroke();
+      c.font=`30px ${FAM}`;c.textAlign='center';c.textBaseline='middle';c.fillStyle=INK;c.fillText(p.i,76,y+CARD_H/2+1);
+      c.textAlign='left';c.font=`20px ${FAM}`;c.fillStyle=INK;c.fillText(p.n,116,y+30);
+      c.font=`600 13px "Fredoka","Nunito",sans-serif`;c.fillStyle='#5a5070';c.fillText(p.d,116,y+54,W-160);
+      if(p.max>1&&p.max<99){const l=lv(k);c.font=`12px ${FAM}`;c.fillStyle='#9a5bff';c.fillText('Lv '+(l+1)+' / '+p.max,116,y+73)}
+      c.font=`15px ${FAM}`;c.textAlign='right';c.fillStyle='#b0a8c0';c.fillText(String(i+1),W-44,y+22);c.restore()});
+    if(pickT>0)outlineText(c,'Auto-picks in '+Math.ceil(pickT),W/2,CARD_Y+3*CARD_G+14,15,'#ffd23f')}
   function render(c){const cs=S(),cr=C(3);
     for(const b of bunk){c.fillStyle=b.hp>1?'#5be0a6':'#3fae80';rr(c,b.x,b.y,BCELL,BCELL,2.5);c.fill()}
     for(const f of foes){const wob=Math.sin(time*6+f.seed)*.06;drawAnimal(c,f.x,f.y,FR,f.k,f.c,{mood:f.st==='dive'?1:0,rot:f.st==='dive'?Math.sin(time*8+f.seed)*.3:wob,seed:f.seed,jig:.02});
       if(f.mx>1&&f.hp>1){c.save();c.globalAlpha=.9;circ(c,f.x+FR*.8,f.y-FR*.8,5);c.fillStyle='#ffd23f';c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.restore()}
       if(f.fl>0){c.save();c.globalAlpha=f.fl/.15*.7;circ(c,f.x,f.y,FR);c.fillStyle='#fff';c.fill();c.restore()}}
-    for(const b of beans)bean(c,b.x,b.y,cr.c);for(const g of goo)gooDrop(c,g.x,g.y);for(const d of drops)dropIcon(c,d);
+    for(const b of beans)bean(c,b.x,b.y,od>0?'#ff9f1c':cr.c,lv('big'));for(const g of goo)gooDrop(c,g.x,g.y);for(const d of drops)dropIcon(c,d);
     drawFX(c);
-    if(st==='play'||SPEC){const blink=inv>0&&Math.floor(inv*12)%2===0;if(!blink){drawAnimal(c,px,PY,PR,cr.k,cr.c,{fx:cr.fx,hat:cs.hat,mood:inv>0?3:2,jig:.02});
-      c.save();rr(c,px-4,PY-PR-10,8,12,3);c.fillStyle='#fff';c.fill();c.lineWidth=2.5;c.strokeStyle=INK;c.stroke();c.restore()}
-      if(shield>0){c.save();c.globalAlpha=.55+.2*Math.sin(time*6);circ(c,px,PY,PR+10);c.lineWidth=4;c.strokeStyle='#7cc8ff';c.stroke();c.restore()}}
-    outlineText(c,'WAVE '+Math.max(1,wave),56,22,17,'#ffd23f');
-    if(pw){outlineText(c,(pw==='double'?'DOUBLE ':'RAPID ')+Math.ceil(pwT),W-62,22,16,'#ff9f1c')}
-    if(combo>=3&&t-lastKill<.9)outlineText(c,'x'+combo+' chain',W/2,PY+PR+24,15,'#5be0a6')}
-  function move(p){if(st!=='play'||SPEC)return;ptx=clamp(p.x,PR+4,W-PR-4)}
-  function down(p){move(p)}
+    if(st==='play'||SPEC){const blink=inv>0&&Math.floor(inv*12)%2===0;
+      if(od>0){c.save();c.globalAlpha=.5+.25*Math.sin(time*20);circ(c,px,PY,PR+12+3*Math.sin(time*16));c.lineWidth=5;c.strokeStyle='#ff9f1c';c.stroke();c.restore()}
+      if(!blink){drawAnimal(c,px,PY,PR,cr.k,cr.c,{fx:cr.fx,hat:cs.hat,mood:inv>0?3:2,jig:.02});c.save();rr(c,px-4,PY-PR-10,8,12,3);c.fillStyle='#fff';c.fill();c.lineWidth=2.5;c.strokeStyle=INK;c.stroke();c.restore()}
+      if(shield>0){c.save();c.globalAlpha=.55+.2*Math.sin(time*6);circ(c,px,PY,PR+10);c.lineWidth=4;c.strokeStyle='#7cc8ff';c.stroke();c.restore()}
+      // overdrive meter: fills as your chain grows
+      {const w=64,x=px-w/2,y=PY+PR+12,k=od>0?od/(lv('hyper')?5:OD_LEN):clamp((combo-(odAt-OD_EVERY))/OD_EVERY,0,1);if(od>0||combo>0){c.save();rr(c,x,y,w,8,4);c.fillStyle='rgba(0,0,0,.4)';c.fill();rr(c,x,y,Math.max(8,w*k),8,4);c.fillStyle=od>0?'#ff9f1c':'#5be0a6';c.fill();rr(c,x,y,w,8,4);c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.restore()}}}
+    outlineText(c,'WAVE '+Math.max(1,wave),56,22,17,'#ffd23f');if(bestW>0&&!SPEC){c.save();c.font=`12px ${FAM}`;c.fillStyle='rgba(255,255,255,.75)';c.textAlign='center';c.fillText('Best '+Math.max(bestW,wave),56,42);c.restore()}
+    if(od>0)outlineText(c,'OVERDRIVE x2',W/2,22,18,'#ff9f1c');else if(pw)outlineText(c,(pw==='double'?'DOUBLE ':'RAPID ')+Math.ceil(pwT),W-62,22,16,'#ff9f1c');
+    if(combo>=3&&od<=0)outlineText(c,'x'+combo+' chain',W/2,PY+PR+34,14,'#5be0a6');
+    perkRow(c);if(pick)cards(c)}
+  function move(p){if(st!=='play'||SPEC||pick)return;ptx=clamp(p.x,PR+4,W-PR-4)}
+  function down(p){if(pick&&!SPEC){const i=cardAt(p);if(i>=0)takePerk(pick[i]);return}move(p)}
   function up(){}
+  function key(k){if(pick&&!SPEC&&/^[1-3]$/.test(k)){const i=+k-1;if(pick[i])takePerk(pick[i])}}
   // ---- saving, spectating and 1v1 streaming
-  const KI=k=>Math.max(0,ROWS.findIndex(R=>R.k===k));
-  function serialize(){if(st!=='play')return null;return{score,lives,wave,t:+t.toFixed(1),kills,bestCombo,px:Math.round(px),fx:Math.round(fx),fy:Math.round(fy),fdir,shield,pw,pwT:+pwT.toFixed(1),
-    f:foes.map(f=>[f.id,f.r,f.q,f.hp,f.mx,f.st==='dive'?1:f.st==='in'?2:0,Math.round(f.x),Math.round(f.y)]),b:beans.slice(-24).map(b=>[Math.round(b.x),Math.round(b.y)]),g:goo.map(g=>[Math.round(g.x),Math.round(g.y),Math.round(g.vy),Math.round(g.vx)]),
+  function serialize(){if(st!=='play')return null;return{score,lives,wave,t:+t.toFixed(1),kills,bestCombo,grazes,combo,od:+od.toFixed(1),px:Math.round(px),fx:Math.round(fx),fy:Math.round(fy),fdir,shield,pw,pwT:+pwT.toFixed(1),pk:Object.assign({},pk),pick:pick?pick.slice():null,
+    f:foes.map(f=>[f.id,f.r,f.q,f.hp,f.mx,f.st==='dive'?1:f.st==='in'?2:f.st==='back'?3:0,Math.round(f.x),Math.round(f.y)]),b:beans.slice(-24).map(b=>[Math.round(b.x),Math.round(b.y),Math.round(b.vx||0)]),g:goo.map(g=>[Math.round(g.x),Math.round(g.y),Math.round(g.vy),Math.round(g.vx)]),
     d:drops.map(d=>[Math.round(d.x),Math.round(d.y),d.k]),bk:bunk.map(b=>[Math.round(b.x),Math.round(b.y),b.hp])}}
-  function mkFoe(a){const R=ROWS[clamp(a[1]|0,0,4)];return{id:a[0],r:a[1]|0,q:a[2]|0,k:R.k,c:R.c,p:R.p,hp:a[3]|0||1,mx:a[4]|0||1,st:a[5]===1?'dive':a[5]===2?'in':'form',x:a[6],y:a[7],dl:0,fl:0,seed:rand(9),bt:rand(1,4),sx:a[6],sy:a[7],dt:1,side:1,tx:a[6],vy:200,shots:0,sT:1}}
-  function restore(d){reset();lives=d.lives||3;wave=d.wave||1;t=d.t||0;kills=d.kills||0;bestCombo=d.bestCombo||0;px=ptx=d.px||W/2;fx=d.fx||0;fy=d.fy||0;fdir=d.fdir||1;shield=d.shield||0;pw=d.pw||'';pwT=d.pwT||0;
-    score=shown=SCK=d.score||0;scoreEl.textContent=fmt(score);foes=(d.f||[]).map(mkFoe);for(const f of foes)if(f.st!=='form'&&!SPEC){f.st='back'}nid=foes.reduce((m,f)=>Math.max(m,f.id),0)+1000;
-    goo=(d.g||[]).map(a=>({x:a[0],y:a[1],vy:a[2]||220,vx:a[3]||0}));drops=(d.d||[]).map(a=>({x:a[0],y:a[1],k:a[2],t:0}));bunk=(d.bk||[]).map(a=>({x:a[0],y:a[1],hp:a[2]}));if(!bunk.length&&!d.bk)buildBunkers();restyle();hearts()}
+  const stOf=n=>n===1?'dive':n===2?'in':n===3?'back':'form';
+  function mkFoe(a){const R=ROWS[clamp(a[1]|0,0,4)];return{id:a[0],r:a[1]|0,q:a[2]|0,k:R.k,c:R.c,p:R.p,hp:a[3]|0||1,mx:a[4]|0||1,st:stOf(a[5]),x:a[6],y:a[7],dl:0,fl:0,seed:rand(9),bk:0,sx:a[6],sy:a[7],dt:1,side:1,tx:a[6],vy:200,shots:0,sT:1,gz:1}}
+  function restore(d){reset();lives=d.lives||3;wave=d.wave||1;t=d.t||0;kills=d.kills||0;bestCombo=d.bestCombo||0;grazes=d.grazes||0;combo=0;od=SPEC?(d.od||0):0;px=ptx=d.px||W/2;fx=d.fx||0;fy=d.fy||0;fdir=d.fdir||1;shield=d.shield||0;pw=d.pw||'';pwT=d.pwT||0;
+    pk=d.pk&&typeof d.pk==='object'?Object.fromEntries(Object.entries(d.pk).filter(([k,v])=>PERKS[k]&&k!=='heart').map(([k,v])=>[k,clamp(v|0,0,PERKS[k].max)])):{};
+    pick=Array.isArray(d.pick)?d.pick.filter(k=>PERKS[k]).slice(0,3):null;if(pick&&!pick.length)pick=null;pickT=pick&&DUEL?8:0;
+    score=shown=SCK=d.score||0;scoreEl.textContent=fmt(score);foes=(d.f||[]).map(mkFoe);if(!SPEC)for(const f of foes)if(f.st!=='form'){f.st='back';f.bk=0}nid=foes.reduce((m,f)=>Math.max(m,f.id),0)+1000;
+    goo=(d.g||[]).map(a=>({x:a[0],y:a[1],vy:a[2]||220,vx:a[3]||0,gz:1}));drops=(d.d||[]).map(a=>({x:a[0],y:a[1],k:a[2],t:0}));bunk=(d.bk||[]).map(a=>({x:a[0],y:a[1],hp:a[2]}));if(!bunk.length&&!d.bk)buildBunkers();
+    if(!foes.length&&!pick&&!SPEC)offerPerks();restyle();hearts()}
   function specSync(d){if(st!=='play'){restore(d);spec.px=px;for(const f of foes){f.tx=f.x;f.ty=f.y}return}
-    if(d.lives!==lives){lives=d.lives;hearts()}wave=d.wave||wave;t=d.t||t;kills=d.kills||0;shield=d.shield||0;pw=d.pw||'';pwT=d.pwT||0;spec.px=d.px;
-    const by=new Map(foes.map(f=>[f.id,f])),seen=new Set(),out=[];for(const a of d.f||[]){const m=by.get(a[0]);seen.add(a[0]);if(m){m.tx=a[6];m.ty=a[7];m.hp=a[3];m.st=a[5]===1?'dive':'form';out.push(m)}else{const f=mkFoe(a);f.tx=f.x;f.ty=f.y;out.push(f)}}
+    if(d.lives!==lives){lives=d.lives;hearts()}wave=d.wave||wave;t=d.t||t;kills=d.kills||0;combo=d.combo||0;od=d.od||0;shield=d.shield||0;pw=d.pw||'';pwT=d.pwT||0;spec.px=d.px;
+    pk=d.pk&&typeof d.pk==='object'?d.pk:{};pick=Array.isArray(d.pick)&&d.pick.length?d.pick.filter(k=>PERKS[k]):null;
+    const by=new Map(foes.map(f=>[f.id,f])),seen=new Set(),out=[];for(const a of d.f||[]){const m=by.get(a[0]);seen.add(a[0]);if(m){m.tx=a[6];m.ty=a[7];m.hp=a[3];m.st=stOf(a[5]);out.push(m)}else{const f=mkFoe(a);f.tx=f.x;f.ty=f.y;out.push(f)}}
     for(const f of foes)if(!seen.has(f.id)&&f.y>-20){burst(f.x,f.y,f.c,12,260,.25)}foes=out;
-    beans=(d.b||[]).map(a=>({x:a[0],y:a[1],vy:-640}));goo=(d.g||[]).map(a=>({x:a[0],y:a[1],vy:a[2]||220,vx:a[3]||0}));drops=(d.d||[]).map(a=>({x:a[0],y:a[1],k:a[2],t:0}));bunk=(d.bk||[]).map(a=>({x:a[0],y:a[1],hp:a[2]}))}
-  return{start,update,render,bg,down,move,up,key(){},action(){},restyle,serialize,restore,specSync,state:()=>st,_dbg:{get foes(){return foes},get goo(){return goo},get wave(){return wave},set ptx(v){ptx=v},get px(){return px},killAll(){for(const f of foes)if(!f.dead)killFoe(f)},hitMe}};
+    beans=(d.b||[]).map(a=>({x:a[0],y:a[1],vy:-640,vx:a[2]||0}));goo=(d.g||[]).map(a=>({x:a[0],y:a[1],vy:a[2]||220,vx:a[3]||0}));drops=(d.d||[]).map(a=>({x:a[0],y:a[1],k:a[2],t:0}));bunk=(d.bk||[]).map(a=>({x:a[0],y:a[1],hp:a[2]}))}
+  return{start,update,render,bg,down,move,up,key,action(){},restyle,serialize,restore,specSync,state:()=>st,_dbg:{get foes(){return foes},get goo(){return goo},get wave(){return wave},set ptx(v){ptx=v},get px(){return px},get pick(){return pick},get pk(){return pk},get od(){return od},get combo(){return combo},get grazes(){return grazes},take:i=>pick&&takePerk(pick[i]),killAll(){for(const f of foes)if(!f.dead)killFoe(f)},hitMe,goo2:g=>goo.push(g)}};
 })();
 function menuInv(c,t){const cs=P.cos.drop,w=cs.wall;wallpaper(c,w,0,0,240,180,.8);c.fillStyle='rgba(22,12,48,.45)';c.fillRect(0,0,240,180);
   const k=t%3,R=[['trialien','#ff6fa8'],['cyclops','#b07aff'],['alien','#5be0a6']];
@@ -3348,7 +3421,6 @@ function menuInv(c,t){const cs=P.cos.drop,w=cs.wall;wallpaper(c,w,0,0,240,180,.8
   const cr=critter(cs.set,3),x=120+Math.sin(t*1.6)*50;drawAnimal(c,x,156,15,cr.k,cr.c,{fx:cr.fx,mood:2,hat:cs.hat});
   for(let i=0;i<3;i++){const y=140-((t*2+i*.33)%1)*110;c.save();rr(c,x-2.5,y,5,11,2.5);c.fillStyle=cr.c;c.fill();c.lineWidth=1.5;c.strokeStyle=INK;c.stroke();c.restore()}
   if(k>1.1&&k<1.6){c.save();c.globalAlpha=1-(k-1.1)/.5;circ(c,120+Math.sin(t*2)*12,62,18*(1+(k-1.1)*2));c.lineWidth=3;c.strokeStyle='#fff';c.stroke();c.restore()}}
-
 // ================================================= GAME 8: Jelly Pong (1v1 only, first to 3). By Cat At War.
 // The ball is never streamed. Both players (and anyone watching) work it out from the last "bounce": where it was,
 // how fast it was going, and the exact server time. So it glides identically on every screen at full frame rate.
@@ -3475,7 +3547,7 @@ const GAMES={
   combo:{id:'combo',name:'Jelly Combo',impl:Combo,coins:s=>s.score/270},
   memory:{id:'memory',name:'Jelly Memory',impl:Memory,coins:s=>s.score/65},
   slice:{id:'slice',name:'Jelly Slice',impl:Slice,coins:s=>s.score/90},
-  inv:{id:'inv',name:'Jelly Invaders',impl:Invaders,coins:s=>s.score/85}};
+  inv:{id:'inv',name:'Jelly Invaders',impl:Invaders,coins:s=>s.score/220}};
 // Jelly Catch wears your Jelly Jar style, Jelly Combo your Jelly 2048 style, Jelly Memory your Jellydoku style
 const SG=g=>g==='catch'||g==='slice'||g==='inv'?'drop':g==='combo'?'squish':g==='memory'?'doku':g;
 const SGN={slice:'Jelly Jar + Slice',inv:'Jelly Jar + Invaders',catch:'Jelly Jar + Catch',combo:'Jelly 2048 + Combo',memory:'Jellydoku + Memory'};
@@ -3494,7 +3566,7 @@ const QUESTS=[
  {id:'m_taps',g:'memory',t:'Repeat 100 jellies in Jelly Memory',goal:100,mode:'sum',key:'taps',r:45},
  {id:'s_score',g:'slice',t:'Score 1,500 in one Jelly Slice round',goal:1500,mode:'max',key:'score',r:50},
  {id:'s_sliced',g:'slice',t:'Slice 120 jellies in Jelly Slice',goal:120,mode:'sum',key:'sliced',r:45},
- {id:'i_score',g:'inv',t:'Score 2,000 in one Jelly Invaders round',goal:2000,mode:'max',key:'score',r:50},
+ {id:'i_score',g:'inv',t:'Score 5,000 in one Jelly Invaders round',goal:5000,mode:'max',key:'score',r:50},
  {id:'i_kills',g:'inv',t:'Blast 120 invaders in Jelly Invaders',goal:120,mode:'sum',key:'kills',r:45},
  {id:'i_wave',g:'inv',t:'Reach wave 4 in Jelly Invaders',goal:4,mode:'max',key:'wave',r:55},
  {id:'k_level',g:'doku',t:'Reach level 5 in one Jellydoku run',goal:5,mode:'max',key:'level',r:60},
@@ -3661,7 +3733,7 @@ const TUT={drop:['Slide your finger to aim, then let go to drop a jelly. The nex
   squish:['Swipe (or use the arrow keys) to slide every jelly at once.','Two of the same number squish together and double. Several merges in one swipe give a bonus.','The round ends when the board is full and nothing can move. Make 2048 to crown a king!'],
   doku:['Each row, column and color area needs exactly one jelly.','Jellies can never touch, not even corner to corner.','Tap a square to mark ✕. Double-tap to drop a jelly. Wrong jellies cost a heart.','You have 5 hearts for the whole run. Hint crosses out a few squares that can’t have a jelly and tells you why.','Every level can be solved by logic, no guessing. Boards grow up to 8 × 8, then the puzzles get trickier.'],
   combo:['Jellies pop up on the board. Tap each one before its ring runs out. Tapping fast scores a QUICK bonus.','Keep hitting them for a big combo. Missing one costs a heart, and tapping an empty spot breaks your combo.','Never tap the spiky ones! Gold jellies are worth x3 and hearts give a life back. It gets faster and the board grows.'],
-  inv:['Drag left and right to move your critter. It fires jelly beans all by itself.','Blast the alien jellies before they march down to you. Some swoop down in a dive: hit them mid-dive for double points, and dodge the purple goo.','Hide behind the green jelly bunkers. Grab falling power-ups: 2x shot, rapid fire, a shield and extra lives. Clear a wave without getting hit for a PERFECT bonus.'],
+  inv:['Drag left and right to move your critter. It fires jelly beans all by itself. Hit the diving aliens mid-dive for double points, and dodge the purple goo.','After every wave, pick 1 of 3 perks to power up. Chain 15 kills in a row for OVERDRIVE: triple shots and double points!','Near misses score GRAZE points. Grab falling power-ups, hide behind the green bunkers, and reach wave 5, 10, 15… for big milestone bonuses.'],
   slice:['Swipe across the screen to slice the jellies tossed up from below. Don’t let any fall back down: each one you miss costs a heart.','Slice 3 or more in one swipe for a big combo bonus. Spiky bombs cost a heart, so swipe around them!','Hearts give a life back, snowflakes slow time, stars start a frenzy with no bombs at all. It keeps getting faster and faster.'],
   memory:['Watch the jellies light up one by one.','Tap them back in the same order. Each round adds one more, and a perfect round scores double.','Every few rounds the jellies shuffle (you’ll see the pattern twice) and more jellies join.','Mistakes cost a heart, and so does waiting too long. The pattern replays after a mistake.'],
   catch:['Drag left and right to move your jar.','Catch every jelly. Missing one costs a life, and a streak raises your multiplier up to x8.','Dodge the spiky ones! Gold stars give x2, hearts refill a life, and the Lucky critter (top left) scores x3.']};
@@ -3955,6 +4027,7 @@ async function onUser(user){if(UID&&FD&&fbOnline&&acctReady&&(!user||user.uid!==
 function adoptCloud(cp){if(P.owner&&P.owner!==UID){P=cp;norm();return}const L=P,mine=L.owner===UID,localNewer=mine&&(L.t||0)>(cp.t||0);
   const A=localNewer?L:cp,B=localNewer?cp:L;const A0={best:Object.assign({},A.best||{}),bestFix:Object.assign({},A.bestFix||{})},B0={best:Object.assign({},B.best||{}),bestFix:Object.assign({},B.bestFix||{})};P=A;norm();const aOwn=new Set(P.own||[]);
   for(const g of['drop','squish','doku','catch','combo','memory','slice','inv'])P.best[g]=Math.max(P.best[g]||0,(B.best&&B.best[g])||0);
+  if((B.invWave|0)>(P.invWave|0))P.invWave=B.invWave|0;
   {const Fx=Object.assign({},B.bestFix||{});for(const[k,t]of Object.entries(A.bestFix||{}))Fx[k]=Math.max(+Fx[k]||0,+t||0);P.bestFix=Fx;for(const[g,t]of Object.entries(Fx)){const vals=[A0,B0].filter(S=>(+S.bestFix[g]||0)>=t).map(S=>+S.best[g]||0);if(vals.length)P.best[g]=Math.max(...vals)}}
   {const pa=A.prest|0,pb=B.prest|0;if(pa===pb){P.own=[...new Set([...P.own,...(B.own||[])])];P.perma=[...new Set([...(P.perma||[]),...(B.perma||[])])]}else if(pb>pa){P.own=[...(B.own||[])];P.coins=B.coins|0;P.prest=pb;P.ptok=B.ptok|0;P.perma=[...(B.perma||[])]}}P.found=[...new Set([...P.found,...(B.found||[])])];
   if((B.level||1)>(P.level||1)||((B.level||1)===(P.level||1)&&(B.xp||0)>(P.xp||0))){P.level=B.level;P.xp=B.xp}
@@ -5360,7 +5433,8 @@ achTier('Jellydoku','🧩',()=>P.dokuLv||0,[['doku5',5,'Puzzler','Reach level 5 
 achTier('Jelly Catch','🧺',()=>P.best.catch||0,[['catch2k',2000,'Quick hands','Score 2,000 in Jelly Catch',150],['catch5k',5000,'Catcher','Score 5,000 in Jelly Catch',600],['catch10k',10000,'Golden glove','Score 10,000 in Jelly Catch',2000]]);
 achTier('Jelly Combo','⚡',()=>P.best.combo||0,[['combo2k',2000,'Tapper','Score 2,000 in Jelly Combo',150],['combo5k',5000,'Rapid fire','Score 5,000 in Jelly Combo',600],['combo10k',10000,'Lightning','Score 10,000 in Jelly Combo',2000]]);
 achTier('Jelly Memory','🧠',()=>P.best.memory||0,[['mem500',500,'Good memory','Score 500 in Jelly Memory',150],['mem1500',1500,'Sharp mind','Score 1,500 in Jelly Memory',600],['mem4000',4000,'Photographic','Score 4,000 in Jelly Memory',2000]]);
-achTier('Jelly Invaders','👾',()=>P.best.inv||0,[['inv2k',2000,'Space cadet','Score 2,000 in Jelly Invaders',150],['inv6k',6000,'Star defender','Score 6,000 in Jelly Invaders',600],['inv15k',15000,'Galaxy guardian','Score 15,000 in Jelly Invaders',2500]]);
+achTier('Invader waves','🏁',()=>P.invWave||0,[['invw5',5,'Wave rider','Reach wave 5 in Jelly Invaders',300],['invw10',10,'Wave master','Reach wave 10 in Jelly Invaders',1200],['invw20',20,'Unstoppable','Reach wave 20 in Jelly Invaders',4000]]);
+achTier('Jelly Invaders','👾',()=>P.best.inv||0,[['inv2k',5000,'Space cadet','Score 5,000 in Jelly Invaders',150],['inv6k',15000,'Star defender','Score 15,000 in Jelly Invaders',600],['inv15k',40000,'Galaxy guardian','Score 40,000 in Jelly Invaders',2500]]);
 achTier('Jelly Slice','🔪',()=>P.best.slice||0,[['slice2k',2000,'Slicer','Score 2,000 in Jelly Slice',150],['slice5k',5000,'Blade dancer','Score 5,000 in Jelly Slice',600],['slice12k',12000,'Jelly ninja','Score 12,000 in Jelly Slice',2500]]);
 achTier('1v1','⚔️',()=>(P.duel&&P.duel.w)||0,[['duel1',1,'First win','Win a 1v1',100],['duel10',10,'Contender','Win 10 1v1s',600],['duel50',50,'Duelist','Win 50 1v1s',3000,{item:'prof:title:ach_duelist'}],['duel200',200,'Unbeatable','Win 200 1v1s',10000,{spins:5}]]);
 achTier('Co-op','🤝',()=>P.coop||0,[['coop1',1,'Team player','Finish a Co-op Jelly Jar game',150],['coop10',10,'Dream team','Finish 10 co-op games',900],['coop50',50,'Inseparable','Finish 50 co-op games',4000,{spins:2}]]);
