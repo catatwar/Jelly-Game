@@ -3243,11 +3243,11 @@ const Invaders=(()=>{
     heart:{n:'Patch Up',i:'❤️',d:'Get one life back',max:99}};
   const OD_EVERY=15,OD_LEN=3,MILE=5;
   let st='done',px,ptx,lives,wave,t,kills,beans,goo,foes,fx,fy,fdir,fireT,divT,shotT,nid,combo,lastKill,bestCombo,hitWave,inv,shield,pw,pwT,drops,bunk,waveT,endT,stars,pop,spec,
-    pk,pick,pickT,od,odAt,grazes,vol,shotN,bestW,bestSaid;
+    pk,pick,pickT,od,odAt,grazes,vol,shotN,bestW,bestSaid,tooT=0;
   const S=()=>cos('drop'),C=i=>critter(S().set,i),lv=k=>pk[k]|0;
   function hearts(){setMid('Lives','♥'.repeat(Math.max(0,lives))+'♡'.repeat(Math.max(0,3-lives)))}
   function reset(){st='play';px=ptx=W/2;lives=3;wave=0;t=0;kills=0;beans=[];goo=[];foes=[];fx=0;fy=0;fdir=1;fireT=.4;divT=3;shotT=1.4;nid=0;combo=0;lastKill=-9;bestCombo=0;hitWave=0;inv=0;shield=0;pw='';pwT=0;drops=[];bunk=[];waveT=0;endT=0;pop=[];spec={};
-    pk={};pick=null;pickT=0;od=0;odAt=OD_EVERY;grazes=0;vol=0;shotN=0;bestW=SPEC?0:(P.invWave|0);bestSaid=false;
+    pk={};pick=null;pickT=0;od=0;odAt=OD_EVERY;tooT=0;grazes=0;vol=0;shotN=0;bestW=SPEC?0:(P.invWave|0);bestSaid=false;
     stars=[];for(let i=0;i<46;i++)stars.push({x:rand(W),y:rand(H),s:rand(.6,2.2),p:rand(TAU)})}
   function start(){reset();buildBunkers();nextWave();restyle();hearts()}
   function restyle(){const w=WALLS[S().wall]||WALLS.mint;theme(w.bg,w.hud);gbar('Drag left and right to move. You fire on your own. Chain 15 kills for OVERDRIVE, and pick a perk after every wave!');if(lives!==undefined)hearts()}
@@ -3313,7 +3313,7 @@ const Invaders=(()=>{
     for(const b of beans){b.y+=b.vy*dt;b.x+=b.vx*dt}
     // the formation waits until everyone has flown in, then marches; at a wall it turns around and steps down
     const allIn=!foes.some(f=>!f.dead&&f.st==='in'),sp=allIn?marchSpeed()*dt*fdir:0;let edge=false;
-    for(const f of foes)if(!f.dead&&f.st==='form'){const nx=homeX(f)+sp;if(nx<FR+8||nx>W-FR-8)edge=true}
+    {let lo=1e9,hi=-1e9;for(const f of foes)if(!f.dead&&f.st==='form'){const x=homeX(f);if(x<lo)lo=x;if(x>hi)hi=x}if(lo<1e9)edge=fdir<0?lo+sp<FR+8:hi+sp>W-FR-8}
     if(edge){fdir*=-1;fy+=14;sfx.pop(1)}else if(allIn)fx+=sp;
     for(const f of foes){if(f.dead)continue;if(f.fl>0)f.fl-=dt;
       if(f.st==='in'){f.dl-=dt;if(f.dl<=0){const hx=homeX(f),hy=homeY(f);f.x+=(hx-f.x)*Math.min(1,dt*5);f.y+=(hy-f.y)*Math.min(1,dt*5);if(Math.hypot(hx-f.x,hy-f.y)<6||f.dl<-1.6)f.st='form'}}
@@ -3329,7 +3329,7 @@ const Invaders=(()=>{
         if(d<=step||d<8||f.bk>2.5){f.x=hx;f.y=hy;f.st='form'}else{f.x+=dx/d*step;f.y+=dy/d*step}}
       if(f.st!=='in'&&Math.hypot(f.x-px,f.y-PY)<FR+PR-4){killFoe(f);hitMe()}}
     // the formation got all the way down: you lose a life and they get pushed back up
-    {const low=Math.max(-1e9,...alive().filter(f=>f.st==='form').map(f=>f.y));if(low>BY-6){fy-=150;hitMe();big('TOO CLOSE!','#ff5f6d')}}
+    if(tooT>0)tooT-=dt;else{const low=Math.max(-1e9,...alive().filter(f=>f.st==='form').map(f=>f.y));if(low>BY-6){tooT=2.5;fy-=150;hitMe();big('TOO CLOSE!','#ff5f6d')}}
     // shooting and diving (only once everyone has flown in)
     if(alive().length&&allIn){shotT-=dt;if(shotT<=0){const cols=new Map();for(const f of alive())if(f.st==='form'){const o=cols.get(f.q);if(!o||f.y>o.y)cols.set(f.q,f)}const L=[...cols.values()];
         for(let n=Math.min(L.length,1+Math.floor(wave/5));n>0;n--){const f=L.splice(Math.floor(SR()*L.length),1)[0];goo.push({x:f.x,y:f.y+FR,vy:Math.min(420,210+wave*12),vx:0})}if(L)sfx.pop(1);shotT=Math.max(.38,1.8-wave*.1)*srand(.7,1.3)}
