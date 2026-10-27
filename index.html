@@ -460,7 +460,8 @@ textarea{font:500 16px/1.4 var(--body);color:var(--ink);border:2.5px solid var(-
 .sugform textarea{min-height:96px}
 .sugmeta{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--muted)}
 .sugbad textarea{border-color:#d6335f;box-shadow:0 0 0 3px rgba(214,51,95,.2)}
-.frshare{display:flex;gap:8px;width:100%;flex-wrap:wrap}.frshare .btn{flex:1 1 140px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:15px;padding:8px 10px}.frshare svg{width:18px;height:18px;flex:none}
+.frshare{display:flex;gap:8px;width:100%;flex-wrap:wrap}
+.frref{width:100%;box-sizing:border-box;background:#fff6d6;border:2px solid #ffd23f;border-radius:14px;padding:8px 11px;font-size:13.5px;line-height:1.35;color:#2b2340;text-align:left}.frref b{color:#b07800}.frref .rs{display:block;margin-top:4px;font-size:12.5px;opacity:.8}.frshare .btn{flex:1 1 140px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:15px;padding:8px 10px}.frshare svg{width:18px;height:18px;flex:none}
 .sugvote{display:inline-flex;align-items:center;gap:4px;border:2.5px solid var(--ink);border-radius:999px;background:#fff;padding:2px 10px 2px 8px;font:800 13px var(--body);color:var(--ink);cursor:pointer;box-shadow:0 2px 0 var(--ink)}
 .sugvote.on{background:#ffd23f}.sugvote[disabled]{opacity:.55;cursor:default;box-shadow:none}.sugvote b{font-size:14px;line-height:1}
 .sugc .sfoot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
@@ -1079,6 +1080,7 @@ body.bouncy .toast{animation-timing-function:var(--spring)!important}
       <div class="nrow"><input id="frName" type="text" maxlength="16" spellcheck="false" autocomplete="off" placeholder="Player name"><button class="btn small mint" id="frGo" type="button">Send</button></div>
       <span class="nmsg" id="frMsg"></span></div>
     <div class="frshare"><button class="btn small" id="frInv" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg><span>Send an invite link</span></button><button class="btn small white" id="frSite" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg><span>Share the game</span></button></div>
+    <div class="frref" id="frRef"></div>
     <button class="btn small white frbrowse" id="frBrowse" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="#2b2340" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 3.5 6"/></svg><span>Browse all players</span></button>
     <button class="btn pink" id="frSign" type="button" hidden>Sign in to add friends</button>
     <div id="frReq" class="mlist"></div>
@@ -3235,8 +3237,8 @@ const Invaders=(()=>{
     pierce:{n:'Piercing',i:'🎯',d:'Beans go through one more alien'},
     spread:{n:'Side Shots',i:'🔱',d:'3-way spread shots, more often'},
     magnet:{n:'Magnet',i:'🧲',d:'Pickups fly to you and drop more'},
-    bubble:{n:'Bubble',i:'🫧',d:'Start every wave with a shield'},
-    big:{n:'Big Beans',i:'🍬',d:'Bigger beans that land easier'},
+    bubble:{n:'Bubble',i:'🫧',d:'Start every wave with a shield (one more per level)',max:3},
+    big:{n:'Big Beans',i:'🍬',d:'Bigger beans that land easier',max:10},
     graze:{n:'Daredevil',i:'😎',d:'Near misses score more'},
     hyper:{n:'Hyperdrive',i:'🔥',d:'Overdrive lasts longer'},
     chain:{n:'Chain Keeper',i:'⛓',d:'More time between kills in a chain'},
@@ -3244,58 +3246,59 @@ const Invaders=(()=>{
   const MAXL=5;
   const OD_EVERY=15,OD_LEN=3,MILE=5;
   let st='done',px,ptx,lives,wave,t,kills,beans,goo,foes,fx,fy,fdir,fireT,divT,shotT,nid,combo,lastKill,bestCombo,hitWave,inv,shield,pw,pwT,drops,bunk,waveT,endT,stars,pop,spec,
-    pk,pick,pickT,od,odAt,grazes,vol,shotN,bestW,bestSaid,tooT=0,fyT=0,drag=null;
+    pk,pick,pickT,od,odAt,grazes,vol,shotN,bestW,bestSaid,tooT=0,fyT=0,drag=null,hailT=0,heartWave=0;
   const S=()=>cos('drop'),C=i=>critter(S().set,i),lv=k=>pk[k]|0;
   function hearts(){setMid('Lives','♥'.repeat(Math.max(0,lives))+'♡'.repeat(Math.max(0,3-lives)))}
   function reset(){st='play';px=ptx=W/2;lives=3;wave=0;t=0;kills=0;beans=[];goo=[];foes=[];fx=0;fy=0;fdir=1;fireT=.4;divT=3;shotT=1.4;nid=0;combo=0;lastKill=-9;bestCombo=0;hitWave=0;inv=0;shield=0;pw='';pwT=0;drops=[];bunk=[];waveT=0;endT=0;pop=[];spec={};
-    pk={};pick=null;pickT=0;od=0;odAt=OD_EVERY;tooT=0;fyT=0;drag=null;grazes=0;vol=0;shotN=0;bestW=SPEC?0:(P.invWave|0);bestSaid=false;
+    pk={};pick=null;pickT=0;od=0;odAt=OD_EVERY;tooT=0;fyT=0;drag=null;hailT=2;grazes=0;vol=0;shotN=0;bestW=SPEC?0:(P.invWave|0);bestSaid=false;
     stars=[];for(let i=0;i<46;i++)stars.push({x:rand(W),y:rand(H),s:rand(.6,2.2),p:rand(TAU)})}
   function start(){reset();buildBunkers();nextWave();restyle();hearts()}
   function restyle(){const w=WALLS[S().wall]||WALLS.mint;theme(w.bg,w.hud);gbar('Drag left and right to move. You fire on your own. Chain 15 kills for OVERDRIVE, and pick a perk after every wave!');if(lives!==undefined)hearts()}
   function buildBunkers(){bunk=[];for(let b=0;b<3;b++){const x0=W*(b+1)/4-BW*BCELL/2;for(let r=0;r<BH;r++)for(let q=0;q<BW;q++){if(r===BH-1&&(q===2||q===3||q===4))continue;bunk.push({x:x0+q*BCELL,y:BY+r*BCELL,hp:2})}}}
   // the formation: wave 1 is 4 rows; later waves get 5 rows, tougher top rows and faster marching
-  const DW=()=>Math.min(wave,16);
-  function nextWave(){wave++;hitWave=0;const rows=wave<2?4:5;fx=0;fy=0;fyT=0;fdir=SR()<.5?1:-1;foes=[];
+  const DW=()=>Math.min(wave,16),LATE=()=>Math.max(0,wave-24);
+  function nextWave(){wave++;hitWave=0;heartWave=0;const rows=wave<2?4:5;fx=0;fy=0;fyT=0;fdir=SR()<.5?1:-1;foes=[];
     for(let r=0;r<rows;r++)for(let q=0;q<COLS;q++){const R=ROWS[r+(5-rows)],hp=Math.min(3,1+Math.floor((DW()-1)/5))+(wave>=3&&r===0?1:0)+Math.floor(Math.max(0,wave-16)/2);
       foes.push({id:++nid,r:r+(5-rows),q,k:R.k,c:R.c,p:R.p,hp,mx:hp,st:'in',x:W/2,y:-40-r*30,dl:(r*COLS+q)*.035,fl:0,seed:rand(9),bk:0})}
     divT=Math.max(1.8,3.4-DW()*.15);shotT=1.2;waveT=0;if(lv('bubble'))shield=Math.max(shield,Math.min(3,lv('bubble')));
     if(SPEC||wave<2)return;
     // milestones and your best wave
-    if(wave%MILE===0){const b=100*wave;addScore(b,1.6);big('🏁 WAVE '+wave+' MILESTONE! +'+fmt(b),'#ffd23f');sfx.discover();sfx.combo(6);hap('success');try{confetti(fxW/2,fxH*.3,120,900)}catch(e){}}
+    if(wave%MILE===0){const b=100*Math.min(wave,25);addScore(b,1.6);big('🏁 WAVE '+wave+' MILESTONE! +'+fmt(b),'#ffd23f');sfx.discover();sfx.combo(6);hap('success');try{confetti(fxW/2,fxH*.3,120,900)}catch(e){}}
     else big('WAVE '+wave,'#ffd23f');
     if(wave>bestW){if(!bestSaid&&bestW>=2){bestSaid=true;setTimeout(()=>{if(st==='play')big('NEW BEST WAVE!','#5be0a6')},900)}P.invWave=Math.max(P.invWave|0,wave);bestW=wave;save()}
     sfx.discover()}
   const homeX=f=>W/2+(f.q-(COLS-1)/2)*SPX+fx,homeY=f=>TOP+(f.r-(5-rowsNow()))*SPY+fy;
   const rowsNow=()=>wave<2?4:5;
   const alive=()=>foes.filter(f=>!f.dead);
-  function marchSpeed(){const a=alive().filter(f=>f.st==='form').length,tot=rowsNow()*COLS;return(26+DW()*6)*(1+(1-a/Math.max(1,tot))*1.7)}
-  const chainWin=()=>Math.min(2.6,.9+.4*lv('chain'));
+  function marchSpeed(){const a=alive().filter(f=>f.st==='form').length,tot=rowsNow()*COLS;return(26+DW()*6)*Math.min(1.9,1+LATE()*.03)*(1+(1-a/Math.max(1,tot))*1.7)}
+  const chainWin=()=>.9+.4*lv('chain');
   function killFoe(f){f.dead=1;kills++;burst(f.x,f.y,f.c,16,280,.25);ring(f.x,f.y,FR*1.6,'#fff');addShake(.06);
     combo=t-lastKill<chainWin()?combo+1:1;lastKill=t;bestCombo=Math.max(bestCombo,combo);
-    const m=1+Math.min(4,combo-1)*.2,dive=f.st==='dive'?2:1,pts=Math.round(f.p*Math.sqrt(f.mx)*dive*m*(1+(wave-1)*.06)*(od>0?2:1));addScore(pts,1.1+Math.min(.4,combo*.05));
+    const m=1+Math.min(4,combo-1)*.2,dive=f.st==='dive'?2:1,pts=Math.round(f.p*Math.sqrt(Math.min(f.mx,6))*dive*m*(1+(Math.min(wave,25)-1)*.06)*(od>0?2:1));addScore(pts,1.1+Math.min(.4,combo*.05));
     float(f.x,f.y-18,(dive>1?'DIVE ':'')+'+'+pts,od>0?'#ff9f1c':dive>1?'#ffd23f':'#fff',16+Math.min(8,combo));sfx.merge(Math.min(10,2+Math.floor(combo/2)),0);
     if(combo>=odAt&&od<=0)overdrive();else if(combo>=5&&combo%5===0&&combo<odAt)big('CHAIN x'+combo+'!','#5be0a6');
-    if(SR()<Math.min(.25,.07+.04*lv('magnet')))drops.push({x:f.x,y:f.y,k:lives<3&&SR()<.3?'heart':['double','rapid','shield'][Math.floor(SR()*3)],t:0})}
-  const odLen=()=>Math.min(10,OD_LEN+2*lv('hyper'));
+    if(lives<MAXL&&!heartWave&&SR()<.014){heartWave=1;drops.push({x:f.x,y:f.y,k:'heart',t:0})}else if(SR()<Math.min(.3,.07+.03*lv('magnet')))drops.push({x:f.x,y:f.y,k:['double','rapid','shield'][Math.floor(SR()*3)],t:0})}
+  const odLen=()=>OD_LEN+2*lv('hyper');
   function overdrive(){od=odLen();odAt=(Math.floor(combo/OD_EVERY)+1)*OD_EVERY;big('OVERDRIVE!','#ff9f1c');sfx.combo(7);sfx.discover();hap('success');flash=.35;addShake(.3);ring(px,PY,PR*3,'#ff9f1c')}
-  function hitMe(){if(inv>0||st!=='play'||pick)return;if(shield>0){shield--;inv=1;ring(px,PY,PR*2,'#7cc8ff');sfx.pop(4);float(px,PY-40,'Shield!','#7cc8ff',18);return}
-    lives--;hitWave++;inv=2;pw='';pwT=0;combo=0;burst(px,PY,'#ff6fa8',26,360,.2);addShake(.6);flash=.7;sfx.thud();hap('heavy');big(lives>0?'OUCH!':'OUT OF LIVES!','#ff5f6d');hearts();if(lives<=0)over()}
+  function hitMe(){if(inv>0||st!=='play'||pick)return;if(shield>0){shield--;inv=.35;ring(px,PY,PR*2,'#7cc8ff');sfx.pop(4);float(px,PY-40,'Shield!','#7cc8ff',18);return}
+    lives--;hitWave++;inv=1.5;pw='';pwT=0;combo=0;burst(px,PY,'#ff6fa8',26,360,.2);addShake(.6);flash=.7;sfx.thud();hap('heavy');big(lives>0?'OUCH!':'OUT OF LIVES!','#ff5f6d');hearts();if(lives<=0)over()}
   function over(){if(st!=='play')return;st='ending';endT=1.3;pick=null;sfx.over();
     if(endKind()!=='none'){const ps=alive().map(f=>({x:f.x,y:f.y,r:FR,draw:c=>drawAnimal(c,0,0,FR,f.k,f.c,{mood:3})}));endT=endBoom(ps);foes=[]}}
   function bunkHit(x,y,r){for(const b of bunk){if(b.hp<=0)continue;if(x+r>b.x&&x-r<b.x+BCELL&&y+r>b.y&&y-r<b.y+BCELL){b.hp--;burst(b.x+4,b.y+4,'#5be0a6',3,120,0);return true}}return false}
   // firing: how many volleys can be in the air, how fast, and what shape
-  const fireGap=()=>Math.max(.1,.32*Math.pow(.88,lv('rate')))*(pw==='rapid'?.5:1)*(od>0?.55:1);
-  const capNow=()=>Math.min(8,2+lv('cap'))+(pw==='rapid'?1:0)+(od>0?3:0);
-  const beanV=()=>-640*Math.min(2,1+.12*lv('speed'));
+  const fireGap=()=>Math.max(.05,.32*Math.pow(.88,lv('rate')))*(pw==='rapid'?.5:1)*(od>0?.55:1);
+  const capNow=()=>2+lv('cap')+(pw==='rapid'?1:0)+(od>0?3:0);
+  const beanV=()=>-640*(1+.12*lv('speed'));
   function fire(){vol++;shotN++;const v=beanV(),pierce=lv('pierce'),spread=od>0||(lv('spread')>0&&shotN%Math.max(2,5-lv('spread'))===0),dbl=pw==='double';
     const shots=[];for(const o of dbl?[-11,11]:[0])shots.push([o,0]);if(spread){shots.push([-8,-150],[8,150])}
     for(const[o,vx]of shots)beans.push({x:px+o,y:PY-PR-4,vy:v,vx,v:vol,p:pierce,hit:new Set()});
     if(Math.random()<.5)tone(rand(1100,1300),.04,'triangle',.008,rand(1700,1900))}
   // a dive: swoop out of formation in a loop, then sweep down at you with a wiggle, and come back in from the top
-  function dive(f){f.st='dive';f.dt=0;f.sx=f.x;f.sy=f.y;f.side=f.x<W/2?-1:1;f.tx=clamp(px+srand(-50,50),30,W-30);{const dist=H+44-f.sy;f.dur=.75+dist/(170+DW()*9);f.c1x=clamp(f.sx+f.side*95,FR,W-FR);f.c1y=f.sy-80;f.c2x=clamp(f.tx-f.side*110,FR,W-FR);f.c2y=f.sy+dist*.5}f.vy=170+DW()*9;f.shots=wave>=8?2:1;f.sT=srand(.5,1.1);f.gz=0;sfx.pop(2)}
+  function dive(f){f.st='dive';f.dt=0;f.sx=f.x;f.sy=f.y;f.side=f.x<W/2?-1:1;f.tx=clamp(px+srand(-50,50),30,W-30);{const dist=H+44-f.sy;f.dur=.75+dist/(170+DW()*9);f.c1x=clamp(f.sx+f.side*95,FR,W-FR);f.c1y=f.sy-80;f.c2x=clamp(f.tx-f.side*110,FR,W-FR);f.c2y=f.sy+dist*.5}f.vy=170+DW()*9+Math.min(80,LATE()*3);f.shots=(wave>=8?2:1)+(LATE()>=10?1:0);f.sT=srand(.5,1.1);f.gz=0;sfx.pop(2)}
+  const segD=(ax,ay,bx,by,x,y)=>{const dx=bx-ax,dy=by-ay,L=dx*dx+dy*dy;let k=L?((x-ax)*dx+(y-ay)*dy)/L:0;k=k<0?0:k>1?1:k;return Math.hypot(ax+dx*k-x,ay+dy*k-y)};
   function graze(x,y,pts){grazes++;const n=Math.round(pts*(1+2*lv('graze')));addScore(n,1.05);float(x,y,'GRAZE +'+n,'#9ff0ff',15);ring(px,PY,PR*1.5,'#9ff0ff');tone(1600,.05,'sine',.012,2200)}
   // ---- perk picks between waves
-  function offerPerks(){const can=Object.keys(PERKS).filter(k=>k==='heart'?lives<MAXL:true),out=[];
+  function offerPerks(){const can=Object.keys(PERKS).filter(k=>k==='heart'?lives<MAXL:PERKS[k].max?lv(k)<PERKS[k].max:true),out=[];
     if(lives<=1&&can.includes('heart'))out.push(can.splice(can.indexOf('heart'),1)[0]);   // down to your last life: Patch Up is always one of the choices
     while(out.length<3&&can.length)out.push(can.splice(Math.floor(SR()*can.length),1)[0]);
     if(!out.length){pick=null;nextWave();return}pick=out;pickT=DUEL?8:0;sfx.discover()}
@@ -3312,9 +3315,9 @@ const Invaders=(()=>{
     t+=dt;if(inv>0)inv-=dt;if(pwT>0){pwT-=dt;if(pwT<=0)pw=''}if(od>0){od-=dt;if(od<=0){od=0;float(px,PY-50,'Overdrive over','#ff9f1c',16)}}
     if(combo>0&&t-lastKill>chainWin()){combo=0;odAt=OD_EVERY}
     // you
-    const mvS=Math.min(2.6,1+.2*lv('speed'));if(keys.ArrowLeft||keys.a)ptx-=520*mvS*dt;if(keys.ArrowRight||keys.d)ptx+=520*mvS*dt;ptx=clamp(ptx,PR+4,W-PR-4);px+=clamp((ptx-px)*Math.min(1,dt*24),-1900*mvS*dt,1900*mvS*dt);
+    const mvS=1+.2*lv('speed');if(keys.ArrowLeft||keys.a)ptx-=520*mvS*dt;if(keys.ArrowRight||keys.d)ptx+=520*mvS*dt;ptx=clamp(ptx,PR+4,W-PR-4);px+=clamp((ptx-px)*Math.min(1,dt*24),-1900*mvS*dt,1900*mvS*dt);
     fireT-=dt;if(fireT<=0&&waveT<=0&&new Set(beans.map(b=>b.v)).size<capNow()){fire();fireT=fireGap()}
-    for(const b of beans){b.y+=b.vy*dt;b.x+=b.vx*dt}
+    for(const b of beans){b.py=b.y;b.px=b.x;b.y+=b.vy*dt;b.x+=b.vx*dt}
     // the formation waits until everyone has flown in, then marches; at a wall it turns around and steps down
     const allIn=!foes.some(f=>!f.dead&&f.st==='in'),sp=allIn?marchSpeed()*dt*fdir:0;let edge=false;
     {let lo=1e9,hi=-1e9;for(const f of foes)if(!f.dead&&f.st==='form'){const x=homeX(f);if(x<lo)lo=x;if(x>hi)hi=x}if(lo<1e9)edge=fdir<0?lo+sp<FR+8:hi+sp>W-FR-8}
@@ -3325,9 +3328,9 @@ const Invaders=(()=>{
       else if(f.st==='form'){f.x=homeX(f);f.y=homeY(f)+Math.sin(t*3+f.q)*2}
       else if(f.st==='dive'){f.dt+=dt;const u=Math.min(1,f.dt/(f.dur||3)),v=1-u,ex=f.tx,ey=H+44;
         f.x=v*v*v*f.sx+3*v*v*u*f.c1x+3*v*u*u*f.c2x+u*u*u*ex+Math.sin(f.dt*5+f.seed)*16*u*v*2;f.y=v*v*v*f.sy+3*v*v*u*f.c1y+3*v*u*u*f.c2y+u*u*u*ey;
-        f.x=clamp(f.x,FR,W-FR);f.sT-=dt;if(f.sT<=0&&f.shots>0&&f.y<PY-120){f.shots--;f.sT=srand(.4,.8);goo.push({x:f.x,y:f.y+FR,vy:Math.min(360,250+DW()*7),vx:clamp((px-f.x)*.35,-90,90)})}
+        f.x=clamp(f.x,FR,W-FR);f.sT-=dt;if(f.sT<=0&&f.shots>0&&f.y<PY-120){f.shots--;f.sT=srand(.4,.8);goo.push({x:f.x,y:f.y+FR,vy:Math.min(360,250+DW()*7)+Math.min(120,LATE()*4),vx:clamp((px-f.x)*.35,-90,90)})}
         // a diver that swooped right past you without touching: graze
-        if(!f.gz&&f.y>PY-6){const d=Math.hypot(f.x-px,f.y-PY);if(d<FR+PR+26&&d>=FR+PR-4){f.gz=1;graze(f.x,f.y-24,6+wave*2)}}
+        if(!f.gz&&f.y>PY-6){const d=Math.hypot(f.x-px,f.y-PY);if(d<FR+PR+26&&d>=FR+PR-4){f.gz=1;graze(f.x,f.y-24,6+Math.min(wave,25)*2)}}
         if(f.y>H+30||f.dt>(f.dur||3)+.5){f.st='back';f.bk=0;f.x=clamp(homeX(f),FR+8,W-FR-8);f.y=-30}}
       // back in from the top: it flies straight at its spot fast enough to catch up with the marching formation
       else if(f.st==='back'){f.bk+=dt;const hx=homeX(f),hy=homeY(f),dx=hx-f.x,dy=hy-f.y,d=Math.hypot(dx,dy),step=Math.max(320,marchSpeed()*2)*dt;
@@ -3337,21 +3340,22 @@ const Invaders=(()=>{
     if(tooT>0)tooT-=dt;else{const low=Math.max(-1e9,...alive().filter(f=>f.st==='form').map(f=>f.y));if(low>BY-6){tooT=2.5;fy-=150;fyT-=150;hitMe();big('TOO CLOSE!','#ff5f6d')}}
     // shooting and diving (only once everyone has flown in)
     if(alive().length&&allIn){shotT-=dt;if(shotT<=0){const cols=new Map();for(const f of alive())if(f.st==='form'){const o=cols.get(f.q);if(!o||f.y>o.y)cols.set(f.q,f)}const L=[...cols.values()];
-        for(let n=Math.min(L.length,DW()>=10?2:1);n>0;n--){const f=L.splice(Math.floor(SR()*L.length),1)[0];goo.push({x:f.x,y:f.y+FR,vy:Math.min(340,210+DW()*8),vx:0})}sfx.pop(1);shotT=Math.max(.75,1.8-DW()*.07)*srand(.7,1.3)}
-      divT-=dt;if(divT<=0){const can=alive().filter(f=>f.st==='form');const n=Math.min(can.length,wave>=10?3:wave>=2?2:1);for(let i=0;i<n;i++){const f=can.splice(Math.floor(SR()*can.length),1)[0];if(f)dive(f)}divT=Math.max(1.8,3.4-DW()*.15)*srand(.8,1.2)}}
+        for(let n=Math.min(L.length,(DW()>=10?2:1)+Math.min(3,Math.floor(LATE()/5)));n>0;n--){const f=L.splice(Math.floor(SR()*L.length),1)[0];goo.push({x:f.x,y:f.y+FR,vy:Math.min(340,210+DW()*8)+Math.min(140,LATE()*4),vx:0})}sfx.pop(1);shotT=Math.max(.75,1.8-DW()*.07)*Math.max(.5,1-LATE()*.022)*srand(.7,1.3)}
+      divT-=dt;if(divT<=0){const can=alive().filter(f=>f.st==='form');const n=Math.min(can.length,(wave>=10?3:wave>=2?2:1)+Math.min(2,Math.floor(LATE()/7)));for(let i=0;i<n;i++){const f=can.splice(Math.floor(SR()*can.length),1)[0];if(f)dive(f)}divT=Math.max(1.8,3.4-DW()*.15)*srand(.8,1.2)}}
+    if(wave>=4){hailT-=dt;if(hailT<=0){hailT=Math.max(.35,1.6-wave*.028)*srand(.8,1.2);goo.push({x:clamp(px+srand(-8,8),12,W-12),y:-12,vy:Math.min(470,300+wave*3),vx:0,h:1})}}
     for(const g of goo){g.y+=g.vy*dt;g.x+=g.vx*dt}
     // hits
-    const bR=Math.min(19,4+5*lv('big'));
+    const bR=4+5*Math.min(10,lv('big'));
     for(const b of beans){if(b.dead)continue;
-      for(const f of foes){if(f.dead||f.st==='in'||b.hit.has(f.id))continue;if(Math.hypot(b.x-f.x,b.y-f.y)<FR+bR){b.hit.add(f.id);f.hp--;if(f.hp<=0)killFoe(f);else{f.fl=.15;sfx.pop(3);pop.push({x:f.x,y:f.y,t:0})}if(b.p>0)b.p--;else{b.dead=1;break}}}}
-    for(const g of goo){if(g.dead)continue;if(bunkHit(g.x,g.y,4)){g.dead=1;continue}if(Math.abs(g.x-px)<PR*.8&&Math.abs(g.y-PY)<PR){g.dead=1;hitMe();continue}
-      if(!g.gz&&g.y>PY){g.gz=1;if(Math.abs(g.x-px)<PR+18&&inv<=0)graze(g.x,PY-30,3+wave)}}
+      for(const f of foes){if(f.dead||f.st==='in'||b.hit.has(f.id))continue;if(segD(b.px??b.x,b.py??b.y,b.x,b.y,f.x,f.y)<FR+bR){b.hit.add(f.id);f.hp--;if(f.hp<=0)killFoe(f);else{f.fl=.15;sfx.pop(3);pop.push({x:f.x,y:f.y,t:0})}if(b.p>0)b.p--;else{b.dead=1;break}}}}
+    for(const g of goo){if(g.dead)continue;if(!g.h&&bunkHit(g.x,g.y,4)){g.dead=1;continue}if(Math.abs(g.x-px)<PR*.8&&Math.abs(g.y-PY)<PR){g.dead=1;hitMe();continue}
+      if(!g.gz&&g.y>PY){g.gz=1;if(Math.abs(g.x-px)<PR+18&&inv<=0)graze(g.x,PY-30,3+Math.min(wave,25))}}
     for(const d of drops){d.t+=dt;d.y+=120*dt;if(lv('magnet')&&d.y>PY-200-60*lv('magnet')){d.x+=(px-d.x)*Math.min(1,dt*4);d.y+=(PY-d.y)*Math.min(1,dt*2)}
       if(!d.dead&&Math.abs(d.x-px)<PR+10&&Math.abs(d.y-PY)<PR+10){d.dead=1;sfx.coin(5);
-        if(d.k==='heart'){lives=Math.min(MAXL,lives+1);hearts();big('+1 LIFE','#ff6fa8')}else if(d.k==='shield'){shield=Math.min(3,shield+1);big('SHIELD!','#7cc8ff')}else{pw=d.k;pwT=8;big(d.k==='double'?'DOUBLE SHOT!':'RAPID FIRE!','#ffd23f')}}}
+        if(d.k==='heart'){lives=Math.min(MAXL,lives+1);hearts();big('+1 LIFE','#ff6fa8')}else if(d.k==='shield'){shield=Math.min(2,shield+1);big('SHIELD!','#7cc8ff')}else{pw=d.k;pwT=8;big(d.k==='double'?'DOUBLE SHOT!':'RAPID FIRE!','#ffd23f')}}}
     beans=beans.filter(b=>!b.dead&&b.y>-20&&b.x>-20&&b.x<W+20);goo=goo.filter(g=>!g.dead&&g.y<H+20);drops=drops.filter(d=>!d.dead&&d.y<H+20);bunk=bunk.filter(b=>b.hp>0);foes=foes.filter(f=>!f.dead);
     // wave cleared: bonus, then pick a perk, then the next wave
-    if(st==='play'&&!foes.length){if(waveT<=0){waveT=1.2;const bonus=40*wave,perfect=hitWave===0;addScore(bonus+(perfect?60*wave:0),1.5);big(perfect?'PERFECT WAVE! +'+(bonus+60*wave):'WAVE CLEAR! +'+bonus,'#5be0a6');sfx.combo(5);hap('success');goo=[];beans=[]}
+    if(st==='play'&&!foes.length){if(waveT<=0){waveT=1.2;const wb=Math.min(wave,25),bonus=40*wb,perfect=hitWave===0;addScore(bonus+(perfect?60*wb:0),1.5);big(perfect?'PERFECT WAVE! +'+(bonus+60*wb):'WAVE CLEAR! +'+bonus,'#5be0a6');sfx.combo(5);hap('success');goo=[];beans=[]}
       else{waveT-=dt;if(waveT<=0)offerPerks()}}}
   // ---- watching someone (spectating, or your 1v1 opponent): glide everything toward the last update
   function specStep(dt){px+=(spec.px!=null?spec.px-px:0)*Math.min(1,dt*12);
@@ -3359,8 +3363,8 @@ const Invaders=(()=>{
     for(const b of beans){b.y+=b.vy*dt;b.x+=(b.vx||0)*dt}for(const g of goo){g.y+=g.vy*dt;g.x+=(g.vx||0)*dt}for(const d of drops)d.y+=120*dt;if(od>0)od-=dt;
     beans=beans.filter(b=>b.y>-20);goo=goo.filter(g=>g.y<H+20)}
   // ---- drawing
-  function bean(c,x,y,col,big){c.save();c.translate(x,y);const s=Math.min(2.4,1+.4*(big|0));c.scale(s,s);rr(c,-4,-9,8,18,4);c.fillStyle=col;c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.fillStyle='rgba(255,255,255,.7)';c.fillRect(-2,-6,2,6);c.restore()}
-  function gooDrop(c,x,y){c.save();c.translate(x,y);c.beginPath();c.moveTo(0,-9);c.quadraticCurveTo(7,2,0,7);c.quadraticCurveTo(-7,2,0,-9);c.fillStyle='#8a3fd0';c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.fillStyle='rgba(255,255,255,.55)';circ(c,-2,1,1.6);c.fill();c.restore()}
+  function bean(c,x,y,col,big){c.save();c.translate(x,y);const s=1+.4*(big|0);c.scale(s,s);rr(c,-4,-9,8,18,4);c.fillStyle=col;c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.fillStyle='rgba(255,255,255,.7)';c.fillRect(-2,-6,2,6);c.restore()}
+  function gooDrop(c,x,y,h){c.save();c.translate(x,y);c.beginPath();c.moveTo(0,-9);c.quadraticCurveTo(7,2,0,7);c.quadraticCurveTo(-7,2,0,-9);c.fillStyle=h?'#9be03f':'#8a3fd0';c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.fillStyle='rgba(255,255,255,.55)';circ(c,-2,1,1.6);c.fill();c.restore()}
   function dropIcon(c,d){const s=1+.1*Math.sin(d.t*8);c.save();c.translate(d.x,d.y);c.scale(s,s);circ(c,0,0,13);c.fillStyle=d.k==='heart'?'#ffd6e6':d.k==='shield'?'#d7f0ff':'#fff3c4';c.fill();c.lineWidth=3;c.strokeStyle=INK;c.stroke();
     if(d.k==='heart'){heartPath(c,0,2,9);c.fillStyle='#ff4f8f';c.fill()}else if(d.k==='shield'){circ(c,0,0,7);c.lineWidth=3;c.strokeStyle='#3aa0e8';c.stroke()}else{c.fillStyle='#ff9f1c';c.font=`15px ${FAM}`;c.textAlign='center';c.textBaseline='middle';c.fillText(d.k==='double'?'2x':'⚡',0,1)}c.restore()}
   function bg(c,ex){wallpaper(c,S().wall,ex.x0,ex.y0,ex.w,ex.h);c.fillStyle='rgba(22,12,48,.42)';c.fillRect(ex.x0,ex.y0,ex.w,ex.h);
@@ -3376,7 +3380,7 @@ const Invaders=(()=>{
       c.font=`30px ${FAM}`;c.textAlign='center';c.textBaseline='middle';c.fillStyle=INK;c.fillText(p.i,76,y+CARD_H/2+1);
       c.textAlign='left';c.font=`20px ${FAM}`;c.fillStyle=INK;c.fillText(p.n,116,y+30);
       c.font=`600 13px "Fredoka","Nunito",sans-serif`;c.fillStyle='#5a5070';c.fillText(p.d,116,y+54,W-160);
-      if(!p.once){const l=lv(k);c.font=`12px ${FAM}`;c.fillStyle='#9a5bff';c.fillText(l?'Lv '+l+' → '+(l+1):'New!',116,y+73)}
+      if(!p.once){const l=lv(k);c.font=`12px ${FAM}`;c.fillStyle='#9a5bff';c.fillText((l?'Lv '+l+' → '+(l+1):'New!')+(p.max?'  (max '+p.max+')':''),116,y+73)}
       c.font=`15px ${FAM}`;c.textAlign='right';c.fillStyle='#b0a8c0';c.fillText(String(i+1),W-44,y+22);c.restore()});
     if(pickT>0)outlineText(c,'Auto-picks in '+Math.ceil(pickT),W/2,CARD_Y+3*CARD_G+14,15,'#ffd23f')}
   function render(c){const cs=S(),cr=C(3);
@@ -3384,7 +3388,7 @@ const Invaders=(()=>{
     for(const f of foes){const wob=Math.sin(time*6+f.seed)*.06;drawAnimal(c,f.x,f.y,FR,f.k,f.c,{mood:f.st==='dive'?1:0,rot:f.st==='dive'?Math.sin(time*8+f.seed)*.3:wob,seed:f.seed,jig:.02});
       if(f.mx>1&&f.hp>1){c.save();c.globalAlpha=.9;circ(c,f.x+FR*.8,f.y-FR*.8,5);c.fillStyle='#ffd23f';c.fill();c.lineWidth=2;c.strokeStyle=INK;c.stroke();c.restore()}
       if(f.fl>0){c.save();c.globalAlpha=f.fl/.15*.7;circ(c,f.x,f.y,FR);c.fillStyle='#fff';c.fill();c.restore()}}
-    for(const b of beans)bean(c,b.x,b.y,od>0?'#ff9f1c':cr.c,lv('big'));for(const g of goo)gooDrop(c,g.x,g.y);for(const d of drops)dropIcon(c,d);
+    for(const b of beans)bean(c,b.x,b.y,od>0?'#ff9f1c':cr.c,Math.min(10,lv('big')));for(const g of goo)gooDrop(c,g.x,g.y,g.h);for(const d of drops)dropIcon(c,d);
     drawFX(c);
     if(st==='play'||SPEC){const blink=inv>0&&Math.floor(inv*12)%2===0;
       if(od>0){c.save();c.globalAlpha=.5+.25*Math.sin(time*20);circ(c,px,PY,PR+12+3*Math.sin(time*16));c.lineWidth=5;c.strokeStyle='#ff9f1c';c.stroke();c.restore()}
@@ -3402,22 +3406,22 @@ const Invaders=(()=>{
   function key(k){if(pick&&!SPEC&&/^[1-3]$/.test(k)){const i=+k-1;if(pick[i])takePerk(pick[i])}}
   // ---- saving, spectating and 1v1 streaming
   function serialize(){if(st!=='play')return null;return{score,lives,wave,t:+t.toFixed(1),kills,bestCombo,grazes,combo,od:+od.toFixed(1),px:Math.round(px),fx:Math.round(fx),fy:Math.round(fy),fdir,shield,pw,pwT:+pwT.toFixed(1),pk:Object.assign({},pk),pick:pick?pick.slice():null,
-    f:foes.map(f=>[f.id,f.r,f.q,f.hp,f.mx,f.st==='dive'?1:f.st==='in'?2:f.st==='back'?3:0,Math.round(f.x),Math.round(f.y)]),b:beans.slice(-24).map(b=>[Math.round(b.x),Math.round(b.y),Math.round(b.vx||0)]),g:goo.map(g=>[Math.round(g.x),Math.round(g.y),Math.round(g.vy),Math.round(g.vx)]),
+    f:foes.map(f=>[f.id,f.r,f.q,f.hp,f.mx,f.st==='dive'?1:f.st==='in'?2:f.st==='back'?3:0,Math.round(f.x),Math.round(f.y)]),b:beans.slice(-24).map(b=>[Math.round(b.x),Math.round(b.y),Math.round(b.vx||0)]),g:goo.map(g=>[Math.round(g.x),Math.round(g.y),Math.round(g.vy),Math.round(g.vx),g.h?1:0]),
     d:drops.map(d=>[Math.round(d.x),Math.round(d.y),d.k]),bk:bunk.map(b=>[Math.round(b.x),Math.round(b.y),b.hp])}}
   const stOf=n=>n===1?'dive':n===2?'in':n===3?'back':'form';
   function mkFoe(a){const R=ROWS[clamp(a[1]|0,0,4)];return{id:a[0],r:a[1]|0,q:a[2]|0,k:R.k,c:R.c,p:R.p,hp:a[3]|0||1,mx:a[4]|0||1,st:stOf(a[5]),x:a[6],y:a[7],dl:0,fl:0,seed:rand(9),bk:0,sx:a[6],sy:a[7],dt:1,side:1,tx:a[6],vy:200,shots:0,sT:1,gz:1,dur:3,c1x:a[6],c1y:a[7],c2x:a[6],c2y:a[7]}}
   function restore(d){reset();lives=clamp(d.lives|0||3,1,SPEC?99:MAXL);wave=d.wave||1;t=d.t||0;kills=d.kills||0;bestCombo=d.bestCombo||0;grazes=d.grazes||0;combo=0;od=SPEC?(d.od||0):0;px=ptx=d.px||W/2;fx=d.fx||0;fy=fyT=d.fy||0;fdir=d.fdir||1;shield=d.shield||0;pw=d.pw||'';pwT=d.pwT||0;
-    pk=d.pk&&typeof d.pk==='object'?Object.fromEntries(Object.entries(d.pk).filter(([k,v])=>PERKS[k]&&k!=='heart').map(([k,v])=>[k,clamp(v|0,0,60)])):{};
+    pk=d.pk&&typeof d.pk==='object'?Object.fromEntries(Object.entries(d.pk).filter(([k,v])=>PERKS[k]&&k!=='heart').map(([k,v])=>[k,clamp(v|0,0,PERKS[k].max||60)])):{};
     pick=Array.isArray(d.pick)?d.pick.filter(k=>PERKS[k]).slice(0,3):null;if(pick&&!pick.length)pick=null;pickT=pick&&DUEL?8:0;
     score=shown=SCK=d.score||0;scoreEl.textContent=fmt(score);foes=(d.f||[]).map(mkFoe);if(!SPEC)for(const f of foes)if(f.st!=='form'){f.st='back';f.bk=0}nid=foes.reduce((m,f)=>Math.max(m,f.id),0)+1000;
-    goo=(d.g||[]).map(a=>({x:a[0],y:a[1],vy:a[2]||220,vx:a[3]||0,gz:1}));drops=(d.d||[]).map(a=>({x:a[0],y:a[1],k:a[2],t:0}));bunk=(d.bk||[]).map(a=>({x:a[0],y:a[1],hp:a[2]}));if(!bunk.length&&!d.bk)buildBunkers();
+    goo=(d.g||[]).map(a=>({x:a[0],y:a[1],vy:a[2]||220,vx:a[3]||0,gz:1,h:a[4]?1:0}));drops=(d.d||[]).map(a=>({x:a[0],y:a[1],k:a[2],t:0}));bunk=(d.bk||[]).map(a=>({x:a[0],y:a[1],hp:a[2]}));if(!bunk.length&&!d.bk)buildBunkers();
     if(!foes.length&&!pick&&!SPEC)offerPerks();restyle();hearts()}
   function specSync(d){if(st!=='play'){restore(d);spec.px=px;for(const f of foes){f.tx=f.x;f.ty=f.y}return}
     if(d.lives!==lives){lives=d.lives;hearts()}wave=d.wave||wave;t=d.t||t;kills=d.kills||0;combo=d.combo||0;od=d.od||0;shield=d.shield||0;pw=d.pw||'';pwT=d.pwT||0;spec.px=d.px;
     pk=d.pk&&typeof d.pk==='object'?d.pk:{};pick=Array.isArray(d.pick)&&d.pick.length?d.pick.filter(k=>PERKS[k]):null;
     const by=new Map(foes.map(f=>[f.id,f])),seen=new Set(),out=[];for(const a of d.f||[]){const m=by.get(a[0]);seen.add(a[0]);if(m){m.tx=a[6];m.ty=a[7];m.hp=a[3];m.st=stOf(a[5]);out.push(m)}else{const f=mkFoe(a);f.tx=f.x;f.ty=f.y;out.push(f)}}
     for(const f of foes)if(!seen.has(f.id)&&f.y>-20){burst(f.x,f.y,f.c,12,260,.25)}foes=out;
-    beans=(d.b||[]).map(a=>({x:a[0],y:a[1],vy:-640,vx:a[2]||0}));goo=(d.g||[]).map(a=>({x:a[0],y:a[1],vy:a[2]||220,vx:a[3]||0}));drops=(d.d||[]).map(a=>({x:a[0],y:a[1],k:a[2],t:0}));bunk=(d.bk||[]).map(a=>({x:a[0],y:a[1],hp:a[2]}))}
+    beans=(d.b||[]).map(a=>({x:a[0],y:a[1],vy:-640,vx:a[2]||0}));goo=(d.g||[]).map(a=>({x:a[0],y:a[1],vy:a[2]||220,vx:a[3]||0,h:a[4]?1:0}));drops=(d.d||[]).map(a=>({x:a[0],y:a[1],k:a[2],t:0}));bunk=(d.bk||[]).map(a=>({x:a[0],y:a[1],hp:a[2]}))}
   return{start,update,render,bg,down,move,up,key,action(){},restyle,serialize,restore,specSync,state:()=>st,_dbg:{get foes(){return foes},get goo(){return goo},get wave(){return wave},set ptx(v){ptx=v},get px(){return px},get pick(){return pick},get pk(){return pk},get od(){return od},get combo(){return combo},get grazes(){return grazes},take:i=>pick&&takePerk(pick[i]),god(){inv=1e9},killAll(){for(const f of foes)if(!f.dead)killFoe(f)},hitMe,goo2:g=>goo.push(g)}};
 })();
 function menuInv(c,t){const cs=P.cos.drop,w=cs.wall;wallpaper(c,w,0,0,240,180,.8);c.fillStyle='rgba(22,12,48,.45)';c.fillRect(0,0,240,180);
@@ -3741,7 +3745,7 @@ const GAMES={
   combo:{id:'combo',name:'Jelly Combo',impl:Combo,coins:s=>s.score/270},
   memory:{id:'memory',name:'Jelly Memory',impl:Memory,coins:s=>s.score/65},
   slice:{id:'slice',name:'Jelly Slice',impl:Slice,coins:s=>s.score/90},
-  inv:{id:'inv',name:'Jelly Invaders',impl:Invaders,coins:s=>s.score/220},
+  inv:{id:'inv',name:'Jelly Invaders',impl:Invaders,coins:s=>{const x=+s.score||0;return x<=40000?x/220:Math.min(2500,182+(x-40000)/1000)}},
   maze:{id:'maze',name:'Jelly Maze',impl:Maze,coins:s=>s.score/90}};
 // Jelly Catch wears your Jelly Jar style, Jelly Combo your Jelly 2048 style, Jelly Memory your Jellydoku style
 const SG=g=>g==='catch'||g==='slice'||g==='inv'||g==='maze'?'drop':g==='combo'?'squish':g==='memory'?'doku':g;
@@ -3932,7 +3936,7 @@ const TUT={drop:['Slide your finger to aim, then let go to drop a jelly. The nex
   doku:['Each row, column and color area needs exactly one jelly.','Jellies can never touch, not even corner to corner.','Tap a square to mark ✕. Double-tap to drop a jelly. Wrong jellies cost a heart.','You have 5 hearts for the whole run. Hint crosses out a few squares that can’t have a jelly and tells you why.','Every level can be solved by logic, no guessing. Boards grow up to 8 × 8, then the puzzles get trickier.'],
   combo:['Jellies pop up on the board. Tap each one before its ring runs out. Tapping fast scores a QUICK bonus.','Keep hitting them for a big combo. Missing one costs a heart, and tapping an empty spot breaks your combo.','Never tap the spiky ones! Gold jellies are worth x3 and hearts give a life back. It gets faster and the board grows.'],
   maze:['Swipe to steer your critter through the candy maze (or tap the side you want to go, or use the arrow keys). Eat every sugar dot to clear the maze.','Sour gumdrops chase you, and each one hunts in its own way. Touch one and you lose a life. Use the side tunnels to escape!','Eat a sugar star for a SUGAR RUSH: the gumdrops go pale and you can pop them for 200, 400, 800 and 1,600. Grab the bonus candy when it shows up.'],
-  inv:['Drag left and right to move your critter. It fires jelly beans all by itself. Hit the diving aliens mid-dive for double points, and dodge the purple goo.','After every wave, pick 1 of 3 perks to power up. Chain 15 kills in a row for OVERDRIVE: triple shots and double points!','Near misses score GRAZE points. Grab falling power-ups, hide behind the green bunkers, and reach wave 5, 10, 15… for big milestone bonuses.'],
+  inv:['Drag left and right to move your critter. It fires jelly beans all by itself. Hit the diving aliens mid-dive for double points, and dodge the purple goo.','After every wave, pick 1 of 3 perks to power up. Chain 15 kills in a row for OVERDRIVE: triple shots and double points!','Green sour hail drops right where you are, so keep moving! Near misses score GRAZE points. Grab falling power-ups, hide behind the green bunkers, and reach wave 5, 10, 15… for big milestone bonuses.'],
   slice:['Swipe across the screen to slice the jellies tossed up from below. Don’t let any fall back down: each one you miss costs a heart.','Slice 3 or more in one swipe for a big combo bonus. Spiky bombs cost a heart, so swipe around them!','Hearts give a life back, snowflakes slow time, stars start a frenzy with no bombs at all. It keeps getting faster and faster.'],
   memory:['Watch the jellies light up one by one.','Tap them back in the same order. Each round adds one more, and a perfect round scores double.','Every few rounds the jellies shuffle (you’ll see the pattern twice) and more jellies join.','Mistakes cost a heart, and so does waiting too long. The pattern replays after a mistake.'],
   catch:['Drag left and right to move your jar.','Catch every jelly. Missing one costs a life, and a streak raises your multiplier up to x8.','Dodge the spiky ones! Gold stars give x2, hearts refill a life, and the Lucky critter (top left) scores x3.']};
@@ -4228,7 +4232,7 @@ function adoptCloud(cp){if(P.owner&&P.owner!==UID){P=cp;norm();return}const L=P,
   for(const g of['drop','squish','doku','catch','combo','memory','slice','inv','maze'])P.best[g]=Math.max(P.best[g]||0,(B.best&&B.best[g])||0);
   if((B.invWave|0)>(P.invWave|0))P.invWave=B.invWave|0;
   {const Fx=Object.assign({},B.bestFix||{});for(const[k,t]of Object.entries(A.bestFix||{}))Fx[k]=Math.max(+Fx[k]||0,+t||0);P.bestFix=Fx;for(const[g,t]of Object.entries(Fx)){const vals=[A0,B0].filter(S=>(+S.bestFix[g]||0)>=t).map(S=>+S.best[g]||0);if(vals.length)P.best[g]=Math.max(...vals)}}
-  {const pa=A.prest|0,pb=B.prest|0;if(pa===pb){P.own=[...new Set([...P.own,...(B.own||[])])];P.perma=[...new Set([...(P.perma||[]),...(B.perma||[])])]}else if(pb>pa){P.own=[...(B.own||[])];P.coins=B.coins|0;P.prest=pb;P.ptok=B.ptok|0;P.perma=[...(B.perma||[])]}}P.found=[...new Set([...P.found,...(B.found||[])])];
+  {const pa=A.prest|0,pb=B.prest|0;if(pa===pb){P.own=[...new Set([...P.own,...(B.own||[])])];P.perma=[...new Set([...(P.perma||[]),...(B.perma||[])])]}else if(pb>pa){P.own=[...(B.own||[])];P.coins=B.coins|0;P.prest=pb;P.ptok=B.ptok|0;P.perma=[...(B.perma||[])];if(B.cap)P.cap=B.cap}}P.refGot=[...new Set([...(Array.isArray(P.refGot)?P.refGot:[]),...(Array.isArray(B.refGot)?B.refGot:[])])];if(B.refDone)P.refDone=1;P.found=[...new Set([...P.found,...(B.found||[])])];
   if((B.level||1)>(P.level||1)||((B.level||1)===(P.level||1)&&(B.xp||0)>(P.xp||0))){P.level=B.level;P.xp=B.xp}
   if(!mine)P.coins=Math.max(P.coins||0,B.coins||0);
   for(const k of['maxTile','topStreak','wins','rounds','coop','coBest','chN','mysN'])P[k]=Math.max(P[k]||0,B[k]||0);
@@ -4373,7 +4377,7 @@ function renderPres(){const S=presState(),n=P.prest|0,tk=P.ptok|0,done=S.have>=S
   $('presN').textContent=n;$('presTok').textContent=`${n?'Prestige '+n:'Not prestiged yet'} · ${tk} unlock token${tk===1?'':'s'} · coins from games +${Math.round((presMult()-1)*100)}%`;
   $('presBar').style.width=(S.all?Math.round(S.have/S.all*100):0)+'%';$('presProg').textContent=done?'You collected everything! You can prestige now.':`Collected ${fmt(S.have)} / ${fmt(S.all)} items. Collect them all to prestige.`;
   const go=$('presGo');go.disabled=!done;go.classList.remove('arm');go.textContent=done?'Prestige now':'Collect everything first';
-  $('presNote').textContent='Prestiging clears the cosmetics you bought or won and resets your coins to 0, so you can collect them all again. You get +1 prestige, 1 unlock token, and every game pays 15% more coins (up to +150%). You keep your level, scores, perks, capsule items, level rewards, developer-given and beta items, and everything you unlocked forever.';
+  $('presNote').textContent='Prestiging clears the cosmetics you bought or won and resets your coins to 0, so you can collect them all again. You get +1 prestige, 1 unlock token, and every game pays 15% more coins (up to +150%). Your capsule machine items, dust and pity count reset too. You keep your level, scores, perks, level rewards, developer-given and beta items, and everything you unlocked forever.';
   const cats=[...new Set(S.L.map(x=>x.cat))],T=$('presTabs');T.textContent='';
   for(const c of['all',...cats]){const b=document.createElement('button');b.type='button';b.className='tab'+(c===presTab?' on':'');b.textContent=c==='all'?'All':(CATL[c]||c);b.onclick=()=>{presTab=c;presSel='';sfx.ui();renderPres()};T.append(b)}
   const Gd=$('presGrid');Gd.textContent='';const list=S.L.filter(x=>presTab==='all'||x.cat===presTab).sort((a,b)=>(isPerma(b.cat,b.id)-isPerma(a.cat,a.id))||(a.cost-b.cost));
@@ -4390,6 +4394,7 @@ function presBuy(x){const k=x.cat+':'+x.id;if(isPerma(x.cat,x.id)||devGiven().ha
 function doPrestige(){const S=presState();if(S.have<S.all)return;
   const dv=devGiven(),drop=new Set(S.L.filter(x=>!isPerma(x.cat,x.id)&&!dv.has(x.cat+':'+x.id)).map(x=>x.cat+':'+x.id));
   P.own=P.own.filter(k=>{const[g,cat,id]=String(k).split(':');return!drop.has(cat+':'+id)});
+  {const ck=new Set();for(const it of CAP_ITEMS)if(!dv.has(it[0]+':'+it[1])&&!isPerma(it[0],it[1]))for(const k of capKeys(it[0],it[1]))ck.add(k);P.own=P.own.filter(k=>!ck.has(k));P.fresh=(P.fresh||[]).filter(k=>!ck.has(k));const C=capState();P.cap={e:0,l:0,dust:0,n:C.n|0}}
   for(const g in P.cos)for(const cat in P.cos[g]){const id=P.cos[g][cat];if(id&&id!=='none'&&!owns(g,cat,id))P.cos[g][cat]=(DEF[g]&&DEF[g][cat])||'none'}
   if(P.show&&Array.isArray(P.show.sc))P.show.sc=P.show.sc.map(k=>k&&P.own.includes(k)?k:'');
   P.prest=(P.prest|0)+1;P.ptok=(P.ptok|0)+1;P.presT=Date.now();P.coins=0;norm();save();refreshCoins();applyBouncy&&applyBouncy();if(G&&G.restyle)try{G.restyle()}catch(e){}syncMe();
@@ -4445,7 +4450,7 @@ $('aForm').addEventListener('submit',async e=>{e.preventDefault();if(!AUTH){aSay
   go.disabled=true;
   try{if(aMode==='up'){const v=cleanName($('aName').value);if(v.length<2){aSay('Pick a player name with at least 2 characters.',1);sfx.nope();return}
       aSay('Checking your name…');const s=await FD.get(fref('names/'+nameKey(v)));if(s.exists()){aSay('That name is taken. Try another!',1);sfx.nope();return}
-      aSay('Creating your account…');pendingName=v;setActive('main');await FA.createUserWithEmailAndPassword(AUTH,em,pw)}
+      aSay('Creating your account…');pendingName=v;setActive('main');if(store.get('ca_ref',''))store.set('ca_refnew',1);try{await FA.createUserWithEmailAndPassword(AUTH,em,pw)}catch(e2){store.set('ca_refnew',0);throw e2}}
     else{aSay('Signing in…');setActive('main');await FA.signInWithEmailAndPassword(AUTH,em,pw)}
     $('aPass').value='';aSay('');sfx.discover();
     const wait=Date.now();const iv=setInterval(()=>{if(acctReady||Date.now()-wait>6000){clearInterval(iv);toast(acctReady?'Welcome, '+P.name+'!':'Signed in','#5be0a6');closeAcct()}},120);
@@ -4911,7 +4916,7 @@ async function acceptFriend(from){if(!UID)return;try{await FD.update(FD.ref(curD
 async function declineFriend(from){try{await FD.remove(FD.ref(curDB(),`freq/${UID}/${from}`));sfx.ui()}catch(e){}}
 async function removeFriend(f){try{await FD.update(FD.ref(curDB()),{[`friends/${UID}/${f}`]:null,[`friends/${f}/${UID}`]:null});toast('Friend removed','#ff6fa8')}catch(e){toast('Could not remove. Try again.','#ff6fa8')}}
 async function socialWipe(uid){try{const u={};for(const f of myFriends)u[`friends/${f}/${uid}`]=null;u[`friends/${uid}`]=null;u[`freq/${uid}`]=null;await FD.update(FD.ref(curDB()),u)}catch(e){}}
-function openFriends(){audio();sfx.ui();paused=true;$('fr').hidden=false;$('frMsg').textContent='';renderFriends();for(const f of myFriends)loadFriend(f)}
+function openFriends(){audio();sfx.ui();paused=true;$('fr').hidden=false;refTick(true);$('frMsg').textContent='';renderFriends();for(const f of myFriends)loadFriend(f)}
 function closeFriends(){$('fr').hidden=true;if(!anyOpen())paused=false}
 const CW_D='raW tA taC yB edaM';
 // ---- direct messages (friends only): dm/<uidA_uidB>, newest 60 shown
@@ -4959,7 +4964,7 @@ function friendRow(d,extra){const row=elx('div','lrow fr');row.setAttribute('rol
   row.append(cn,nm);if(extra)row.append(extra);const cx=cn.getContext('2d'),fr=FRAME_IDS.has(d.fr)?d.fr:'none',hasF=fr!=='none';if(hasF)drawFrame(cx,38,40,29,fr);
   drawAnimal(cx,38,43,hasF?19:24,KINDS.has(d.k)?d.k:'jelly',okCol(d.c),{fx:FXS.has(d.fx)?d.fx:undefined,hat:HAT_IDS.has(d.h)?d.h:'none'});
   const open=()=>openProfile(Object.assign({},d));row.onclick=open;row.onkeydown=e=>{if(e.key==='Enter'){e.stopPropagation();open()}};return row}
-function renderFriends(){const signed=!!(UID&&acctReady);$('frAdd').hidden=!signed;$('frSign').hidden=signed;
+function renderFriends(){const signed=!!(UID&&acctReady);try{refUI()}catch(e){}$('frAdd').hidden=!signed;$('frSign').hidden=signed;
   const n=renderReqs($('frReq'));const L=$('frList');L.textContent='';$('frCount').textContent=signed?`Your friends (${myFriends.size})`:'Friends';
   if(!signed){L.append(elx('p','lgap','Sign in to add friends and see mutual friends.'));return}
   if(!myFriends.size)L.append(elx('p','lgap','No friends yet. Add someone by their player name, or tap a player on the leaderboard.'));
@@ -5024,9 +5029,42 @@ async function shareOut(title,text,url){const full=text+' '+url;
   let copied=false;try{await navigator.clipboard.writeText(full);copied=true}catch(e){}
   try{const ios=/iP(hone|ad|od)/.test(navigator.userAgent);location.href='sms:'+(ios?'&':'?')+'body='+encodeURIComponent(full)}catch(e){}
   toast(copied?'Link copied! Paste it in a message.':'Opening your messages…','#5be0a6');return'fallback'}
-$('frInv').onclick=async()=>{audio();sfx.ui();const nm=UID&&acctReady?duName():'';const url=siteUrl()+(nm?'?add='+encodeURIComponent(nm):'');
-  await shareOut('Jelly Critters',nm?`Play Jelly Critters with me! Tap the link to add me (${nm}) as a friend.`:'Play Jelly Critters with me!',url)};
+$('frInv').onclick=async()=>{audio();sfx.ui();const nm=UID&&acctReady?duName():'';const url=siteUrl()+(nm?'?add='+encodeURIComponent(nm)+'&ref='+encodeURIComponent(UID):'');
+  await shareOut('Jelly Critters',nm?`Play Jelly Critters with me! Tap the link to add me (${nm}) as a friend. Make an account and reach level ${REF_LV} and we both get ${fmt(REF_COINS)} coins!`:'Play Jelly Critters with me!',url)};
 $('frSite').onclick=async()=>{audio();sfx.ui();await shareOut('Jelly Critters','Jelly Critters: squishy little puzzle games. Save it to your home screen or bookmarks!',siteUrl())};
+// ================================================= invite rewards
+const REF_COINS=5000,REF_LV=10,REF_MAX=10;var refHello=0,refMine=null,refBusy=0,refT=0,refInv={n:0,d:0};
+try{const u=new URL(location.href),q=u.searchParams.get('ref');if(q!=null){if(/^[A-Za-z0-9_-]{10,128}$/.test(q)){if(!store.get('ca_ref',''))store.set('ca_ref',q);refHello=1}u.searchParams.delete('ref');history.replaceState(null,'',u.pathname+u.search+u.hash)}}catch(e){}
+const refDenied=e=>/permission/i.test(String(e&&(e.code||e.message)||''));
+function refWin(msg){try{sfx.discover();hap('success');big('+'+fmt(REF_COINS)+' coins!','#ffcf4a');confetti(W/2,H/3,90)}catch(e){}toast(msg,'#ffcf4a','fr')}
+async function refTick(force){if(refBusy||!RDB||!UID||!acctReady||!fbOnline)return;if(!force&&Date.now()-refT<30000)return;refT=Date.now();refBusy=1;const me=UID;
+  try{const by=store.get('ca_ref','');
+    if(store.get('ca_refnew',0)){if(by&&by!==me&&(P.level||1)<REF_LV){try{await FD.set(fref('ref/'+me+'/by'),by);refMine=null;store.set('ca_refnew',0);toast(`You joined from a friend’s invite! Reach level ${REF_LV} and you both get ${fmt(REF_COINS)} coins.`,'#ffcf4a','fr');FD.set(fref('refs/'+by+'/'+me+'/n'),String(P.name||'').slice(0,16)).catch(()=>{})}catch(e){if(refDenied(e))store.set('ca_refnew',0)}}else store.set('ca_refnew',0)}
+    if(refMine===null||force){const s=await FD.get(fref('ref/'+me));if(UID!==me)return;refMine=s.exists()&&s.val()&&typeof s.val()==='object'?s.val():{}}
+    const R=refMine;
+    if(R.by&&(P.level||1)>=REF_LV){
+      if(!R.d){try{await syncMe()}catch(e){}await FD.set(fref('ref/'+me+'/d'),true);R.d=true}
+      if(!R.sent){await FD.update(fref('refs/'+R.by+'/'+me),{n:String(P.name||'').slice(0,16),d:true});R.sent=1}
+      if(!R.fc&&!P.refDone){P.refDone=1;P.coins=(P.coins||0)+REF_COINS;save();refreshCoins();R.fc=true;FD.set(fref('ref/'+me+'/fc'),true).catch(()=>{});refWin(`You reached level ${REF_LV}! You and the friend who invited you both get ${fmt(REF_COINS)} coins.`)}
+      else if(R.fc&&!P.refDone){P.refDone=1;save()}}
+    const s2=await FD.get(fref('refs/'+me));if(UID!==me)return;const L=s2.exists()&&s2.val()&&typeof s2.val()==='object'?s2.val():{};
+    P.refGot=Array.isArray(P.refGot)?P.refGot:[];let got=0,names=[],chg=0;refInv={n:0,d:0};
+    for(const[f,v]of Object.entries(L)){if(!v||typeof v!=='object'||f===me)continue;refInv.n++;if(v.d)refInv.d++;
+      if(v.d&&!P.refGot.includes(f)){P.refGot.push(f);chg=1;if(!v.c&&P.refGot.length<=REF_MAX){P.coins=(P.coins||0)+REF_COINS;got++;names.push(cleanName(v.n||'')||'A friend')}if(!v.c)FD.set(fref('refs/'+me+'/'+f+'/c'),true).catch(()=>{})}}
+    if(chg){save();refreshCoins()}
+    if(got)refWin(got>1?`${got} friends you invited reached level ${REF_LV}! You get ${fmt(REF_COINS*got)} coins.`:`${names[0]} reached level ${REF_LV}! You both get ${fmt(REF_COINS)} coins.`);
+  }catch(e){}finally{refBusy=0;if(!$('fr').hidden)try{refUI()}catch(e){}}}
+function refUI(){const el=$('frRef');if(!el)return;const signed=!!(UID&&acctReady),R=refMine||{};el.textContent='';
+  const h=document.createElement('div');h.innerHTML=`🎁 <b>Invite rewards:</b> when a friend makes an account from your invite link and reaches level ${REF_LV}, you <b>both</b> get <b>${fmt(REF_COINS)} coins</b>.`;el.append(h);
+  const sub=t=>{const x=document.createElement('span');x.className='rs';x.textContent=t;el.append(x)};
+  if(!signed){sub('Sign in to send your invite link.');if(store.get('ca_ref',''))sub(`You came from a friend’s invite. Make an account and reach level ${REF_LV} to get your ${fmt(REF_COINS)} coins!`);return}
+  if(R.by&&!R.fc&&!P.refDone)sub(`You joined from a friend’s invite. Reach level ${REF_LV} to get your ${fmt(REF_COINS)} coins (you’re level ${P.level||1}).`);
+  else if(R.by)sub('You got your coins for joining from an invite ✓');
+  const paid=Math.min(REF_MAX,(P.refGot||[]).length);
+  if(refInv.n)sub(`Friends who joined: ${refInv.n} · reached level ${REF_LV}: ${refInv.d} · coins earned: ${fmt(paid*REF_COINS)}`+(paid>=REF_MAX?` (that’s the max of ${REF_MAX} friends)`:` (up to ${REF_MAX} friends)`));
+  else sub(`You can earn this for up to ${REF_MAX} friends.`)}
+setInterval(()=>{try{refTick()}catch(e){}},5000);
+{let refHi=0;const t=setInterval(()=>{if(!refHello){clearInterval(t);return}if($('splash'))return;clearInterval(t);if(UID&&acctReady)return;toast(`Make an account and reach level ${REF_LV}: you and the friend who invited you both get ${fmt(REF_COINS)} coins!`,'#ffcf4a')},1500)}
 var pendAdd='';try{const q=new URLSearchParams(location.search).get('add');if(q){pendAdd=cleanName(q).slice(0,16);store.set('ca_padd',pendAdd);history.replaceState(null,'',location.pathname+location.hash)}else pendAdd=store.get('ca_padd','')||''}catch(e){}
 var pendAddT=0;setInterval(()=>{if(!pendAdd||$('splash'))return;if(!(UID&&acctReady)){if(Date.now()-pendAddT>60000){pendAddT=Date.now();toast('Sign in to add '+pendAdd+' as a friend','#7cc8ff')}return}
   const nm=pendAdd;pendAdd='';store.set('ca_padd','');if(cleanName(nm).toLowerCase()===String(duName()).toLowerCase())return;
